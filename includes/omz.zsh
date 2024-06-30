@@ -36,7 +36,6 @@ plugins=("${OMZ_PLUGINS[@]}")
 fpath+=("$omz_path"/custom/plugins/zsh-completions/src)
 
 # shellcheck disable=SC1091
-: # FIXME: Intentionally disabled the disable and left it broken to verify the GitHub workflow
 source "$omz_path"/oh-my-zsh.sh
 
 unset omz_path

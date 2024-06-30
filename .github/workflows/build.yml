@@ -1,3 +1,5 @@
+# https://github.com/marketplace/actions/shellcheck
+
 on: push
 
 jobs:
@@ -13,4 +15,4 @@ jobs:
           # See also: the notes in .shellcheckrc
           SHELLCHECK_OPTS: -s bash
         with:
-          ignore_paths: .p10k*.zsh
+          ignore_paths: "**/.p10k*.zsh"
