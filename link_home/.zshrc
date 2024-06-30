@@ -27,9 +27,9 @@ alias -g WCL='| wc -l'
 # shellcheck disable=SC1091
 . "$DOTFILES_INCLUDES"/env_interactive.sh
 # shellcheck disable=SC1091
-. "$DOTFILES_INCLUDES"/.omzrc
-# Must be after OMZ to be able to override its aliases
-. "$DOTFILES_SHARED"/includes.sh
+. "$DOTFILES_INCLUDES"/omz.zsh
+# shellcheck disable=SC1091
+. "$DOTFILES_SHARED"/includes.sh # Must be after OMZ to be able to override its aliases
 
 # Ctrl+Backspace/Delete to delete whole words
 bindkey '\e[3;5~' kill-word

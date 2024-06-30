@@ -16,10 +16,19 @@
 		"body": "$LINE_COMMENT TODO: ${0:Later}",
 	},
 
+	// https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker#disable-checking
+
 	"spell check disable": {
-		"prefix": "spd",
+		"prefix": "spdl",
 		"body": [
-			"$LINE_COMMENT cspell: disable-next-line"
+			"$LINE_COMMENT cSpell:disable-next-line"
+		],
+	},
+
+	"spell check ignore word (for the whole file)": {
+		"prefix": "spi",
+		"body": [
+			"$LINE_COMMENT cSpell:ignore ${0:word}"
 		],
 	},
 

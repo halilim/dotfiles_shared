@@ -454,7 +454,7 @@
   "vscode-yaml-sort.emptyLinesUntilLevel": 1,
   "vscode-yaml-sort.useLeadingDashes": false,
 
-  /* cspell: disable-next-line */
+  // cSpell:disable-next-line
   "vsicons.dontShowNewVersionMessage": true,
 
   "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
@@ -559,7 +559,6 @@
   },
 
   "[ruby]": {
-    /* cspell: disable-next-line */
     "editor.defaultFormatter": "Shopify.ruby-lsp",
     "editor.formatOnType": true,
     "editor.insertSpaces": true,

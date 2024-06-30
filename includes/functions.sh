@@ -83,7 +83,7 @@ function curl_time() {
   [[ $2 ]] && params+=(--interface "$2")
 
   # https://stackoverflow.com/a/22625150/372654
-  # cspell: disable
+  # cSpell:disable
   curl "$1" "${params[@]}" -Isv -o /dev/null -w "     time_namelookup:  %{time_namelookup}s
         time_connect:  %{time_connect}s
      time_appconnect:  %{time_appconnect}s
@@ -92,7 +92,7 @@ function curl_time() {
   time_starttransfer:  %{time_starttransfer}s
                        ---------
           time_total:  %{time_total}s\n"
-  # cspell: enable
+  # cSpell:enable
 }
 
 # Usage: EE_DRY_RUN=1 FAKE_RETURN=foo echo_eval 'bar %q' "$baz"

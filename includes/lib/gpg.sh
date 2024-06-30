@@ -1,4 +1,4 @@
-# See also: .omzrc > gpg-agent
+# See also: omz.zsh > gpg-agent
 export GPG_TTY=$TTY
 
 # shellcheck disable=SC2139

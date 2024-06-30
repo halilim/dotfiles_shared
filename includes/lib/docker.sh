@@ -1,5 +1,6 @@
 :
 # shellcheck disable=SC2139
+: # FIXME: Intentional breakage
 alias libd="$EDITOR $0"
 
 alias dk='docker'
