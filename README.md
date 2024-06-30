@@ -1,6 +1,6 @@
 # dotfiles
 
-Share dotfiles across personal and work machines.
+Share dotfiles across different machines.
 
 ## Setup
 
@@ -8,8 +8,8 @@ Share dotfiles across personal and work machines.
 dotfiles_dir=somewhere/dotfiles # E.g. ~/code/dotfiles
 mkdir -p "$dotfiles_dir"
 
-# If you have an existing personal/work repo:
-git clone .../user/dotfiles_personal.git "$dotfiles_dir"/custom # Or user-company/dotfiles.git
+# If you have an existing custom repo:
+git clone .../user/dotfiles_personal.git "$dotfiles_dir"/custom # Or user-org/dotfiles.git
 # If not:
 mkdir "$dotfiles_dir"/custom # Add custom config based on `custom_example`
 

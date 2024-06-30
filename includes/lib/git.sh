@@ -7,7 +7,7 @@ alias ga='git add -p'
 alias gan='git add -N'
 alias gcpn='git cherry-pick --no-commit'
 alias gcano='git commit --amend --no-edit'
-alias gcm='git commit --verbose --message'
+alias gcm="git commit --verbose --message '"
 alias gcn='git commit --no-edit'
 
 alias gdh='git diff HEAD'
