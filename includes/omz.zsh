@@ -39,3 +39,15 @@ fpath+=("$omz_path"/custom/plugins/zsh-completions/src)
 source "$omz_path"/oh-my-zsh.sh
 
 unset omz_path
+
+function omz_install_custom_plugins() {
+  (
+    cd ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins || return
+    git clone https://github.com/Aloxaf/fzf-tab
+    git clone https://github.com/lincheney/fzf-tab-completion
+    git clone https://github.com/zsh-users/zsh-completions
+    git clone https://github.com/lukechilds/zsh-nvm
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting
+    git clone https://github.com/jeffreytse/zsh-vi-mode
+  )
+}
