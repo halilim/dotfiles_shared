@@ -34,6 +34,8 @@ alias {gla,gpla}="for_each_dir 'git checkout "'$(git_main_branch)'" && git pull 
 alias {gplp,glp}='git pull --prune'
 alias gps='git push --set-upstream origin'
 
+alias grh~='git reset HEAD~'
+
 alias grgu='git remote get-url'
 alias grpo='git remote prune origin'
 

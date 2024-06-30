@@ -12,7 +12,8 @@
 [commit]
 	; Disabled due to the inconvenience of having to enter password ~per day to unlock key
 	; Also: https://softwareengineering.stackexchange.com/q/212192/7611
-	; gpgsign = true
+	; Using SSH signing for now
+	gpgsign = true
 
 [core]
 	; Using ~/.config/git/attributes
@@ -87,7 +88,8 @@
 	pretty = %C(yellow)%h%Creset %s %C(red)(%an, %cr)%Creset
 
 [gpg]
-	program = gpg
+	format = ssh
+	; program = gpg
 
 [gui]
 	encoding = utf-8
