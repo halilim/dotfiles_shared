@@ -84,6 +84,7 @@ alias rgb3="rg -B 3" # Show 3 lines before
 alias rgc='rg --case-sensitive'
 alias rgf="rg -F" # Treat the pattern as a literal string instead of a regular expression
 alias rgh="rg --hidden" # Include dotfiles
+alias rgfh="rg -F --hidden"
 alias rghi="rg --hidden --no-ignore"
 alias rgchi="rg --case-sensitive --hidden --no-ignore"
 alias rgw="rg -w" # Word

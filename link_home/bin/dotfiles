@@ -51,6 +51,9 @@ function import() {
 function link_recursive() {
   local current_source_dir=$1 source_base=$2 type=$3 relative_base target_base target_dir
   relative_base=$(relative_to "$source_base" "$current_source_dir")
+
+  [[ -L "$current_source_dir" ]] && current_source_dir=$(readlink -f "$current_source_dir")
+
   [[ $relative_base == '.' ]] && relative_base=''
 
   case "$type" in
@@ -71,25 +74,26 @@ function link_recursive() {
 
   mk_dir "$target_dir" "$type"
 
-  local dir
+  local dir_source
   # shellcheck disable=SC2044
-  for dir in $(find_immediate_children "$current_source_dir" d); do
-    link_recursive "$dir" "$source_base" "$type"
+  for dir_source in $(find_immediate_children "$current_source_dir" d); do
+    link_recursive "$dir_source" "$source_base" "$type"
   done
 
-  local file
+  local file_source
   # shellcheck disable=SC2044
-  for file in $(find_immediate_children "$current_source_dir" f); do
-    link_file "$file" "$target_dir" "$type"
+  for file_source in $(find_immediate_children "$current_source_dir" f); do
+    link_file "$file_source" "$target_dir" "$type"
   done
 
-  local link
+  local link_source
   # shellcheck disable=SC2044
-  for link in $(find_immediate_children "$current_source_dir" l); do
-    if [[ -d $(readlink -f "$link") ]]; then
-      link_recursive "$link" "$source_base" "$type"
+  for link_source in $(find_immediate_children "$current_source_dir" l); do
+    if [[ -d $(readlink -f "$link_source") ]]; then
+      declare -p link_source 1>&2
+      link_recursive "$link_source" "$source_base" "$type"
     else
-      link_file "$link" "$target_dir" "$type"
+      link_file "$link_source" "$target_dir" "$type"
     fi
   done
 }
