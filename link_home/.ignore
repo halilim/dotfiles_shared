@@ -1,0 +1,12 @@
+# For ripgrep, fd (which ignore hidden files by default) & others that respect this file
+!.ruby-version
+*.min.js
+*.svg
+.DS_Store
+.git
+.gradle
+.npm
+coverage
+node_modules
+tags
+vendor

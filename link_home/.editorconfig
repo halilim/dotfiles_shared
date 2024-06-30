@@ -1,0 +1,6 @@
+# man shfmt > EXAMPLES > EditorConfig
+[*.sh]
+binary_next_line   = true
+switch_case_indent = true
+space_redirects    = true
+keep_padding       = true

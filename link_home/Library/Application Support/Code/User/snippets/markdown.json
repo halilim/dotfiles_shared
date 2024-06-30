@@ -1,0 +1,79 @@
+{
+	"```<lang>": {
+		"prefix": "``",
+		"body": [
+			"```${1|ruby,sh|}",
+			"$0",
+			"```"
+		],
+	},
+
+	"```ruby": {
+		"prefix": "`r",
+		"body": [
+			"```ruby",
+			"$0",
+			"```"
+		],
+	},
+
+	"```sh": {
+		"prefix": "`s",
+		"body": [
+			"```sh",
+			"$0",
+			"```"
+		],
+	},
+
+	"bug description": {
+		"prefix": "bug",
+		"body": [
+			"### Background",
+			"",
+			"...",
+			"",
+			"**Steps to reproduce:**",
+			"",
+			"1. ",
+			"",
+			"**Actual:**",
+			"",
+			"-",
+			"",
+			"**Expected:**",
+			"",
+			"-",
+			"",
+			"### Tech Notes",
+			"",
+			"-"
+		],
+	},
+
+	"link": {
+		"prefix": "l",
+		"body": [
+			"[$2]($1) "
+		],
+	},
+
+	"story/task/ticket description": {
+		"prefix": ["story", "task", "ticket", "jcd"],
+		"body": [
+			"### Background",
+			"\n\n",
+			"### Acceptance Criteria",
+			"\n- \n",
+			"### Tech Notes",
+			"\n- \n",
+			"### QA Notes",
+			"\n- \n",
+		],
+	},
+
+	"todo list item": {
+		"prefix": "tdi",
+		"body": "- [ ] ",
+	},
+}

@@ -1,0 +1,20 @@
+# http://tagaholic.me/2009/09/07/hirb-tips-for-rails.html
+# https://www.rubydoc.info/gems/hirb/Hirb/Helpers/Table#label-Options-3A
+
+:output:
+  # TODO: How to apply it to all?
+  # Object:
+  # BasicObject:
+  ActiveRecord::Base:
+  # Dummy:
+  # Kernel:
+  # ApplicationRecord:
+  # Asset:
+    :ancestor: true
+    :class: Hirb::Helpers::AutoTable
+    :options:
+      # Switches to horizontal mode when it fits, good
+      # No, it doesn't. It was only applying to Asset :)
+      # :vertical: true
+
+      # :resize: false

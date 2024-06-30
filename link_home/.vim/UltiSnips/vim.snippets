@@ -1,0 +1,19 @@
+snippet au "autocmd" b
+autocmd ${1:BufEnter} ${2:*} $0
+endsnippet
+
+snippet auf "autocmd set filetype" b
+autocmd BufRead,BufNewFile ${1:*.foo} set filetype=${2:bar}
+endsnippet
+
+# See :h augroup
+snippet aug "augroup" b
+augroup ${1:my_au_name}
+	autocmd!
+	$0
+augroup end
+endsnippet
+
+snippet com "command"
+command ${1:Name} $0
+endsnippet

@@ -1,0 +1,57 @@
+snippet 21 "2>&1 (redirect stderr to stdout)" w
+2>&1
+endsnippet
+
+snippet al "alias ..." b
+alias ${1:name}='$0'
+endsnippet
+
+snippet cr "composer require ..." b
+composer require $0
+endsnippet
+
+snippet e "echo" w
+echo $0
+endsnippet
+
+snippet f "function ...() { ... }" b
+function ${1:function_name}() {
+	$0
+}
+endsnippet
+
+snippet ife "if ... then ... else"
+if ${2:[[ ${1:condition} ]]}; then
+	${3:#statements}
+else
+	${0:#else_statements}
+fi
+endsnippet
+
+snippet safe "safe bash options" b
+#!/usr/bin/env bash
+set -eu${1:v}o pipefail
+IFS=$'\n\t'
+
+endsnippet
+
+snippet scd "# shellcheck disable=..." b
+# shellcheck disable=SC$0
+endsnippet
+
+snippet scs "# shellcheck source=..." b
+# shellcheck source=$0
+endsnippet
+
+snippet scsd "# shellcheck source=/dev/null" b
+# shellcheck source=/dev/null
+endsnippet
+
+snippet rkdms "bin/rake db:migrate:status" b
+bin/rake db:migrate:status
+endsnippet
+
+snippet run_and_check "Run command and check error level"
+${1:var}=$(${2:cmd}) ret=$?
+[ $ret != 0 ] && { echo "$1"; return $ret; }
+endsnippet

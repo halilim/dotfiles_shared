@@ -1,0 +1,22 @@
+# Duplicate of SnipMate's to enable word mode
+snippet $ "${n:...}" i
+${${1:1}:${0:text}}
+endsnippet
+
+# https://github.com/honza/vim-snippets/blob/master/pythonx/vimsnippets.py
+snippet c "$n`!p snip.rv = complete(t[n], [...])`" w
+\$${1:1}\`!p snip.rv = complete(t[$1], ${0:[]}])\`
+endsnippet
+
+snippet gc "global Python import complete" b
+global !p
+from vimsnippets import complete
+endglobal
+endsnippet
+
+# alias of usnip
+snippet s "Ultisnips snippet definition" b
+`!p snip.rv = "snippet"` ${1:Tab_trigger} "${2:Description}" ${3:b}
+${0:${VISUAL}}
+`!p snip.rv = "endsnippet"`
+endsnippet

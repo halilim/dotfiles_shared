@@ -1,0 +1,33 @@
+snippet crs "Chromre remove auto search engines" b
+var others = document.querySelectorAll("#other-search-engine-list .deletable-item:not([lead=lead])");
+var toBeRemoved = [...others].filter(function(listItem) {
+  var keyword = listItem.querySelector(".keyword-column .static-text").innerText;
+  return keyword.includes(".") &&
+    listItem.querySelector(".url-column .static-text").innerText.toLowerCase().includes(
+      keyword.toLowerCase()
+    );
+});
+if (confirm(`Search engines: \
+${document.querySelectorAll("#default-search-engine-list .deletable-item").length} default, \
+${others.length} other, \
+${toBeRemoved.length} to be removed.\nRemove?`)) {
+  toBeRemoved.forEach(function(listItem) {
+    listItem.querySelector(".row-delete-button").click();
+  });
+}
+endsnippet
+
+# Jira sometimes displays timestamps (when you hover over "... days ago") as literal "LLL" in dashboards
+snippet jits "Jira timestamps, 3 days ago -> 3 days ago (2019-12-30T19:43:28+03:00)" b
+jiFun = function() {
+  iframeDoc = document.querySelector("iframe.gadget-iframe").contentWindow.document
+  nodes = iframeDoc.querySelectorAll(".timestamp")
+  nodes.forEach(function(node) {
+    origInner = node.getAttribute('origInner')
+    if (!origInner) { node.setAttribute('origInner', node.innerHTML) }
+      node.innerHTML = \`${origInner} (${node.getAttribute("datetime")})\`
+    })
+}
+jiFun()
+ji = setInterval(jiFun, 500) // Jira keeps reloading
+endsnippet

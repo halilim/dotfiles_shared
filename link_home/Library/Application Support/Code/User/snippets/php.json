@@ -1,0 +1,63 @@
+{
+	"anonymous function / closure": {
+		"prefix": ["af", "cf"],
+		"body": [
+			"function (${1:$$params}) {",
+				"\t$0;",
+			"}"
+		],
+	},
+
+	"array(...)": {
+		"prefix": "a",
+		"body": "array($0)",
+	},
+
+	"die here": {
+		"prefix": "dh",
+		"body": "die('here');",
+	},
+
+	"echo": {
+		"prefix": "e",
+		"body": "echo $0;",
+	},
+
+	"error_log": {
+		"prefix": "erl",
+		"body": "error_log($0);",
+	},
+
+	"error_log(var_export(...))": {
+		"prefix": "erlv",
+		"body": "error_log(var_export($0, true));",
+	},
+
+	"function": {
+		"prefix": "f",
+		"body": [
+			"function ${1:name}(${2:$$params}) {",
+			"\t$0;",
+			"}"
+		],
+	},
+
+	"var_export": {
+		"prefix": "ve",
+		"body": "var_export($0);",
+	},
+
+	"var_export & die": {
+		"prefix": "ved",
+		"body": "die(var_export($0, true));",
+	},
+
+	"<pre> var_export HTML": {
+		"prefix": "veh",
+		"body": [
+			"echo '<pre style=\"font-family:monospace\">'; var_export([",
+			"'${1:var}' => $$1$0",
+			"]); echo '</pre>'; "
+		]
+	}
+}

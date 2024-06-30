@@ -1,0 +1,19 @@
+{
+	"VSCode snippet": {
+		"prefix": "s",
+		"body": [
+			"\"${1:snippet name}\": {",
+				"\t\"prefix\": \"${2:prefix}\",",
+				"\t\"body\": [",
+				"\t\t\"$0\"",
+				"\t],",
+			"},"
+		]
+	},
+
+	"${n:...} - VSCode snippet variable": {
+		"prefix": "$",
+		"body": "\\${${1:1}:${2:name}}",
+		// "scope": "string.quoted.double.json"
+	},
+}

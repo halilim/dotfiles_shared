@@ -1,0 +1,7 @@
+{
+	"# hadolint ignore=...": {
+		"prefix": "hli",
+		"body": "# hadolint ignore=$0",
+	},
+
+}

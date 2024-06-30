@@ -1,0 +1,14 @@
+snippet comp "function _fn & compdef _fn fn" b
+function _${1:function_name}() {
+  local state
+
+  _arguments '1: :->${2:arg}'
+
+  # shellcheck disable=2046
+  case $state in
+    $2) compadd $0 ;;
+  esac
+}
+
+compdef _$1 $1
+endsnippet

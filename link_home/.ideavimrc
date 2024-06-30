@@ -1,0 +1,58 @@
+" source ~/.vimrc
+
+" START: depends on .vimrc - toggle based on the sourcing status of .vimrc
+
+set clipboard+=unnamed
+
+set showcmd             " show command in the last line
+
+set hlsearch            " highlight matches
+set ignorecase          " case-insensitive search by default
+set smartcase           " except when an upper-case letter used in the search
+set incsearch           " search as characters are entered
+
+" nmap * <Action>(FindWordAtCaret)
+" nmap n <Action>(FindNext)
+" nmap N <Action>(FindPrevious)
+
+" END: depends on .vimrc
+
+let mapleader=","
+
+" Plugins
+set commentary
+set surround
+
+set ideajoin
+
+" For <Action>s: Cmd+Shift+P > IdeaVim: Track Action Ids
+
+" Emulate vim-wordmotion
+map <leader>w [w
+map <leader>e ]w
+map <leader>b [b
+
+map <Leader><space> :nohl<CR>
+
+" TODO: No direct "ConfigureKeymap" action yet
+map <Leader>,k <Action>(ChangeKeymap)
+map <Leader>,v :e ~/.ideavimrc<CR>
+
+map <Leader>a <Action>(GotoTest)
+map <C-J> <Action>(GotoNextError)
+map <C-K> <Action>(GotoPreviousError)
+" map <leader>c<space> <Plug>(commentary-gcc)
+map <Leader>c <Action>(CommentByLineComment)
+" map <leader>cp <Action>(CopyContentRootPath)
+" Was cpl
+map <Leader>cp <Action>(CopyPathFromRepositoryRootProvider)
+map <Leader>da <Action>(CloseAllEditors)
+map <Leader>de <Action>(CloseAllEditorsButActive)
+map <Leader>% <Action>(EditorCodeBlockEnd)
+map <Leader><Leader>% <Action>(EditorCodeBlockStart)
+map <Leader>rn <Action>(RenameElement)
+map <Leader>t <Action>(ActivateStructureToolWindow)
+map <Leader>T <Action>(SearchEverywhere)
+map [m <Action>(MethodDown)
+map ]m <Action>(MethodUp)
+map g] <Action>(QuickImplementations)

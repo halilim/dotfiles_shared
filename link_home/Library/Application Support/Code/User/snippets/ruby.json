@@ -1,0 +1,720 @@
+{
+	"#{}": {
+		"prefix": "#",
+		"body": "#{$0}",
+		// "scope": "string.quoted.double.interpolated.ruby"
+	},
+
+	"Array.new": {
+		"prefix": "an",
+		"body": "Array.new($0)",
+	},
+
+	"ap(k: v)": {
+		"prefix": "ap",
+		"body": "ap(${1:var_name}: ${2:var_value})",
+	},
+
+	"begin block": {
+		"prefix": "beg",
+		"body": [
+			"begin",
+				"\t${1:code}",
+			"end"
+		],
+	},
+
+	"begin ... rescue": {
+		"prefix": "begr",
+		"body": [
+			"begin",
+				"\t${1:code}",
+			"rescue ${2:StandardError} => e",
+				"\t${3:rescue_code}",
+			"end",
+		],
+	},
+
+	"block_given?": {
+		"prefix": "bg",
+		"body": "block_given?",
+	},
+
+	"binding.break": {
+		"prefix": "bb",
+		"body": [
+			"binding.break",
+		],
+	},
+
+	"binding.irb": {
+		"prefix": "bi",
+		"body": "binding.irb",
+	},
+
+	"binding.pry": {
+		"prefix": "bp",
+		"body": "binding.pry",
+	},
+
+	"binding.remote_pry": {
+		"prefix": "bpr",
+		"body": "binding.remote_pry",
+	},
+
+	"Benchmark.bmbm": {
+		"prefix": "bmbm",
+		"body": [
+			"Benchmark.bmbm do |x|",
+				"\tx.report('${1:name}') { ${2:code} }",
+			"end"
+		],
+	},
+
+	"{ |e| ... }": {
+		"prefix": "b",
+		"body": "{ |${1:e}| $0 }",
+	},
+
+	"class << self": {
+		"prefix": "clase",
+		"body": [
+			"class << self",
+				"\t$0",
+			"end"
+		],
+	},
+
+	"Class = Struct.new(...) do": {
+		"prefix": "clast",
+		"body": [
+			"${1:${TM_FILENAME/(?:\\A|_)([A-Za-z0-9]+)(?:\\.rb)?/(?2::\\u$1)/g}} = Struct.new(${2:vars}) do",
+				"\t${0}",
+			"end"
+		],
+	},
+
+	"def initialize": {
+		"prefix": "defi",
+		"body": [
+			"def initialize${1:($2)}",
+				"\t$0",
+			"end"
+		],
+	},
+
+	"define_method": {
+		"prefix": "defm",
+		"body": [
+			"define_method ${1:name} do |${2:params}|",
+				"\t$0",
+			"end",
+		]
+	},
+
+	"def ... rescue": {
+		"prefix": "defr",
+		"body": [
+			"def ${1:method_name(params)}",
+				"\t${4:code}",
+			"rescue ${5:StandardError} => e",
+				"\t${6:rescue_code}",
+			"end"
+		],
+	},
+
+	"def self. ...": {
+		"prefix": "defs",
+		"body": [
+			"def self.${1:method_name(params)}",
+				"\t$0",
+			"end"
+		],
+	},
+
+	"do": {
+		"prefix": "do",
+		"body": [
+			"do",
+				"\t$0",
+			"end"
+		],
+	},
+
+	"do |v|": {
+		"prefix": ["doo", "dov"],
+		"body": [
+			"do |${1:variable}|",
+				"\t$0",
+			"end"
+		],
+	},
+
+	"each do |e|": {
+		"prefix": "ead",
+		"body": [
+			"each do |${1:e}|",
+				"\t$0",
+			"end"
+		],
+	},
+
+	"each do |k, v|": {
+		"prefix": "eadh",
+		"body": [
+			"each do |${1:k}, ${2:v}|",
+				"\t$0",
+			"end"
+		],
+	},
+
+	"each_with_object": {
+		"prefix": "ewo",
+		"body": [
+			"each_with_object(${1:obj}) do |${2:e}, ${3:memo_obj}|",
+				"\t$3$0",
+			"end"
+		],
+	},
+
+	"each_with_object for hash": {
+		"prefix": "ewoh",
+		"body": [
+			"each_with_object(${1:obj}) do |(${2:k}, ${3:v}), ${4:memo_obj}|",
+				"\t$4$0",
+			"end"
+		],
+	},
+
+	"frozen_string_literal": {
+		"prefix": "fro",
+		"body": [
+			"# frozen_string_literal: true",
+			""
+		],
+	},
+
+	"squiggly heredoc": {
+		"prefix": "hs",
+		"body": [
+			"<<~${1:HEREDOC}",
+				"\t$0",
+			"$1"
+		],
+	},
+
+	"I18n.t": {
+		"prefix": "i8t",
+		"body": "I18n.t('$0')",
+	},
+
+	"is_a?": {
+		"prefix": "is",
+		"body": "is_a?($0)",
+	},
+
+	"->(...) { ... }": {
+		"prefix": "l",
+		"body": "->(${1:params}) { $0 }",
+	},
+
+	"lambda do": {
+		"prefix": "ll",
+		"body": [
+			"lambda do |${1:params}|",
+				"\t$0",
+			"end"
+		],
+	},
+
+	"map do": {
+		"prefix": "mapd",
+		"body": [
+			"map do |${1:e}|",
+				"\t$0",
+			"end"
+		],
+	},
+
+	"matching methods": {
+		"prefix": "mm",
+		"body": "methods.select { |m| m.to_s =~ /${1:pattern}/i }",
+	},
+
+	"public methods": {
+		"prefix": "pm",
+		"body": "public_methods.reject { |m| m.to_s.start_with?('_') } - Object.public_methods",
+	},
+
+	"module_eval": {
+		"prefix": "me",
+		"body": [
+			"module_eval <<~RUBY, __FILE__, __LINE__ + 1",
+				"\t$0",
+			"RUBY"
+		],
+	},
+
+	"# :nodoc:": {
+		"prefix": "nd",
+		"body": "# :nodoc:",
+	},
+
+	"private send": {
+		"prefix": "prs",
+		"body": "__send__",
+	},
+
+	"public_send": {
+		"prefix": "ps",
+		"body": "public_send",
+	},
+
+	"reduce": {
+		"prefix": "red",
+		"body": [
+			// "reduce${1:(${2:initial})} do |${3:memo}, ${4:item}|",
+			// "reduce(${1:initial}) do |${2:memo}, ${3:item}|",
+			"reduce${1:($2)} do |$3, $4|",
+				"\t$0",
+			"end"
+		],
+	},
+
+	"require": {
+		"prefix": "req",
+		"body": "require '$1'$0",
+	},
+
+	"require_relative": {
+		"prefix": "reqr",
+		"body": "require_relative '${1:file}'",
+	},
+
+	"rubocop:disable": {
+		"prefix": "rudi",
+		"body": "# rubocop:disable $0",
+	},
+
+	"rubocop:enable": {
+		"prefix": "rue",
+		"body": "# rubocop:enable $0",
+	},
+
+	"tap do": {
+		"prefix": "tapd",
+		"body": [
+			"tap do |${1:variable}|",
+				"\t${1:variable}$0",
+			"end"
+		],
+	},
+
+	"Time.current": {
+		"prefix": "tc",
+		"body": "Time.current",
+	},
+
+	// Rails
+
+	"errors.add": {
+		"prefix": "erra",
+		"body": "errors.add(:${1:attr}, :${2:message_key})",
+	},
+
+	"errors.messages": {
+		"prefix": "erm",
+		"body": "errors.messages",
+	},
+
+	"logger.debug": {
+		"prefix": "logd",
+		"body": "logger.debug { $0 }",
+	},
+
+	"logger.error": {
+		"prefix": "loge",
+		"body": "logger.error { $0 }",
+	},
+
+	"logger.info": {
+		"prefix": "logi",
+		"body": "logger.info { $0 }",
+	},
+
+	"logger.warn": {
+		"prefix": "logw",
+		"body": "logger.warn { $0 }",
+	},
+
+	"Rails.logger.debug": {
+		"prefix": "rlogd",
+		"body": "Rails.logger.debug { $0 }",
+	},
+
+	"Rails.logger.error": {
+		"prefix": "rloge",
+		"body": "Rails.logger.error { $0 }",
+	},
+
+	"Rails.logger.info": {
+		"prefix": "rlogi",
+		"body": "Rails.logger.info { $0 }",
+	},
+
+	"Rails.logger.warn": {
+		"prefix": "rlogw",
+		"body": "Rails.logger.warn { $0 }",
+	},
+
+	"local_assigns": {
+		"prefix": "la",
+		"body": "local_assigns[:$0]",
+	},
+
+	"controller & params in console": {
+		"prefix": "racp",
+		"body": [
+			"uri = '${1:URI}'",
+			"params = ActionController::Parameters.new(Rack::Utils.parse_nested_query(URI(uri).query))",
+			"controller = ${2:Things}Controller.new",
+			"# current_user = User.find(${3:user_id})",
+			"# controller.define_singleton_method(:current_user) { current_user }",
+			"controller.params = params",
+			"controller.${4:action}",
+		],
+	},
+
+	"AR scope": {
+		"prefix": "sco",
+		"body": "scope :${1:name}, ->${2:(${3:params})} { $0 }",
+	},
+
+	"skip auth token": {
+		"prefix": "skip_token",
+		"body": "skip_before_action :verify_authenticity_token",
+	},
+
+	"with_indifferent_access": {
+		"prefix": "wia",
+		"body": "with_indifferent_access",
+	},
+
+	// End: Rails
+
+	// Unit tests & RSpec
+
+	"allow(...).to receive(:...).and_return(...)": {
+		"prefix": "allr",
+		"body": "allow(${1:object}).to receive(:${2:method}).and_return(${0:value})",
+	},
+
+	"allow(...).to receive(:...).and_raise(...)": {
+		"prefix": "allra",
+		"body": "allow(${1:object}).to receive(:${2:method}).and_raise(${3:'test error'})",
+	},
+
+	"allow(...).to receive(:...).and_call_original": {
+		"prefix": "allro",
+		"body": "allow(${1:object}).to receive(:${2:method}).and_call_original",
+	},
+
+	"allow(...).to receive(:...).with(...).and_return(...)": {
+		"prefix": "allrw",
+		"body": "allow(${1:object}).to receive(:${2:method}).with(${3:args}).and_return(${0:value})",
+	},
+
+	// https://relishapp.com/rspec/rspec-mocks/docs/configuring-responses/wrapping-the-original-implementation
+	"allow(...).to receive(...).and_wrap_original do": {
+		"prefix": "allrwo",
+		"body": [
+			"allow(${1:object}).to receive(:${2:method}).and_wrap_original do |orig_method, *params|",
+				"\torig_method.call(*params)$0",
+			"end"
+		],
+	},
+
+	"assigns[:...]": {
+		"prefix": "as",
+		"body": "assigns[:${0:name}]",
+	},
+
+	"assign(:var, value) - view specs: assign @vars": {
+		"prefix": "asv",
+		"body": "assign(:${1:var}, ${0:value})",
+	},
+
+	"before { ... }": {
+		"prefix": "bef",
+		"body": "before { $0 }",
+	},
+
+	"before do ...": {
+		"prefix": "befd",
+		"body": [
+			"before do",
+				"\t$0",
+			"end"
+		],
+	},
+
+	"be_falsy": {
+		"prefix": "befa",
+		"body": "be_falsy",
+	},
+
+	"be_truthy": {
+		"prefix": "bet",
+		"body": "be_truthy",
+	},
+
+	"contain_exactly": {
+		"prefix": "ce",
+		"body": "contain_exactly",
+	},
+
+	"context '...' do": {
+		"prefix": "ctx",
+		"body": [
+			"context '${1:message}' do",
+				"\t$0",
+			"end"
+		],
+	},
+
+	"describe '...' do": {
+		"prefix": "desc",
+		"body": [
+			"describe '$1' do",
+				"\t$0",
+			"end"
+		],
+	},
+
+	"described_class": {
+		"prefix": "dc",
+		"body": "described_class",
+	},
+
+	"expect contain_exactly": {
+		"prefix": "exce",
+		"body": "expect($1).to contain_exactly($0)",
+	},
+
+	"expect(...).to have_attributes(...)": {
+		"prefix": "exha",
+		"body": "expect($1).to have_attributes($0)",
+	},
+
+	"expect(response).to have_http_status(:...)": {
+		"prefix": ["exhh", "exrh"],
+		"body": "expect(response).to have_http_status(:${0:ok})",
+	},
+
+	"expect match_array": {
+		"prefix": "exma",
+		"body": "expect(${1:object}).to match_array($0)",
+	},
+
+	"expect(response).to redirect_to(...)": {
+		"prefix": "exrr",
+		"body": "expect(response).to redirect_to(${1:path})",
+	},
+
+	"expect(...).to ...": {
+		"prefix": ["ex", "exp"],
+		"body": "expect(${1:object}).to $0",
+	},
+
+	"FactoryBot factory": {
+		"prefix": "fac",
+		"body": [
+			"factory :$1 do",
+				"\t$0",
+			"end"
+		],
+	},
+
+	"is_expected.to ...": {
+		"prefix": "isex",
+		"body": "is_expected.to $0",
+	},
+
+	"is_expected.to eq(...)": {
+		"prefix": "isexe",
+		"body": [
+			"is_expected.to eq($0)"
+		],
+	},
+
+	"it '...' do": {
+		"prefix": "it",
+		"body": [
+			"it '${1:spec_name}' do",
+				"\t$0",
+			"end"
+		],
+	},
+
+	"xit '...' do": {
+		"prefix": "xit",
+		"body": [
+			"xit '${1:spec_name}' do",
+				"\t$0",
+			"end"
+		],
+	},
+
+	"it { is_expected.to ... }": {
+		"prefix": "itie",
+		"body": "it { is_expected.to $0 }",
+	},
+
+	"it { is_expected.not_to ... }": {
+		"prefix": "itien",
+		"body": "it { is_expected.not_to $0 }",
+	},
+
+	"it { is_expected.to be_... }": {
+		"prefix": "itieb",
+		"body": "it { is_expected.to be_$0 }",
+	},
+
+	"it { is_expected.to be_falsy }": {
+		"prefix": "itiebf",
+		"body": "it { is_expected.to be_falsy }",
+	},
+
+	"it { is_expected.to be_truthy }": {
+		"prefix": "itiebt",
+		"body": "it { is_expected.to be_truthy }",
+	},
+
+	"let(:...) { ... }": {
+		"prefix": "let",
+		"body": "let(:${1:object}) { $0 }",
+	},
+
+	"let!(:...) { ... }": {
+		"prefix": "let!",
+		"body": "let!(:${1:object}) { $0 }",
+	},
+
+	"let(...) do ...": {
+		"prefix": "letd",
+		"body": [
+			"let(:$1) do",
+				"\t$0",
+			"end"
+		],
+	},
+
+	"let!(...) do ...": {
+		"prefix": "let!d",
+		"body": [
+			"let!(:$1) do",
+				"\t$0",
+			"end"
+		],
+	},
+
+	"match_array": {
+		"prefix": "ma",
+		"body": "match_array",
+	},
+
+	"MemoryProfiler": {
+		"prefix": "mp",
+		"body": [
+			"MemoryProfiler.report do",
+				"\t$0",
+			"end.pretty_print(detailed_report: false, allocated_strings: 0, scale_bytes: true)"
+		],
+	},
+
+	"shared_context": {
+		"prefix": "sc",
+		"body": [
+			"shared_context '${1:name}'${2:, ${3:metadata}} do",
+				"\t$0",
+			"end"
+		],
+	},
+
+	"shared_context auto-include metadata": {
+		"prefix": "scm",
+		"body": [
+			"shared_context '${1:name}' do",
+				"\t$0around do |example|",
+					"\t\tdo_something(example.metadata[:$1], &example)",
+				"\tend",
+			"end",
+			"",
+			"RSpec.configure do |rspec|",
+				"\trspec.include_context '$1', :$1",
+			"end"
+		],
+	},
+
+	"include_context": {
+		"prefix": "ic",
+		"body": [
+			"include_context '${1:name}'${2:, ${3:metadata}}${4: do",
+				"\t$0",
+			"end}"
+		],
+	},
+
+	"shared_examples": {
+		"prefix": "se",
+		"body": [
+			"shared_examples '${1:name}' do${2: |${3:params}|}",
+				"\t$0",
+			"end"
+		],
+	},
+
+	"include_examples": {
+		"prefix": "ie",
+		"body": [
+			"include_examples '${1:name}'${2:, ${3:metadata}}${4: do",
+				"\t$0",
+			"end}"
+		],
+	},
+
+	"without_partial_double_verification": {
+		"prefix": "rspec:without_partial_double_verification",
+		"body": [
+			"without_partial_double_verification do",
+				"\t$0",
+			"end"
+		],
+	},
+
+	"subject { ... }": {
+		"prefix": "subj",
+		"body": "subject { $0 }",
+	},
+
+	"Timecop.freeze": {
+		"prefix": "tcf",
+		"body": "Timecop.freeze",
+	},
+
+	"after { Timecop.return }": {
+		"prefix": "tcr",
+		"body": "after { Timecop.return }",
+	},
+
+	"FactoryBot trait": {
+		"prefix": "tra",
+		"body": [
+			"trait :$1 do",
+				"\t$0",
+			"end"
+		],
+	},
+
+	// END: Unit tests & RSpec
+}

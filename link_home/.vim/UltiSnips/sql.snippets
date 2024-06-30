@@ -1,0 +1,18 @@
+snippet ctdup "count duplicates" b
+SELECT $2.id, COUNT(DISTINCT $4.id) $3_ct
+FROM ${1:parent}s ${2:p}
+LEFT JOIN ${3:child}s ${4:c} ON $4.$1_id = $2.id
+GROUP BY $2.id
+HAVING $3_ct > 1
+ORDER BY $2.id
+endsnippet
+
+snippet ij "inner join" b
+INNER JOIN ${1:joining_thing}s ${2:jt} ON $2.id = ${3:things}.$1_id
+endsnippet
+
+snippet mytfk "MySQL disable FKs and truncate" b
+SET FOREIGN_KEY_CHECKS = 0;
+TRUNCATE ${1:table};
+SET FOREIGN_KEY_CHECKS = 1;
+endsnippet

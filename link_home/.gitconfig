@@ -1,0 +1,156 @@
+; Some tools don't recognize .config/git/config, and directly use .gitconfig
+
+[alias]
+	co = checkout
+
+[apply]
+	whitespace = nowarn
+
+[color]
+	ui = always
+
+[commit]
+	; Disabled due to the inconvenience of having to enter password ~per day to unlock key
+	; Also: https://softwareengineering.stackexchange.com/q/212192/7611
+	; gpgsign = true
+
+[core]
+	; Using ~/.config/git/attributes
+	; attributesfile = ~/.gitattributes_global
+
+	autocrlf = input
+	editor = code --wait
+	eol = lf
+
+	; Using ~/.config/git/ignore
+	; excludesfile = ~/.gitignore_global
+
+	pager = delta
+
+[credential]
+	helper = osxkeychain
+
+; https://dandavison.github.io/delta/configuration.html
+
+[delta]
+	; For git diff
+	features = decorations
+	line-numbers = true
+	navigate = true  ; use n and N to move between diff sections
+
+[delta "decorations"]
+	commit-decoration-style = blue ol
+	commit-style = raw
+	file-style = omit
+	hunk-header-decoration-style = blue box
+	hunk-header-file-style = red
+	hunk-header-line-number-style = "#067a00"
+	hunk-header-style = file line-number syntax
+
+[delta "interactive"]
+	keep-plus-minus-markers = false
+
+[diff]
+	colorMoved = default
+
+; Broken with both brew imgcat & iterm2 imgcat
+; [diff "image"]
+;   command = imgcat
+;   textconv = imgcat
+
+[diff "plist"]
+	textconv = plutil -convert xml1 -o -
+
+[difftool]
+	prompt = false
+
+[difftool "code"]
+	cmd = code --diff \"$LOCAL\" \"$REMOTE\"
+
+[difftool "kdiff3"]
+	cmd = /Applications/kdiff3.app/Contents/MacOS/kdiff3 \"$LOCAL\" \"$REMOTE\"
+
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+
+[difftool "yml"]
+	cmd = yaml_diff \"$LOCAL\" \"$REMOTE\"
+
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+
+[format]
+	pretty = %C(yellow)%h%Creset %s %C(red)(%an, %cr)%Creset
+
+[gpg]
+	program = gpg
+
+[gui]
+	encoding = utf-8
+
+[init]
+	defaultBranch = main
+
+[interactive]
+	; For git add --patch
+	diffFilter = delta --color-only --features=interactive
+
+[merge]
+	tool = gvimdiff ; Direct editing is simpler than 4 panes for conflicts
+	; tool = gvim
+	conflictstyle = diff3
+	autoStash = true
+
+[mergetool]
+	keepBackup = false
+
+[mergetool "code"]
+	cmd = code --wait --merge \"$REMOTE\" \"$LOCAL\" \"$BASE\" \"$MERGED\"
+
+[mergetool "gvim"]
+	cmd = gvim
+
+[mergetool "kdiff3"]
+	cmd = /Applications/kdiff3.app/Contents/MacOS/kdiff3 \"$BASE\" \"$LOCAL\" \"$REMOTE\" -o \"$MERGED\"
+
+[mergetool "smerge"]
+	cmd = smerge mergetool \"$BASE\" \"$LOCAL\" \"$REMOTE\" -o \"$MERGED\"
+	trustExitCode = true
+
+[mergetool "sourcetree"]
+	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
+
+[mergetool "sublime"]
+	cmd = subl -w $MERGED
+	trustExitCode = false
+
+[pull]
+	rebase = false
+	ff = only
+
+[push]
+	default = simple
+	useForceIfIncludes = true
+
+[rebase]
+	autosquash = true
+	autoStash = true
+
+[url "https://"]
+	insteadOf = git://
+
+; Enable if Bitbucket SSH slows down
+; [url "https://halil@bitbucket.org/"]
+;   insteadOf = git@bitbucket.org:
+
+[user]
+	; Prevent commits if name/email gets unset
+	useConfigOnly = true
+
+[include]
+	path = ~/.config/git/includes.gitconfig

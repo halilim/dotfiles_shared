@@ -1,0 +1,65 @@
+snippet arorph "LEFT JOIN id: nil (orphaned records)" b
+.unscoped.joins('LEFT OUTER JOIN ${1:parent}s p ON p.id = ${2:child_table}s.$1_id').where(p: { id: nil })
+endsnippet
+
+snippet erm "errors.messages" w
+errors.messages
+endsnippet
+
+snippet incnh "include NumberHelper" b
+include ActionView::Helpers::NumberHelper
+endsnippet
+
+snippet incuh "include URL helpers" b
+include Rails.application.routes.url_helpers
+endsnippet
+
+snippet rap "controller params" b
+params = ActionController::Parameters.new(${1:"x": "y"})
+endsnippet
+
+snippet rcc "Rails.cache.clear" b
+Rails.cache.clear
+endsnippet
+
+snippet rcf "Rails.cache.fetch(...)" b
+Rails.cache.fetch('${1:key}')
+endsnippet
+
+# validates ... are actually in snippets/rails.snippets, but overridden by UltiSnips/rails.snippets
+# So we are overriding the override here
+snippet va "validates :attr, acceptance: true"
+validates :${0:terms}, acceptance: true
+endsnippet
+
+snippet vc "validates :attr, confirmation: true"
+validates :${0:attribute}, confirmation: true
+endsnippet
+
+snippet ve "validates :attr, exclusion: { in: %w[...] }"
+validates :${1:attribute}, exclusion: { in: ${0:%w[mov avi]} }
+endsnippet
+
+snippet vf "validates :attr, format: { with: /.../ }"
+validates :${1:attribute}, format: { with: /${0:regex}/ }
+endsnippet
+
+snippet vi "validates :attr, inclusion: { in: %w[...] }"
+validates :${1:attribute}, inclusion: { in: %w[${0: mov avi }] }
+endsnippet
+
+snippet vl "validates :attr, length: { in: 1..2 }"
+validates :${1:attribute}, length: { in: ${2:3}..${0:20} }
+endsnippet
+
+snippet vn "validates :attr, numericality: true"
+validates :${0:attribute}, numericality: true
+endsnippet
+
+snippet vp "validates :attr, presence: true"
+validates :${0:attribute}, presence: true
+endsnippet
+
+snippet vu "validates :attr, uniqueness: true"
+validates :${1:attribute}, uniqueness: true${2:, scope: :${3:another_attr}}
+endsnippet

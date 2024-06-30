@@ -1,0 +1,326 @@
+{
+	"1>&2 (redirect stdout to stderr, e.g. capture nothing)": {
+		"prefix": "12",
+		"body": "1>&2",
+	},
+
+	"2>&1 (redirect stderr to stdout, e.g. capture both)": {
+		"prefix": "21",
+		"body": "2>&1",
+	},
+
+	">/dev/null 2>&1 (redirect stderr to stdout, and then dump/ignore both)": {
+		"prefix": "21n",
+		"body": ">/dev/null 2>&1",
+	},
+
+	"zsh/bash array": {
+		"prefix": "a",
+		"body": [
+			"${1:VAR_NAME}=(",
+				"\t$0",
+			")"
+		],
+	},
+
+	// bash: 0-indexed; zsh: 1-indexed - https://stackoverflow.com/q/50427449/372654
+	"array element access": {
+		"prefix": "ae",
+		"body": [
+			"\"${${1:ARR_NAME}[@]:${2:offset}:${3:length}}\"",
+		],
+	},
+
+	"alias": {
+		"prefix": "al",
+		"body": "alias ${1:name}='$0'",
+	},
+
+	"global alias": {
+		"prefix": "alg",
+		"body": "alias -g ${1:name}='$0'",
+	},
+
+	// cd already emits error with folder name, and exit & return defaults to last command's exit code
+
+	"cd or exit (within a script)": {
+		"prefix": "cde",
+		"body": "cd '$0' || exit"
+	},
+
+	"cd or return (within a function)": {
+		"prefix": "cdr",
+		"body": "cd '$0' || return"
+	},
+
+	"declare -p": {
+		"prefix": "dp",
+		"body": [
+			"declare -p $0 1>&2"
+		],
+	},
+
+	"echo": {
+		"prefix": ["e", "ek"],
+		"body": [
+			"echo $0"
+		],
+	},
+
+	"echo error return": {
+		"prefix": "eer",
+		"body": [
+			"echo >&2 '${1:error message}'",
+			"return ${2:1}"
+		],
+	},
+
+	"echo_eval": {
+		"prefix": "ee",
+		"body": "echo_eval '${1:foo %q}' \"$${2:bar}\"",
+	},
+
+	"echo_eval with heredoc": {
+		"prefix": "eeh",
+		"body": [
+			"echo_eval \"$(cat <<SH",
+				"\t${1:foo %q}",
+			"SH",
+			")\" \"$${2:bar}\""
+		],
+	},
+
+	"export": {
+		"prefix": "ex",
+		"body": "export ${1:name}=${2:value}",
+	},
+
+	"function": {
+		"prefix": ["f", "fn"],
+		"body": [
+			"function ${1:function_name}() {",
+				"\t$0",
+			"}"
+		]
+	},
+
+	// https://github.com/DeepInThought/vscode-shell-snippets/blob/master/snippets/shellscript.json
+	// Overridden to add locals - otherwise the iterator variables leak out of functions
+	"for in": {
+		"prefix": "forin",
+		"body": [
+			"local $0",
+			"for ${0:VAR} in $${1:LIST}; do",
+				"\techo \"$${0:VAR}\"",
+			"done"
+		],
+		"description": "for loop in list"
+	},
+	"for i": {
+		"prefix": "fori",
+		"body": [
+			"local $0",
+			"for ((${0:i} = 0; ${0:i} < ${1:10}; ${0:i}++)); do",
+				"\techo \"$${0:i}\"",
+			"done"
+			],
+		"description": "An index-based iteration for loop."
+	},
+
+	"for in array": {
+		"prefix": "forina",
+		"body": [
+			"local $0",
+			"for ${0:VAR} in \"${${1:LIST}[@]}\"; do",
+				"\techo \"$${0:VAR}\"",
+			"done"
+		]
+	},
+
+	"pass heredoc to function": {
+		"prefix": "hdc",
+		"body": [
+			"${1:func} \"$(cat <<${2:HEREDOC}",
+				"\t$0",
+			"$2",
+			")\""
+		],
+	},
+
+	"heredoc with tab suppression": {
+		"prefix": "hs",
+		"body": [
+			"<<-${1:HEREDOC}",
+				"\t$0",
+			// "${1/\\A\\s*//g}" - doesn't work, remove preceeding whitespace manually
+			"$1"
+		],
+	},
+
+	"if": {
+		"prefix": "if",
+		"body": [
+			"if [[ $1 ]]; then",
+				"\t$0",
+			"fi"
+		],
+	},
+
+	"if command": {
+		"prefix": "ifc",
+		"body": [
+			"if ${1:cmd}; then",
+				"\t$0",
+			"fi"
+		],
+	},
+
+	"if else": {
+		"prefix": "ife",
+		"body": [
+			"if [[ $1 ]]; then",
+				"\t$2",
+			"else",
+				"\t$0",
+			"fi"
+		],
+	},
+
+	"if value in array": {
+		"prefix": "ifia",
+		"body": [
+			"# shellcheck disable=SC2199,SC2076",
+			// " ${arr[@]} " =~ " $val " returns false positives with spaces
+			// e.g. true for arr=(foo 'bar baz') val=bar
+			"if in_array \"\\$${2:value}\" \"\\${${1:ARRAY}[@]}\"; then",
+				"\t$0",
+			"fi"
+		],
+	},
+
+	"if starts with": {
+		"prefix": "ifs",
+		"body": [
+			"if [[ ${1:var} == '${2:str}'* ]]; then",
+				"\t$0",
+			"fi"
+		],
+	},
+
+	"local var": {
+		"prefix": "lo",
+		"body": [
+			"local ${1:name}=${0:\\$1}"
+		],
+	},
+
+	"printf": {
+		"prefix": "p",
+		"body": "printf $0",
+	},
+
+	// https://stackoverflow.com/a/32931403/372654
+	"read into array": {
+		"prefix": "ra",
+		"body": [
+			"${1:array}=()",
+			"IFS=\\$'\\n' read_array -d '' $1 < <( ${2:command} && printf '\\0' )"
+		],
+	},
+
+	"safe bash options": {
+		"prefix": "safe",
+		"body": [
+			"#!/usr/bin/env bash",
+			"set -eu${1|v,x|}o pipefail",
+			"IFS=$'\\n\\t'",
+			"\n"
+		],
+	},
+
+	"# shellcheck disable=...": {
+		"prefix": "scd",
+		"body": [
+			"# shellcheck disable=SC${0:123}"
+		],
+	},
+
+	"# shellcheck source=...": {
+		"prefix": "scs",
+		"body": [
+			"# shellcheck source=$0"
+		],
+	},
+
+	"# shellcheck source=/dev/null": {
+		"prefix": "scsd",
+		"body": [
+			"# shellcheck source=/dev/null"
+		],
+	},
+
+	"unalias": {
+		"prefix": "una",
+		"body": [
+			"unalias ${1:alias} 2>/dev/null || true"
+		],
+	},
+
+	// zsh
+
+	"zsh associative array": {
+		"prefix": "aa",
+		"body": [
+			"declare -A ${1:VAR_NAME}=(",
+				"\t[${2:key}]='${3:value}'",
+			")"
+		],
+	},
+
+	"zsh auto complete": {
+		"prefix": "comp",
+		"body": [
+			"function _${1:function_name}() {",
+				"\tlocal state",
+				"",
+				"\t_arguments '1: :->${2:arg}'",
+				"",
+				"\t# shellcheck disable=2046",
+				"\tcase \\$state in",
+				"\t\t$2) compadd $0 ;;",
+				"\tesac",
+			"}",
+			"",
+			"compdef _$1 $1"
+		],
+	},
+
+	// https://superuser.com/q/737350/59919
+	"zsh for in associative": {
+		"prefix": "fora",
+		"body": [
+			// This version breaks shellcheck
+			// "local $1",
+			// "# shellcheck disable=SC1073",
+			// "for ${1:key} ${2:val} in \"\\${(@kv)${3:ASSOC_ARRAY}}\"; do",
+			// 	"\t${4:echo \"\\$$1 -> \\$$2\"}$0",
+			// "done"
+			"local $1",
+			"# shellcheck disable=SC2296",
+			"for ${1:key} in \\${(@k)${2:ASSOC_ARRAY}}; do",
+				"\t${3:echo \"\\$$1 -> \\${$2[\\$$1]\\}\"}$0",
+			"done"
+		],
+	},
+
+	// END: zsh
+
+	// macOS
+
+	"osascript notify": {
+		"prefix": "osan",
+		"body": "osascript -e 'display notification \"$0\"'",
+	},
+
+	// END: macOS
+}

@@ -1,0 +1,5 @@
+# Enable sourced files without shebangs. Related: SC2148
+# TODO: Change stuff when Zsh support is added. Until then, we intentionally treat shebang-less Zsh
+#       code as Bash, so that it gets checked.
+# FIXME: Check if the GitHub action supports this (e.g. issues in Zsh code are detected)
+shell=bash

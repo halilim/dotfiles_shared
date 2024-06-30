@@ -1,0 +1,12 @@
+{
+  "default": true,
+
+  "line-length": {
+    "line_length": 100
+  },
+
+  "no-duplicate-header": {
+    "allow_different_nesting": true,
+    "siblings_only": true
+  }
+}

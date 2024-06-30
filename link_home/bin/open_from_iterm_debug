@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+debug_file=~/bin/open_from_iterm.debug
+touch "$debug_file"
+trap 'rm "$debug_file"' EXIT
+
+log_file=~/bin/open_from_iterm.log
+truncate -s 0 "$log_file"
+tail -f "$log_file"

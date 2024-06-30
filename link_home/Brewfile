@@ -1,0 +1,107 @@
+# frozen_string_literal: true
+
+tap 'beeftornado/rmtree'
+
+brew 'coreutils' # gdate, gnumfmt, realpath, ghead, gtail
+brew 'moreutils' # ts
+brew 'findutils' # gfind
+brew 'gnu-sed' # gsed
+
+brew 'bash' # macOS one is ancient
+brew 'bat' # regular use + vim fzf preview
+brew 'csvq'
+brew 'dust' # du in Rust with percentage bars
+brew 'eza' # ls alternative in Rust
+brew 'fd'
+brew 'fzf'
+
+brew 'git'
+brew 'git-delta'
+brew 'gh' # https://cli.github.com/
+brew 'pre-commit'
+
+brew 'hadolint' # Dockerfile linter, validates inline bash using ShellCheck
+
+brew 'htop'
+brew 'httpie'
+brew 'jq'
+
+brew 'lazydocker'
+brew 'lazygit'
+
+brew 'media-info'
+brew 'miller' # Data tools for CSV, TSV, and tabular JSON
+
+brew 'ncdu'
+
+brew 'node' # coc.nvim & probably others
+
+# Without this, zsh-tab-completions emits 3 lines of "_normal:6: command not found: pygmentize"
+# Though even with this, it outputs pygmentize help :)
+# brew 'pygmentize'
+
+brew 'ripgrep'
+
+# Ruby
+brew 'libxml2' # Nokogiri
+brew 'libxslt' # Nokogiri
+brew 'openssl'
+brew 'pkg-config'
+brew 'rbspy' # Profiler, for RubyMine
+brew 'readline'
+brew 'shared-mime-info' # mimemagic gem
+
+brew 'shellcheck'
+brew 'shfmt' # VS Code extension shell-format
+
+tap 'teamookla/speedtest'
+brew 'speedtest'
+
+brew 'terminal-notifier'
+brew 'tree'
+# brew 'wget'
+brew 'yq'
+
+# In case macOS falls behind here too. Note: set chsh https://gist.github.com/ngocphamm/4978435
+brew 'zsh'
+
+# Start: Casks
+
+cask 'font-caskaydia-cove-nerd-font'
+cask 'font-fira-code-nerd-font'
+cask 'font-intone-mono-nerd-font'
+cask 'font-sauce-code-pro-nerd-font'
+
+cask 'qlcolorcode' # Source code files with syntax highlighting
+cask 'qlimagesize'
+cask 'qlstephen' # README, Makefile etc.
+cask 'qlvideo' # Finder thumbnails & Quick Look previews and thumbnails
+cask 'quicklook-json'
+
+cask 'kdiff3' # For Sourcetree
+cask 'sourcetree'
+
+cask 'sublime-merge'
+
+# Vim
+brew 'editorconfig' # Used by vim plugin
+brew 'neovim'
+cask 'macvim'
+
+tap 'universal-ctags/universal-ctags'
+brew 'universal-ctags', args: ['HEAD']
+
+cask 'xbar'
+
+# End: Casks
+
+path = Pathname.new(File.readlink(__FILE__)).dirname.dirname.dirname.join('custom', 'includes', 'brewfile_custom')
+require path
+
+BrewfileCustom.formulas.each do |formula|
+  brew formula
+end
+
+BrewfileCustom.casks.each do |cask|
+  cask cask
+end

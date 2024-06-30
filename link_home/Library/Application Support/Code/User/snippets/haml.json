@@ -1,0 +1,28 @@
+{
+	"binding.pry": {
+		"prefix": "bp",
+		"body": "- binding.pry",
+	},
+
+	"if else": {
+		"prefix": "ife",
+		"body": [
+			"- if $1",
+				"\t$2",
+			"- else",
+				"\t$0",
+		],
+	},
+
+	"width: , height:": {
+		"prefix": "wh",
+		"body": "width: $1, height: $0",
+	},
+
+	// Rails
+	"local_assigns": {
+		"prefix": "la",
+		"body": "local_assigns[:$0]",
+	},
+	// End: Rails
+}

@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+set -euo pipefail
+IFS=$'\n\t'
+
+# WARNING: Exposes localhost to LAN neighbors, be careful while using on public WiFi
+
+fw=/usr/libexec/ApplicationFirewall/socketfilterfw
+
+trap 'sudo "$fw" --blockapp "$ruby_path"' SIGTERM SIGINT
+
+if [[ $ruby_path == */.rbenv/shims/ruby ]]; then
+  ruby_path=$(rbenv which ruby)
+else
+  ruby_path=$(which ruby)
+fi
+
+# echo "ruby_path: $ruby_path"
+
+sudo "$fw" --add "$ruby_path"
+sudo "$fw" --unblockapp "$ruby_path"
+
+ip=$(my_internal_ips | grep ipv4 | cut -d ' ' -f 2)
+
+# Security through obscurity
+port=$((1024 + RANDOM % 64511))
+
+rails server --binding="$ip" --port="$port"

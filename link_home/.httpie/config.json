@@ -1,0 +1,9 @@
+{
+    "__meta__": {
+        "about": "HTTPie configuration file",
+        "help": "https://httpie.org/doc#config"
+    },
+    "default_options": [
+        "--style=paraiso-dark"
+    ]
+}

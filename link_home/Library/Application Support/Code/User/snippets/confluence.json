@@ -1,0 +1,40 @@
+{
+	"monospaced": {
+		"prefix": "{",
+		"body": "{{$0}}",
+	},
+
+	"code block": {
+		"prefix": "c",
+		"body": [
+			"{code:${1:lang}}",
+				"\t$0",
+			"{code}"
+		],
+	},
+
+	"bug description": {
+		"prefix": "bug",
+		"body": [
+			"### Background",
+			"",
+			"...",
+			"",
+			"**Steps to reproduce:**",
+			"",
+			"1. ",
+			"",
+			"**Actual:**",
+			"",
+			"-",
+			"",
+			"**Expected:**",
+			"",
+			"-",
+			"",
+			"### Tech Notes",
+			"",
+			"-"
+		],
+	},
+}

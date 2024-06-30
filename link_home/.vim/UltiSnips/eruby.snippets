@@ -1,0 +1,38 @@
+snippet =t "<%= I18n.t('...') %>" i
+<%= I18n.t('$0') %>
+endsnippet
+snippet et "<%= I18n.t('...') %>" i
+<%= I18n.t('$0') %>
+endsnippet
+
+snippet ert "<%== I18n.t('...') %> (raw/no HTML escaping)" i
+<%== I18n.t('$0') %>
+endsnippet
+
+snippet bp "<% binding.pry %>" i
+<% binding.pry %>
+endsnippet
+
+snippet cap "<% capture do ..." b
+<% ${1:var} = capture do %>
+  $0
+<% end %>
+endsnippet
+
+snippet e "<%= %>" w
+<%= $0 %>
+endsnippet
+
+snippet er "<%== %> (raw/no HTML escaping)" w
+<%== $0 %>
+endsnippet
+
+snippet rp "<%= render partial ... %>" b
+<%= render partial: '${1:name}'${2:, locals: { $3 }} %>
+endsnippet
+
+snippet un "<% unless ... %> ... <% end %>" b
+<% unless $1 %>
+  $0
+<% end %>
+endsnippet

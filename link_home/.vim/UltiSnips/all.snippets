@@ -1,0 +1,11 @@
+global !p
+from vimsnippets import get_comment_format
+endglobal
+
+snippet td "TODO comment" bw
+`!p snip.rv=get_comment_format()[0]` TODO: $0
+endsnippet
+
+snippet fm "FIXME comment" bw
+`!p snip.rv=get_comment_format()[0]` FIXME: $0
+endsnippet

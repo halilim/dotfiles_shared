@@ -1,0 +1,148 @@
+# snippet !(")#! '"...#{...}' r
+snippet !("[^"]*)#! "...#{...}" r
+`!p snip.rv=match.group(1)`#\{$0}
+endsnippet
+
+snippet !(["']\.)f! "<string>.freeze" r
+`!p snip.rv=match.group(1)`freeze
+endsnippet
+
+snippet b64 "base 64 decode" b
+require 'base64'; Base64.decode64('${1:string}')
+endsnippet
+
+snippet bi "binding.irb" w
+binding.irb
+endsnippet
+
+snippet bp "binding.pry" w
+binding.pry
+endsnippet
+
+snippet beg "begin rescue"
+begin
+	${0}
+rescue ${1:StandardError} => e
+	e.message
+end
+endsnippet
+
+snippet bmips "Benchmark.ips" b
+require 'benchmark/ips'
+
+Benchmark.ips do |x|
+  # x.config(time: 5, warmup: 2)
+	x.report('${1:approach1}') { ${2:code1} }
+	x.report('${3:approach2}') { ${4:code2} }
+	x.compare!
+end
+endsnippet
+
+snippet cwod "Execution stack without debuggers" b
+caller.reject { |c| %w[byebug pry].any? { |g| c.include?("/#{g}/") } }
+endsnippet
+
+snippet cwog "Execution stack without gems" b
+caller.reject { |line| Gem.path.any? { |path| line.start_with?(path) } }
+endsnippet
+
+# Copied from ~/.vim/plugged/vim-snippets/UltiSnips/ruby.snippets "(\S+)\.each"
+snippet "(\S+)\.eakv" ".each do |<key>, <value>| <block> end" r
+`!p snip.rv=match.group(1)`.each do |${1:key}, ${2:`!p
+element_name = match.group(1).lstrip('$@')
+ematch = re.search("([A-Za-z][A-Za-z0-9_]+?)s?[^A-Za-z0-9_]*?$", element_name)
+try:
+	wmatch = re.search("([A-Za-z][A-Za-z0-9_]+)$", ematch.group(1))
+	snip.rv = wmatch.group(1).lower()
+except:
+	snip.rv = 'element'
+`}|
+	$0
+end
+endsnippet
+
+snippet esd "Elasticsearch index and query" b
+if (es_definition = (${1:search}.try(:response) || $1.try(:search_result) || $1).try(:search).try(:definition))
+	puts <<~ES_MESSAGE
+		ES index: #{es_definition[:index]}
+		ES query in JSON: #{es_definition[:body].merge(es_definition.except(:index, :type, :body)).to_json}
+	ES_MESSAGE
+end
+endsnippet
+
+snippet hk "hash keys matching pattern" w
+keys.select { |k| k.to_s =~ /${1:key}/i }
+endsnippet
+
+snippet hkv "hash keys & values with keys matching pattern" w
+select { |(key, _val)| key.to_s =~ /${1:key}/i }
+endsnippet
+
+snippet hs "squiggly heredoc"
+<<~${1:HEREDOC}
+	$0
+$1
+endsnippet
+
+snippet logd "logger.debug" b
+logger.debug { $0 }
+endsnippet
+
+snippet loge "logger.error" b
+logger.error { $0 }
+endsnippet
+
+snippet logi "logger.info" b
+logger.info { $0 }
+endsnippet
+
+snippet logw "logger.warn" b
+logger.warn { $0 }
+endsnippet
+
+snippet mapi "map { |v| ... }" w
+map { |${1:v}| $0 }
+endsnippet
+
+snippet mapd "map do ..." w
+map do |${1:v}|
+	$0
+end
+endsnippet
+
+snippet mm "methods with names matching pattern" w
+methods.select { |m| m.to_s =~ /${1:pattern}/i }
+endsnippet
+
+snippet mmp "own public methods" w
+public_methods.reject { |m| m.to_s.start_with?('_') } - Object.public_methods
+endsnippet
+
+snippet nd "nodoc" w
+# :nodoc:
+endsnippet
+
+snippet ps "public_send" w
+public_send(:${1:method_name}${2:, ${3:args}})
+endsnippet
+
+snippet str "Cls = Struct.new ..." b
+${1:NewClass} = Struct.new(${2::attr1, :attr2})${3: do
+	$0
+end
+}
+endsnippet
+
+snippet t "I18n.t('...')" w
+I18n.t('$0')
+endsnippet
+
+snippet tapi "tap { ..." w
+tap { |${1:v}| $1$0 }
+endsnippet
+
+snippet tapd "tap do ..." w
+tap do |${1:v}|
+	$1$0
+end
+endsnippet

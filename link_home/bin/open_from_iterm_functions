@@ -1,0 +1,100 @@
+#!/usr/bin/env bash
+
+function is_debug_enabled() {
+  [[ -f ~/bin/open_from_iterm.debug ]]
+}
+
+function debug_print() {
+  is_debug_enabled || return
+
+  print_to_log "$1"
+}
+
+function debug_vars() {
+  is_debug_enabled || return
+
+  for arg in "$@"; do
+    print_to_log "$arg: |${!arg}|"
+  done
+
+  print_to_log ''
+}
+
+function print_to_log() {
+  echo "$1" >> ~/bin/open_from_iterm.log
+}
+
+# Returns: `foo, bar`
+function window_names() {
+  local process_str=$1 app=${2:-$1}
+
+  if pgrep -f "$process_str" >/dev/null 2>&1; then
+    osascript -e "tell application \"System Events\" to get name of every window of (process \"$app\")"
+  fi
+}
+
+function get_project_path() {
+  local dir=$1
+  dir=$(realpath "$dir")
+
+  while [[ $dir && ! -f "$dir/.project_root" ]]; do
+    # echo "dir=|$dir|"
+    if [[ $dir == '/' || $dir == '.' ]]; then
+      dir=''
+      break
+    fi
+    dir=$(dirname "$dir")
+  done
+  echo "$dir"
+}
+
+function is_in_rubymine_titles() {
+  local git_dir=$1
+
+  local rubymine_titles
+  rubymine_titles=$(window_names RubyMine)
+  debug_vars rubymine_titles
+
+  local rubymine_title
+  for rubymine_title in ${rubymine_titles//,/ }; do
+    # Format: `<project>( – <file>)?` - not a regular dash
+    if [[ $rubymine_title == "$git_dir" || $rubymine_title == "$git_dir – "* ]]; then
+      return 0
+    fi
+  done
+
+  return 1
+}
+
+function is_in_editor_titles() {
+  local git_dir=$1 parent_path=$2 parent_dir project_path project_dir
+  parent_dir=$(basename "$parent_path")
+  project_path=$(get_project_path "$parent_path")
+  project_dir=$(basename "$project_path")
+  debug_vars parent_dir project_path project_dir
+
+  local editor_titles
+  if [[ $EDITOR = mvim* ]]; then
+    editor_titles=$(window_names 'MacVim')
+  elif [[ $EDITOR = code ]]; then
+    editor_titles=$(window_names 'Visual Studio Code.app' 'Code')
+  elif [[ $EDITOR = code-insiders ]]; then
+    editor_titles=$(window_names 'Visual Studio Code - Insiders.app' 'Code - Insiders')
+  else
+    editor_titles=""
+  fi
+
+  debug_vars editor_titles
+
+  local editor_title
+  for editor_title in ${editor_titles//,/ }; do
+    if [[ $editor_title &&
+          $editor_title == *$git_dir
+          || ($parent_dir && $editor_title == *$parent_dir)
+          || ($project_dir && $editor_title == *$project_dir) ]]; then
+      return 0
+    fi
+  done
+
+  return 1
+}

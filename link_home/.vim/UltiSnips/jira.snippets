@@ -1,0 +1,35 @@
+global !p
+from vimsnippets import complete
+endglobal
+
+snippet { "{{monospaced}}" w
+{{$0}}
+endsnippet
+
+snippet c "code block" b
+{code:$1`!p snip.rv = complete(t[1], ['bash', 'json', 'none', 'ruby', 'sql'])`}
+$0
+{code}
+endsnippet
+
+snippet bug "bug description" b
+### Background
+
+...
+
+**Steps to reproduce:**
+
+1. 
+
+**Actual:**
+
+-
+
+**Expected:**
+
+-
+
+### Tech Notes
+
+-
+endsnippet

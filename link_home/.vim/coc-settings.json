@@ -1,0 +1,21 @@
+{
+  "diagnostic.displayByAle": true, // So that <C-j> / <C-k> works for coc diagnostics too
+  "codeLens.enable": true,
+  "explorer.file.reveal.whenOpen": true,
+  "explorer.file.showHiddenFiles": true,
+  "explorer.icon.enableNerdfont": true,
+  "explorer.quitOnOpen": true,
+  "explorer.toggle": false,
+  "languageserver": {
+    "bash": {
+      "command": "bash-language-server",
+      "args": ["start"],
+      "filetypes": ["sh"],
+      "ignoredRootPaths": ["~"]
+    }
+  },
+  "markdown.linting.enabled": true,
+  "python.linting.enabled": true,
+  "python.linting.pylintEnabled": true,
+  "solargraph.promptDownload": false // Rails to activate & using VSCode now
+}

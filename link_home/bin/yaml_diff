@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -uo pipefail
+IFS=$'\n\t'
+
+# https://mikefarah.gitbook.io/yq/usage/tips-and-tricks#comparing-yaml-files
+
+function yaml_normalize() {
+  local yaml=$1
+  if [[ ! -f $yaml ]]; then
+    yaml=<(printf '%s' "$yaml")
+  fi
+  yq e -P 'sort_keys(..)' "$yaml"
+}
+
+diff <(yaml_normalize "$1") <(yaml_normalize "$2")

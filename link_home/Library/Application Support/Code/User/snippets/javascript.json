@@ -1,0 +1,7 @@
+{
+	"${}": {
+		"prefix": "$",
+		"body": "\\${$0}",
+		// "scope": "string.quoted.backtick.interpolated.javascript"
+	},
+}

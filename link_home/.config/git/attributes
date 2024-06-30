@@ -1,0 +1,13 @@
+.git* export-ignore
+*.gif -delta diff=image
+*.gz -delta
+*.jpeg -delta diff=image
+*.jpg -delta diff=image
+*.plist diff=plist
+*.png -delta diff=image
+*.rar -delta
+*.swf -delta
+*.tgz -delta
+*.ttf -delta
+*.zip -delta
+Thumbs.db export-ignore

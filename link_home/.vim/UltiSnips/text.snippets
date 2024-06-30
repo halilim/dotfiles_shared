@@ -1,0 +1,7 @@
+snippet bbc "Bitbucket /compare/new..old" w
+/compare/${1:new commit/branch/tag}..${2:old commit/branch/tag}#diff
+endsnippet
+
+snippet bbcf "Bitbucket http:.../compare..." b
+https://bitbucket.org/${1:user/repo}/compare/${2:new commit/branch/tag}..${3:old commit/branch/tag}#diff
+endsnippet

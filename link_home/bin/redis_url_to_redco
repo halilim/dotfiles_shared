@@ -1,0 +1,15 @@
+#!/usr/bin/env python3
+
+# For use with e.g. REDIS_URL from Heroku
+# Example: redis_url_to_redco 'rediss://:pass@host:123'
+
+import sys
+from urllib.parse import urlparse
+
+url = sys.argv[1]
+parsed = urlparse(url)
+
+print(parsed.scheme)
+print(parsed.hostname)
+print(parsed.port)
+print(parsed.password)

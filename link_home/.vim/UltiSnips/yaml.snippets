@@ -1,0 +1,29 @@
+snippet mlsc "name: > ... (spaces/replace newlines with spaces, clip/single newline at the end)" b
+${1:name}: >
+	$0
+endsnippet
+
+snippet mlss "name: >- ... (spaces/replace newlines with spaces, strip/no newline at the end)" b
+${1:name}: >-
+	$0
+endsnippet
+
+snippet mlsk "name: >+ ... (spaces/replace newlines with spaces, keep/all newlines at the end)" b
+${1:name}: >+
+	$0
+endsnippet
+
+snippet mlnc "name: | ... (newlines/keep newlines, clip/single newline at the end)" b
+${1:name}: |
+	$0
+endsnippet
+
+snippet mlns "name: |- ... (newlines/keep newlines, strip/no newline at the end)" b
+${1:name}: |-
+	$0
+endsnippet
+
+snippet mlnk "name: |+ ... (newlines/keep newlines, keep/all newlines at the end)" b
+${1:name}: |+
+	$0
+endsnippet

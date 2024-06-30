@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+# `code foo/bar.ext:123:42` etc. doesn't work
+
+abs_path_line_col=$1
+
+if [[ $EDITOR = mvim* ]]; then
+  mvim --remote-silent "$abs_path_line_col"
+elif [[ $EDITOR = code ]]; then
+  # https://code.visualstudio.com/docs/editor/command-line#_core-cli-options
+  /usr/local/bin/code -g "$abs_path_line_col"
+elif [[ $EDITOR = code-insiders ]]; then
+  /usr/local/bin/code-insiders -g "$abs_path_line_col"
+else
+  open "$abs_path_line_col"
+fi

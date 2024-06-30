@@ -1,0 +1,53 @@
+#!/usr/bin/env zsh
+set -eo pipefail
+IFS=$'\n\t'
+
+declare -A device2ifconfig
+# Example output:
+# en0 fe80::0000:0000:0000:0000%en0 192.168.1.10
+# en2 fe80::0000:0000:0000:0002%en2 192.168.1.20
+# shellcheck disable=SC2016
+for ifconfig_line in $(ifconfig | rg -oU '^(\S+):.*(\n\s+.*)*inet6\s(\S+).*(\n\s+.*)*inet\s(\S+).*(\n\s+.*)*status: active' -r '$1 $5 $3'); do
+  [[ -z $ifconfig_line ]] && continue
+
+  device=${ifconfig_line%% *}
+  rest=${ifconfig_line#* }
+  device2ifconfig[$device]="$rest"
+done
+
+routed_interface=$(route get 1.1.1.1 | rg -oU 'interface:\s*(\S+)' -r '$1')
+
+# From network_switcher.5s.sh
+networks=$(networksetup -listnetworkserviceorder | tail -n +2)
+# Loop over networks instead of ifconfig lines to get the correct order (i.e. the active network first)
+while [ "$networks" != '' ]; do
+  networks="${networks#*\(}" # '*) Service 1\n...'
+  number=${networks%%\)*} # '*'
+  networks="${networks#*\) }" # 'Service 1\n...'
+  name=${networks%%$'\n'*} # 'Service 1'
+
+  networks="${networks#*$'\n'*Device: }" # 'en0)\n...'
+  device=${networks%%\)*} # 'en0'
+  networks="${networks#*\)}" # '' (tail call for the final network, since there's no \n\n anymore)
+  networks="${networks#*$'\n\n'}" # '(2) Service 2\n...'
+
+  [[ $number == '*' || ! $device ]] && continue
+  ifconfig_line=${device2ifconfig[$device]}
+  [[ ! $ifconfig_line ]] && continue
+
+  ipv4=${ifconfig_line%% *}
+  ipv6=${ifconfig_line#* }
+  ipv6="${ipv6%%%*}"
+
+  # https://www.nerdfonts.com/cheat-sheet
+  case $name in
+    *\ LAN | *\ ethernet) icon=󰈀 router_icon=󱂇 ;;
+    *Wi-Fi) icon= router_icon=󰑩 ;;
+  esac
+
+  echo "$icon $device $name$([[ $device == "$routed_interface" ]] && echo " (routed)")"
+  echo "$router_icon $ipv4 / $ipv6"
+  # TODO: might cache proxies, see my_external_ip
+  echo " $(dig @ns1.google.com TXT o-o.myaddr.l.google.com +short -b "$ipv4" | tr -d '"')"
+  printf '\n'
+done

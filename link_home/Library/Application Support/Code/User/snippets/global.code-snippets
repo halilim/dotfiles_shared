@@ -1,0 +1,32 @@
+{
+	// `scope` is only supported for languages, e.g. "ruby,javascript"
+	// "#{}": {
+	// 	"prefix": "#",
+	// 	"body": "#{$0}",
+	// 	"scope": "string.quoted.double.interpolated.ruby"
+	// },
+
+	"FIXME: ...": {
+		"prefix": "fm",
+		"body": "$LINE_COMMENT FIXME: ${0:Now}",
+	},
+
+	"TODO: ...": {
+		"prefix": "td",
+		"body": "$LINE_COMMENT TODO: ${0:Later}",
+	},
+
+	"spell check disable": {
+		"prefix": "spd",
+		"body": [
+			"$LINE_COMMENT cspell: disable-next-line"
+		],
+	},
+
+	"today in ISO8601 format": {
+		"prefix": "today",
+		"body": [
+			"$CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DATE"
+		],
+	},
+}

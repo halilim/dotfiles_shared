@@ -1,0 +1,69 @@
+#!/usr/bin/env bash
+
+# 1. iTerm2 > Profiles > Advanced > Semantic History > Run command...
+#    `~/bin/open_from_iterm \1 \2 \(semanticHistory.columnNumber)`
+# 2. RubyMine > Cmd+Shift+P > Create Command-line Launcher
+# 3. VS Code > Cmd+Shift+P > Shell Command: Install 'code' command in PATH
+# Note: Limited environment, bare `mine`/`code` doesn't work
+# To debug: call open_from_iterm_debug
+
+:
+# shellcheck disable=SC1090
+. ~/bin/open_from_iterm_functions
+
+debug_print '------------------------------'
+
+# shellcheck disable=SC1090
+. ~/.dotfiles_paths.sh
+# shellcheck disable=SC1091
+. "$DOTFILES_INCLUDES"/env.sh
+# debug_vars EDITOR OSTYPE CPUTYPE
+# exit
+
+# TODO: It can be a folder
+abs_path=$1
+line=$2
+column=$3
+
+[[ ! $abs_path || ! -f $abs_path ]] && exit
+
+# This is unreachable because iTerm2 doesn't recognize it as a file/folder
+# Instead, it's handled by the field-context-separator in .ripgreprc
+# # ripgrep -A/-B format, e.g. foo/bar.ext-123-
+# if [[ ! $line && $abs_path =~ (.+)-([0-9]+)-$ ]]; then
+#   file=${BASH_REMATCH[1]}
+#   line=${BASH_REMATCH[2]}
+# fi
+
+abs_path_line_col=$abs_path
+[[ $line ]] && abs_path_line_col="$abs_path_line_col:$line"
+[[ $column ]] && abs_path_line_col="$abs_path_line_col:$column"
+# debug_vars abs_path line column abs_path_line_col
+
+dir=$(dirname "$abs_path")
+cd "$dir" || ( >&2 print_to_log "Couldn't cd into $dir" && exit 1 )
+
+git_path=$(git rev-parse --show-toplevel)
+git_dir=$(basename "$git_path")
+
+debug_vars dir git_path git_dir
+
+# TODO: (still needed?) create a list of candidates, split and test all path segments, in word mode
+
+if is_in_rubymine_titles "$git_dir"; then
+  # https://www.jetbrains.com/help/ruby/opening-files-from-command-line.html#88f1a126
+  # Note: column is only documented in the "Windows" tab. -1: it goes to the next character (bug?)
+  /usr/local/bin/mine --line "$line" --column $((column - 1)) "$abs_path"
+  exit
+fi
+
+parent_path=$(dirname "$git_path")
+
+debug_vars parent_path
+
+# $line: Coming from grep etc., probably a text file
+if is_in_editor_titles "$git_dir" "$parent_path" || [[ $line ]]; then
+  open_with_editor "$abs_path_line_col"
+else
+  open "$abs_path"
+fi

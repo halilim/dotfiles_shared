@@ -1,0 +1,154 @@
+snippet allr "allow(...).to receive(...).and_return(...)" b
+allow(${1:object}).to receive(:${2:method}).and_return(${0:value})
+endsnippet
+
+snippet allrw "allow(...).to receive(...).with(...).and_return(...)" b
+allow(${1:object}).to receive(:${2:method}).with(${3:args}).and_return(${0:value})
+endsnippet
+
+# https://relishapp.com/rspec/rspec-mocks/docs/configuring-responses/wrapping-the-original-implementation
+snippet allw "allow(...).to receive(...).and_wrap_original do ..." b
+allow(${1:object}).to receive(:${2:method}).and_wrap_original do |orig_method, *args|
+	orig_method.call(*args)$0
+end
+endsnippet
+
+snippet bef "before { ... }" w
+before { $0 }
+endsnippet
+
+snippet befd "before do ... end" b
+before do
+	$0
+end
+endsnippet
+
+snippet befa "be_falsy" b
+be_falsy
+endsnippet
+
+snippet bet "be_truthy" b
+be_truthy
+endsnippet
+
+snippet ctx "context" b
+context '${1:message}' do
+	${0}
+end
+endsnippet
+
+snippet dc "described_class" w
+described_class
+endsnippet
+
+snippet dn "described_class.new" w
+described_class.new($0)
+endsnippet
+
+snippet dm "RSpec::Matchers.define ... (custom matcher)" b
+RSpec::Matchers.define :${1:be_have_sth} do |${2:expected}|
+	match do |${3:actual}|
+		${4:$3 == $2}
+	end${5:
+
+	failure_message do |$3|
+		"expected #{$3} to be/have #{$2}"
+	end
+
+	failure_message_when_negated do |$3|
+		"expected #{$3} not to be/have #{$2}"
+	end}
+end
+endsnippet
+
+snippet exce "expect(...).to contain_exactly(...)" b
+expect(${1:subject}).to contain_exactly($0)
+endsnippet
+
+snippet exe "expect(...).to eq(...)" b
+expect($1).to eq($0)
+endsnippet
+
+snippet exn "expect(...).not_to eq(...)" b
+expect($1).not_to eq($0)
+endsnippet
+
+snippet exha "expect(...).to have_attributes(...)" b
+expect($1).to have_attributes($0)
+endsnippet
+
+snippet exrh "expect(response).to have_http_status(...)" b
+expect(response).to have_http_status(:${0:ok})
+endsnippet
+
+snippet exrr "expect(response).to redirect_to(..._path)" b
+expect(response).to redirect_to($1_path)
+endsnippet
+
+snippet isex "is_expected.to ..."
+is_expected.to ${0}
+endsnippet
+
+snippet itie "it { is_expected.to ... }" b
+it { is_expected.to ${0} }
+endsnippet
+
+snippet itien "it { is_expected.not_to ... }" b
+it { is_expected.not_to ${0} }
+endsnippet
+
+snippet itieb "it { is_expected.to be_... }" b
+it { is_expected.to be_${0} }
+endsnippet
+
+snippet itienb "it { is_expected.not_to be_... }" b
+it { is_expected.not_to be_${0} }
+endsnippet
+
+snippet letd "let(...) do ..." b
+let(:$1) do
+	$0
+end
+endsnippet
+
+snippet let!d "let!(...) do ..." b
+let!(:$1) do
+	$0
+end
+endsnippet
+
+snippet ma "match_array"
+match_array
+endsnippet
+
+snippet rudirsel " # rubocop:disable RSpec/ExampleLength" w
+# rubocop:disable RSpec/ExampleLength
+endsnippet
+
+snippet rudirsme " # rubocop:disable RSpec/MultipleExpectations" w
+# rubocop:disable RSpec/MultipleExpectations
+endsnippet
+
+snippet sc "shared_context"
+shared_context '${1:name}'${2:, ${3:metadata}} do
+	$0
+end
+endsnippet
+
+snippet ic "include_context"
+include_context '${1:name}'${2:, ${3:metadata}}${4: do
+	$0
+end}
+endsnippet
+
+snippet se "shared_examples"
+shared_examples '${1:name}' do${2: |${3:params}|}
+	$0
+end
+endsnippet
+
+snippet ie "include_examples"
+include_examples '${1:name}'${2:, ${3:metadata}}${4: do
+	$0
+end}
+endsnippet

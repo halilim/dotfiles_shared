@@ -1,0 +1,12 @@
+{
+	"%{}": {
+		"prefix": "%",
+		"body": "%{$0}",
+		// "scope": "string.quoted.double.interpolated.yaml"
+	},
+
+	"<%= %>": {
+		"prefix": "e",
+		"body": "<%= $0 %>",
+	},
+}

@@ -1,0 +1,195 @@
+#!/usr/bin/env bash
+set -euo pipefail
+IFS=$'\n\t'
+
+# Tries to be as idempotent as possible
+# Doesn't handle deletions
+
+export DOTFILES_CMD
+DOTFILES_CMD=$(basename "$0")
+
+function setup() {
+  link_recursive "$DOTFILES_SHARED"/link_home "$DOTFILES_SHARED"/link_home home
+
+  if [[ -d "$DOTFILES_CUSTOM" ]]; then
+    link_recursive "$DOTFILES_CUSTOM"/link_home "$DOTFILES_CUSTOM"/link_home home
+    add_custom_git_config
+  fi
+
+  vim_mk_spell
+}
+
+function import() {
+  local item_path=${1:-''}
+  [[ -z $item_path ]] && echo "Usage: $DOTFILES_CMD ${FUNCNAME[0]} <path> [<$(color yellow shared)|custom>]" && return 1
+  [[ ! -e $item_path ]] && echo "Does not exist" && return 1
+
+  local relative_path
+  relative_path=$(relative_to "$HOME" "$item_path")
+  local relative_dir=${relative_path%/*}
+  [[ $relative_dir == "$relative_path" ]] && relative_dir=''
+
+  local dotfile_type=${2:-'shared'} dotfile_dir
+  case "$dotfile_type" in
+    shared)
+      dotfile_dir=$DOTFILES_SHARED
+      ;;
+    custom)
+      dotfile_dir=$DOTFILES_CUSTOM
+      ;;
+    *)
+      echo >&2 'Unknown dotfile type'
+      return 1
+  esac
+
+  local dir="$dotfile_dir/link_home/$relative_dir"
+  mk_dir "$dir"
+  echo_eval_with_sudo home 'mv %q %q' "$item_path" "$dir"
+  setup
+}
+
+function link_recursive() {
+  local current_source_dir=$1 source_base=$2 type=$3 relative_base target_base target_dir
+  relative_base=$(relative_to "$source_base" "$current_source_dir")
+  [[ $relative_base == '.' ]] && relative_base=''
+
+  case "$type" in
+    home)
+      target_base=$HOME
+      ;;
+    root)
+      target_base=/
+      ;;
+    *)
+      echo >&2 "Unknown link type: $type"
+      return 1
+      ;;
+  esac
+
+  target_dir=$target_base
+  [[ $relative_base ]] && target_dir=$target_base/$relative_base
+
+  mk_dir "$target_dir" "$type"
+
+  local dir
+  # shellcheck disable=SC2044
+  for dir in $(find_immediate_children "$current_source_dir" d); do
+    link_recursive "$dir" "$source_base" "$type"
+  done
+
+  local file
+  # shellcheck disable=SC2044
+  for file in $(find_immediate_children "$current_source_dir" f); do
+    link_file "$file" "$target_dir" "$type"
+  done
+
+  local link
+  # shellcheck disable=SC2044
+  for link in $(find_immediate_children "$current_source_dir" l); do
+    if [[ -d $(readlink -f "$link") ]]; then
+      link_recursive "$link" "$source_base" "$type"
+    else
+      link_file "$link" "$target_dir" "$type"
+    fi
+  done
+}
+
+function relative_to() {
+  grealpath -s --relative-to="$1" "$2"
+}
+
+function mk_dir() {
+  local dir=$1
+  [[ -d "$dir" || $dir == / || $dir == "$HOME" ]] && return 0
+
+  local type=${2:-home}
+  [[ -L "$dir" || -f "$dir" ]] && backup "$dir" "$type"
+  echo_eval_with_sudo "$type" 'mkdir -p %q' "$dir"
+}
+
+function find_immediate_children() {
+  local dir=$1 type=$2
+  find "$dir" -mindepth 1 -maxdepth 1 -type "$type"
+}
+
+function link_file() {
+  local source=$1 target_dir=$2 type=$3 source_base
+  source_base=$(basename "$source")
+  [[ $source_base == '.DS_Store' ]] && return 0
+
+  link=$target_dir/$source_base
+  if [[ ! -L "$link" || $(readlink -f "$link") != $(readlink -f "$source") ]]; then
+    backup "$link" "$type"
+    echo_eval_with_sudo "$type" 'ln -s %q %q' "$source" "$link"
+  fi
+}
+
+function backup() {
+  local file=$1
+  [[ ! -L "$file" && ! -f "$file" && ! -d "$file" || $file == / || $file == "$HOME" ]] && return 0
+
+  [[ -L "$file" && ! -a "$file" ]] && echo_eval_with_sudo "$type" 'rm %q # Broken link' "$file" && return
+
+  local type=$2
+  echo_eval_with_sudo "$type" 'mv %q{,.bak.%q}' "$file" "$(date +'%s')"
+}
+
+function echo_eval_with_sudo() {
+  local type=$1
+  shift
+  cmd=("$@")
+  # NOTE: If this gets migrated to Zsh, change 0 to 1
+  [[ "$type" == 'root' ]] && cmd[0]="sudo ${cmd[0]}"
+  echo_eval "${cmd[@]}"
+}
+
+function add_custom_git_config() {
+  local custom_git_config="$DOTFILES_CUSTOM"/includes/.gitconfig
+  [[ ! -e $custom_git_config ]] && return 0
+
+  local git_config_includes=~/.config/git/includes.gitconfig
+  if ! grep -q "$custom_git_config" "$git_config_includes" > /dev/null 2>&1; then
+    echo_eval 'git config --file %q --add include.path %q' "$git_config_includes" "$custom_git_config"
+  fi
+}
+
+function vim_mk_spell() {
+  # TODO: Is this the correct process, or should multiple files for a locale be merged? Check Vim
+  local file spell_dir=~/.vim/spell files=()
+  for file in "$spell_dir"/*.dic; do
+    [[ $(find $spell_dir -name "$(basename "$file")*.spl" -print -quit) ]] || files+=("$file")
+  done
+
+  local num_files=${#files[@]}
+  [[ $num_files -eq 0 ]] && return 0
+
+  echo_eval "vim +'$(printf 'mkspell! %%q | %.0s' $(seq 1 "$num_files"))q'" "${files[@]}"
+}
+
+export DOTFILES
+DOTFILES="$(dirname "$(dirname "$(dirname "$(dirname "$(realpath "$0")")")")")"
+export DOTFILES_SHARED=$DOTFILES/shared
+export DOTFILES_INCLUDES=$DOTFILES_SHARED/includes
+export DOTFILES_CUSTOM=$DOTFILES/custom
+
+printf '%s\n%s\n%s\n%s\n' \
+  "$(declare -p DOTFILES)" \
+  "$(declare -p DOTFILES_SHARED)" \
+  "$(declare -p DOTFILES_INCLUDES)" \
+  "$(declare -p DOTFILES_CUSTOM)" \
+  > ~/.dotfiles_paths.sh
+
+# shellcheck disable=SC1091
+. "$DOTFILES_INCLUDES"/functions.sh
+
+case "${1:-''}" in
+  setup)
+    setup
+    ;;
+  import)
+    import "${2:-}" "${3:-}"
+    ;;
+  *)
+    echo "Usage: $DOTFILES_CMD <setup|import>"
+    ;;
+esac

@@ -1,0 +1,75 @@
+{
+	"case": {
+		"prefix": "case",
+		"body": [
+			"<% case $1 %>",
+			"<% when $2 %>",
+				"\t$3",
+			"<% when $4 %>",
+				"\t$5",
+			"${6:<% else %>",
+				"\t$7",
+			"}<% end %>"
+		],
+	},
+
+	"<%=": {
+		"prefix": ["e", "="],
+		"body": [
+			"<%= $0 %>"
+		],
+	},
+
+	"<%= t(": {
+		"prefix": ["et", "=t"],
+		"body": [
+			"<%= t('$0') %>"
+		],
+	},
+
+	"binding.pry": {
+		"prefix": "bp",
+		"body": "<% binding.pry %>",
+	},
+
+	"code block": {
+		"prefix": "c",
+		"body": "<%\n$0\n%>",
+	},
+
+	"code inline": {
+		"prefix": "ci",
+		"body": "<% $0 %>",
+	},
+
+	// Rails
+
+	"form_with model": {
+		"prefix": "fwm",
+		"body": [
+			"<%= form_with model: ${1:@model} do |f| %>",
+				"\t${2:<%= f.text_field :${3:field} %>}",
+				"\t<%= f.submit %>",
+			"<% end %>"
+		],
+	},
+
+	"form_with URL": {
+		"prefix": "fwu",
+		"body": [
+			"<%= form_with url: ${1:etc_path} do |f| %>",
+				"\t${2:<%= f.text_field :${3:field} %>}",
+				"\t<%= f.submit %>",
+			"<% end %>"
+		],
+	},
+
+	"render partial": {
+		"prefix": "rp",
+		"body": [
+			"<%= render partial: '$1'${2:, locals: { $3 }} %>"
+		],
+	},
+
+	// End: Rails
+}
