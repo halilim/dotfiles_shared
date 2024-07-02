@@ -246,3 +246,4 @@ function ruby_cd_pull_migrate() {
 
   printf '\n'
 }
+alias {pim,pull_install_migrate}=ruby_cd_pull_migrate

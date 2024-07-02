@@ -1,4 +1,4 @@
-snippet crs "Chromre remove auto search engines" b
+snippet crs "Chrome remove auto search engines" b
 var others = document.querySelectorAll("#other-search-engine-list .deletable-item:not([lead=lead])");
 var toBeRemoved = [...others].filter(function(listItem) {
   var keyword = listItem.querySelector(".keyword-column .static-text").innerText;

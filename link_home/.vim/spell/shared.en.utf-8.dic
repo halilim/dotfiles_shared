@@ -85,6 +85,7 @@ dropdowns
 dyno
 Dyno
 Dynos
+easymotion
 elasticsearch
 Elasticsearch
 endswith
@@ -156,7 +157,9 @@ icalendar
 ideavimrc
 ifconfig
 ifconfigparser
+Ignorecase
 imageinfo
+incsearch
 Inflector
 initializers
 inputrc
@@ -333,6 +336,7 @@ Sidekiq
 SKU
 SKUs
 sluggable
+Smartcase
 smerge
 Solargraph
 Sonoma
@@ -370,6 +374,7 @@ viml
 vimrc
 Vimscript
 visualstar
+vscodevim
 vsicons
 vsintellicode
 Walkthrough

@@ -155,4 +155,4 @@
 	useConfigOnly = true
 
 [include]
-	path = ~/.config/git/includes.gitconfig
+	path = ~/.config/git/custom.gitconfig

@@ -13,7 +13,6 @@ function setup() {
 
   if [[ -d "$DOTFILES_CUSTOM" ]]; then
     link_recursive "$DOTFILES_CUSTOM"/link_home "$DOTFILES_CUSTOM"/link_home home
-    add_custom_git_config
   fi
 
   vim_mk_spell
@@ -90,7 +89,6 @@ function link_recursive() {
   # shellcheck disable=SC2044
   for link_source in $(find_immediate_children "$current_source_dir" l); do
     if [[ -d $(readlink -f "$link_source") ]]; then
-      declare -p link_source 1>&2
       link_recursive "$link_source" "$source_base" "$type"
     else
       link_file "$link_source" "$target_dir" "$type"
@@ -145,16 +143,6 @@ function echo_eval_with_sudo() {
   # NOTE: If this gets migrated to Zsh, change 0 to 1
   [[ "$type" == 'root' ]] && cmd[0]="sudo ${cmd[0]}"
   echo_eval "${cmd[@]}"
-}
-
-function add_custom_git_config() {
-  local custom_git_config="$DOTFILES_CUSTOM"/includes/.gitconfig
-  [[ ! -e $custom_git_config ]] && return 0
-
-  local git_config_includes=~/.config/git/includes.gitconfig
-  if ! grep -q "$custom_git_config" "$git_config_includes" > /dev/null 2>&1; then
-    echo_eval 'git config --file %q --add include.path %q' "$git_config_includes" "$custom_git_config"
-  fi
 }
 
 function vim_mk_spell() {

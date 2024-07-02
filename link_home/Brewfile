@@ -51,6 +51,7 @@ brew 'rbspy' # Profiler, for RubyMine
 brew 'readline'
 brew 'shared-mime-info' # mimemagic gem
 
+brew 'rustup' # terminal_color_mode
 brew 'shellcheck'
 brew 'shfmt' # VS Code extension shell-format
 
@@ -70,6 +71,7 @@ brew 'zsh'
 cask 'font-caskaydia-cove-nerd-font'
 cask 'font-fira-code-nerd-font'
 cask 'font-intone-mono-nerd-font'
+cask 'font-meslo-for-powerlevel10k' # `MesloLGS NF` https://github.com/romkatv/powerlevel10k/issues/671#issuecomment-2164736070
 cask 'font-sauce-code-pro-nerd-font'
 
 cask 'qlcolorcode' # Source code files with syntax highlighting

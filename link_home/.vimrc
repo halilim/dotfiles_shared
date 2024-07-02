@@ -100,39 +100,40 @@ nnoremap 0 ^
 nnoremap <C-T> :e#<CR>
 nnoremap <C-Tab> :b#<CR>
 
-nnoremap <Leader>* :Rg <C-R><C-W><CR>
+nnoremap <leader>* :Rg <C-R><C-W><CR>
 
 " MacVim has its own settings mapped to Cmd+,
 " noremap <D-,>, :e $MYVIMRC<CR>
 
 nnoremap <D-.> :ALEFix<CR>
 
-nnoremap <Leader>,c :CocConfig<CR>
-nnoremap <Leader>,g :e ~/.gvimrc<CR>
-nnoremap <Leader>,v :e $MYVIMRC<CR>
-nnoremap <Leader>,r :source $MYVIMRC<CR>
-" nnoremap <Leader>,ft :e ~/.vim/ftplugin/
-nnoremap <Leader>,ft :exe 'e' '~/.vim/ftplugin/' . &ft . '.vim'<CR>
-" nnoremap <Leader>,fd :e ~/.vim/ftdetect/
-nnoremap <Leader>,fd :exe 'e' '~/.vim/ftdetect/' . &ft . '.vim'<CR>
-" nnoremap <Leader>,se :e ~/.vim/UltiSnips/
+nnoremap <leader><leader>c :CocConfig<CR>
+nnoremap <leader><leader>g :e ~/.gvimrc<CR>
+nnoremap <leader><leader>v :e $MYVIMRC<CR>
+nnoremap <leader><leader>r :source $MYVIMRC<CR>
+" nnoremap <leader><leader>ft :e ~/.vim/ftplugin/
+nnoremap <leader><leader>ft :exe 'e' '~/.vim/ftplugin/' . &ft . '.vim'<CR>
+" nnoremap <leader><leader>fd :e ~/.vim/ftdetect/
+nnoremap <leader><leader>fd :exe 'e' '~/.vim/ftdetect/' . &ft . '.vim'<CR>
+" nnoremap <leader><leader>se :e ~/.vim/UltiSnips/
 
 " Plugin-native command, not working: https://github.com/SirVer/ultisnips/issues/1483
-" nnoremap <Leader>,s :UltiSnipsEdit<CR>
+" nnoremap <leader><leader>s :UltiSnipsEdit<CR>
 " Custom command
-nnoremap <Leader>,s :SnipEditUltiSnips<CR>
+" <leader><leader>s conflicts with VSCode Vim's EasyMotion
+nnoremap <leader><leader>u :SnipEditUltiSnips<CR>
 
-nnoremap <Leader>,p :e ~/.vim/pythonx/
+nnoremap <leader><leader>p :e ~/.vim/pythonx/
 
-" nnoremap <Leader><space> :set hlsearch! hlsearch?<CR>
-nnoremap <Leader><space> :nohl<CR>
-nnoremap <Leader>% :MtaJumpToOtherTag<CR>
-nnoremap <Leader><Tab> :b#<CR>
-nnoremap <Leader>a :A<CR>
+" nnoremap <leader><space> :set hlsearch! hlsearch?<CR>
+nnoremap <leader><space> :nohl<CR>
+nnoremap <leader>% :MtaJumpToOtherTag<CR>
+nnoremap <leader><Tab> :b#<CR>
+nnoremap <leader>a :A<CR>
 
 " Interferes with CamelCaseMotion in VS Code (which loads this file)
 " (But not wordmotion in Vim, probably because it's loaded later)
-" nnoremap <Leader>b :Buffers<CR>
+" nnoremap <leader>b :Buffers<CR>
 
 fun! CopyProblem()
   let [l:info, l:loc] = ale#util#FindItemAtCursor(bufnr(''))
@@ -149,12 +150,12 @@ nnoremap <leader>cpp :call CopyProblem()<CR>
 nnoremap <leader>cp :CopyGitPathLine<CR>
 
 " Why did I need this (vs. plain bd)?
-" nnoremap <Leader>dd :bp\|bd#<CR>
-nnoremap <Leader>dd :bd<CR>
+" nnoremap <leader>dd :bp\|bd#<CR>
+nnoremap <leader>dd :bd<CR>
 " See .gvimrc for <D-w> alias
-nnoremap <Leader>da :%bd<CR>
+nnoremap <leader>da :%bd<CR>
 " https://stackoverflow.com/a/42071865/372654
-nnoremap <Leader>de :%bd\|e#<CR>
+nnoremap <leader>de :%bd\|e#<CR>
 
 fun! MyFZF(query = '')
   if empty(a:query)
@@ -166,9 +167,9 @@ fun! MyFZF(query = '')
 endfun
 " Disabled in favor of coc-format-selected
 " <D-p> alias is in .gvimrc
-" nnoremap <Leader>f :call MyFZF()<CR>
+" nnoremap <leader>f :call MyFZF()<CR>
 " <D-P> alias is in .gvimrc
-" nnoremap <Leader>F :call MyFZF('<C-R><C-W>')<CR>
+" nnoremap <leader>F :call MyFZF('<C-R><C-W>')<CR>
 
 " https://github.com/junegunn/fzf.vim/issues/800
 " Can't get line number
@@ -183,39 +184,39 @@ endfun
 "   \         --preview ''' . s:preview_file . ' {2}:{3}'''
 "   \ }, <bang>0)
 
-nnoremap <Leader>h :History<CR>
-nnoremap <Leader>l :ls<CR>
+nnoremap <leader>h :History<CR>
+nnoremap <leader>l :ls<CR>
 " See .gvimrc for <D-n> alias
-nnoremap <Leader>n :enew<CR>
+nnoremap <leader>n :enew<CR>
 " netrw is disabled
-" nnoremap <Leader>nr :exe 'Vexplore' getcwd()<CR>
-nnoremap <Leader>nf :NERDTreeFind<CR>
-nnoremap <Leader>nt :NERDTreeToggle<CR>
+" nnoremap <leader>nr :exe 'Vexplore' getcwd()<CR>
+nnoremap <leader>nf :NERDTreeFind<CR>
+nnoremap <leader>nt :NERDTreeToggle<CR>
 nnoremap <D-E> :CocCommand explorer<CR>
 " https://unix.stackexchange.com/a/88719/4678
-nnoremap <Leader>p ciw<C-R>0<ESC>
+nnoremap <leader>p ciw<C-R>0<ESC>
 " For snippets
-" nnoremap <Leader>s :enew\|setf<Space>
-nnoremap <Leader>s :e ~/Desktop/test_code/test.
-nnoremap <Leader>t :BTags<CR>
-nnoremap <Leader>T :Tags<CR>
+" nnoremap <leader>s :enew\|setf<Space>
+nnoremap <leader>s :e ~/Desktop/test_code/test.
+nnoremap <leader>t :BTags<CR>
+nnoremap <leader>T :Tags<CR>
 
 " nnoremap g] :Tags<CR><C-R><C-W>
 " This treats the word in vim-wordmotion mode
 " NOTE: Modified in ftplugin files, e.g. in Ruby to properly recognize identifiers
 nnoremap g] :exe('Tags '.expand('<cword>')) <CR>
 
-nnoremap <Leader>tt :PreviewTag<CR>
-" nnoremap <Leader>T :TagbarOpenAutoClose<CR>
-nnoremap <Leader>vf :verbose function <C-R><C-W><CR>
-nnoremap <Leader>vc :verbose command <C-R><C-W><CR>
-nnoremap <Leader>q :qa<CR>
-nnoremap <Leader>x :x<CR>
+nnoremap <leader>tt :PreviewTag<CR>
+" nnoremap <leader>T :TagbarOpenAutoClose<CR>
+nnoremap <leader>vf :verbose function <C-R><C-W><CR>
+nnoremap <leader>vc :verbose command <C-R><C-W><CR>
+nnoremap <leader>q :qa<CR>
+nnoremap <leader>x :x<CR>
 
 nmap <silent> <C-k> <Plug>(ale_previous_wrap)
 nmap <silent> <C-j> <Plug>(ale_next_wrap)
 
-" nmap <Leader>c <Plug>NERDCommenterToggle<CR>
+" nmap <leader>c <Plug>NERDCommenterToggle<CR>
 
 " https://stackoverflow.com/a/7078429/372654
 " Save with sudo when vim started without sudo
@@ -274,9 +275,25 @@ augroup end
 " See note around the plugin
 " runtime macros/matchit.vim
 
+call custom#begin()
+
+if !exists('g:custom_ai_plugin')
+  let g:custom_ai_plugin = ''
+endif
+
 " https://github.com/junegunn/vim-plug#usage
 " call plug#begin('~/.config/nvim/plugged')
 call plug#begin()
+
+if g:custom_ai_plugin == 'codeium'
+  Plug 'Exafunction/codeium.vim' " See also: AirlineAddCustomSections
+elseif g:custom_ai_plugin == 'copilot'
+  Plug 'github/copilot.vim' , { 'do': ':Copilot setup' }
+elseif g:custom_ai_plugin == 'openai'
+  Plug 'madox2/vim-ai' " ~/.config/openai.token
+elseif g:custom_ai_plugin != ''
+  autocmd VimEnter * echoerr 'Unknown AI plugin: ' . g:custom_ai_plugin
+endif
 
 " https://github.com/junegunn/fzf.vim#using-vim-plug
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -291,14 +308,12 @@ Plug 'Chiel92/vim-autoformat'
 Plug 'chrisbra/csv.vim'
 Plug 'darfink/vim-plist'
 Plug 'dense-analysis/ale'
+Plug 'easymotion/vim-easymotion'
 Plug 'editorconfig/editorconfig-vim'
-Plug 'Exafunction/codeium.vim' " See also: vim-airline section for status line
 " Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries', 'for': 'go' }
-Plug 'haya14busa/incsearch.vim'
 Plug 'inkarkat/vim-ReplaceWithRegister'
 Plug 'jiangmiao/auto-pairs'
 Plug 'luochen1990/rainbow'
-" Plug 'madox2/vim-ai' " ~/.config/openai.token - Using Codeium for now
 
 " Plug 'kana/vim-textobj-user' " Required by nelstrom/vim-textobj-rubyblock
 " Plug 'vim-scripts/ruby-matchit' " Might be required by nelstrom/vim-textobj-rubyblock
@@ -390,7 +405,7 @@ let g:rooter_patterns = [
 
 " ===== Plugin settings for chaoren/vim-wordmotion =====
 let g:wordmotion_prefix = mapleader
-" This affects nnoremap <Leader>v... (:verbose ...)
+" This affects nnoremap <leader>v... (:verbose ...)
 " let g:wordmotion_mappings = {
 "   \ '<C-R><C-W>' : '<C-R><M-w>'
 " \ }
@@ -421,24 +436,24 @@ let g:ale_linters = {
 " Comment-like virtual text, causes layout shifts & can be confused with comments
 let g:ale_virtualtext_cursor = 0
 
+" ===== Plugin settings for easymotion/vim-easymotion =====
+map <leader> <Plug>(easymotion-prefix)
+" let g:EasyMotion_do_mapping = 0 " Disable default mappings
+" Jump to anywhere you want with minimal keystrokes, with just one key binding.
+" `s{char}{label}`
+" nmap s <Plug>(easymotion-overwin-f)
+" or
+" `s{char}{char}{label}`
+" Need one more keystroke, but on average, it may be more comfortable.
+nmap s <Plug>(easymotion-overwin-f2)
+" Turn on case-insensitive feature
+let g:EasyMotion_smartcase = 1
+" JK motions: Line motions
+map <leader>j <Plug>(easymotion-j)
+map <leader>k <Plug>(easymotion-k)
+
 " ===== Plugin settings for fatih/vim-go =====
 let g:go_term_mode = "split"
-
-" ===== Plugin settings for haya14busa/incsearch.vim =====
-let g:incsearch#auto_nohlsearch = 1
-map /  <Plug>(incsearch-forward)
-map ?  <Plug>(incsearch-backward)
-map g/ <Plug>(incsearch-stay)
-" map n  <Plug>(incsearch-nohl-n)
-" map N  <Plug>(incsearch-nohl-N)
-" map *  <Plug>(incsearch-nohl-*)
-" map #  <Plug>(incsearch-nohl-#)
-nmap n <Plug>(anzu-n-with-echo)
-nmap N <Plug>(anzu-N-with-echo)
-nmap * <Plug>(anzu-star-with-echo)
-nmap # <Plug>(anzu-sharp-with-echo)
-map g* <Plug>(incsearch-nohl-g*)
-map g# <Plug>(incsearch-nohl-g#)
 
 " ===== Plugin settings for luochen1990/rainbow =====
 let g:rainbow_active = 1
@@ -508,7 +523,7 @@ endif
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 
 fun! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
+  if (InArray(['vim','help'], &filetype))
     execute 'h '.expand('<cword>')
   else
     " call CocAction('doHover')
@@ -523,7 +538,13 @@ nmap <leader>rn <Plug>(coc-rename)
 xmap <leader>f  <Plug>(coc-format-selected)
 nmap <leader>f  <Plug>(coc-format-selected)
 " Halil's Note: formatXML, formatJSON etc. still exist in ft plugins
-" End: Plugin settings for neoclide/coc.nvim
+" ===== /End: Plugin settings for neoclide/coc.nvim =====
+
+" ===== Plugin settings for osyo-manga/vim-anzu =====
+nmap n <Plug>(anzu-n-with-echo)
+nmap N <Plug>(anzu-N-with-echo)
+nmap * <Plug>(anzu-star-with-echo)
+nmap # <Plug>(anzu-sharp-with-echo)
 
 " ===== Plugin settings for prabirshrestha/vim-lsp =====
 if executable('pylsp')
@@ -625,7 +646,9 @@ endfun
 
 fun! AirlineAddCustomSections(...)
   if !exists('g:airline_added_custom_sections')
-    call AirlinePrependSectionY('{…} Codeium:%3{codeium#GetStatusString()}')
+    if g:custom_ai_plugin == 'codeium'
+      call AirlinePrependSectionY('{…} Codeium:%3{codeium#GetStatusString()}')
+    endif
 
     if $USER == 'root'
       call airline#parts#define_function('root', 'ShowRoot')
@@ -841,7 +864,7 @@ augroup my_extra_whitespace
   autocmd BufWinLeave * call clearmatches()
 augroup end
 " command -bar SearchTrailingWs exe '/\s$' | exe '<CR>n'
-nnoremap <Leader>/ :/\s$<CR>n
+nnoremap <leader>/ :/\s$<CR>n
 
 " https://stackoverflow.com/a/51195979/372654
 highlight StrangeWhitespace ctermbg=Red guibg=Red
@@ -849,7 +872,7 @@ highlight StrangeWhitespace ctermbg=Red guibg=Red
 call matchadd('StrangeWhitespace', '[\x0b\x0c\r\x1c\x1d\x1e\x1f\x85\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u2028\u2029\u202f\u205f\u3000]')
 
 " https://stackoverflow.com/a/39360896/372654
-nnoremap <Leader>rm :call DeleteFileAndCloseBuffer()<CR>
+nnoremap <leader>rm :call DeleteFileAndCloseBuffer()<CR>
 
 fun! DeleteFileAndCloseBuffer()
   let l:file = expand('%:p')

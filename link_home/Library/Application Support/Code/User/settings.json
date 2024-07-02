@@ -13,6 +13,7 @@
     "procfile": true,
     "snippets": true,
     "svg": true,
+    "vim-snippet": true,
     "viml": true,
     "Vimscript": true,
     "xml": true
@@ -35,7 +36,9 @@
   // VSCode-specific words, mostly from within this file
   "cSpell.userWords": [
     "apacheconf",
-    "esbenp"
+    "esbenp",
+    "highlightedyank",
+    "matchtext"
   ],
 
   "css.format.spaceAroundSelectorSeparator": true,
@@ -104,7 +107,7 @@
     "Ö": true,
     "Ş": true,
     "ş": true,
-    "ü": true,
+    "ü": true
   },
   "editor.unicodeHighlight.includeComments": true,
 
@@ -130,10 +133,8 @@
   "extensions.ignoreRecommendations": true,
 
   "files.associations": {
-    // ".config/git/config*": "ini", - doesn't work, use .ini extension in the file name instead
     ".config/git/ignore*": "ignore",
-    ".env.*": "env",
-    ".env": "env",
+    ".env*": "dotenv",
     ".gvimrc": "viml",
     ".ideavimrc": "viml",
     ".inputrc": "shellscript",
@@ -165,7 +166,7 @@
     "/etc/periodic/**/*.conf": "shellscript",
     "Brewfile*": "ruby",
     "coc-settings.json": "jsonc",
-    "Procfile.*": "procfile",
+    "Procfile.*": "procfile"
   },
 
   "files.exclude": {
@@ -184,6 +185,7 @@
 
   "git-graph.maxDepthOfRepoSearch": 1,
 
+  "github.copilot.advanced": {},
   "github.copilot.enable": {
     "*": true,
     "markdown": true,
@@ -199,7 +201,7 @@
 
   "indentRainbow.ignoreErrorLanguages": [
     "markdown",
-    "ruby",
+    "ruby"
   ],
 
   "jqPlayground.binaryPath": "/opt/homebrew/bin/jq",
@@ -248,7 +250,7 @@
         "request": "launch",
         "name": "Ruby LSP: Debug test file",
         "program": "ruby -Itest "
-      },
+      }
     ],
     "compounds": []
   },
@@ -312,7 +314,7 @@
     "inlayHint": true,
     "onTypeFormatting": true,
     "selectionRanges": true,
-    "semanticHighlighting": true,
+    "semanticHighlighting": true
   },
   "rubyLsp.enableExperimentalFeatures": true,
 
@@ -328,8 +330,6 @@
   "scss.lint.unknownVendorSpecificProperties": "warning",
 
   "security.workspace.trust.untrustedFiles": "open",
-
-  "shellcheck.enable": false,
   "shellcheck.enableQuickFix": true,
   "shellcheck.ignorePatterns": {
     "**/*.xonshrc": true,
@@ -378,11 +378,11 @@
   ],
   "todo-tree.highlights.customHighlight": {
     "FIXME": {
-      "foreground": "#f00",
+      "foreground": "#f00"
     },
     "TODO": {
-      "foreground": "#ffa500",
-    },
+      "foreground": "#ffa500"
+    }
   },
   "todo-tree.regex.regex": "(//|#|<!--|;|/\\*|^|^\\s*(-|\\d+.))\\s*($TAGS)",
   "todo-tree.tree.scanMode": "current file",
@@ -393,15 +393,25 @@
   // },
   // "vim.useCtrlKeys": true,
   "vim.camelCaseMotion.enable": true,
+  "vim.easymotion": true,
   "vim.enableNeovim": true,
+  "vim.highlightedyank.enable": true,
   "vim.hlsearch": true,
+  "vim.incsearch": true,
   "vim.leader": ",",
   "vim.neovimPath": "/opt/homebrew/bin/nvim",
   "vim.replaceWithRegister": true,
   "vim.showMarksInGutter": true,
+  "vim.sneakReplacesF": true,
+  "vim.sneakUseIgnorecaseAndSmartcase": true,
   "vim.useSystemClipboard": true,
   "vim.vimrc.enable": true,
   "vim.visualstar": true,
+
+  // To improve performance
+  "extensions.experimental.affinity": {
+    "vscodevim.vim": 1
+  },
 
   "vim.normalModeKeyBindings": [
     { "before": ["leader", ",", "k"], "commands": ["workbench.action.openGlobalKeybindingsFile"] },
@@ -444,11 +454,11 @@
     { "before": ["K"], "commands": ["editor.action.showDefinitionPreviewHover"] },
     // Workaround for https://github.com/VSCodeVim/Vim/issues/1490
     { "before": ["u"], "commands": ["undo"] },
-    { "before": ["z", "g"], "commands": ["cSpell.addWordToDictionary"] },
+    { "before": ["z", "g"], "commands": ["cSpell.addWordToDictionary"] }
   ],
 
   "vim.visualModeKeyBindings": [
-    { "before": ["leader", "c", "space"], "commands": ["editor.action.commentLine"] },
+    { "before": ["leader", "c", "space"], "commands": ["editor.action.commentLine"] }
   ],
 
   "vscode-yaml-sort.emptyLinesUntilLevel": 1,
@@ -462,15 +472,43 @@
   "window.autoDetectColorScheme": true,
 
   "editor.tokenColorCustomizations": {
+    "[*Light*]": {
+      "textMateRules": [
+        {
+          "scope": "ref.matchtext",
+          "settings": {
+            "foreground": "#000"
+          }
+        }
+      ]
+    },
+    "[*Dark*]": {
+      "textMateRules": [
+        {
+          "scope": "ref.matchtext",
+          "settings": {
+            "foreground": "#fff"
+          }
+        }
+      ]
+    },
     "[Quiet Light]": {
-      "comments": "#777", // Orig: "#aaa"
+      "comments": "#777"
     },
     "[Solarized Dark]": {
       "comments": "#899Ea5"
     },
     "[Solarized Light]": {
-      "comments": "#435151", // Orig: "#93A1A1"
-    }
+      "comments": "#435151"
+    },
+    "textMateRules": [
+      {
+        "scope": "keyword.other.dotenv",
+        "settings": {
+          "foreground": "#FF000000"
+        }
+      }
+    ]
   },
 
   "workbench.colorCustomizations": {
@@ -478,7 +516,7 @@
       "editorCursor.foreground": "#999"
     },
     "[Solarized Dark]": {
-      "editorCursor.foreground": "#cba",
+      "editorCursor.foreground": "#cba"
     },
     "[Solarized Light]": {
       "editorCursor.foreground": "#fcc"
@@ -493,7 +531,7 @@
       "editorBracketHighlight.foreground3": "#87cefa",
       "editorBracketHighlight.foreground4": "#ffa500",
       "editorBracketHighlight.foreground5": "#33b0ff",
-      "editorBracketHighlight.foreground6": "#af00ff",
+      "editorBracketHighlight.foreground6": "#af00ff"
     },
 
     "[* Light]": {
@@ -502,7 +540,7 @@
       "editorBracketHighlight.foreground3": "#0000ff",
       "editorBracketHighlight.foreground4": "#ff8700",
       "editorBracketHighlight.foreground5": "#33b0ff",
-      "editorBracketHighlight.foreground6": "#800080",
+      "editorBracketHighlight.foreground6": "#800080"
     }
   },
 
@@ -520,6 +558,7 @@
     "*.plist": "default"
   },
   "workbench.iconTheme": "material-icon-theme",
+  "workbench.productIconTheme": "material-product-icons",
   "workbench.startupEditor": "none",
 
   "xml.codeLens.enabled": true,
@@ -551,7 +590,7 @@
   },
 
   "[markdown]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
 
   "[python]": {
@@ -563,7 +602,7 @@
     "editor.formatOnType": true,
     "editor.insertSpaces": true,
     "editor.semanticHighlighting.enabled": true,
-    "files.trimTrailingWhitespace": false,
+    "files.trimTrailingWhitespace": false
   },
 
   "[shellscript]": {
@@ -584,5 +623,5 @@
 
   "[yaml]": {
     "editor.defaultFormatter": "redhat.vscode-yaml"
-  },
+  }
 }

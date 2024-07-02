@@ -1,8 +1,7 @@
-# https://github.com/marketplace/actions/shellcheck
-
 on: push
 
 jobs:
+  # https://github.com/marketplace/actions/shellcheck
   shellcheck:
     name: Shellcheck
     runs-on: ubuntu-latest

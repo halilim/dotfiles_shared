@@ -108,6 +108,8 @@ alias tr1="traceroute 1.1.1.1"
 alias tr192="traceroute 192.168.1.1"
 alias trg='traceroute google.com'
 
+alias th='tree -a'
+
 alias v='mvim_open'
 alias sv='sudo mvim'
 alias vimrc='$EDITOR ~/.vimrc'
