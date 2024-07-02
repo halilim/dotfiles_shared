@@ -38,7 +38,8 @@ alias da='direnv allow'
 alias dp='declare -p'
 
 alias di='dotfiles import'
-alias ds='dotfiles setup'
+alias ds='dotfiles sync'
+alias dse='dotfiles setup'
 
 alias e='open_with_editor'
 alias ee="echo_eval"

@@ -6,10 +6,14 @@ IFS=$'\n\t'
 # Doesn't handle deletions
 
 function setup() {
+  sync
+  echo_eval '%q/bin/iterm_tab %q omz_install_custom_plugins' "$HOME" "$PWD"
+}
+
+function sync() {
   setup_shared_links
   setup_custom_links
   vim_mk_spell
-  echo_eval '%q/bin/iterm_tab %q omz_install_custom_plugins' "$HOME" "$PWD"
 }
 
 function import() {
@@ -188,13 +192,8 @@ printf '%s\n%s\n%s\n%s\n' \
 . "$DOTFILES_INCLUDES"/functions.sh
 
 case "${1:-''}" in
-  setup)
-    setup
-    ;;
-  import)
-    import "${2:-}" "${3:-}"
-    ;;
-  *)
-    echo "Usage: $DOTFILES_CMD <setup|import>"
-    ;;
+  setup) setup ;;
+  sync) sync ;;
+  import) import "${2:-}" "${3:-}" ;;
+  *) echo "Usage: $DOTFILES_CMD <setup|import>" ;;
 esac
