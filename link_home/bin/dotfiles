@@ -5,18 +5,11 @@ IFS=$'\n\t'
 # Tries to be as idempotent as possible
 # Doesn't handle deletions
 
-export DOTFILES_CMD
-DOTFILES_CMD=$(basename "$0")
-
 function setup() {
-  link_recursive "$DOTFILES_SHARED"/link_home "$DOTFILES_SHARED"/link_home home
-
-  if [[ -d "$DOTFILES_CUSTOM" ]]; then
-    link_recursive "$DOTFILES_CUSTOM"/link_home "$DOTFILES_CUSTOM"/link_home home
-  fi
-
+  setup_shared_links
+  setup_custom_links
   vim_mk_spell
-  iterm_tab "$PWD" omz_install_custom_plugins
+  echo_eval '%q/bin/iterm_tab %q omz_install_custom_plugins' "$HOME" "$PWD"
 }
 
 function import() {
@@ -31,21 +24,35 @@ function import() {
 
   local dotfile_type=${2:-'shared'} dotfile_dir
   case "$dotfile_type" in
-    shared)
-      dotfile_dir=$DOTFILES_SHARED
-      ;;
-    custom)
-      dotfile_dir=$DOTFILES_CUSTOM
-      ;;
-    *)
-      echo >&2 'Unknown dotfile type'
-      return 1
+    shared) dotfile_dir=$DOTFILES_SHARED ;;
+    custom) dotfile_dir=$DOTFILES_CUSTOM ;;
+    *) echo >&2 'Unknown dotfile type' && return 1 ;;
   esac
 
   local dir="$dotfile_dir/link_home/$relative_dir"
   mk_dir "$dir"
   echo_eval_with_sudo home 'mv %q %q' "$item_path" "$dir"
-  setup
+
+  case "$dotfile_type" in
+    shared) setup_shared_links ;;
+    custom) setup_custom_links ;;
+  esac
+
+  [[ $item_path == $VIM_SPELL/* ]] && vim_mk_spell
+}
+
+function setup_shared_links() {
+  setup_links "$DOTFILES_SHARED"
+}
+
+function setup_custom_links() {
+  if [[ -d "$DOTFILES_CUSTOM" ]]; then
+    setup_links "$DOTFILES_CUSTOM"
+  fi
+}
+
+function setup_links() {
+  link_recursive "$1"/link_home "$1"/link_home home
 }
 
 function link_recursive() {
@@ -148,9 +155,9 @@ function echo_eval_with_sudo() {
 
 function vim_mk_spell() {
   # TODO: Is this the correct process, or should multiple files for a locale be merged? Check Vim
-  local file spell_dir=~/.vim/spell files=()
-  for file in "$spell_dir"/*.dic; do
-    [[ $(find $spell_dir -name "$(basename "$file")*.spl" -print -quit) ]] || files+=("$file")
+  local file files=()
+  for file in "$VIM_SPELL"/*.dic; do
+    [[ $(find $VIM_SPELL -name "$(basename "$file")*.spl" -print -quit) ]] || files+=("$file")
   done
 
   local num_files=${#files[@]}
@@ -158,6 +165,11 @@ function vim_mk_spell() {
 
   echo_eval "vim +'$(printf 'mkspell! %%q | %.0s' $(seq 1 "$num_files"))q'" "${files[@]}"
 }
+
+export DOTFILES_CMD
+DOTFILES_CMD=$(basename "$0")
+
+export VIM_SPELL=~/.vim/spell
 
 export DOTFILES
 DOTFILES="$(dirname "$(dirname "$(dirname "$(dirname "$(realpath "$0")")")")")"
