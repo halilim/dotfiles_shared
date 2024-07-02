@@ -4,6 +4,21 @@ alias al="$EDITOR $0"
 # shellcheck disable=SC2139
 alias real="source $0"
 
+# See also: OMZ/brew plugin
+# shellcheck disable=SC2139
+alias {bru,brun}='brew uninstall'
+alias brb='brew bundle'
+alias brbc='brew bump-cask-pr --version=ver name'
+alias brbf='brew bump-formula-pr --version=ver name'
+alias brewfile='$EDITOR ~/Brewfile'
+alias bri='brew install'
+alias brin='brew info'
+alias brl='brew list'
+alias brs='brew search'
+alias brsl='brew services list'
+alias brup='brew update'
+alias brupg='brew upgrade'
+
 alias c='code'
 # alias c='code-insiders'
 alias ci='code-insiders'
@@ -21,9 +36,12 @@ alias cui="curl -I"
 alias cuiv="curl -Iv"
 alias da='direnv allow'
 alias dp='declare -p'
+
 alias di='dotfiles import'
 alias ds='dotfiles setup'
+
 alias e='open_with_editor'
+alias ee="echo_eval"
 alias EED='EE_DRY_RUN=1'
 alias ek="echo"
 

@@ -51,3 +51,10 @@ function omz_install_custom_plugins() {
     git clone https://github.com/jeffreytse/zsh-vi-mode
   )
 }
+
+function omz_update_custom() {
+  (
+    cd "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}" || return
+    for_each_dir 'for_each_dir "git pull --prune"'
+  )
+}

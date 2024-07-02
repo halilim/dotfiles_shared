@@ -330,6 +330,7 @@
   "scss.lint.unknownVendorSpecificProperties": "warning",
 
   "security.workspace.trust.untrustedFiles": "open",
+  "shellcheck.enable": false, // Provided by the Bash IDE extension now, duplicates warnings
   "shellcheck.enableQuickFix": true,
   "shellcheck.ignorePatterns": {
     "**/*.xonshrc": true,

@@ -16,6 +16,7 @@ function setup() {
   fi
 
   vim_mk_spell
+  iterm_tab "$PWD" omz_install_custom_plugins
 }
 
 function import() {

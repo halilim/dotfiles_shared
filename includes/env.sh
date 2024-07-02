@@ -101,15 +101,15 @@ export DOTFILES_INCLUDE_LIBS=(
   node
   redis
   ruby_rails
+  update_and_backup
 )
 
 # shellcheck disable=SC2016
 export UPDATE_BACKUP_CMDS=(
   'brew upgrade --quiet' # Removed --greedy because apps auto-download in the background anyway
-  npm_install_globals # In case Homebrew node gets upgraded
   'npm update -g --silent'
   'omz update --unattended'
-  'for dir in ~/.oh-my-zsh/custom/*/*/; do (printf "\\n--> %s\\n" "$dir" && git -C "$dir" pull); done'
+  'omz_update_custom'
   update_iterm2_color_schemes
 )
 
@@ -123,3 +123,10 @@ export RI="--format ansi"
 export RIPGREP_CONFIG_PATH="$DOTFILES_SHARED/.ripgreprc"
 
 source_custom env.sh
+
+# Put the manual/external steps at the end
+UPDATE_BACKUP_CMDS+=(
+  'mvim +"PlugUpgrade | PlugUpdate"'
+  'open_dotfile_tabs'
+  'o /Applications # Manually update the non-App Store, infrequently-opened, etc. apps'
+)

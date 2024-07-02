@@ -151,6 +151,7 @@ nnoremap <leader>cp :CopyGitPathLine<CR>
 
 " Why did I need this (vs. plain bd)?
 " nnoremap <leader>dd :bp\|bd#<CR>
+nnoremap <leader>d :bd<CR>
 nnoremap <leader>dd :bd<CR>
 " See .gvimrc for <D-w> alias
 nnoremap <leader>da :%bd<CR>
@@ -320,6 +321,8 @@ Plug 'luochen1990/rainbow'
 " Doesn't work with inline blocks, ar is the whole paragraph instead of the
 " block part etc, and do/end can be covered by vim-indent-object
 " Plug 'nelstrom/vim-textobj-rubyblock' " ar/ir
+
+Plug 'mechatroner/rainbow_csv'
 Plug 'michaeljsmith/vim-indent-object' " ai/ii/aI
 
 Plug 'ludovicchabant/vim-gutentags'

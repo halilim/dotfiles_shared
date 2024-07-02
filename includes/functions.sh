@@ -301,34 +301,6 @@ function ssl_check() {
 }
 alias tls_check='ssl_check'
 
-function update_and_backup() {
-  (
-    cd "$HOME" || return 1
-
-    UPDATE_BACKUP_CMDS+=(
-      "mvim +'PlugUpgrade | PlugUpdate'"
-      'o /Applications' # Manually update the non-App Store, infrequently-opened, etc. apps
-    )
-
-    local cmd
-    for cmd in "${UPDATE_BACKUP_CMDS[@]}"; do
-      echo_eval "$cmd"
-      printf '\n'
-    done
-  )
-}
-
-function update_iterm2_color_schemes() {
-  if [[ -d "$ITERM2_COLOR_SCHEMES" ]]; then
-    git --git-dir="$ITERM2_COLOR_SCHEMES"/.git pull --prune
-  else
-    mkdir -p "$(dirname "$ITERM2_COLOR_SCHEMES")"
-    git clone https://github.com/mbadolato/iTerm2-Color-Schemes.git "$ITERM2_COLOR_SCHEMES"
-  fi
-
-  "$ITERM2_COLOR_SCHEMES"/tools/import-scheme.sh "$ITERM2_COLOR_SCHEMES"/schemes/*
-}
-
 function which_() {
   local cmd=$1 name=$2 file_path
   file_path=$(which "$name")

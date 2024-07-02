@@ -1,0 +1,18 @@
+#!/usr/bin/osascript
+
+on run argv
+  tell application "iTerm"
+    tell current window
+      tell current session of (create tab with default profile)
+        delay 1
+        if count of argv > 0 then
+          write text "cd " & quoted form of first item of argv & "; clear; pwd"
+
+          if count of argv > 1 then
+            write text second item of argv
+          end if
+        end if
+      end tell
+    end tell
+  end tell
+end run
