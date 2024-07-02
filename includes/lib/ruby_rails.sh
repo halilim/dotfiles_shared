@@ -60,6 +60,7 @@ alias rrz="$RAILS_CMD routes | fzf"
 alias rro="$RAILS_CMD routes"
 alias rrp="$RAILS_CMD runner -e production"
 alias rrt="$RAILS_CMD runner -e test"
+alias rs="$RAILS_CMD server"
 alias rsl='rails_serve_lan' # Allow access from LAN (must be in the same network/Wi-Fi etc.)
 alias rvv="ruby -v && $RAILS_CMD -v"
 
@@ -91,6 +92,8 @@ alias ksp='kill -9 "$(pgrep '\''spring app'\'')" "$(pgrep '\''spring server'\'')
 alias pssp='psg spring'
 alias sps="${RUBY_CMD_PREFIX}spring status"
 alias spst="${RUBY_CMD_PREFIX}spring stop"
+
+alias sq="${RUBY_CMD_PREFIX}sidekiq"
 
 alias testrb='$EDITOR ~/Desktop/test\ code/test.rb'
 
