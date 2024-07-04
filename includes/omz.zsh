@@ -10,18 +10,14 @@ omz_path=~/.oh-my-zsh
 #   [+] Remove fzf-tab
 #   [+] Remove p10k (hm... fzf-tab is probably more important than p10k)
 #   [ ] Replace with simple prompt + REPORTTIME=... instead?
+
 # shellcheck source=/dev/null
 # To customize prompt, run `p10k configure` or edit .p10k*.zsh.
-if [[ "$TERM_PROGRAM:l" = vscode* ]]; then
-  # Using the lean style because there are spaces between triangles https://github.com/romkatv/powerlevel10k/issues/671
-  . "$DOTFILES_INCLUDES"/.p10k.vscode.zsh
-else
-  . "$DOTFILES_INCLUDES"/.p10k.zsh
-fi
+. "$DOTFILES_INCLUDES"/.p10k.zsh
+
 # shellcheck disable=SC2139
 alias p10kc="$EDITOR $DOTFILES_INCLUDES/.p10k.zsh"
-# shellcheck disable=SC2139
-alias p10kvc="$EDITOR $DOTFILES_INCLUDES/.p10k.vscode.zsh"
+
 export ZSH_THEME=powerlevel10k/powerlevel10k
 
 export DISABLE_AUTO_UPDATE="true" # Handled by .functions#update_and_backup

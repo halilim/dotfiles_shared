@@ -88,7 +88,7 @@ alias {rsb,rst,sb,st}="${RUBY_CMD_PREFIX}rspec --backtrace" # Replaces `rails se
 alias {rfd,sfd}="${RUBY_CMD_PREFIX}rspec --format documentation"
 
 alias nosp='DISABLE_SPRING=1'
-alias ksp='kill -9 "$(pgrep '\''spring app'\'')" "$(pgrep '\''spring server'\'')"'
+alias ksp="pgrep 'spring (app|server)' | xargs kill -9"
 alias pssp='psg spring'
 alias sps="${RUBY_CMD_PREFIX}spring status"
 alias spst="${RUBY_CMD_PREFIX}spring stop"
@@ -244,7 +244,7 @@ function ruby_cd_pull_migrate() {
   if [[ $should_migrate ]]; then
     local migrate_cmd=${MIGRATE_CMD:-"$RAKE_CMD db:migrate"}
     echo_eval "$migrate_cmd"
-    echo_eval 'git checkout db/schema.rb' # Sometimes migrations modify db/schema.rb
+    [[ -e db/schema.rb ]] && echo_eval 'git checkout db/schema.rb' # Sometimes migrations modify db/schema.rb
   fi
 
   printf '\n'

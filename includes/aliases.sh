@@ -87,9 +87,9 @@ alias pg_fg='postgres -D "$(brew --prefix)"/var/postgres'
 # Make high-resolution screenshots etc. more shareable
 alias png2jpg50="convert ./*.png -resize '50%' -set filename:base '%[basename]' '%[filename:base].jpg'"
 
+alias psf='ps aux | fzf'
 alias psg='ps aux | grep -v " grep " | grep -i'
 alias psgw='ps aux | grep -v " grep " | grep -i -w'
-alias psp='ps aux | peco'
 
 # - [...] foo -> - [ ] foo
 alias reset_markdown_todo="gsed -i -E 's/^([*-]) \[[^]]?\]/\1 [ ]/'"

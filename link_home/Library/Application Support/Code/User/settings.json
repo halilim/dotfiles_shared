@@ -75,7 +75,7 @@
   "editor.autoClosingQuotes": "always",
   "editor.cursorBlinking": "phase",
   "editor.find.seedSearchStringFromSelection": "selection",
-  "editor.fontFamily": "'CaskaydiaCove NF', 'FiraCode Nerd Font', Menlo, Monaco, 'Courier New', monospace",
+  "editor.fontFamily": "'CaskaydiaCove NF', Menlo, Monaco, 'Courier New', monospace",
   "editor.fontLigatures": true,
   "editor.fontSize": 13,
   "editor.guides.bracketPairs": "active",

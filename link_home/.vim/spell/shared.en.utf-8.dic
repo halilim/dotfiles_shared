@@ -158,12 +158,14 @@ ideavimrc
 ifconfig
 ifconfigparser
 Ignorecase
+ilike
 imageinfo
 incsearch
 Inflector
 initializers
 inputrc
 ipynb
+IRB
 Iseconds
 isready
 iterm
@@ -365,9 +367,11 @@ Toggl
 toplevel
 traceroute
 Transferwise
+tsrange
 turboframe
 Turborepo
 Unarchiver
+unscope
 VDSL
 vendored
 viml

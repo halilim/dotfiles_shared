@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'bundler/inline'
 require 'irb'
 
 def ansi_color(text, color)
@@ -17,9 +18,10 @@ end
 # Put this before ConsoleExtender to properly report it as loaded
 def pm(obj, *options) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/MethodLength,Metrics/PerceivedComplexity
   methods = obj.methods
-  methods -= Object.methods unless options.include? :more
+  methods -= Object.methods unless options.include?(:more)
+
   filter = options.select { |opt| opt.is_a?(Regexp) }.first
-  methods = methods.select { |name| name =~ filter } if filter # rubocop:disable Style/SelectByRegexp
+  methods = methods.grep(filter) if filter
 
   data = methods.sort.collect do |name|
     method = obj.method(name)
@@ -32,16 +34,19 @@ def pm(obj, *options) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComple
       n = -method.arity
       args = "(#{(1..n).collect { |i| "arg#{i}" }.join(', ')}, ...)"
     end
+
     klass = Regexp.last_match(1) if method.inspect =~ /Method: (.*?)#/
     [name.to_s, args, klass]
   end
+
   max_name = data.collect { |item| item[0].size }.max
   max_args = data.collect { |item| item[1].size }.max
   data.each do |item|
     print " #{ansi_color(item[0].to_s.rjust(max_name), :YELLOW)}"
     print ansi_color(item[1].ljust(max_args), :BLUE)
-    print "   #{ansi_color(item[2], :GRAY)}\n"
+    print "   #{ansi_color(item[2], :MAGENTA)}\n"
   end
+
   data.size
 end
 
@@ -72,15 +77,17 @@ alias q exit
 class ConsoleExtender # :nodoc:
   class << self
     def load_extensions(new_extensions)
-      new_extensions.each do |extension_name|
-        next if extensions.key?(extension_name)
+      methods, gems = new_extensions.partition { |name| name.include?('()') }
 
-        if extension_name.include?('()')
-          load_method(extension_name)
-        else
-          load_gem(extension_name)
-        end
+      gemfile do
+        gems.each { |name| gem name }
       end
+
+      gems.each do |name|
+        add_result(name, true)
+      end
+
+      methods.each { |name| load_method(name) }
     end
 
     def configure_extension(name)
@@ -104,34 +111,6 @@ class ConsoleExtender # :nodoc:
       add_result(name, result)
     end
 
-    def load_gem(name)
-      lib_path = gem_lib_path(name)
-      unless lib_path
-        err = "No path for the gem #{name}"
-        log_error(err)
-        return add_result(name, false, error: err)
-      end
-
-      $LOAD_PATH << lib_path unless $LOAD_PATH.include?(lib_path)
-
-      require name
-      add_result(name, true)
-    rescue LoadError => e
-      err = "LoadError for #{name}: #{e.message}"
-      log_error(err)
-      add_result(name, false, error: err)
-    end
-
-    def gem_lib_path(name)
-      # TODO: Add asdf support
-      pattern = File.join(
-        Dir.home,
-        ".rbenv/versions/#{RUBY_VERSION}/lib/ruby/gems/*/gems/#{name}*/lib"
-      )
-      paths = Dir.glob(pattern)
-      paths.last
-    end
-
     def add_result(name, result, additional = {})
       extensions[name] = { loaded: result }.merge(additional)
     end
@@ -148,11 +127,11 @@ end
 # table_print (& config below) - hirb/hirber alternative, doesn't support vertical tables
 ConsoleExtender.load_extensions(
   %w[
-    english
-    pm()
     amazing_print
+    english
     hirber
     interactive_editor
+    pm()
   ]
 )
 
