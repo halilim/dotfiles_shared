@@ -219,6 +219,7 @@ myaddr
 MySQL
 ncdu
 Neovim
+Nerdfont
 networksetup
 newkey
 newsyslog
@@ -274,6 +275,7 @@ psql
 publickey
 pygmentize
 pygments
+pylint
 qlcolorcode
 qlimagesize
 qlmanage

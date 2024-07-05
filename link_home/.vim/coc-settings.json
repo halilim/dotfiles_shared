@@ -10,12 +10,10 @@
     "bash": {
       "command": "bash-language-server",
       "args": ["start"],
-      "filetypes": ["sh"],
+      "filetypes": ["bash", "sh", "zsh"], // Yeah, Zsh too, see .shellcheckrc
       "ignoredRootPaths": ["~"]
     }
   },
-  "markdown.linting.enabled": true,
   "python.linting.enabled": true,
-  "python.linting.pylintEnabled": true,
-  "solargraph.promptDownload": false // Rails to activate & using VSCode now
+  "python.linting.pylintEnabled": true
 }

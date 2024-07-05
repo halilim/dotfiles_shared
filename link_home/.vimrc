@@ -892,28 +892,41 @@ fun! DeleteFileAndCloseBuffer()
   endif
 endfun
 
-fun! s:GitRoot()
-  let l:folder = expand('%:p:h')
-  return system("cd " . shellescape(l:folder) . " && git rev-parse --show-toplevel | tr -d '\\n'")
+fun! s:real_paths()
+  let l:real_file_path = resolve(expand('%:p'))
+  let l:real_folder = fnamemodify(real_file_path, ':h')
+  let l:git_root = system("cd " . shellescape(real_folder) . " && git rev-parse --show-toplevel | tr -d '\\n'")
+
+  if v:shell_error == 0
+    return [real_file_path, git_root]
+  else
+    echoer git_root
+    return ''
+  endif
 endfun
 
-fun! GitPath(git_root = '')
-  let l:git_root = a:git_root
-  if !l:git_root
-    l:git_root = s:GitRoot()
+fun! GitPath(real_paths = s:real_paths())
+  if empty(a:real_paths)
+    return
+  else
+    return substitute(a:real_paths[0], '\V' . a:real_paths[1] . '/', '', '')
   endif
-  let l:full_path = expand('%:p')
-  return substitute(l:full_path, '\V' . l:git_root . '/', '', '')
 endfun
 
 command SourceTreeStatus call SourceTreeFileStatus()
 
+" Note: Needs Accessibility and Automation > System Events permissions
 fun! SourceTreeFileStatus()
-  let l:git_root = s:GitRoot()
-  let l:file_path = GitPath(l:git_root)
-  let l:cmd = "osascript $DOTFILES_SHARED/share/sourcetree-file-status.applescript " . shellescape(l:git_root) . " " . shellescape(l:file_path)
-  " echo "Calling: " . l:cmd
-  call system(l:cmd)
+  let l:real_paths = s:real_paths()
+  let l:git_path = GitPath(l:real_paths)
+  if empty(real_paths)
+    return
+  else
+    let l:cmd = "osascript $DOTFILES_SHARED/share/sourcetree-file-status.applescript "
+      \ . shellescape(real_paths[1]) . " " . shellescape(git_path)
+    " echo "Calling: " . cmd
+    call system(cmd)
+  endif
 endfun
 
 " https://vim.fandom.com/wiki/Avoid_scrolling_when_switch_buffers
