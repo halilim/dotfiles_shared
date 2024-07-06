@@ -2,6 +2,8 @@
 # shellcheck disable=SC2139
 alias libm="$EDITOR $0"
 
+alias ahr='air_buddy_handoff receive'
+alias ahs='air_buddy_handoff send'
 alias cb="pbcopy"
 alias chrome='/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome'
 alias fdns='sudo killall -HUP mDNSResponder'
