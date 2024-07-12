@@ -10,6 +10,10 @@ on run argv
 
           if count of argv > 1 then
             write text second item of argv
+
+            if count of argv > 2 then
+              write text third item of argv
+            end if
           end if
         end if
       end tell

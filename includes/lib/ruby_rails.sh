@@ -2,6 +2,7 @@
 # Intentionally disabled for the whole file, mostly for RUBY_CMD_PREFIX/RAILS_CMD/RAKE_CMD
 # TODO: Replace with block level disables if it gets implemented
 
+# cSpell:ignore libr
 alias libr="$EDITOR $0"
 
 export RUBY_CMD_PREFIX=${RUBY_CMD_PREFIX:-'bundle exec '} # or 'bin/'
@@ -16,6 +17,7 @@ if [ -n "${ZSH_VERSION:-}" ]; then
   alias -g RW0='RUBYOPT="-W0"'
 fi
 
+# cSpell:ignore biq bebr beru berua besf bucq
 alias bundle_conf="$EDITOR ~/.bundle/config"
 alias b='bundle'
 alias {biq,bq}='bundle install --quiet'
@@ -33,19 +35,24 @@ alias bv='bundle --version'
 
 alias fs='foreman start'
 
+# cSpell:ignore hrr hrrc hrrr
 alias hrr="heroku run rails"
 alias hrrc="heroku run rails console"
 alias hrrr='heroku run rails runner ""'
 
+# cSpell:ignore mailcatch
 alias {mc,mailcatch}='mailcatcher -f'
 
 # Ripgrep
+# cSpell:ignore rgr rgrw
 alias rgr="rg -g '!config/locales/' -g '!features/' -g '!spec/' -g '!test/'"
 alias rgrw="rgr -w"
 
+# cSpell:ignore  rpry ramazing
 alias rp='ruby -rpry -ramazing_print'
 alias rv='ruby -v'
 
+# cSpell:ignore raa rav rcac rgg rgm rgmp rrz rro rsl rvv
 alias raa="$RAILS_CMD about"
 alias rav="$RAILS_CMD -v"
 alias rc="$RAILS_CMD console"
@@ -54,7 +61,7 @@ alias rcac="rm -rf tmp/cache/{assets,webpacker}/*" # Rails clear asset cache
 alias rgg="$RAILS_CMD generate"
 alias rgm="$RAILS_CMD generate migration"
 alias rgmp="$RAILS_CMD generate migration dummy --pretend"
-alias rnd="$RAILS_CMD new dummy --minimal --skip-active-record --skip-test --skip-git --skip-gemfile"
+alias rnd="rails new dummy --minimal --skip-active-record --skip-test --skip-git --skip-gemfile"
 alias rr="$RAILS_CMD runner"
 alias rrz="$RAILS_CMD routes | fzf"
 alias rro="$RAILS_CMD routes"
@@ -64,6 +71,7 @@ alias rs="$RAILS_CMD server"
 alias rsl='rails_serve_lan' # Allow access from LAN (must be in the same network/Wi-Fi etc.)
 alias rvv="ruby -v && $RAILS_CMD -v"
 
+# cSpell:ignore rkdc rkdcl rkdct rkdm rkdmdv rkdms rkdmst rkdmt rkdmv rkdr rkdrt rkds rkro rrs gco
 alias rk="$RAKE_CMD"
 alias rkdc="$RAKE_CMD db:create"
 alias rkdcl="$RAKE_CMD db:create db:schema:load"
@@ -82,11 +90,13 @@ alias rkro="$RAKE_CMD routes"
 alias rkT="$RAKE_CMD -T"
 alias rrs="gco db/schema.rb && $RAKE_CMD db:drop db:create db:schema:load db:migrate"
 
+# cSpell:ignore sfd
 alias s="${RUBY_CMD_PREFIX}rspec"
 alias ss="${RUBY_CMD_PREFIX}rspec --seed"
 alias {rsb,rst,sb,st}="${RUBY_CMD_PREFIX}rspec --backtrace" # Replaces `rails server --bind` from oh-my-zsh Rails plugin
 alias {rfd,sfd}="${RUBY_CMD_PREFIX}rspec --format documentation"
 
+# cSpell:ignore nosp ksp pssp psg spst
 alias nosp='DISABLE_SPRING=1'
 alias ksp="pgrep 'spring (app|server)' | xargs kill -9"
 alias pssp='psg spring'
@@ -95,6 +105,7 @@ alias spst="${RUBY_CMD_PREFIX}spring stop"
 
 alias sq="${RUBY_CMD_PREFIX}sidekiq"
 
+# cSpell:ignore testrb
 alias testrb='$EDITOR ~/Desktop/test\ code/test.rb'
 
 function gem_install_bundler_gemfile() {
@@ -102,6 +113,7 @@ function gem_install_bundler_gemfile() {
   version=$(grep -A 1 "BUNDLED WITH" Gemfile.lock | tail -n 1 | tr -d ' ')
   gem install bundler:"$version"
 }
+# cSpell:ignore gemib
 alias gemib='gem_install_bundler_gemfile'
 
 function gem_uri_open() {
@@ -146,6 +158,7 @@ if [ -n "${ZSH_VERSION:-}" ]; then
   compdef _gem_ gem_
 fi
 
+# cSpell:ignore gemcd gemdoc gemsrc
 # shellcheck disable=SC2139
 alias {gem_cd,gemcd}='gem_ cd'
 # shellcheck disable=SC2139

@@ -19,6 +19,7 @@
     "Vimscript": true,
     "xml": true
   },
+  "codeium.enableCodeLens": false,
 
   "cSpell.customDictionaries": {
     "shared_en": { "path": "~/.vim/spell/shared.en.utf-8.dic" },
@@ -166,6 +167,7 @@
     "/etc/apache2/**/*.conf": "apacheconf",
     "/etc/defaults/**/*.conf": "shellscript",
     "/etc/periodic/**/*.conf": "shellscript",
+    "aprc": "ruby",
     "Brewfile*": "ruby",
     "coc-settings.json": "jsonc",
     "default-gems": "properties",
@@ -508,15 +510,7 @@
     },
     "[Solarized Light]": {
       "comments": "#435151"
-    },
-    "textMateRules": [
-      {
-        "scope": "keyword.other.dotenv",
-        "settings": {
-          "foreground": "#FF000000"
-        }
-      }
-    ]
+    }
   },
 
   "workbench.colorCustomizations": {
@@ -552,9 +546,9 @@
     }
   },
 
-  "workbench.colorTheme": "Spinel",
-  "workbench.preferredDarkColorTheme": "Spinel",
-  "workbench.preferredLightColorTheme": "Quiet Light",
+  "workbench.colorTheme": "Ayu Mirage Bordered",
+  "workbench.preferredDarkColorTheme": "Ayu Mirage Bordered",
+  "workbench.preferredLightColorTheme": "Ayu Light Bordered",
 
   "workbench.editor.decorations.colors": true,
   "workbench.editor.enablePreviewFromCodeNavigation": true,
@@ -565,7 +559,7 @@
     "*.ipynb": "jupyter-notebook",
     "*.plist": "default"
   },
-  "workbench.iconTheme": "vscode-icons",
+  "workbench.iconTheme": "ayu",
   "workbench.startupEditor": "none",
 
   "xml.codeLens.enabled": true,

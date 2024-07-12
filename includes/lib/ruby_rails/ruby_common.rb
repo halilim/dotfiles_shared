@@ -1,22 +1,80 @@
 # frozen_string_literal: true
 
-require 'bundler/inline'
-require 'irb'
+# rubocop:disable Style/NumericPredicate
 
-def ansi_color(text, color)
-  IRB::Color.colorize(text, [color])
+# Modified from https://gist.github.com/bgreenlee/72234
+def ar_table(items, *given_fields) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
+  cur_fields = given_fields.dup
+
+  # find max length for each field; start with the field names themselves
+  cur_fields = items.first.class.column_names if cur_fields.empty?
+  cur_max_len = Hash[*cur_fields.map { |f| [f, f.to_s.length] }.flatten]
+  items.each do |item|
+    cur_fields.each do |field|
+      len = item.read_attribute(field).to_s.length
+      cur_max_len[field] = len if len > cur_max_len[field]
+    end
+  end
+
+  calc_max_row_len = ->(max_len, fields, add = 0) { max_len.values.sum + fields.length * 3 + 1 + add }
+
+  term_width = Readline.get_screen_size[1] # or Rake.application.terminal_width
+  max_row_len = calc_max_row_len.call(cur_max_len, cur_fields)
+  term_width_exceeded = false
+
+  if max_row_len > term_width
+    term_width_exceeded = true
+    # We're going to exceed for sure, add the ... column
+    dot_col_len = 6
+    max_row_len += dot_col_len
+
+    first_item = items.first
+    comparator = ->(f) { first_item.read_attribute(f).to_s.length.positive? }
+    cur_fields.sort! do |a, b|
+      a_present = comparator.call(a)
+      b_present = comparator.call(b)
+      if a_present == b_present
+        0
+      elsif a_present
+        -1
+      else
+        1
+      end
+    end
+
+    while max_row_len > term_width && cur_fields.length > 1
+      popped_field = cur_fields.pop
+      cur_max_len.delete(popped_field)
+      max_row_len = calc_max_row_len.call(cur_max_len, cur_fields, dot_col_len)
+    end
+  end
+
+  # rubocop:disable Style/StringConcatenation
+  border = '+-' + cur_fields.map { |f| '-' * cur_max_len[f] }.join('-+-') + '-+'
+  border << '-----+' if term_width_exceeded
+  title_row = '| ' + cur_fields.map { |f| format("%-#{cur_max_len[f]}s", f.to_s) }.join(' | ') + ' |'
+  title_row << ' ... |' if term_width_exceeded
+
+  puts border
+  puts title_row
+  puts border
+
+  items.each do |item|
+    row = '| ' + cur_fields.map { |f| format("%-#{cur_max_len[f]}s", item.read_attribute(f)) }.join(' | ') + ' |'
+    row << ' ... |' if term_width_exceeded
+    puts row
+  end
+  # rubocop:enable Style/StringConcatenation
+
+  puts border
+  puts "#{items.length} rows in set\n"
 end
 
-# Useful methods
+alias art ar_table
 
-# list methods which aren't in superclass
-def local_methods(obj = self)
-  (obj.methods - obj.class.superclass.instance_methods).sort
-end
-
-# Print methods of an object
-# Put this before ConsoleExtender to properly report it as loaded
-def pm(obj, *options) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/MethodLength,Metrics/PerceivedComplexity
+# Print methods of an object. Examples: +pm Foo+, +pm bar, /baz/+
+# IRB alternative: +ls bar -g baz+
+def pm(obj, *options) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
   methods = obj.methods
   methods -= Object.methods unless options.include?(:more)
 
@@ -25,135 +83,41 @@ def pm(obj, *options) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComple
 
   data = methods.sort.collect do |name|
     method = obj.method(name)
-    if method.arity == 0
-      args = '()'
-    elsif method.arity > 0
+    if method.arity > 0
       n = method.arity
       args = "(#{(1..n).collect { |i| "arg#{i}" }.join(', ')})"
-    elsif method.arity < 0
-      n = -method.arity
+    elsif method.arity == 0
+      args = '()'
+    elsif method.arity == -1
+      args = '(...)'
+    elsif method.arity < -1
+      n = -method.arity - 1
       args = "(#{(1..n).collect { |i| "arg#{i}" }.join(', ')}, ...)"
     end
 
-    klass = Regexp.last_match(1) if method.inspect =~ /Method: (.*?)#/
-    [name.to_s, args, klass]
+    # Remove ActiveRecord attributes
+    # Example inspect: <Method: FooBar(id: integer, ...)(ActiveRecord::Base)#baz() .../etc.rb:42>
+    # cSpell:ignore klass
+    matches = method.inspect.match %r{ # rubocop:disable Style/RegexpLiteral
+      \A\#<Method:\s*
+      (?<klass>[^(]+)
+      (?<attrs>\([^)]+:\s+[^)]*\))?
+      (?<base>\([^)]+\))?
+      (?<method>\##{Regexp.escape(name)})
+    }x
+
+    [name.to_s, args, "#{matches[:klass]}#{matches[:base]}"]
   end
 
   max_name = data.collect { |item| item[0].size }.max
   max_args = data.collect { |item| item[1].size }.max
   data.each do |item|
-    print " #{ansi_color(item[0].to_s.rjust(max_name), :YELLOW)}"
-    print ansi_color(item[1].ljust(max_args), :BLUE)
-    print "   #{ansi_color(item[2], :MAGENTA)}\n"
+    print " #{IRB::Color.colorize(item[0].to_s.rjust(max_name), [:YELLOW])}"
+    print IRB::Color.colorize(item[1].ljust(max_args), [:BLUE])
+    print "   #{IRB::Color.colorize(item[2], [:MAGENTA])}\n"
   end
 
   data.size
 end
 
-# `alias_method :r!, :reload!` doesn't work because #alias_method is defined on `Module`,
-#   not on `Object`, which is the context here.
-def r!
-  reload!
-end
-
-def copy(str)
-  IO.popen('pbcopy', 'w') { |f| f << str.to_s }
-end
-
-def copy_history
-  history = Readline::HISTORY.entries
-  index = history.rindex('exit') || -1
-  content = history[(index + 1)..-2].join("\n")
-  puts content
-  copy(content)
-end
-
-def paste
-  `pbpaste`
-end
-
-alias q exit
-
-class ConsoleExtender # :nodoc:
-  class << self
-    def load_extensions(new_extensions)
-      methods, gems = new_extensions.partition { |name| name.include?('()') }
-
-      gemfile do
-        gems.each { |name| gem name }
-      end
-
-      gems.each do |name|
-        add_result(name, true)
-      end
-
-      methods.each { |name| load_method(name) }
-    end
-
-    def configure_extension(name)
-      unless extensions.dig(name, :loaded)
-        # log_error("Configure: Extension #{name} not loaded", uplevel: 1)
-        return
-      end
-
-      yield
-    end
-
-    def extensions
-      @extensions ||= {}
-    end
-
-    private
-
-    def load_method(name)
-      bare_name = name.tr('()', '')
-      result = TOPLEVEL_BINDING.class.private_method_defined?(bare_name)
-      add_result(name, result)
-    end
-
-    def add_result(name, result, additional = {})
-      extensions[name] = { loaded: result }.merge(additional)
-    end
-
-    def log_error(msg, uplevel: 0)
-      return unless ENV['VERBOSE']
-
-      Kernel.warn(msg, uplevel: uplevel + 1)
-    end
-  end
-end
-
-# TODO: https://github.com/blackwinter/brice - maybe one day, kinda continuation of wirble
-# table_print (& config below) - hirb/hirber alternative, doesn't support vertical tables
-ConsoleExtender.load_extensions(
-  %w[
-    amazing_print
-    english
-    hirber
-    interactive_editor
-    pm()
-  ]
-)
-
-colored_ext_names = ConsoleExtender.extensions.map do |extension_name, result|
-  ansi_color(extension_name, result[:loaded] ? :GREEN : :RED)
-end
-
-puts "~> Console extensions: #{colored_ext_names.join(' | ')}"
-
-ConsoleExtender.configure_extension('hirber') do
-  class Hirb::Helpers::Table # rubocop:disable Lint/ConstantDefinitionInBlock, Style/ClassAndModuleChildren, Style/Documentation
-    remove_const(:MIN_FIELD_LENGTH)
-    MIN_FIELD_LENGTH = 10
-  end
-  # Alternative: ~/.hirb.yml
-  # Hirb.config[:output]['ActiveRecord::Base'][:vertical] = true
-  # Hirb.enable(output: { 'Asset' => { options: { vertical: true } } })
-
-  Hirb.enable
-  extend Hirb::Console
-end
-
-# ConsoleExtender.configure_extension('table_print') do
-#   tp.set :max_width, 15
-# end
+# rubocop:enable Style/NumericPredicate

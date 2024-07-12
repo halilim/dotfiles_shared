@@ -1,12 +1,10 @@
 :
 
-# cSpell:ignore libm fdns appswitcher
-
 # shellcheck disable=SC2139
+# cSpell:ignore libm
 alias libm="$EDITOR $0"
 
-alias ahr='air_buddy_handoff receive'
-alias ahs='air_buddy_handoff send'
+# cSpell:ignore fdns
 alias cb="pbcopy"
 alias chrome='/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome'
 alias fdns='sudo killall -HUP mDNSResponder'
@@ -32,6 +30,7 @@ function iterm2_custom_path_short() {
 
 # https://superuser.com/a/1625752/59919
 # Or move the Dock to the active display, and the app switcher should follow it
+# cSpell:ignore appswitcher
 function mac_app_switcher_all_displays() {
   local value="${1:-true}"
   defaults write com.apple.dock appswitcher-all-displays -bool "$value"
@@ -47,3 +46,10 @@ function quick_look() {
   qlmanage -p "$1" > /dev/null 2>&1
 }
 alias ql="quick_look"
+
+function xbar_update_template() {
+  # https://github.com/matryer/xbar-plugins/blob/main/CONTRIBUTING.md#xbar-config
+  jq -n '{autoupdate: true, terminal: {appleScriptTemplate3: $new_val}}' \
+    --arg new_val "$(cat "$DOTFILES_SHARED"/share/xbar.applescript)" \
+    > ~/Library/Application\ Support/xbar/xbar.config.json
+}

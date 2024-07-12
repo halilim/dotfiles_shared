@@ -14,6 +14,7 @@ AMD64
 anonymizable
 antialiased
 applescript
+aprc
 Arity
 asdf
 auth
@@ -21,7 +22,9 @@ Authable
 autoindex
 autoload
 Automator
+autoupdate
 AWS
+Ayu
 B2C
 backfill
 backfiller
@@ -32,6 +35,7 @@ berksfile
 bgnotify
 bigdecimal
 bindkey
+bitnami
 Bitwarden
 blockapp
 blueutil
@@ -39,6 +43,7 @@ Brewfile
 broadcasted
 buildpack
 buildpacks
+buildx
 byebug
 callout
 Caskaydia
@@ -55,6 +60,7 @@ Cloudflare
 CloudFront
 CMDS
 CNAME
+coc
 codeium
 Codeship
 colorsaurus
@@ -79,12 +85,14 @@ Deel
 deluid
 devs
 dgram
+dic
 difftool
 direnv
 diskutil
 divmod
 dockerhub
 Dokku
+dotenv
 dotfile
 dotfiles
 drawdown
@@ -97,7 +105,9 @@ elasticsearch
 Elasticsearch
 endswith
 env
+envrc
 envsh
+esac
 esdoc
 eshead
 excelviewer
@@ -115,6 +125,7 @@ fulltitle
 funcstack
 fuser
 fuubar
+fzf
 gdate
 Gemfile
 gemrc
@@ -180,8 +191,10 @@ Inflector
 initializers
 inodes
 inputrc
+ioreg
 ipynb
 IRB
+irbrc
 Iseconds
 isready
 iterm
@@ -211,6 +224,8 @@ libexec
 libxslt
 Liskov
 listnetworkserviceorder
+ljust
+localstack
 lograge
 lookback
 mackup
@@ -227,6 +242,7 @@ microservice
 microservices
 mimemagic
 mindepth
+minio
 mkdir
 mkspell
 mktmpdir
@@ -237,6 +253,7 @@ mvim
 myaddr
 MySQL
 mysqldump
+nanorc
 ncdu
 Neovim
 Nerdfont
@@ -248,6 +265,7 @@ NOBUG
 nocaseglob
 nocorrect
 nodenv
+nodoc
 nohl
 nohup
 Nokogiri
@@ -275,6 +293,7 @@ passwordless
 Pavel
 Payoneer
 pbcopy
+pbpaste
 PDP
 Percona
 PGPASSWORD
@@ -283,11 +302,14 @@ pgsql
 phpcs
 pids
 pinger
+pipefail
 pkill
 plists
 plp
 PLP
+plutil
 POC
+popen
 Powerlevel
 precompile
 prefetch
@@ -297,6 +319,7 @@ preprocess
 Procfile
 procs
 progname
+pryrc
 psql
 publickey
 pygmentize
@@ -332,9 +355,11 @@ resumability
 Revolut
 rewhere
 REXML
+rindex
 ripgrep
 ripgreprc
 rmtree
+rnd
 roadmap
 Rollbar
 rspec
@@ -352,6 +377,7 @@ Salesforce
 schemaname
 screencapture
 Searchkick
+sed
 Seibel
 SEO
 Sergey
@@ -378,6 +404,7 @@ Solargraph
 Sonoma
 sparsebundle
 sparseimage
+Speedify
 SQLite
 srand
 srcfolder
@@ -410,6 +437,9 @@ Unarchiver
 unblockapp
 unpair
 unscope
+uplevel
+usr
+utf
 VDSL
 vendored
 viml
@@ -425,6 +455,7 @@ webpacker
 whitespace
 whois
 WIP
+wirble
 wordmotion
 Wordpress
 xbar

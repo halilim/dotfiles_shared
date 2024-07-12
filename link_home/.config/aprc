@@ -1,0 +1,3 @@
+AmazingPrint.defaults = {
+  indent: 2
+}

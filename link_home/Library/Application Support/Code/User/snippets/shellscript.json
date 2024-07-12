@@ -178,6 +178,19 @@
 		],
 	},
 
+	// cSpell:ignore ifce
+	"if command else": {
+		"prefix": "ifce",
+		"body": [
+			"if ${1:cmd}; then",
+				"\t$2",
+			"else",
+				"\t$0",
+			"fi"
+		],
+	},
+
+	// cSpell:ignore ife
 	"if else": {
 		"prefix": "ife",
 		"body": [

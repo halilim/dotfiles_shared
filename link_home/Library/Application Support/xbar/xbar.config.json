@@ -1,0 +1,6 @@
+{
+  "autoupdate": true,
+  "terminal": {
+    "appleScriptTemplate3": "-- Default: https://github.com/matryer/xbar/blob/main/app/settings.go#L27 setDefaults()\n\nset quotedScriptName to quoted form of \"{{ .Command }}\"\n{{ if .Params }}\n  set commandLine to {{ .Vars }} & \" \" & quotedScriptName & \" \" & {{ .Params }}\n{{ else }}\n  set commandLine to {{ .Vars }} & \" \" & quotedScriptName\n{{ end }}\n\ntell application \"iTerm\"\n  if not running then\n    activate\n  end if\n\n  tell current window\n    tell current session\n      repeat until exists\n      end repeat\n\n      delay 1\n      write text commandLine\n    end tell\n  end tell\nend tell"
+  }
+}
