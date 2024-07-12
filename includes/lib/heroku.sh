@@ -1,3 +1,5 @@
+# cSpell:ignore hrkdm
+
 # Add OMZ/heroku plugin too
 
 alias hg50="heroku logs -n 50"
@@ -101,6 +103,7 @@ function heroku_deploy_git_branch() {
     git push --force-with-lease "$app" "$branch":"$main_branch"
   fi
 }
+# cSpell:ignore hdgb gphb
 # shellcheck disable=SC2139
 alias {hdgb,gphb}='heroku_deploy_git_branch'
 if [ -n "${ZSH_VERSION:-}" ]; then
@@ -143,6 +146,7 @@ function heroku_psql() {
   db_url=$(heroku_db_url "$app")
   psql "$db_url"
 }
+# cSpell:ignore hpsql
 alias hpsql='heroku_psql'
 [ -n "${ZSH_VERSION:-}" ] && compdef _heroku_apps heroku_psql
 

@@ -8,13 +8,13 @@ option_as_alt: Both
 
 font:
   normal:
-    family: CaskaydiaCove NF
+    family: SauceCodePro Nerd Font
     style: Regular
   bold:
-    family: CaskaydiaCove NF
+    family: SauceCodePro Nerd Font
     style: Bold
   italic:
-    family: CaskaydiaCove NF
+    family: SauceCodePro Nerd Font
     style: Italic
   size: 13.0
 

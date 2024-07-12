@@ -1,6 +1,7 @@
 :
 # shellcheck disable=SC2139
 alias fn="$EDITOR $0"
+# cSpell:ignore refn
 # shellcheck disable=SC2139
 alias refn="source $0"
 
@@ -71,6 +72,7 @@ function content_length() {
       http_header_value Content-Length |
       gnumfmt --to=si --suffix=B
 }
+# cSpell:ignore cuil
 alias cuil="content_length"
 
 function curl_time() {
@@ -193,6 +195,7 @@ function my_external_ip() {
   curl -fLs ifconfig.me
 }
 
+# cSpell:ignore myip
 function myip_whois() {
   local ip
   ip=$(echo_eval my_external_ip)
@@ -362,6 +365,7 @@ function which_detailed() {
 }
 alias wh="which_detailed"
 
+  # cSpell:ignore whoip
 function whoip() {
   local ip
   ip=$(dig +short "$1" | head -n1)
@@ -386,4 +390,5 @@ function yaml_lint() {
     js-yaml "$file" 1> /dev/null
   done
 }
+# cSpell:ignore ymll
 alias ymll="yaml_lint"

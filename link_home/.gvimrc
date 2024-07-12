@@ -1,4 +1,4 @@
-set guifont=CaskaydiaCove\ NF:h13
+set guifont=SauceCodePro\ Nerd\ Font:h13
 " set guifont=FiraCode\ Nerd\ Font:h13
 " set guifont=Hasklug\ Nerd\ Font:h12
 " set guifont=IntoneMono\ NF:h13

@@ -1,3 +1,5 @@
+# cSpell:ignore libg gcpn gcano gdnc gdtc gdtk gmmnc gmtk gpft gpla gplp grgu grpo
+
 [[ -z $GIT_ALREADY_UP_TO_DATE ]] && declare -rx GIT_ALREADY_UP_TO_DATE=64
 
 # shellcheck disable=SC2139
@@ -38,6 +40,8 @@ alias grh~='git reset HEAD~'
 
 alias grgu='git remote get-url'
 alias grpo='git remote prune origin'
+
+# cSpell:ignore gsta gstp gstpb gsts ghprc ghprv grhh
 
 # Original gsta (omz/git.plugin.zsh) sounds like apply :)
 alias gsta="git stash apply"
@@ -105,20 +109,34 @@ function git_diff_save() {
 }
 
 function git_find_file() {
-  local file_name=$1
+  local file_name=$1 git_log
 
-  local git_log
-  # TODO: Add --name-only, separate first line, grep "$file_name" the rest
-  git_log=$(git log --all -- "*$file_name*")
+  # Output of git log:
+  # ---
+  # 0123abc Foo bar (Mad Gitter, 1 days ago)
+  #
+  # path/file
+  # 4567def Bar baz (Hieronymus Bosch, 2 days ago)
+  #
+  # path/file
+  # ---
+  # To trick it into separating commits properly, we duplicate all newlines and "de-quadruplicate" them.
+  # https://stackoverflow.com/a/1252191/372654
+  git_log=$(git log --all --name-status -- "*$file_name*" |
+    sed -e ':a' -e 'N' -e '$!ba' -e 's/\n/\n\n/g' -e 's/\n\n\n\n/\n/g')
 
-  local commits=()
-  IFS=$'\n' read_array -d '' commits < <( echo -n "$git_log" && printf '\0' )
-
-  local commit commit_id branches
-  for commit in  "${commits[@]}"; do
-    commit_id=$(echo "$commit" | gsed -e 's/\x1b\[[0-9;]*m//g' | cut -d ' ' -f 1) # gsed: remove color
+  local commit_id branches color_pat='\x1b\[[0-9;]*m'
+  for commit_id in $(echo "$git_log" | gsed -e "s/$color_pat//g" | grep -Eo '^([0-9a-f]{7})\s+'); do
+    # shellcheck disable=SC2001
+    git_log=$(echo "$git_log" | sed -e "s/\(.*$commit_id\)/%s\n\1/")
     branches=$(git branch -a --contains "$commit_id" | head -n 3)
-    printf " %s\n %s\n\n" "$commit" "$branches"
+
+    # Inject branches at the top of each commit
+    branches=$(printf %s "$branches" | tr '\n' ',' | tr -s ' ')
+    # shellcheck disable=SC2059
+    git_log=$(printf "$git_log" "$branches")
   done
+
+  echo "$git_log"
 }
 alias gff='git_find_file'

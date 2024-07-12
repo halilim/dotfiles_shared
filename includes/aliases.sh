@@ -4,6 +4,8 @@ alias al="$EDITOR $0"
 # shellcheck disable=SC2139
 alias real="source $0"
 
+# cSpell:ignore brbc brun brbf brsl brup brupg cdiff cuiv
+
 # See also: OMZ/brew plugin
 # shellcheck disable=SC2139
 alias {bru,brun}='brew uninstall'
@@ -12,6 +14,7 @@ alias brbc='brew bump-cask-pr --version=ver name'
 alias brbf='brew bump-formula-pr --version=ver name'
 alias brewfile='$EDITOR ~/Brewfile'
 alias bri='brew install'
+alias bric='brew install --cask'
 alias brin='brew info'
 alias brl='brew list'
 alias brs='brew search'
@@ -50,6 +53,8 @@ alias f='fd -t f'
 alias fh='fd -t f --hidden'
 alias ft="fd --no-ignore -t f '^tags$'"
 
+# cSpell:ignore hhnv hostconf myip uroot
+
 alias h='http'
 alias hh='http --headers'
 alias hhnv='http --headers --verify=no'
@@ -86,6 +91,8 @@ alias pg_fg='postgres -D "$(brew --prefix)"/var/postgres'
 
 # Make high-resolution screenshots etc. more shareable
 alias png2jpg50="convert ./*.png -resize '50%' -set filename:base '%[basename]' '%[filename:base].jpg'"
+
+# cSpell:ignore psgw rgfh rghi rgchi rgwc rgws sshconf
 
 alias psf='ps aux | fzf'
 alias psg='ps aux | grep -v " grep " | grep -i'

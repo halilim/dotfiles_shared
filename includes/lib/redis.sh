@@ -19,6 +19,7 @@ function redco() {
       tls_param='--redis-tls'
     fi
 
+    # cSpell:ignore noload nosave
     echo_eval "NODE_TLS_REJECT_UNAUTHORIZED=0 redis-commander --redis-label ""${REDCO_LABEL:-$host}"" \
       --redis-host ""$host"" --redis-port ""$port"" --redis-password ""$password"" \
       --noload --nosave --open ""$tls_param"" ""$read_only_param"""

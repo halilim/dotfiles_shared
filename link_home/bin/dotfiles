@@ -131,10 +131,29 @@ function link_file() {
   source_base=$(basename "$source")
   [[ $source_base == '.DS_Store' ]] && return 0
 
-  link=$target_dir/$source_base
-  if [[ ! -L "$link" || $(readlink -f "$link") != $(readlink -f "$source") ]]; then
+  # macOS no longer accepts symlinks to plist files https://github.com/lra/mackup/issues/1924
+  # So for now, we use hard links. Note that they are prone to being replaced by actual files.
+  local hard_link=false
+  [[ $source == *.plist ]] && hard_link=true
+
+  local link=$target_dir/$source_base
+
+  local same=false
+  if [[ $hard_link == true ]]; then
+    # Have the same inodes
+    [[ $(gstat -c '%i' "$link" "$source" | uniq | wc -l | tr -d '[:space:]') == 1 ]] && same=true
+  else
+    # Pointing to the same path
+    [[ $(readlink -f "$link") == $(readlink -f "$source") ]] && same=true
+  fi
+
+  if [[ $same == false ]]; then
     backup "$link" "$type"
-    echo_eval_with_sudo "$type" 'ln -s %q %q' "$source" "$link"
+
+    local link_arg=' -s'
+    [[ $hard_link == true ]] && link_arg=''
+
+    echo_eval_with_sudo "$type" 'ln%s %q %q' "$link_arg" "$source" "$link"
   fi
 }
 
@@ -142,7 +161,7 @@ function backup() {
   local file=$1
   [[ ! -L "$file" && ! -f "$file" && ! -d "$file" || $file == / || $file == "$HOME" ]] && return 0
 
-  [[ -L "$file" && ! -a "$file" ]] && echo_eval_with_sudo "$type" 'rm %q # Broken link' "$file" && return
+  [[ -L "$file" && ! -e "$file" ]] && echo_eval_with_sudo "$type" 'rm %q # Broken link' "$file" && return
 
   local type=$2
   echo_eval_with_sudo "$type" 'mv %q{,.bak.%q}' "$file" "$(date +'%s')"

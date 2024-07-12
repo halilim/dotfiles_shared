@@ -51,12 +51,10 @@ brew 'rbspy' # Profiler, for RubyMine
 brew 'readline'
 brew 'shared-mime-info' # mimemagic gem
 
-brew 'rustup' # terminal_color_mode
 brew 'shellcheck'
 brew 'shfmt' # VS Code extension shell-format
 
-tap 'teamookla/speedtest'
-brew 'speedtest'
+brew 'teamookla/speedtest/speedtest'
 
 brew 'terminal-notifier'
 brew 'tree'
@@ -68,10 +66,6 @@ brew 'zsh'
 
 # Start: Casks
 
-cask 'font-caskaydia-cove-nerd-font'
-cask 'font-fira-code-nerd-font'
-cask 'font-intone-mono-nerd-font'
-cask 'font-meslo-for-powerlevel10k' # `MesloLGS NF` https://github.com/romkatv/powerlevel10k/issues/671#issuecomment-2164736070
 cask 'font-sauce-code-pro-nerd-font' # Also works for Powerlevel10k
 
 cask 'qlcolorcode' # Source code files with syntax highlighting
@@ -97,13 +91,6 @@ cask 'xbar'
 
 # End: Casks
 
-path = Pathname.new(File.readlink(__FILE__)).dirname.dirname.dirname.join('custom', 'includes', 'brewfile_custom')
-require path
-
-BrewfileCustom.formulas.each do |formula|
-  brew formula
-end
-
-BrewfileCustom.casks.each do |cask|
-  cask cask
-end
+brewfile_custom = Pathname.new(File.readlink(__FILE__)).dirname.dirname.dirname
+                          .join('custom', 'includes', 'brewfile_custom.rb')
+instance_eval File.read(brewfile_custom), __FILE__, __LINE__ + 1

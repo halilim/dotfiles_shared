@@ -1,4 +1,6 @@
-# See also OMZ/npm plugin
+# See also: OMZ/npm plugin
+
+# cSpell:ignore nigp ninp
 
 alias nv="node -v"
 

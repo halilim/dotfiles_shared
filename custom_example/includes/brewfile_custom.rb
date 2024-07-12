@@ -1,16 +1,6 @@
-module BrewfileCustom
-  module_function
+# frozen_string_literal: true
 
-  def formulas
-    [
-      'foo',
-      'bar' # Etc
-    ]
-  end
+brew 'foo'
+brew 'bar' # Etc
 
-  def casks
-    [
-      'baz'
-    ]
-  end
-end
+cask 'baz'

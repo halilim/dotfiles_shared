@@ -10,6 +10,7 @@
     "markdown": true,
     "nginx": true,
     "plaintext": true,
+    "plist": true,
     "procfile": true,
     "snippets": true,
     "svg": true,
@@ -75,7 +76,7 @@
   "editor.autoClosingQuotes": "always",
   "editor.cursorBlinking": "phase",
   "editor.find.seedSearchStringFromSelection": "selection",
-  "editor.fontFamily": "'CaskaydiaCove NF', Menlo, Monaco, 'Courier New', monospace",
+  "editor.fontFamily": "'SauceCodePro Nerd Font', Menlo, Monaco, 'Courier New', monospace",
   "editor.fontLigatures": true,
   "editor.fontSize": 13,
   "editor.guides.bracketPairs": "active",
@@ -140,6 +141,7 @@
     ".inputrc": "shellscript",
     ".jshintignore": "ignore",
     ".markdownlintrc": "jsonc",
+    ".ruby-version": "properties",
     "*.erb.deface": "erb",
     "*.gitconfig*": "ini",
     "*.haml.deface": "haml",
@@ -166,6 +168,7 @@
     "/etc/periodic/**/*.conf": "shellscript",
     "Brewfile*": "ruby",
     "coc-settings.json": "jsonc",
+    "default-gems": "properties",
     "Procfile.*": "procfile"
   },
 
@@ -291,6 +294,9 @@
   "php.suggest.basic": false,
   "php.validate.enable": false,
 
+  "python.analysis.autoFormatStrings": true,
+  "python.analysis.autoImportCompletions": true,
+  "python.analysis.completeFunctionParens": true,
   "python.defaultInterpreterPath": "/opt/homebrew/bin/python3",
 
   "rainbow_csv.csv_lint_detect_trailing_spaces": true,
@@ -349,7 +355,7 @@
     "**/zshrc": true
   },
 
-  "shellformat.flag": "--case-indent --indent 2 --keep-padding --space-redirects",
+  "shellformat.flag": "--case-indent --indent 2",
   "shellformat.path": "/opt/homebrew/bin/shfmt",
   // "shellformat.useEditorConfig": true, // This only recognizes files ending in .sh
 
@@ -415,8 +421,9 @@
   },
 
   "vim.normalModeKeyBindings": [
-    { "before": ["leader", ",", "k"], "commands": ["workbench.action.openGlobalKeybindingsFile"] },
-    { "before": ["leader", ",", "v"], "commands": ["workbench.action.openSettingsJson"] },
+    { "before": ["leader", "leader", "k"], "commands": ["workbench.action.openGlobalKeybindingsFile"] },
+    { "before": ["leader", "leader", "j"], "commands": ["workbench.action.openSettingsJson"] },
+    { "before": ["leader", "leader", "j", "w"], "commands": ["workbench.action.openWorkspaceSettingsFile"] },
 
     { "before": ["leader", "%"], "commands": ["editor.emmet.action.matchTag"] },
     { "before": ["leader", "a"], "commands": ["alternate.alternateFile"] },
@@ -558,8 +565,7 @@
     "*.ipynb": "jupyter-notebook",
     "*.plist": "default"
   },
-  "workbench.iconTheme": "material-icon-theme",
-  "workbench.productIconTheme": "material-product-icons",
+  "workbench.iconTheme": "vscode-icons",
   "workbench.startupEditor": "none",
 
   "xml.codeLens.enabled": true,

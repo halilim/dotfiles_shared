@@ -1,13 +1,8 @@
-function source_glob() {
-  local file
-  for file in "$@"; do
-    # shellcheck disable=SC1090
-    . "$file"
-  done
-}
-
 function source_custom() {
-  source_glob "$DOTFILES_CUSTOM"/includes/"$1"
+  local file="$DOTFILES_CUSTOM"/includes/"$1"
+  # shellcheck disable=SC1090
+  [[ -e "$file" ]] && . "$file"
+  return 0
 }
 
 function source_with_custom() {
@@ -115,7 +110,7 @@ export UPDATE_BACKUP_CMDS=(
 
 # Global troubleshooting reminder: Some apps treat PATH as case-insensitive, causing problems when
 # a variable named lowercase `path` used in scripts or functions.
-PATH="$HOME/.cargo/bin:$PATH:$HOME/bin"
+PATH="$PATH:$HOME/bin"
 
 # https://ruby.github.io/rdoc/RI_rdoc.html
 export RI="--format ansi"

@@ -1,4 +1,7 @@
 :
+
+# cSpell:ignore libe
+
 # shellcheck disable=SC2139
 alias libe="$EDITOR $0"
 

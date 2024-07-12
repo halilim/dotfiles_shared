@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -euo pipefail
+IFS=$'\n\t'
+
+# Setup:
+# 1. Automator > New > Application > "Run Shell Script" > `~/bin/login-script` > Save as `Login script.app`
+# 2. System Settings > Login Items > Add > Login script.app
+
+# osascript -e "$(cat <<APPLE_SCRIPT
+#   display notification with title "title script" subtitle "whoami=$(whoami)
+# HOME=$HOME
+# PATH=$PATH"
+# APPLE_SCRIPT
+# )"
+
+# Somehow even if it's in the keychain, it doesn't show up in ssh-add -l
+grep -slR 'PRIVATE' ~/.ssh | xargs ssh-add --apple-use-keychain --apple-load-keychain

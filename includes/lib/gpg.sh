@@ -1,3 +1,5 @@
+# cSpell:ignore libgpg
+
 # See also: omz.zsh > gpg-agent
 export GPG_TTY=$TTY
 

@@ -1,4 +1,7 @@
 :
+
+# cSpell:ignore libm fdns appswitcher
+
 # shellcheck disable=SC2139
 alias libm="$EDITOR $0"
 
@@ -9,7 +12,6 @@ alias chrome='/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome'
 alias fdns='sudo killall -HUP mDNSResponder'
 alias lc="launchctl"
 alias o='open'
-alias sjpg='defaults write com.apple.screencapture type heic' # heic | jpg | png
 alias sm='smerge .'
 # shellcheck disable=SC2139
 alias smerge_conf="$EDITOR $HOME'/Library/Application Support/Sublime Merge/Packages/User/Preferences.sublime-settings'"
@@ -26,6 +28,19 @@ function iterm2_custom_path_short() {
     dir='~'
   fi
   echo "${dir:t}"
+}
+
+# https://superuser.com/a/1625752/59919
+# Or move the Dock to the active display, and the app switcher should follow it
+function mac_app_switcher_all_displays() {
+  local value="${1:-true}"
+  defaults write com.apple.dock appswitcher-all-displays -bool "$value"
+  killall Dock
+}
+
+function mac_set_screenshot_format() {
+  local format="${1:-heic}" # heic | jpg | png
+  defaults write com.apple.screencapture type "$format"
 }
 
 function quick_look() {

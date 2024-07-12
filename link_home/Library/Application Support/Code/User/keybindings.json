@@ -210,5 +210,9 @@
         "key": "shift+cmd+g",
         "command": "workbench.view.scm",
         "when": "workbench.scm.active"
+    },
+    {
+        "key": "ctrl+cmd+,",
+        "command": "workbench.action.openWorkspaceSettings"
     }
 ]

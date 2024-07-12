@@ -1,4 +1,7 @@
 :
+
+# cSpell:ignore libd dcrr
+
 # shellcheck disable=SC2139
 alias libd="$EDITOR $0"
 

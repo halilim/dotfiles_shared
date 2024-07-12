@@ -1,6 +1,7 @@
 #!/bin/bash
 
 :
+# cSpell:ignore bashprofile
 # shellcheck disable=SC2139
 alias bashprofile="$EDITOR $0"
 
