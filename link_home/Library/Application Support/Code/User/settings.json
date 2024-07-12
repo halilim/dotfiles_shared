@@ -510,7 +510,15 @@
     },
     "[Solarized Light]": {
       "comments": "#435151"
-    }
+    },
+    "textMateRules": [
+      {
+        "scope": "keyword.other.dotenv",
+        "settings": {
+          "foreground": "#FF000000"
+        }
+      }
+    ]
   },
 
   "workbench.colorCustomizations": {
