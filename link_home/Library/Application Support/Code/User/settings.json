@@ -357,7 +357,7 @@
     "**/zshrc": true
   },
 
-  "shellformat.flag": "--case-indent --indent 2",
+  "shellformat.flag": "--case-indent --indent 2 --keep-padding --space-redirects",
   "shellformat.path": "/opt/homebrew/bin/shfmt",
   // "shellformat.useEditorConfig": true, // This only recognizes files ending in .sh
 

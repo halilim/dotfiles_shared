@@ -2,5 +2,5 @@
 [*.sh]
 binary_next_line   = true
 switch_case_indent = true
-space_redirects    = false
-keep_padding       = false
+space_redirects    = true
+keep_padding       = true

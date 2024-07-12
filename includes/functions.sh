@@ -5,6 +5,14 @@ alias fn="$EDITOR $0"
 # shellcheck disable=SC2139
 alias refn="source $0"
 
+function bak_toggle() {
+  if [[ $1 == *.bak ]]; then
+    echo_eval 'mv %q %q' "$1" "${1%.bak}"
+  else
+    echo_eval 'mv %q %q' "$1" "$1.bak"
+  fi
+}
+
 function builtin_help() {
   local url
   url="$(printf "$BUILTIN_URL#:~:text=%s [" "$1")"

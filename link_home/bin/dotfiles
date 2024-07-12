@@ -6,7 +6,15 @@ IFS=$'\n\t'
 # Doesn't handle deletions
 
 function setup() {
+  printf '%s\n%s\n%s\n%s\n' \
+    "$(declare -p DOTFILES)" \
+    "$(declare -p DOTFILES_SHARED)" \
+    "$(declare -p DOTFILES_INCLUDES)" \
+    "$(declare -p DOTFILES_CUSTOM)" \
+    > ~/.dotfiles_paths.sh
+
   sync
+
   echo_eval '%q/bin/iterm_tab %q omz_install_custom_plugins' "$HOME" "$PWD"
 }
 
@@ -136,24 +144,30 @@ function link_file() {
   local hard_link=false
   [[ $source == *.plist ]] && hard_link=true
 
-  local link=$target_dir/$source_base
+  local target=$target_dir/$source_base
 
-  local same=false
-  if [[ $hard_link == true ]]; then
-    # Have the same inodes
-    [[ $(gstat -c '%i' "$link" "$source" | uniq | wc -l | tr -d '[:space:]') == 1 ]] && same=true
+  need_to_link "$source" "$target" "$hard_link" || return 0
+
+  backup "$target" "$type"
+
+  local link_arg=' -s' comment=''
+  [[ $hard_link == true ]] && link_arg='' && comment=' # Hard link'
+
+  echo_eval_with_sudo "$type" 'ln%s %q %q%s' "$link_arg" "$source" "$target" "$comment"
+}
+
+function need_to_link() {
+  local source=$1 target=$2 hard_link=$3
+
+  [[ -e $target ]] || return 0
+
+  if [[ $hard_link == false ]]; then
+    [[ $(readlink -f "$target") != $(readlink -f "$source") ]]
   else
-    # Pointing to the same path
-    [[ $(readlink -f "$link") == $(readlink -f "$source") ]] && same=true
-  fi
-
-  if [[ $same == false ]]; then
-    backup "$link" "$type"
-
-    local link_arg=' -s'
-    [[ $hard_link == true ]] && link_arg=''
-
-    echo_eval_with_sudo "$type" 'ln%s %q %q' "$link_arg" "$source" "$link"
+    local inode_count
+    # shellcheck disable=SC2012
+    inode_count=$(ls -i "$target" "$source" | cut -d ' ' -f 1 | uniq | wc -l | tr -d '[:space:]')
+    [[ $inode_count == 2 ]]
   fi
 }
 
@@ -178,14 +192,15 @@ function echo_eval_with_sudo() {
 
 function vim_mk_spell() {
   # TODO: Is this the correct process, or should multiple files for a locale be merged? Check Vim
-  local file files=()
+  local force=${1:-false} file files=()
   for file in "$VIM_SPELL"/*.dic; do
-    [[ $(find $VIM_SPELL -name "$(basename "$file")*.spl" -print -quit) ]] || files+=("$file")
+    [[ $force == true || ! $(find $VIM_SPELL -name "$(basename "$file")*.spl" -print -quit) ]] && files+=("$file")
   done
 
   local num_files=${#files[@]}
   [[ $num_files -eq 0 ]] && return 0
 
+  # TODO: This doesn't seem to be working in Vim. Try word: 'dotfiles' https://vi.stackexchange.com/a/15053
   echo_eval "vim +'$(printf 'mkspell! %%q | %.0s' $(seq 1 "$num_files"))q'" "${files[@]}"
 }
 
@@ -200,13 +215,6 @@ export DOTFILES_SHARED=$DOTFILES/shared
 export DOTFILES_INCLUDES=$DOTFILES_SHARED/includes
 export DOTFILES_CUSTOM=$DOTFILES/custom
 
-printf '%s\n%s\n%s\n%s\n' \
-  "$(declare -p DOTFILES)" \
-  "$(declare -p DOTFILES_SHARED)" \
-  "$(declare -p DOTFILES_INCLUDES)" \
-  "$(declare -p DOTFILES_CUSTOM)" \
-  > ~/.dotfiles_paths.sh
-
 # shellcheck disable=SC1091
 . "$DOTFILES_INCLUDES"/functions.sh
 
@@ -214,5 +222,6 @@ case "${1:-''}" in
   setup) setup ;;
   sync) sync ;;
   import) import "${2:-}" "${3:-}" ;;
-  *) echo "Usage: $DOTFILES_CMD <setup|import>" ;;
+  vim_mk_spell) vim_mk_spell true ;;
+  *) echo "Usage: $DOTFILES_CMD <setup|sync|import|vim_mk_spell>" ;;
 esac
