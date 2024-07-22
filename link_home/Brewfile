@@ -93,4 +93,4 @@ cask 'xbar'
 
 brewfile_custom = Pathname.new(File.readlink(__FILE__)).dirname.dirname.dirname
                           .join('custom', 'includes', 'brewfile_custom.rb')
-instance_eval File.read(brewfile_custom), __FILE__, __LINE__ + 1
+instance_eval File.read(brewfile_custom), __FILE__, __LINE__ + 1 if brewfile_custom.exist?

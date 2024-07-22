@@ -14,7 +14,7 @@ function debug_vars() {
   is_debug_enabled || return
 
   for arg in "$@"; do
-    print_to_log "$arg: |${!arg}|"
+    print_to_log "$(declare -p "$arg")"
   done
 
   print_to_log ''
@@ -48,8 +48,8 @@ function get_project_path() {
   echo "$dir"
 }
 
-function is_in_rubymine_titles() {
-  local git_dir=$1
+function should_open_in_rubymine() {
+  local git_dir=$1 abs_path=$2
 
   local rubymine_titles
   rubymine_titles=$(window_names RubyMine)
@@ -62,6 +62,10 @@ function is_in_rubymine_titles() {
       return 0
     fi
   done
+
+  if [[ $rubymine_titles && ${abs_path##*.} == 'rb' ]]; then
+    return 0
+  fi
 
   return 1
 }

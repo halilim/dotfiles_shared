@@ -4,12 +4,15 @@
 # cSpell:ignore libm
 alias libm="$EDITOR $0"
 
+export OPEN_CMD='open'
+
 # cSpell:ignore fdns
+alias ahr='air_buddy_handoff receive'
+alias ahs='air_buddy_handoff send'
 alias cb="pbcopy"
 alias chrome='/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome'
 alias fdns='sudo killall -HUP mDNSResponder'
 alias lc="launchctl"
-alias o='open'
 alias sm='smerge .'
 # shellcheck disable=SC2139
 alias smerge_conf="$EDITOR $HOME'/Library/Application Support/Sublime Merge/Packages/User/Preferences.sublime-settings'"

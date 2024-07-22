@@ -58,6 +58,7 @@ unset num_procs half_procs
 # Custom: $ZSH_CUSTOM/plugins
 
 export OMZ_PLUGINS=(
+  aliases
   bgnotify
   brew
   bundler

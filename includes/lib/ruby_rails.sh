@@ -44,8 +44,9 @@ alias hrrr='heroku run rails runner ""'
 alias {mc,mailcatch}='mailcatcher -f'
 
 # Ripgrep
-# cSpell:ignore rgr rgrw
+# cSpell:ignore rgr rgrr rgrw
 alias rgr="rg -g '!config/locales/' -g '!features/' -g '!spec/' -g '!test/'"
+alias rgrr="rg -g '*.rb' -g '!features/' -g '!spec/' -g '!test/'"
 alias rgrw="rgr -w"
 
 # cSpell:ignore  rpry ramazing

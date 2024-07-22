@@ -83,6 +83,8 @@ alias myip='my_ips'
 alias mysql_dump='mysqldump --no-create-info -uroot -p db_name > db_name.sql'
 alias mysql_restore='mysql -uroot -p db_name < db_name.sql'
 
+alias o='$OPEN_CMD'
+
 alias pg="ping google.com" # TODO: Can be confused with postgres?
 alias p1="ping 1.1.1.1"
 alias p192="ping 192.168.1.1"

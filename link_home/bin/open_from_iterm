@@ -50,7 +50,7 @@ debug_vars dir git_path git_dir
 
 # TODO: (still needed?) create a list of candidates, split and test all path segments, in word mode
 
-if is_in_rubymine_titles "$git_dir"; then
+if should_open_in_rubymine "$git_dir" "$abs_path"; then
   # https://www.jetbrains.com/help/ruby/opening-files-from-command-line.html#88f1a126
   # Note: column is only documented in the "Windows" tab. -1: it goes to the next character (bug?)
   /usr/local/bin/mine --line "$line" --column $((column - 1)) "$abs_path"

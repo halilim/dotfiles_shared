@@ -1,4 +1,4 @@
-# cSpell:ignore libg gcpn gcano gdnc gdtc gdtk gmmnc gmtk gpft gpla gplp grgu grpo
+# cSpell:ignore libg gcpn gcano gcom gdnc gdtc gdtk gmmnc gmtk gpft gpla gplp grgu grpo
 
 [[ -z $GIT_ALREADY_UP_TO_DATE ]] && declare -rx GIT_ALREADY_UP_TO_DATE=64
 
@@ -11,6 +11,7 @@ alias gcpn='git cherry-pick --no-commit'
 alias gcano='git commit --amend --no-edit'
 alias gcm="git commit --verbose --message '"
 alias gcn='git commit --no-edit'
+alias gcom='git checkout $(git_main_branch)'
 
 alias gdh='git diff HEAD'
 alias gdh~='git diff HEAD~'

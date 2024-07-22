@@ -150,6 +150,7 @@ function grep_hl() {
 }
 
 # https://stackoverflow.com/a/8574392/372654
+# Usage: in_array 'foo' "${array[@]}" (Bash/Zsh) - in_array 'foo' $array (Zsh)
 function in_array() {
   local e match="$1"
   shift
@@ -175,7 +176,7 @@ function http_header_value() {
 }
 
 # https://stackoverflow.com/a/49418778/372654
-# Usage: join_array '|' $array (Zsh) / join_array '|' "${array[@]}" (Bash/Zsh)
+# Usage: join_array '|' "${array[@]}" (Bash/Zsh) - join_array '|' $array (Zsh)
 function join_array() {
   local delim=$1 arr=$2
   shift 2
@@ -331,8 +332,26 @@ function which_detailed() {
 
   # When it's a variable name in 2nd round
   if [[ $input == '$'* ]]; then
-    printf '%s=' "$input"
-    eval "echo ""$input"""
+    local bare_name
+    bare_name="${input#'$'}"
+    local declare_output
+    declare_output=$(declare -p "$bare_name")
+    printf %s "$declare_output"
+
+    if [[ $declare_output == 'typeset -g'* ]]; then
+      local func_name
+      if [ -n "${ZSH_VERSION:-}" ]; then
+        # shellcheck disable=SC2154
+        func_name="${funcstack[1]}"
+      else
+        func_name="${FUNCNAME[0]}"
+      fi
+
+      printf %s " # -g (global) flag is probably due to the local scope of $func_name"
+    fi
+
+    printf '\n'
+
     return
   fi
 

@@ -150,6 +150,7 @@
     "*.jbuilder": "ruby",
     "*.sublime-settings": "json",
     "*.tgn": "json",
+    ".tool-versions": "properties",
     "*.tpl.php": "smarty",
     "*.yml.*": "yaml",
     "*.zone.txt": "zone",
