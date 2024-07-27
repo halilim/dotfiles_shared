@@ -38,8 +38,8 @@ function color() {
     fi
 
     echo 'Usage examples:'
-    echo "$func_name white 'some text'"
-    echo "$func_name red-bold 'some text'"
+    echo "$($func_name green "$func_name") white $($func_name yellow "'some text'")"
+    echo "$($func_name green "$func_name") red-bold $($func_name yellow "'some text'")"
     return 1
   fi
 

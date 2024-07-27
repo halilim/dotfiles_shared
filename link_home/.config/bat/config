@@ -18,13 +18,19 @@
 # disable text selection, unless you press shift.
 #--pager="less --RAW-CONTROL-CHARS --quit-if-one-screen --mouse"
 
+# See supported languages: bat --list-languages
+# Add new languages: https://github.com/sharkdp/bat?tab=readme-ov-file#adding-new-syntaxes--language-definitions
+# Edit & run `update_bat_syntaxes` to enable new syntaxes
+
 # Syntax mappings: map a certain filename pattern to a language.
 #   Example 1: use the C++ syntax for Arduino .ino files
 #   Example 2: Use ".gitignore"-style highlighting for ".ignore" files
 #--map-syntax "*.ino:C++"
 --map-syntax ".ignore:Git Ignore"
 --map-syntax ".tool-versions:Java Properties"
+--map-syntax "**/.husky/*:Bourne Again Shell (bash)"
 --map-syntax "**/.kube/config:YAML"
+--map-syntax "Procfile.*:Bash (Procfile)"
 
 # All of these already work with `bat ...`, but not with `delta`, e.g. `git diff`
 # --map-syntax ".aliases:Bourne Again Shell (bash)"

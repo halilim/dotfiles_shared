@@ -1,4 +1,4 @@
-# cSpell:ignore libg gcpn gcano gcom gdnc gdtc gdtk gmmnc gmtk gpft gpla gplp grgu grpo
+# cSpell:ignore libg gcpn gcano gcmb gcom gdnc gdtc gdtk gmmnc gmtk gpft gpla gplp grgu grpo
 
 [[ -z $GIT_ALREADY_UP_TO_DATE ]] && declare -rx GIT_ALREADY_UP_TO_DATE=64
 
@@ -10,6 +10,7 @@ alias gan='git add -N'
 alias gcpn='git cherry-pick --no-commit'
 alias gcano='git commit --amend --no-edit'
 alias gcm="git commit --verbose --message '"
+alias gcmb='git commit --verbose --message "$(git rev-parse --abbrev-ref HEAD)"'
 alias gcn='git commit --no-edit'
 alias gcom='git checkout $(git_main_branch)'
 
@@ -34,7 +35,7 @@ alias gpl='git pull'
 # shellcheck disable=SC2139
 alias {gla,gpla}="for_each_dir 'git checkout "'$(git_main_branch)'" && git pull --prune'" # Pull all
 # shellcheck disable=SC2139
-alias {gplp,glp}='git pull --prune'
+alias {gplp,glp,gpp}='git pull --prune'
 alias gps='git push --set-upstream origin'
 
 alias grh~='git reset HEAD~'
@@ -88,6 +89,16 @@ function cd_checkout_pull() {
   [[ $git_pull_result ]] && echo "$git_pull_result"
   if [[ $git_pull_result == *'up to date'* ]]; then
     return "$GIT_ALREADY_UP_TO_DATE"
+  fi
+}
+
+function git_clone_or_pull() {
+  local repo=$1 dir=$2
+
+  if [[ -d "$dir" ]]; then
+    git --git-dir="$dir"/.git pull --prune
+  else
+    git clone "$repo" "$dir"
   fi
 }
 

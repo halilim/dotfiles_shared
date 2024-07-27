@@ -106,6 +106,7 @@ export UPDATE_BACKUP_CMDS=(
   'npm update -g --silent'
   'omz update --unattended'
   'omz_update_custom'
+  update_bat_syntaxes
   update_iterm2_color_schemes
 )
 
