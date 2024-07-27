@@ -20,12 +20,13 @@ debug_print '------------------------------'
 # debug_vars EDITOR OSTYPE CPUTYPE
 # exit
 
-# TODO: It can be a folder
 abs_path=$1
 line=$2
 column=$3
 
-[[ ! $abs_path || ! -f $abs_path ]] && exit
+[[ ! $abs_path ]] && exit
+
+[[ -d $abs_path ]] && open "$abs_path" && exit
 
 # This is unreachable because iTerm2 doesn't recognize it as a file/folder
 # Instead, it's handled by the field-context-separator in .ripgreprc

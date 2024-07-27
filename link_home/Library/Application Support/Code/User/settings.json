@@ -157,6 +157,8 @@
     "**/.aws/credentials": "ini",
     "**/.bundle/config": "yaml",
     "**/.config/bat/config": "properties",
+    "**/.git*/info/exclude": "ignore",
+    "**/.husky/*": "shellscript",
     "**/.mackup.cfg": "ini",
     "**/.mackup/*.cfg": "ini",
     "**/.ssh/config": "ssh_config",
@@ -189,7 +191,17 @@
   ],
   "git.openRepositoryInParentFolders": "never",
 
+  "git-graph.date.format": "ISO Date & Time",
+  "git-graph.dialog.fetchRemote.prune": true,
+  "git-graph.dialog.fetchRemote.pruneTags": true,
+  "git-graph.dialog.general.referenceInputSpaceSubstitution": "Hyphen",
+  "git-graph.dialog.merge.squashCommits": true,
   "git-graph.maxDepthOfRepoSearch": 1,
+  "git-graph.openNewTabEditorGroup": "Beside",
+  "git-graph.openToTheRepoOfTheActiveTextEditorDocument": true,
+  "git-graph.repository.fetchAndPrune": true,
+  "git-graph.repository.onLoad.scrollToHead": true,
+  "git-graph.repository.onLoad.showCheckedOutBranch": true,
 
   "github.copilot.advanced": {},
   "github.copilot.enable": {
@@ -573,6 +585,9 @@
 
   "xml.codeLens.enabled": true,
 
+  "yaml.customTags": [
+    "!ruby/regexp"
+  ],
   "yaml.maxItemsComputed": 10000,
 
   "yard.spacers.afterTags": false,

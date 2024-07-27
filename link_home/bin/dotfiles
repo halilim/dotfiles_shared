@@ -19,38 +19,90 @@ function setup() {
 }
 
 function sync() {
-  setup_shared_links
-  setup_custom_links
+  local type=${1:-all}
+  [[ $type == all || $type == shared ]] && setup_shared_links
+  [[ $type == all || $type == custom ]] && setup_custom_links
   vim_mk_spell
 }
 
 function import() {
-  local item_path=${1:-''}
-  [[ -z $item_path ]] && echo "Usage: $DOTFILES_CMD ${FUNCNAME[0]} <path> [<$(color yellow shared)|custom>]" && return 1
-  [[ ! -e $item_path ]] && echo "Does not exist" && return 1
+  do_import "$@"
+}
+
+function revert_import() {
+  REVERT_IMPORT=1 do_import "$@"
+}
+
+function do_import() {
+  local usage
+  usage="$USAGE_BASE ${FUNCNAME[1]} <shared|custom> <path 1> [<path 2> ...]"
+
+  local dotfile_type=${1:-''}
+  if [[ $dotfile_type != shared && $dotfile_type != custom ]]; then
+    [[ $dotfile_type ]] && log_error 'Unknown dotfile type'
+    log_error "$usage" 1 && return 1
+  fi
+
+  [[ $# -lt 2 ]] && log_error "$usage" 1 && return 1
+
+  local msg_type msg_home
+  msg_type=$(color red "$dotfile_type")
+  msg_home=$(color green "$HOME")
+  if [[ ${REVERT_IMPORT:-''} ]]; then
+    echo "Reverting: { $msg_type dotfiles -> $msg_home }"
+  else
+    echo "Importing: { $msg_home -> $msg_type dotfiles }"
+  fi
+
+  for item_path in "${@:2}"; do
+    import_path "$dotfile_type" "$item_path"
+  done
+}
+
+function import_path() {
+  local dotfile_type=$1 item_path=$2 revert=${REVERT_IMPORT:-''}
+  [[ ! $revert && ! -e $item_path ]] && log_error 'Does not exist' && return 1
 
   local relative_path
   relative_path=$(relative_to "$HOME" "$item_path")
-  local relative_dir=${relative_path%/*}
-  [[ $relative_dir == "$relative_path" ]] && relative_dir=''
 
-  local dotfile_type=${2:-'shared'} dotfile_dir
+  local dotfile_dir
   case "$dotfile_type" in
     shared) dotfile_dir=$DOTFILES_SHARED ;;
     custom) dotfile_dir=$DOTFILES_CUSTOM ;;
-    *) echo >&2 'Unknown dotfile type' && return 1 ;;
   esac
 
-  local dir="$dotfile_dir/link_home/$relative_dir"
-  mk_dir "$dir"
-  echo_eval_with_sudo home 'mv %q %q' "$item_path" "$dir"
+  local path_in_dotfiles=$dotfile_dir/link_home/$relative_path
 
-  case "$dotfile_type" in
-    shared) setup_shared_links ;;
-    custom) setup_custom_links ;;
-  esac
+  # Git doesn't allow sym-linked .gitignore files, so we link .git/info/exclude instead
+  # But .git is a special name that is always ignored, so we rename it within dotfiles
+  # https://stackoverflow.com/q/72729555/25475271
+  local is_local_git=false
+  [[ $item_path == .git/* || $item_path == */.git/* ]] && is_local_git=true
+  [[ $is_local_git ]] && path_in_dotfiles=${path_in_dotfiles//\/.git\//\/.git.linked\/}
 
-  [[ $item_path == $VIM_SPELL/* ]] && vim_mk_spell
+  if [[ $revert ]]; then
+    [[ ! -e $path_in_dotfiles ]] && log_error 'Does not exist in dotfiles' && return 1
+
+    [[ -e $item_path && ! -L $item_path || $(readlink -f "$item_path") != "$path_in_dotfiles" ]] && backup "$item_path" home
+
+    echo_eval_with_sudo home 'mv %q %q' "$path_in_dotfiles" "$item_path"
+  else
+    local relative_dir=${relative_path%/*}
+    [[ $is_local_git ]] && relative_dir=${relative_dir//\/.git\//\/.git.linked\/}
+    [[ $relative_dir == "$relative_path" ]] && relative_dir=''
+    mk_dir "$dotfile_dir/link_home/$relative_dir"
+    echo_eval_with_sudo home 'mv %q %q' "$item_path" "$path_in_dotfiles"
+
+    case "$dotfile_type" in
+      shared) setup_shared_links ;;
+      custom) setup_custom_links ;;
+    esac
+
+    [[ $item_path == $VIM_SPELL/* ]] && vim_mk_spell
+  fi
+
+  return 0
 }
 
 function setup_shared_links() {
@@ -83,7 +135,7 @@ function link_recursive() {
       target_base=/
       ;;
     *)
-      echo >&2 "Unknown link type: $type"
+      log_error "Unknown link type: $type"
       return 1
       ;;
   esac
@@ -91,7 +143,7 @@ function link_recursive() {
   target_dir=$target_base
   [[ $relative_base ]] && target_dir=$target_base/$relative_base
 
-  mk_dir "$target_dir" "$type"
+  [[ $current_source_dir == "$source_base" ]] && mk_dir "$target_dir" "$type"
 
   local dir_source
   # shellcheck disable=SC2044
@@ -145,6 +197,7 @@ function link_file() {
   [[ $source == *.plist ]] && hard_link=true
 
   local target=$target_dir/$source_base
+  [[ $source == */.git.linked/*  ]] && target=${target//\/.git.linked\//\/.git\/}
 
   need_to_link "$source" "$target" "$hard_link" || return 0
 
@@ -175,9 +228,9 @@ function backup() {
   local file=$1
   [[ ! -L "$file" && ! -f "$file" && ! -d "$file" || $file == / || $file == "$HOME" ]] && return 0
 
+  local type=$2
   [[ -L "$file" && ! -e "$file" ]] && echo_eval_with_sudo "$type" 'rm %q # Broken link' "$file" && return
 
-  local type=$2
   echo_eval_with_sudo "$type" 'mv %q{,.bak.%q}' "$file" "$(date +'%s')"
 }
 
@@ -204,6 +257,15 @@ function vim_mk_spell() {
   echo_eval "vim +'$(printf 'mkspell! %%q | %.0s' $(seq 1 "$num_files"))q'" "${files[@]}"
 }
 
+function log_error {
+  local msg=$1 no_color=${2:-''}
+  if [[ $no_color ]]; then
+    echo >&2 "$msg"
+  else
+    color red "$msg" >&2
+  fi
+}
+
 export DOTFILES_CMD
 DOTFILES_CMD=$(basename "$0")
 
@@ -218,10 +280,13 @@ export DOTFILES_CUSTOM=$DOTFILES/custom
 # shellcheck disable=SC1091
 . "$DOTFILES_INCLUDES"/functions.sh
 
+USAGE_BASE="Usage: $(color green "$DOTFILES_CMD")"
+
 case "${1:-''}" in
   setup) setup ;;
-  sync) sync ;;
-  import) import "${2:-}" "${3:-}" ;;
+  sync) sync "${2:-}" ;;
+  import) import "${@:2}" ;;
+  revert_import) revert_import "${@:2}" ;;
   vim_mk_spell) vim_mk_spell true ;;
-  *) echo "Usage: $DOTFILES_CMD <setup|sync|import|vim_mk_spell>" ;;
+  *) log_error "$USAGE_BASE <setup|sync|import|vim_mk_spell> ..." 1 ;;
 esac

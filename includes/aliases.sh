@@ -41,6 +41,7 @@ alias da='direnv allow'
 alias dp='declare -p'
 
 alias di='dotfiles import'
+alias dri='dotfiles revert_import'
 alias ds='dotfiles sync'
 alias dse='dotfiles setup'
 
@@ -75,6 +76,9 @@ alias le="less"
 # shellcheck disable=SC2139
 alias {lp,path}='echo "$PATH" | tr ":" "\n"'
 alias lps='echo "$PATH" | tr ":" "\n" | sort -f'
+
+alias lzd='lazydocker'
+alias lzg='lazygit'
 
 alias m='mine .' # RubyMine
 alias mi='mediainfo'
