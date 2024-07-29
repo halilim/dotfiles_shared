@@ -31,7 +31,9 @@ B2C
 backfill
 backfiller
 backfills
+badware
 bashrc
+bazel
 beeftornado
 berksfile
 bgnotify
@@ -49,6 +51,7 @@ buildpacks
 buildx
 byebug
 callout
+canva
 Caskaydia
 CDN
 cdspell
@@ -73,6 +76,7 @@ commissionable
 compadd
 compdef
 config
+cookiemonster
 coreutils
 CORS
 Covid
@@ -84,10 +88,12 @@ Ctags
 CTYPE
 Cyclomatic
 dasherized
+datatracker
 datname
 DBeaver
 Deel
 deluid
+devcenter
 devs
 dgram
 dic
@@ -105,9 +111,12 @@ dropdowns
 dyno
 Dyno
 Dynos
+easylist
 easymotion
+easyprivacy
 elasticsearch
 Elasticsearch
+endfor
 endfunction
 endswith
 enumerize
@@ -117,6 +126,7 @@ envsh
 esac
 esdoc
 eshead
+evilmartians
 excelviewer
 falsey
 fanout
@@ -154,6 +164,7 @@ googleauth
 gotmpl
 govcloud
 gpg
+grayscale
 grealpath
 gruvbox
 gsed
@@ -253,6 +264,7 @@ mergetool
 Meslo
 microservice
 microservices
+microsoftonline
 mimemagic
 mindepth
 minio
@@ -272,6 +284,7 @@ ncdu
 Neovim
 Nerdfont
 networksetup
+Neue
 newkey
 newrelic
 newsyslog
@@ -298,6 +311,8 @@ OOS
 openai
 openpgp
 openssl
+opentelemetry
+opsgenie
 ordernetworkservices
 orgname
 osascript
@@ -307,6 +322,7 @@ Ozgur
 packagecloud
 packwerk
 paraiso
+parseable
 passwordless
 Pavel
 Payoneer
@@ -323,6 +339,7 @@ pinger
 pipefail
 pkill
 plists
+plowe
 plp
 PLP
 plutil
@@ -349,6 +366,7 @@ qlmanage
 qlstephen
 qlvideo
 quicklook
+quora
 rabbitmq
 RabbitMQ
 railtie
@@ -386,6 +404,7 @@ rstfilter
 rubocop
 RUBYGEMS
 rubymine
+rubyonrails
 RUBYOPT
 rupa
 rxvt
@@ -431,6 +450,7 @@ SQLite
 srand
 srcfolder
 stackable
+stackoverflow
 standardrb
 startswith
 stdinpass
@@ -438,6 +458,7 @@ Stecker
 strftime
 Struct
 stty
+stylesheet
 substr
 systempreferences
 tablename
@@ -450,14 +471,17 @@ tmuxinator
 TODO
 Toggl
 toplevel
+toupper
 traceroute
 Transferwise
 tsrange
 turboframe
 Turborepo
+ublock
 ulid
 Unarchiver
 unblockapp
+unbreak
 unimport
 unpair
 unscope
@@ -465,6 +489,7 @@ uplevel
 upsert
 upserted
 upserts
+urlhaus
 usr
 utf
 VDSL
@@ -477,6 +502,7 @@ vscodevim
 vsicons
 vsintellicode
 Walkthrough
+webhp
 webmock
 webpacker
 whitespace

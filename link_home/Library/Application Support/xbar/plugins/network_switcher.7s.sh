@@ -1,27 +1,27 @@
 #!/usr/bin/env bash
 
 # TODO: Convert into a generic network auto-switcher supporting multiple Wi-Fis
-# TODO: Add option to disable auto-switch
 # TODO: Track connection status of all networks (e.g. "down since ...")
 
 # <xbar.title>Network Switcher</xbar.title>
 # <xbar.version>v1.0</xbar.version>
 # <xbar.author>Halil Özgür</xbar.author>
 # <xbar.author.github>halilim</xbar.author.github>
-# <xbar.desc>Ethernet ↔ Wi-Fi check connection and switch</xbar.desc>
+# <xbar.desc>Ethernet ↔ Wi-Fi check and switch connection</xbar.desc>
 # TODO: Merge Wi-Fi screenshot & link it
 # <xbar.image>http://www.hosted-somewhere/pluginimage</xbar.image>
 
 # <xbar.var>select(VAR_CHECK_METHOD="ping"): Experimental [ping, curl]</xbar.var>
 # <xbar.var>string(VAR_CHECK_HOST="1.1.1.1"): Preferably always on and close, so that the happy path is as fast as possible</xbar.var>
 # <xbar.var>string(VAR_CHECK_TIMEOUT="3"): After this number of seconds, deem it down</xbar.var>
+# <xbar.var>boolean(VAR_DISABLE_AUTO_SWITCH=false): For debugging or connecting to the router</xbar.var>
 # <xbar.var>boolean(VAR_SUDO=false): Use sudo for switching (automatically detected)</xbar.var>
 
 # Alternative ways to combine connections:
 # 1. Software: Speedify
 # 2. Hardware: Multi-WAN routers
 
-[ -t 0 ] && IS_TTY=1 || IS_TTY='' # If stdin is a terminal (TTY, "Run in terminal"), for debugging
+[ -t 0 ] && IS_TTY=1 || IS_TTY='' # If stdin is a terminal (xbar > "Run in terminal"), for debugging
 SELF_PATH=$0
 ACTION=$1
 CONFIG_FILE="$SELF_PATH.vars.json"
@@ -34,7 +34,7 @@ unset self_name
 # TODO: Remove after https://github.com/matryer/xbar/issues/914
 if [[ -s "$CONFIG_FILE" ]]; then
   config=$(<"$CONFIG_FILE")
-  for key in VAR_CHECK_HOST VAR_CHECK_TIMEOUT VAR_CHECK_METHOD VAR_SUDO; do
+  for key in VAR_CHECK_METHOD VAR_CHECK_HOST VAR_CHECK_TIMEOUT VAR_DISABLE_AUTO_SWITCH VAR_SUDO; do
     line=$(grep "$key" <<<"$config")
     value=$(echo "$line" | cut -d' ' -f2 | tr -d '",')
     [[ $line && ${!key} != "$value" ]] && declare "$key=$value"
@@ -116,7 +116,7 @@ function handle_actions() {
       ;;
 
     *)
-      if ! is_connected "$CURRENT_DEVICE" && [[ $NEXT_DEVICE ]]; then
+      if [[ $VAR_DISABLE_AUTO_SWITCH == false ]] && ! is_connected "$CURRENT_DEVICE" && [[ $NEXT_DEVICE ]]; then
         log "Current network $CURRENT_NAME ($CURRENT_DEVICE) is down"
         do_switch=1
       fi
@@ -124,7 +124,8 @@ function handle_actions() {
   esac
 
   if [[ $do_switch ]]; then
-    if [[ $manual_switch ]] || NEXT_CONNECTED=$(is_connected "$NEXT_DEVICE" && echo true || echo false); then
+    [[ ! $manual_switch ]] && NEXT_CONNECTED=$(is_connected "$NEXT_DEVICE" && echo true || echo false)
+    if [[ $manual_switch || $NEXT_CONNECTED == true ]]; then
       log "Switching to $NEXT_NAME ($NEXT_DEVICE)"
       switch
     else
@@ -181,13 +182,15 @@ function can_sudo() {
 }
 
 function is_connected() {
+  local interface=$1
+
   case "$VAR_CHECK_METHOD" in
     curl)
-      curl "$VAR_CHECK_HOST" -Is --connect-timeout "$VAR_CHECK_TIMEOUT" --interface "$1" >/dev/null
+      curl "$VAR_CHECK_HOST" -Is --connect-timeout "$VAR_CHECK_TIMEOUT" --interface "$interface" >/dev/null
       ;;
     *)
       # ping is adding 1 second somewhere
-      ping -c 1 -W $(((VAR_CHECK_TIMEOUT - 1) * 1000)) -b "$1" "$VAR_CHECK_HOST" >/dev/null
+      ping -c 1 -W $(((VAR_CHECK_TIMEOUT - 1) * 1000)) -b "$interface" "$VAR_CHECK_HOST" >/dev/null
       ;;
   esac
 }
@@ -223,20 +226,28 @@ write_log_conf
 declare -a NUMBERS NAMES DEVICES
 get_networks
 
-declare CURRENT_INDEX CURRENT_NAME CURRENT_DEVICE NEXT_INDEX NEXT_NAME NEXT_DEVICE NEXT_CONNECTED
+declare CURRENT_INDEX CURRENT_NAME CURRENT_DEVICE CURRENT_IS_WIFI \
+        NEXT_INDEX NEXT_NAME NEXT_DEVICE NEXT_CONNECTED
 get_current_and_next
 
 handle_actions
 
 case $CURRENT_NAME in
   *\ Ethernet | *\ LAN) printf '<·>' ;;
-  *Wi-Fi) printf '.ıl' ;;
+  *Wi-Fi) CURRENT_IS_WIFI=true; printf '.ıl' ;;
   *) printf '···' ;;
 esac
 
 echo ' | size=16'
 echo '---'
-echo "Connected to $CURRENT_NAME ($CURRENT_DEVICE)"
+
+current_extra=''
+if [[ $CURRENT_IS_WIFI == true ]]; then
+  current_extra=":$(networksetup -getairportnetwork "$CURRENT_DEVICE" | cut -d : -f 2)"
+fi
+echo "Connected to $CURRENT_NAME ($CURRENT_DEVICE)$current_extra"
+unset current_extra
+
 if [[ $NEXT_CONNECTED != false ]]; then
   echo "Switch to $NEXT_NAME ($NEXT_DEVICE) | bash=$SELF_PATH | param1=switch"
 else

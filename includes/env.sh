@@ -23,6 +23,8 @@ export EZA_ICONS_AUTO=true
 export EZA_ICON_SPACING=2
 export TIME_STYLE=long-iso
 
+export HOMEBREW_NO_AUTO_UPDATE=1 # Covered by update_and_backup ($UPDATE_BACKUP_CMDS)
+export HOMEBREW_NO_ENV_HINTS=1
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
 # Set this so that tr_TR is not sent in SSH connections
@@ -65,7 +67,6 @@ export OMZ_PLUGINS=(
   common-aliases
   docker
   docker-compose
-  fd
   git
   git-extras
   globalias
@@ -103,7 +104,7 @@ export DOTFILES_INCLUDE_LIBS=(
 # shellcheck disable=SC2016
 export UPDATE_BACKUP_CMDS=(
   'brew upgrade --quiet' # Removed --greedy because apps auto-download in the background anyway
-  'npm update -g --silent'
+  'npm_update_globals'
   'omz update --unattended'
   'omz_update_custom'
   update_bat_syntaxes

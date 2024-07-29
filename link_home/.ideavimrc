@@ -57,21 +57,17 @@ map [m <Action>(MethodDown)
 map ]m <Action>(MethodUp)
 map g] <Action>(QuickImplementations)
 
-map m1 <Action>(ToggleBookmark1)
-map `1 <Action>(GotoBookmark1)
-map '1 <Action>(GotoBookmark1)
-map m2 <Action>(ToggleBookmark2)
-map `2 <Action>(GotoBookmark2)
-map '2 <Action>(GotoBookmark2)
-map m3 <Action>(ToggleBookmark3)
-map `3 <Action>(GotoBookmark3)
-map '3 <Action>(GotoBookmark3)
-map ma <Action>(ToggleBookmarkA)
-map `a <Action>(GotoBookmarkA)
-map 'a <Action>(GotoBookmarkA)
-map mb <Action>(ToggleBookmarkB)
-map `b <Action>(GotoBookmarkB)
-map 'b <Action>(GotoBookmarkB)
-map mc <Action>(ToggleBookmarkC)
-map `c <Action>(GotoBookmarkC)
-map 'c <Action>(GotoBookmarkC)
+function! s:MapBookmark(char)
+  let l:bookmark = toupper(a:char)
+  exec 'map m' . a:char . ' <Action>(ToggleBookmark' . bookmark . ')'
+  exec 'map `' . a:char . ' <Action>(GotoBookmark' . bookmark . ')'
+  exec "map '" . a:char . ' <Action>(GotoBookmark' . bookmark . ')'
+endfunction
+
+for i in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+  call s:MapBookmark(i)
+endfor
+
+for c in "abcdefghijklmnopqrstuvwxyz"
+  call s:MapBookmark(c)
+endfor

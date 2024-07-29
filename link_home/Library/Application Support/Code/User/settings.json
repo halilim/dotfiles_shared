@@ -84,7 +84,6 @@
   "editor.inlineSuggest.enabled": true,
   "editor.minimap.renderCharacters": false,
   "editor.minimap.showSlider": "always",
-  "editor.multiCursorModifier": "ctrlCmd",
 
   "editor.quickSuggestions": {
     "comments": "off",
