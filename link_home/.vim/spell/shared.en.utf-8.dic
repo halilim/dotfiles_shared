@@ -103,6 +103,7 @@ diskutil
 divmod
 dockerhub
 Dokku
+dotall
 dotenv
 dotfile
 dotfiles
@@ -208,6 +209,7 @@ ilike
 imageinfo
 imgcat
 incsearch
+inet
 Inflector
 initializers
 inodes
@@ -328,6 +330,7 @@ Pavel
 Payoneer
 pbcopy
 pbpaste
+pcre
 PDP
 Percona
 PGPASSWORD
@@ -350,6 +353,7 @@ precompile
 prefetch
 prefetched
 prefetcher
+prefixlen
 preprocess
 Procfile
 procs

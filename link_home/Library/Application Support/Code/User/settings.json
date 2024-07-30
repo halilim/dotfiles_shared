@@ -1,4 +1,7 @@
 {
+  "bashIde.shfmt.caseIndent": true,
+  "bashIde.shfmt.spaceRedirects": true,
+
   "codeium.enableConfig": {
     "*": true,
     "applescript": true,
@@ -35,13 +38,6 @@
     "/[^\\s]{40,}/"
   ],
   "cSpell.language": "en,tr",
-  // VSCode-specific words, mostly from within this file
-  "cSpell.userWords": [
-    "apacheconf",
-    "esbenp",
-    "highlightedyank",
-    "matchtext"
-  ],
 
   "css.format.spaceAroundSelectorSeparator": true,
   "css.lint.compatibleVendorPrefixes": "warning",
@@ -166,6 +162,7 @@
     "**/nginx/**/*.conf*": "nginx",
     "**/php*/**/*.conf": "ini",
     "/etc/**/*.conf": "plain",
+    // cSpell:ignore apacheconf
     "/etc/apache2/**/*.conf": "apacheconf",
     "/etc/defaults/**/*.conf": "shellscript",
     "/etc/periodic/**/*.conf": "shellscript",
@@ -416,6 +413,7 @@
   "vim.camelCaseMotion.enable": true,
   "vim.easymotion": true,
   "vim.enableNeovim": true,
+  // cSpell:ignore highlightedyank
   "vim.highlightedyank.enable": true,
   "vim.hlsearch": true,
   "vim.incsearch": true,
@@ -486,13 +484,14 @@
   "vscode-yaml-sort.emptyLinesUntilLevel": 1,
   "vscode-yaml-sort.useLeadingDashes": false,
 
-  // cSpell:disable-next-line
+  // cSpell:ignore dont
   "vsicons.dontShowNewVersionMessage": true,
 
   "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
 
   "window.autoDetectColorScheme": true,
 
+  // cSpell:ignore matchtext
   "editor.tokenColorCustomizations": {
     "[*Light*]": {
       "textMateRules": [
@@ -593,6 +592,8 @@
   "yard.spacers.beforeDescription": false,
   "yard.tags.paramNameBeforeType": true,
 
+  // cSpell:ignore esbenp
+
   "[css]": {
     "editor.defaultFormatter": "vscode.css-language-features"
   },
@@ -630,6 +631,8 @@
   },
 
   "[shellscript]": {
+    // cSpell:ignore foxundermoon
+    "editor.defaultFormatter": "foxundermoon.shell-format",
     "editor.tabSize": 2
   },
 

@@ -4,7 +4,7 @@ IFS=$'\n\t'
 
 network_switcher=$(find ~/Library/Application\ Support/xbar/plugins -name 'network_switcher.*.sh')
 
-if ! $network_switcher | grep 'Connected to Wi-Fi' > /dev/null 2>&1; then
+if ! $network_switcher | grep 'Connected.*Wi-Fi' > /dev/null 2>&1; then
   $network_switcher switch
 fi
 
