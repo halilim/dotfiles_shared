@@ -10,7 +10,6 @@ brew 'gnu-sed' # gsed
 brew 'act' # Run GitHub Actions locally https://github.com/nektos/act
 brew 'bash' # macOS one is ancient
 brew 'bat' # regular use + vim fzf preview
-brew 'csvq'
 brew 'dust' # du in Rust with percentage bars
 brew 'eza' # ls alternative in Rust
 brew 'fd'

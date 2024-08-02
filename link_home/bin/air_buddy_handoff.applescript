@@ -21,7 +21,9 @@ on run argv
         -- return entire contents
 
         tell group 1
-          delay 0.5
+          repeat until exists
+          end repeat
+
           -- return entire contents
           if op is not "send" then
             key code 124 -- Right arrow to select "Receive"

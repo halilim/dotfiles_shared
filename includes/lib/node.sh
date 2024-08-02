@@ -21,6 +21,8 @@ alias nu="npm update"
 # alias nus="npm uninstall -S"
 alias nug="npm update -g"
 
+alias yvv='yarn --version' # yv is yarn version
+
 function npm_update_globals() {
   local packages=''
 

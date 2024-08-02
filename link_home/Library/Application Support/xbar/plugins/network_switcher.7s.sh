@@ -260,20 +260,24 @@ get_current_and_next
 
 handle_actions
 
-if [[ $CURRENT_CONNECTED == false ]]; then
-  printf '.!.'
-else
+if [[ $CURRENT_CONNECTED != false ]]; then
   case $CURRENT_NAME in
     *\ Ethernet | *\ LAN) printf '<·>' ;;
     *Wi-Fi*) printf '.ıl' ;;
     *) printf '···' ;;
+  esac
+else
+  case $CURRENT_NAME in
+    *\ Ethernet | *\ LAN) printf '<!>' ;;
+    *Wi-Fi*) printf '.!l' ;;
+    *) printf '·!·' ;;
   esac
 fi
 
 echo ' | size=16'
 echo '---'
 
-echo "Connected: $CURRENT_DISPLAY_NAME$([[ $CURRENT_CONNECTED == false ]] && echo ' - NO INTERNET')"
+echo "Connected: $CURRENT_DISPLAY_NAME$([[ $CURRENT_CONNECTED == false ]] && echo ' - NO INTERNET | color=#663333')"
 
 if [[ $NEXT_CONNECTED != false ]]; then
   echo "Switch to: $NEXT_DISPLAY_NAME | bash=$SELF_PATH | param1=switch"
