@@ -4,7 +4,7 @@ alias al="$EDITOR $0"
 # shellcheck disable=SC2139
 alias real="source $0"
 
-# cSpell:ignore brbc brun brbf brsl brup brupg cdiff cuiv
+# cSpell:ignore brbc brun brbf brsl brup brupd cdiff cuiv
 
 # See also: OMZ/brew plugin
 # shellcheck disable=SC2139
@@ -19,8 +19,8 @@ alias brin='brew info'
 alias brl='brew list'
 alias brs='brew search'
 alias brsl='brew services list'
-alias brup='brew update'
-alias brupg='brew upgrade'
+alias brup='brew upgrade'
+alias brupd='brew update'
 
 alias c='code'
 # alias c='code-insiders'
@@ -40,8 +40,13 @@ alias cuiv="curl -Iv"
 alias da='direnv allow'
 alias dp='declare -p'
 
+# cSpell:ignore dric dris
 alias di='dotfiles import'
+alias dic='dotfiles import custom'
+alias dis='dotfiles import shared'
 alias dri='dotfiles revert_import'
+alias dric='dotfiles revert_import custom'
+alias dris='dotfiles revert_import shared'
 alias ds='dotfiles sync'
 alias dse='dotfiles setup'
 

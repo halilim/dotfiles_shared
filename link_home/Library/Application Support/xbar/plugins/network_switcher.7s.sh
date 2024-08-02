@@ -133,8 +133,10 @@ function handle_actions() {
   if [[ $do_switch ]]; then
     [[ ! $manual_switch ]] && NEXT_CONNECTED=$(is_connected "$NEXT_DEVICE" && echo true || echo false)
     if [[ $manual_switch || $NEXT_CONNECTED == true ]]; then
-      log "Switching to $NEXT_DISPLAY_NAME"
-      switch
+      log "Switching to $NEXT_DISPLAY_NAME$([[ $VAR_SUDO == true ]] && echo ' with sudo')"
+      if ! switch; then
+        do_refresh=''
+      fi
     else
       log "$NEXT_DISPLAY_NAME is down too, not switching"
       do_refresh=''
@@ -147,12 +149,21 @@ function handle_actions() {
 function switch() {
   swap_networks
 
-  local output
-  output=$(exec_switch "$VAR_SUDO")
-  if [[ $? != 0 && $output == *'requires admin'* && $VAR_SUDO != 'true' ]]; then
+  local output status
+  output=$(exec_switch "$VAR_SUDO" 2>&1)
+  status=$?
+
+  if [[ $status != 0 && $output == *'requires admin'* && $VAR_SUDO != 'true' ]]; then
     set_config VAR_SUDO true # If this happens once, it probably happens all the time on this system
-    exec_switch true
+    output=$(exec_switch true 2>&1)
+    status=$?
   fi
+
+  if [[ $status != 0 ]]; then
+    log "Couldn't switch networks: ($status) $output"
+  fi
+
+  return $status
 }
 
 function swap_networks() {
@@ -175,6 +186,8 @@ function exec_switch() {
   if [[ $do_sudo == true ]]; then
     if can_sudo 'switching networks'; then
       sudo "${cmd[@]}"
+    else
+      return
     fi
   else
     "${cmd[@]}"
@@ -187,7 +200,7 @@ function can_sudo() {
   if [[ $(ioreg -n Root -d1 -a | plutil -extract IOConsoleLocked raw -) == true ]]; then
     local msg=${1:-''}
     [[ $msg ]] && msg=" for: $msg"
-    log "Screen is locked, can't sudo$msg"
+    log "Screen is locked, can't sudo$msg" 1
     return 1
   fi
 }
@@ -207,10 +220,14 @@ function is_connected() {
 }
 
 function log() {
-  if [[ $IS_TTY ]]; then
-    echo >&2 "Log: $1"
-  else
-    echo "$(date -Iseconds) $1" >>"$LOG_FILE"
+  local msg=$1 and_echo=${2:-}
+
+  if [[ $IS_TTY || $and_echo ]]; then
+    echo >&2 "Log: $msg"
+  fi
+
+  if [[ ! $IS_TTY ]]; then
+    echo "$(date -Iseconds) $msg" >>"$LOG_FILE"
   fi
 }
 
@@ -261,7 +278,7 @@ echo "Connected: $CURRENT_DISPLAY_NAME$([[ $CURRENT_CONNECTED == false ]] && ech
 if [[ $NEXT_CONNECTED != false ]]; then
   echo "Switch to: $NEXT_DISPLAY_NAME | bash=$SELF_PATH | param1=switch"
 else
-  echo  "Can't switch to $NEXT_DISPLAY_NAME, it's down too | color=#993333"
+  echo "Can't switch to $NEXT_DISPLAY_NAME, it's down too | color=#993333"
 fi
 # Another shortcut: Click the Wi-Fi icon in the menu bar and hold ⌥ option
 echo 'Network Settings | shell=open | param1="x-apple.systempreferences:com.apple.preference.network"'

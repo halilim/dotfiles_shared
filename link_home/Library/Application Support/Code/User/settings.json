@@ -69,6 +69,9 @@
   "docker.containers.label": "ContainerName",
   "docker.containers.sortBy": "Label",
 
+  // cSpell:ignore Autocloaking
+  "dotenv.enableAutocloaking": false,
+
   "editor.acceptSuggestionOnEnter": "smart",
   "editor.autoClosingQuotes": "always",
   "editor.cursorBlinking": "phase",
@@ -522,14 +525,7 @@
     "[Solarized Light]": {
       "comments": "#435151"
     },
-    "textMateRules": [
-      {
-        "scope": "keyword.other.dotenv",
-        "settings": {
-          "foreground": "#FF000000"
-        }
-      }
-    ]
+    "textMateRules": []
   },
 
   "workbench.colorCustomizations": {
@@ -642,6 +638,10 @@
 
   "[svg]": {
     "editor.defaultFormatter": "jock.svg"
+  },
+
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
 
   "[xslt]": {
