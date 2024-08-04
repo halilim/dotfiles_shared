@@ -36,6 +36,15 @@ source "$omz_path"/oh-my-zsh.sh
 
 unset omz_path
 
+# Yank to the system clipboard
+# https://github.com/jeffreytse/zsh-vi-mode/issues/19#issuecomment-1009256071
+# cSpell:ignore CUTBUFFER
+function zvm_vi_yank() {
+	zvm_yank
+	printf '%s' "$CUTBUFFER" | pbcopy
+	zvm_exit_visual_mode
+}
+
 function omz_install_custom_plugins() {
   (
     cd "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}"/plugins || return

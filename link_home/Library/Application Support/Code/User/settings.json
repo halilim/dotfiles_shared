@@ -132,6 +132,7 @@
 
   "extensions.ignoreRecommendations": true,
 
+  // cSpell:ignore apacheconf
   "files.associations": {
     ".config/git/ignore*": "ignore",
     ".env*": "dotenv",
@@ -165,7 +166,6 @@
     "**/nginx/**/*.conf*": "nginx",
     "**/php*/**/*.conf": "ini",
     "/etc/**/*.conf": "plain",
-    // cSpell:ignore apacheconf
     "/etc/apache2/**/*.conf": "apacheconf",
     "/etc/defaults/**/*.conf": "shellscript",
     "/etc/periodic/**/*.conf": "shellscript",

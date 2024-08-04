@@ -59,7 +59,7 @@ alias f='fd -t f'
 alias fh='fd -t f --hidden'
 alias ft="fd --no-ignore -t f '^tags$'"
 
-# cSpell:ignore hhnv hostconf myip uroot
+# cSpell:ignore hhnv hostconf myip uroot omzp
 
 alias h='http'
 alias hh='http --headers'
@@ -93,6 +93,8 @@ alias mysql_dump='mysqldump --no-create-info -uroot -p db_name > db_name.sql'
 alias mysql_restore='mysql -uroot -p db_name < db_name.sql'
 
 alias o='$OPEN_CMD'
+
+alias omzp='open_with_editor ~/.oh-my-zsh/plugins/'
 
 alias pg="ping google.com" # TODO: Can be confused with postgres?
 alias p1="ping 1.1.1.1"

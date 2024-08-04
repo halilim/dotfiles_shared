@@ -53,7 +53,7 @@ alias rgrw="rgr -w"
 alias rp='ruby -rpry -ramazing_print'
 alias rv='ruby -v'
 
-# cSpell:ignore raa rav rcac rgg rgm rgmp rrz rro rsl rvv
+# cSpell:ignore raa rav rcac rgg rgm rgmp rgmo rrz rro rsl rvv
 alias raa="$RAILS_CMD about"
 alias rav="$RAILS_CMD -v"
 alias rc="$RAILS_CMD console"
@@ -62,7 +62,10 @@ alias rcac="rm -rf tmp/cache/{assets,webpacker}/*" # Rails clear asset cache
 alias rgg="$RAILS_CMD generate"
 alias rgm="$RAILS_CMD generate migration"
 alias rgmp="$RAILS_CMD generate migration dummy --pretend"
+alias rgmo="$RAILS_CMD generate model"
+alias rgs="$RAILS_CMD generate scaffold"
 alias rnd="rails new dummy --minimal --skip-active-record --skip-test --skip-git --skip-gemfile"
+alias rnv='rails _7.1.0_ new'
 alias rr="$RAILS_CMD runner"
 alias rrz="$RAILS_CMD routes | fzf"
 alias rro="$RAILS_CMD routes"
