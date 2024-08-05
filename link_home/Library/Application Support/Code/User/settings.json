@@ -392,6 +392,7 @@
     "BUG",
     "HACK",
     "FIXME",
+    "NOTE",
     "TODO",
     "XXX",
     "[ ]",
@@ -400,6 +401,9 @@
   "todo-tree.highlights.customHighlight": {
     "FIXME": {
       "foreground": "#f00"
+    },
+    "NOTE": {
+      "foreground": "#00d4d87e"
     },
     "TODO": {
       "foreground": "#ffa500"
