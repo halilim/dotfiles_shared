@@ -58,9 +58,12 @@ function init_config() {
 
 function write_log_conf() {
   if [[ ! -f $LOG_CONF ]]; then
-    if can_sudo "writing $LOG_CONF"; then
+    local output
+    if output=$(can_sudo); then
       # man newsyslog.conf
       echo "$LOG_FILE : 644 1 1024 *" | sudo tee -a "$LOG_CONF" > /dev/null
+    else
+      log "Couldn't write $LOG_CONF: $output"
     fi
   fi
 }
@@ -236,7 +239,7 @@ function exec_switch() {
   local do_sudo=$1 cmd=(networksetup -ordernetworkservices "${NAMES[@]}")
 
   if [[ $do_sudo == true ]]; then
-    if can_sudo 'switching networks'; then
+    if can_sudo; then
       sudo "${cmd[@]}"
     else
       return
@@ -252,9 +255,7 @@ function exec_switch() {
 
 function can_sudo() {
   if [[ $(ioreg -n Root -d1 -a | plutil -extract IOConsoleLocked raw -) == true ]]; then
-    local msg=${1:-''}
-    [[ $msg ]] && msg=" for: $msg"
-    log "Screen is locked, can't sudo$msg" true
+    echo >&2 "Can't sudo: screen is locked"
     return 1
   fi
 }
@@ -274,14 +275,13 @@ function is_connected() {
 }
 
 function log() {
-  local msg=$1 and_echo=${2:-false}
+  local msg
+  msg="$(date -Iseconds) $1"
 
-  if [[ $IS_TTY == true || $and_echo == true ]]; then
-    echo >&2 "Log: $msg"
-  fi
-
-  if [[ $IS_TTY == false ]]; then
-    echo "$(date -Iseconds) $msg" >> "$LOG_FILE"
+  if [[ $IS_TTY == true  ]]; then
+    echo >&2 "$msg"
+  else
+    echo "$msg" >> "$LOG_FILE"
   fi
 }
 
