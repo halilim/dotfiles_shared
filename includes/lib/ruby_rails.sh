@@ -33,6 +33,8 @@ alias buc='bundle update --conservative'
 alias bucq='bundle update --conservative --quiet'
 alias bv='bundle --version'
 
+alias fr="fd -E 'config/locales/' -E 'features/' -E 'spec/' -E 'test/' -E '__tests__/'"
+
 alias fs='foreman start'
 
 # cSpell:ignore hrr hrrc hrrr
@@ -45,7 +47,7 @@ alias {mc,mailcatch}='mailcatcher -f'
 
 # Ripgrep
 # cSpell:ignore rgr rgrr rgrw
-alias rgr="rg -g '!config/locales/' -g '!features/' -g '!spec/' -g '!test/'"
+alias rgr="rg -g '!config/locales/' -g '!features/' -g '!spec/' -g '!test/' -g  '!__tests__/'"
 alias rgrr="rg -g '*.rb' -g '!features/' -g '!spec/' -g '!test/'"
 alias rgrw="rgr -w"
 

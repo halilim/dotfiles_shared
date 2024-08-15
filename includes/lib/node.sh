@@ -21,7 +21,9 @@ alias nu="npm update"
 # alias nus="npm uninstall -S"
 alias nug="npm update -g"
 
-alias yvv='yarn --version' # yv is yarn version
+# OMZ/yarn sets this to `yarn version`, let's keep it compatible with the other *v aliases
+alias yv='yarn --version'
+alias yvv='yarn version'
 
 function npm_update_globals() {
   local packages=''

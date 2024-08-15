@@ -135,6 +135,8 @@ alias shc='shellcheck'
 # VSCode doesn't have ssh config highlighting
 alias sshconf='mvim_open ~/.ssh/config'
 
+alias str='stree .' # cSpell:ignore stree
+
 # Enable aliases to be sudo'ed
 alias sudo='nocorrect sudo '
 

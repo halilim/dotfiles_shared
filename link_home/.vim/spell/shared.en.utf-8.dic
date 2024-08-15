@@ -23,6 +23,7 @@ auth
 Authable
 autoindex
 autoload
+autoloaders
 Automator
 autoupdate
 AWS
@@ -31,6 +32,8 @@ B2C
 backfill
 backfiller
 backfills
+backref
+backrefs
 badware
 bashrc
 bazel
@@ -55,6 +58,7 @@ canva
 Caskaydia
 CDN
 cdspell
+certdir
 charlock
 checkwinsize
 chezmoi
@@ -98,10 +102,13 @@ devs
 dgram
 dic
 difftool
+dind
 direnv
 diskutil
 divmod
+dockerd
 dockerhub
+dockerignore
 Dokku
 dotall
 dotenv
@@ -115,6 +122,7 @@ Dynos
 easylist
 easymotion
 easyprivacy
+ecparam
 elasticsearch
 Elasticsearch
 endfor
@@ -124,11 +132,13 @@ enumerize
 env
 envrc
 envsh
+errexit
 esac
 esdoc
 eshead
 evilmartians
 excelviewer
+factorybot
 falsey
 fanout
 fastcgi
@@ -147,6 +157,8 @@ fzf
 gdate
 Gemfile
 gemrc
+genkey
+genrsa
 getairportnetwork
 getinfo
 getpass
@@ -257,6 +269,7 @@ lookback
 mackup
 MAILCATCHER
 MAKEFLAGS
+mapfs
 markdownlint
 markdownlintrc
 maxdepth
@@ -299,7 +312,9 @@ nohl
 nohup
 Nokogiri
 noout
+nounset
 npm
+npmjs
 nproc
 nullglob
 numericality
@@ -333,6 +348,7 @@ pbpaste
 pcre
 PDP
 Percona
+pgdg
 PGPASSWORD
 pgrep
 pgsql
@@ -348,6 +364,7 @@ PLP
 plutil
 POC
 popen
+postgre
 Powerlevel
 precompile
 prefetch
@@ -355,6 +372,7 @@ prefetched
 prefetcher
 prefixlen
 preprocess
+printenv
 Procfile
 procs
 progname
@@ -391,6 +409,7 @@ remoteless
 REPORTTIME
 rescuable
 Resque
+RESTful
 resumability
 Revolut
 rewhere
@@ -436,6 +455,7 @@ shellwords
 shfmt
 shoulda
 Sidekiq
+signee
 signingkey
 skel
 skilljar
@@ -526,6 +546,7 @@ XPUT
 xscenario
 xxhash
 YAML
+yamllint
 zeitwerk
 Zscript
 zshenv

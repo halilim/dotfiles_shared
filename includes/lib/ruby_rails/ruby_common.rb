@@ -2,7 +2,36 @@
 
 # rubocop:disable Style/NumericPredicate
 
+# Displays a MySQL-style table for ActiveRecord objects. Limits the number of columns based on the
+# terminal width. Prioritizes columns with data over empty columns.
+#
 # Modified from https://gist.github.com/bgreenlee/72234
+#
+# @param items [Array<ActiveRecord::Base>, ActiveRecord_Relation] an array/scope of
+#   ActiveRecord objects
+# @param given_fields [Array<Symbol>] optional list of fields to display
+#
+# @example
+#   art Foo.all, :id, :title
+#   =>
+#   +----+-------+
+#   | id | title |
+#   +----+-------+
+#   | 1  | Bar   |
+#   | 2  | Baz   |
+#   +----+-------+
+#
+# @example
+#   art Baz.where(foo: 'bar')
+#   =>
+#   +----+-------+-------+-------+-------+-----+
+#   | id | title | foo   | bar   | etc   | ... |
+#   +----+-------+-------+-------+-------+-----+
+#   | 1  | Bar   | bar   | baz   | true  | ... |
+#   | 2  | Baz   | bar   | qux   | false | ... |
+#   +----+-------+-------+-------+-------+-----+
+#
+# @todo Move to a forked gist?
 def ar_table(items, *given_fields) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
   cur_fields = given_fields.dup
 
@@ -72,8 +101,19 @@ end
 
 alias art ar_table
 
-# Print methods of an object. Examples: +pm Foo+, +pm bar, /baz/+
-# IRB alternative: +ls bar -g baz+
+# Print methods of an object/class. IRB alternative:
+#   ls bar -g baz
+#
+# @param obj [Object] an instance or class
+# @param options [Array<Regexp, Symbol>] <code>Regexp</code>: filter methods by a regular
+#   expression. <code>:more</code>: include methods from Object
+#
+# @return [Integer] number of methods printed
+#
+# @example
+#   pm Foo
+#   pm bar, /baz/
+#   pm baz, /qux/, :more
 def pm(obj, *options) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
   methods = obj.methods
   methods -= Object.methods unless options.include?(:more)
@@ -96,17 +136,20 @@ def pm(obj, *options) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticCompl
     end
 
     # Remove ActiveRecord attributes
-    # Example inspect: <Method: FooBar(id: integer, ...)(ActiveRecord::Base)#baz() .../etc.rb:42>
-    # cSpell:ignore klass
-    matches = method.inspect.match %r{ # rubocop:disable Style/RegexpLiteral
-      \A\#<Method:\s*
-      (?<klass>[^(]+)
+    # Example inspects:
+    #   #<Method: FooBar(ActiveRecord::Base)#baz(id: integer, ...) .../etc.rb:42>
+    #   #<Method: FooBar(ActiveRecord::Base).baz(qux, options=..., &block) .../etc.rb:42>
+    #   #<Class:FooBar>(ActiveRecord::Base)
+    inspection = method.inspect
+    matches = inspection.match %r{ # rubocop:disable Style/RegexpLiteral
+      \A\#<(Method|Class):\s*
+      (?<class>[^(]+)>?
       (?<attrs>\([^)]+:\s+[^)]*\))?
       (?<base>\([^)]+\))?
-      (?<method>\##{Regexp.escape(name)})
+      (?<method>\#|\.#{Regexp.escape(name)})?
     }x
 
-    [name.to_s, args, "#{matches[:klass]}#{matches[:base]}"]
+    [name.to_s, args, matches ? "#{matches[:class]}#{matches[:base]}" : inspection]
   end
 
   max_name = data.collect { |item| item[0].size }.max
