@@ -1,1 +1,1 @@
-autocmd BufRead,BufNewFile coc-settings.json set filetype=jsonc
+autocmd BufRead,BufNewFile coc-settings.json,*.code-workspace set filetype=jsonc

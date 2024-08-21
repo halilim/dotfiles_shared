@@ -1,0 +1,21 @@
+// Kept in custom example, so that you can copy and add other directories to dotfiles
+// https://github.com/Shopify/ruby-lsp/blob/main/vscode/README.md?tab=readme-ov-file#multi-root-workspaces
+{
+  "folders": [
+    {
+      "path": "."
+    },
+    {
+      "path": "custom"
+    },
+    {
+      "path": "shared"
+    }
+  ],
+  "settings": {
+    "files.exclude": {
+      "custom": true,
+      "shared": true
+    }
+  }
+}

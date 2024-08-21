@@ -274,6 +274,7 @@ markdownlint
 markdownlintrc
 maxdepth
 mediainfo
+memsize
 Menlo
 mergetool
 Meslo
@@ -372,6 +373,7 @@ prefetched
 prefetcher
 prefixlen
 preprocess
+presigned
 printenv
 Procfile
 procs
