@@ -1,0 +1,1 @@
+SKIP=no-commit-to-branch pre-commit run --config ~/.pre-commit-config.yml

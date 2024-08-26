@@ -25,10 +25,10 @@
   "codeium.enableCodeLens": false,
 
   "cSpell.customDictionaries": {
-    "shared_en": { "path": "~/.vim/spell/shared.en.utf-8.dic" },
-    "custom_en": { "path": "~/.vim/spell/custom.en.utf-8.dic" },
-    "shared_tr": { "path": "~/.vim/spell/shared.tr.utf-8.dic" },
-    "custom_tr": { "path": "~/.vim/spell/custom.tr.utf-8.dic" },
+    "shared_en": { "path": "~/.vim/spell/shared.en.utf-8.add" },
+    "custom_en": { "path": "~/.vim/spell/custom.en.utf-8.add" },
+    "shared_tr": { "path": "~/.vim/spell/shared.tr.utf-8.add" },
+    "custom_tr": { "path": "~/.vim/spell/custom.tr.utf-8.add" },
     "custom": true
   },
   "cSpell.enableFiletypes": [
@@ -173,6 +173,7 @@
     "Brewfile*": "ruby",
     "coc-settings.json": "jsonc",
     "default-gems": "properties",
+    "pybritive.config": "ini",
     "Procfile.*": "procfile"
   },
 

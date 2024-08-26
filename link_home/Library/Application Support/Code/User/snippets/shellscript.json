@@ -70,6 +70,17 @@
 		],
 	},
 
+	// https://stackoverflow.com/a/12451419/25475271
+	"echo and capture": {
+		"prefix": "ec",
+		"body": [
+			"exec 5>&1",
+			"local output",
+			"output=$(CMD 2>&1 | tee >(cat - >&5))",
+			"exec 5>&-"
+		],
+	},
+
 	"echo error return": {
 		"prefix": "eer",
 		"body": [

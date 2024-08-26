@@ -4,7 +4,7 @@ alias al="$EDITOR $0"
 # shellcheck disable=SC2139
 alias real="source $0"
 
-# cSpell:ignore brbc brun brbf brsl brup brupd cdiff cuiv
+# cSpell:ignore brbc brun brbf brsl brup brupd cdiff
 
 # See also: OMZ/brew plugin
 # shellcheck disable=SC2139
@@ -33,7 +33,7 @@ alias chrome_incognito='chrome --incognito'
 # 1. Close all instances
 alias chrome_with_logging='chrome --enable-logging=stderr --v=1'
 
-alias copy_ssh_key="cb < ~/.ssh/*.pub"
+# cSpell:ignore cuiv
 alias ct="echo_eval 'rm tags && ctags -f tags -R'"
 alias cui="curl -I"
 alias cuiv="curl -Iv"
@@ -105,7 +105,7 @@ alias pg_fg='postgres -D "$(brew --prefix)"/var/postgres'
 # Make high-resolution screenshots etc. more shareable
 alias png2jpg50="convert ./*.png -resize '50%' -set filename:base '%[basename]' '%[filename:base].jpg'"
 
-# cSpell:ignore psgw rgfh rghi rgchi rgwc rgws sshconf
+# cSpell:ignore psgw rgfh rghi rgchi rgwc rgws sshc sshconf
 
 alias psf='ps aux | fzf'
 alias psg='ps aux | grep -v " grep " | grep -i'
@@ -132,7 +132,8 @@ alias {rgwc,rgws}="rg -ws" # Word and case sensitive
 
 alias shc='shellcheck'
 
-# VSCode doesn't have ssh config highlighting
+# shellcheck disable=SC2139
+alias {sshc,ssh_copy_key,copy_ssh_key}='cb < ~/.ssh/id_*.pub'
 alias sshconf='mvim_open ~/.ssh/config'
 
 alias str='stree .' # cSpell:ignore stree

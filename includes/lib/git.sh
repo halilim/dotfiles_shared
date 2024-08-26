@@ -1,4 +1,4 @@
-# cSpell:ignore libg gcpn gcano gcmb gcom gdnc gdtc gdtk gmmnc gmtk gpft gpla gplp grgu grpo
+# cSpell:ignore libg gcpn gcae gcane gcano gcmb gcom gdnc gdtc gdtk gmmnc gmtk gpft gpla gplp grgu grpo
 
 [[ -z $GIT_ALREADY_UP_TO_DATE ]] && declare -rx GIT_ALREADY_UP_TO_DATE=64
 
@@ -8,7 +8,9 @@ alias libg="$EDITOR $0"
 alias ga='git add -p'
 alias gan='git add -N'
 alias gcpn='git cherry-pick --no-commit'
-alias gcano='git commit --amend --no-edit'
+alias gcae='git commit --amend --edit'
+# shellcheck disable=SC2139
+alias {gcane,gcano}='git commit --amend --no-edit'
 alias gcm="git commit --verbose --message '"
 alias gcmb='git commit --verbose --message "$(git rev-parse --abbrev-ref HEAD)"'
 alias gcn='git commit --no-edit'

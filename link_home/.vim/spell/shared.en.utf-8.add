@@ -10,6 +10,7 @@ adduid
 adminer
 Adminer
 alnum
+amazonaws
 AMD64
 anonymizable
 antialiased
@@ -48,12 +49,14 @@ blockapp
 blueutil
 bootsnap
 Brewfile
+britive
 broadcasted
 buildpack
 buildpacks
 buildx
 byebug
 callout
+canonicalize
 canva
 Caskaydia
 CDN
@@ -156,6 +159,7 @@ fuubar
 fzf
 gdate
 Gemfile
+gemfiles
 gemrc
 genkey
 genrsa
@@ -260,6 +264,7 @@ lazygit
 lesspipe
 libexec
 libxslt
+linebreak
 Liskov
 listnetworkserviceorder
 ljust
@@ -381,6 +386,7 @@ progname
 pryrc
 psql
 publickey
+pybritive
 pygmentize
 pygments
 pylint
@@ -477,6 +483,7 @@ srand
 srcfolder
 stackable
 stackoverflow
+stackprof
 standardrb
 startswith
 stdinpass

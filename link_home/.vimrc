@@ -21,6 +21,9 @@ set redrawtime=3000
 
 set selection=exclusive " don't include newline in selection
 
+" NOTE: Vim requires these to end in .add
+set spellfile=~/.vim/spell/shared.en.utf-8.add,~/.vim/spell/custom.en.utf-8.add
+
 " More under neoclide/coc.nvim settings
 
 " set list                " Show whitespace
@@ -110,6 +113,7 @@ nnoremap <D-.> :ALEFix<CR>
 nnoremap <leader><leader>c :CocConfig<CR>
 nnoremap <leader><leader>g :e ~/.gvimrc<CR>
 nnoremap <leader><leader>v :e $MYVIMRC<CR>
+nnoremap <leader><leader>vc :e $DOTFILES_CUSTOM/link_home/.vim/autoload/custom.vim<CR>
 nnoremap <leader><leader>r :source $MYVIMRC<CR>
 " nnoremap <leader><leader>ft :e ~/.vim/ftplugin/
 nnoremap <leader><leader>ft :exe 'e' '~/.vim/ftplugin/' . &ft . '.vim'<CR>
@@ -355,6 +359,7 @@ Plug 'honza/vim-snippets' " Actual snippets - both snipMate & UltiSnips formnats
 " Plug 'skywind3000/vim-preview'
 " Plug 'slim-template/vim-slim', { 'for': 'slim' }
 Plug 'tpope/vim-abolish' " :Abolish / :Subvert / coerce (e.g. crs = coerce to snake case)
+Plug 'tpope/vim-dotenv'
 Plug 'tpope/vim-eunuch' " :Delete, :Rename, :Move, :Mkdir etc.
 
 Plug 'tpope/vim-fugitive' " git

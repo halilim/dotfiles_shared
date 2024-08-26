@@ -36,6 +36,9 @@ source "$omz_path"/oh-my-zsh.sh
 
 unset omz_path
 
+# `cd -1` from .oh-my-zsh/lib/directories.zsh messes up with ENV_VAR=1 :)
+unalias 1 2>/dev/null || true
+
 # Yank to the system clipboard
 # https://github.com/jeffreytse/zsh-vi-mode/issues/19#issuecomment-1009256071
 # cSpell:ignore CUTBUFFER

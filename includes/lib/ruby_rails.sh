@@ -102,10 +102,10 @@ alias ss="${RUBY_CMD_PREFIX}rspec --seed"
 alias {rsb,rst,sb,st}="${RUBY_CMD_PREFIX}rspec --backtrace" # Replaces `rails server --bind` from oh-my-zsh Rails plugin
 alias {rfd,sfd}="${RUBY_CMD_PREFIX}rspec --format documentation"
 
-# cSpell:ignore nosp ksp pssp psg spst
-alias nosp='DISABLE_SPRING=1'
-alias ksp="pgrep 'spring (app|server)' | xargs kill -9"
-alias pssp='psg spring'
+# cSpell:ignore nosp spk spp spps psg spst
+alias {nosp,spd}='DISABLE_SPRING=1'
+alias spk="pgrep 'spring (app|server)' | xargs kill -9"
+alias {spp,spps}='psg spring'
 alias sps="${RUBY_CMD_PREFIX}spring status"
 alias spst="${RUBY_CMD_PREFIX}spring stop"
 

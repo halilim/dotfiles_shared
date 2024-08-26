@@ -344,7 +344,7 @@ echo ' | size=16'
 echo '---'
 
 echo "Connected: $CURRENT_DISPLAY_NAME$([[ $CURRENT_CONNECTED == false ]] && echo ' | color=#663333')"
-echo "Switch to: $NEXT_DISPLAY_NAME$([[ $NEXT_CONNECTED == false ]] && echo ' | color=#663333') | bash=$SELF_PATH | param1=switch"
+echo "Switch to: $NEXT_DISPLAY_NAME$([[ $NEXT_CONNECTED == false ]] && echo ' | color=#993333') | bash=$SELF_PATH | param1=switch"
 # Another shortcut: Click the Wi-Fi icon in the menu bar and hold ⌥ option
 echo 'Network Settings | shell=open | param1="x-apple.systempreferences:com.apple.preference.network"'
 printf 'Open logs | shell=open | param1="%q"\n' "$LOG_FILE"

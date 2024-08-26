@@ -246,7 +246,7 @@ function echo_eval_with_sudo() {
 function vim_mk_spell() {
   # TODO: Is this the correct process, or should multiple files for a locale be merged? Check Vim
   local force=${1:-false} file files=()
-  for file in "$VIM_SPELL"/*.dic; do
+  for file in "$VIM_SPELL"/*.add; do
     [[ $force == true || ! $(find $VIM_SPELL -name "$(basename "$file")*.spl" -print -quit) ]] && files+=("$file")
   done
 
