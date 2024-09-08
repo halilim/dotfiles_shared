@@ -24,6 +24,12 @@ set selection=exclusive " don't include newline in selection
 " NOTE: Vim requires these to end in .add
 set spellfile=~/.vim/spell/shared.en.utf-8.add,~/.vim/spell/custom.en.utf-8.add
 
+augroup SpellIgnore
+  autocmd!
+  " Ignore hashes, hex color codes, UUIDs, etc.
+  autocmd BufEnter * :syn match HexWords +\<\p*[0-9A-F]\{4,}\p*\c\>+ contains=@NoSpell
+augroup end
+
 " More under neoclide/coc.nvim settings
 
 " set list                " Show whitespace
@@ -280,7 +286,9 @@ augroup end
 " See note around the plugin
 " runtime macros/matchit.vim
 
-call custom#begin()
+if exists('*custom#begin')
+  call custom#begin()
+endif
 
 if !exists('g:custom_ai_plugin')
   let g:custom_ai_plugin = ''
@@ -340,7 +348,9 @@ Plug 'mhinz/vim-startify'
 Plug 'nathanaelkane/vim-indent-guides'
 " Plug 'Yggdroot/indentLine' " Alternative with lines instead of bg color
 
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+if executable('node')
+  Plug 'neoclide/coc.nvim', {'branch': 'release'}
+endif
 
 Plug 'osyo-manga/vim-anzu' " Search status on n/N, e.g. query(1/3)
 

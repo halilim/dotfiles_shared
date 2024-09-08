@@ -1,9 +1,6 @@
-:
-
 # cSpell:ignore libd dcrr dcos
 
-# shellcheck disable=SC2139
-alias libd="$EDITOR $0"
+alias libd='$EDITOR "$DOTFILES_INCLUDES"/lib/docker.sh'
 
 alias dk='docker'
 alias dks='docker stats'

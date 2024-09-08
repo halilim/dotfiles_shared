@@ -1,21 +1,16 @@
-:
+alias libm='$EDITOR "$DOTFILES_INCLUDES"/mac.sh' # cSpell:ignore libm
 
-# shellcheck disable=SC2139
-# cSpell:ignore libm
-alias libm="$EDITOR $0"
-
-export OPEN_CMD='open'
-
-# cSpell:ignore fdns
 alias ahr='air_buddy_handoff receive'
 alias ahs='air_buddy_handoff send'
 alias cb="pbcopy"
 alias chrome='/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome'
-alias fdns='sudo killall -HUP mDNSResponder'
+alias fdns='sudo killall -HUP mDNSResponder' # cSpell:ignore fdns
 alias lc="launchctl"
+
 alias sm='smerge .'
-# shellcheck disable=SC2139
-alias smerge_conf="$EDITOR $HOME'/Library/Application Support/Sublime Merge/Packages/User/Preferences.sublime-settings'"
+alias smerge_conf='$EDITOR "$HOME/Library/Application Support/Sublime Merge/Packages/User/Preferences.sublime-settings"'
+
+alias xbar_cd='cd ~/Library/Application\ Support/xbar/plugins'
 
 # https://iterm2.com/documentation-scripting-fundamentals.html#setting-user-defined-variables
 function iterm2_print_user_vars() {

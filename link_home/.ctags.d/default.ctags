@@ -1,3 +1,5 @@
+# shellcheck disable=SC2215,SC2211
+
 --quiet=yes
 
 --exclude=*.min.js

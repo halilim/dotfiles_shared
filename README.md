@@ -2,6 +2,8 @@
 
 Share dotfiles across different machines.
 
+WARNING: Subject to breaking changes. This was open-sourced mostly as a means of personal sharing.
+
 ## Setup
 
 ```sh
@@ -27,10 +29,6 @@ somewhere/dotfiles
 ```
 
 ## TODO
-
-### Linux
-
-- [ ] Replace/alias/redirect `gfind`, `gnumfmt`, `grealpath`, `gsed`, etc.
 
 ### Bash
 

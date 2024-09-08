@@ -60,6 +60,7 @@ def ar_table(items, *given_fields) # rubocop:disable Metrics/AbcSize, Metrics/Cy
     first_item = items.first
     comparator = ->(f) { first_item.read_attribute(f).to_s.length.positive? }
     cur_fields.sort! do |a, b|
+      # TODO: De-prioritize timestamps, etc. too and add to the method documentation
       a_present = comparator.call(a)
       b_present = comparator.call(b)
       if a_present == b_present

@@ -142,6 +142,8 @@
     ".jshintignore": "ignore",
     ".markdownlintrc": "jsonc",
     ".ruby-version": "properties",
+    ".shellspec": "shellscript",
+    "*.ctags": "shellscript",
     "*.erb.deface": "erb",
     "*.gitconfig*": "ini",
     "*.haml.deface": "haml",
@@ -386,9 +388,6 @@
   "terminal.integrated.shellIntegration.enabled": true,
   "terminal.integrated.tabs.enabled": true,
 
-  "todo-tree.filtering.excludeGlobs": [
-    "**/*.md"
-  ],
   "todo-tree.general.tags": [
     "BUG",
     "HACK",
@@ -410,7 +409,6 @@
       "foreground": "#ffa500"
     }
   },
-  "todo-tree.regex.regex": "(//|#|<!--|;|/\\*|^|^\\s*(-|\\d+.))\\s*($TAGS)",
   "todo-tree.tree.scanMode": "current file",
 
   // Implemented via regular keyboard shortcuts

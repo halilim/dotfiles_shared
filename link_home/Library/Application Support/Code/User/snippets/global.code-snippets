@@ -11,6 +11,11 @@
 		"body": "$LINE_COMMENT FIXME: ${0:Now}",
 	},
 
+	"NOTE: ...": {
+		"prefix": "nt",
+		"body": "$LINE_COMMENT NOTE: ${0:Note}",
+	},
+
 	"TODO: ...": {
 		"prefix": "td",
 		"body": "$LINE_COMMENT TODO: ${0:Later}",

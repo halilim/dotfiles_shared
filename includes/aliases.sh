@@ -1,10 +1,8 @@
-:
-# shellcheck disable=SC2139
-alias al="$EDITOR $0"
-# shellcheck disable=SC2139
-alias real="source $0"
+alias al='$EDITOR "$DOTFILES_INCLUDES"/aliases.sh'
+alias real='source "$DOTFILES_INCLUDES"/aliases.sh'
+alias alc='$EDITOR "$DOTFILES_CUSTOM"/includes/aliases.sh'
 
-# cSpell:ignore brbc brun brbf brsl brup brupd cdiff
+# cSpell:ignore brbc brun brbf brsl brup brupd cdiff cronl
 
 # See also: OMZ/brew plugin
 # shellcheck disable=SC2139
@@ -33,6 +31,9 @@ alias chrome_incognito='chrome --incognito'
 # 1. Close all instances
 alias chrome_with_logging='chrome --enable-logging=stderr --v=1'
 
+alias crone='crontab -e'
+alias cronl='crontab -l | bat --language=crontab'
+
 # cSpell:ignore cuiv
 alias ct="echo_eval 'rm tags && ctags -f tags -R'"
 alias cui="curl -I"
@@ -40,7 +41,10 @@ alias cuiv="curl -Iv"
 alias da='direnv allow'
 alias dp='declare -p'
 
-# cSpell:ignore dric dris
+# cSpell:ignore dcdc dcds dric dris
+alias dcd='cd $DOTFILES'
+alias dcdc='cd $DOTFILES_CUSTOM'
+alias dcds='cd $DOTFILES_SHARED'
 alias di='dotfiles import'
 alias dic='dotfiles import custom'
 alias dis='dotfiles import shared'
@@ -67,12 +71,11 @@ alias hhnv='http --headers --verify=no'
 alias hnv='http --verify=no'
 
 # sudo inside VSCode only accepts password and not Touch ID
-alias hostconf='sudo mvim --remote-silent /etc/hosts'
+alias hostconf='SUDO=1 vim_open /etc/hosts'
 
 alias ic="imgcat"
 alias k9='kill -9'
 
-# TODO: Other configs/defaults: env.sh > eza. These can't be set like that...yet. PR?
 alias l='eza --group-directories-first --long'
 alias la='eza --all --group-directories-first --long'
 
@@ -92,54 +95,56 @@ alias myip='my_ips'
 alias mysql_dump='mysqldump --no-create-info -uroot -p db_name > db_name.sql'
 alias mysql_restore='mysql -uroot -p db_name < db_name.sql'
 
+alias notes='$EDITOR ~/Desktop/notes.md'
+# cSpell:ignore notesv
+alias notesv='vim_open ~/Desktop/notes.md'
+
 alias o='$OPEN_CMD'
 
 alias omzp='open_with_editor ~/.oh-my-zsh/plugins/'
 
-alias pg="ping google.com" # TODO: Can be confused with postgres?
-alias p1="ping 1.1.1.1"
-alias p192="ping 192.168.1.1"
+alias pg='ping google.com'
+alias p1='ping 1.1.1.1'
+alias p192='ping 192.168.1.1'
 
 alias pg_fg='postgres -D "$(brew --prefix)"/var/postgres'
 
 # Make high-resolution screenshots etc. more shareable
 alias png2jpg50="convert ./*.png -resize '50%' -set filename:base '%[basename]' '%[filename:base].jpg'"
 
-# cSpell:ignore psgw rgfh rghi rgchi rgwc rgws sshc sshconf
+# cSpell:ignore psgw rgfh rghi rgchi rgsw rgwc rgws sshc sshconf
 
 alias psf='ps aux | fzf'
 alias psg='ps aux | grep -v " grep " | grep -i'
 alias psgw='ps aux | grep -v " grep " | grep -i -w'
 
 # - [...] foo -> - [ ] foo
-alias reset_markdown_todo="gsed -i -E 's/^([*-]) \[[^]]?\]/\1 [ ]/'"
+alias reset_markdown_todo='"$GNU_SED" -i -E '"'s/^([*-]) \[[^]]?\]/\1 [ ]/'"
 
 # Ripgrep
-alias rg3="rg -C 1" # Show 1 line before and after
-alias rga2="rg -A 2" # Show 2 lines after
-alias rga3="rg -A 3" # Show 3 lines after
-alias rgb2="rg -B 2" # Show 2 lines before
-alias rgb3="rg -B 3" # Show 3 lines before
-alias rgc='rg --case-sensitive'
+alias rg3='rg -C 1' # Show 1 line before and after
+alias rga2='rg -A 2' # Show 2 lines after
+alias rga3='rg -A 3' # Show 3 lines after
+alias rgb2='rg -B 2' # Show 2 lines before
+alias rgb3='rg -B 3' # Show 3 lines before
+alias rgc='rg -s'
 alias rgf="rg -F" # Treat the pattern as a literal string instead of a regular expression
-alias rgh="rg --hidden" # Include dotfiles
-alias rgfh="rg -F --hidden"
-alias rghi="rg --hidden --no-ignore"
-alias rgchi="rg --case-sensitive --hidden --no-ignore"
-alias rgw="rg -w" # Word
+alias rgh='rg -.' # Include dotfiles
+alias rgfh='rg -.F'
+alias rghi='rg -. --no-ignore'
+alias rgchi='rg -.s --no-ignore'
+alias rgw='rg -w' # Word
 # shellcheck disable=SC2139
-alias {rgwc,rgws}="rg -ws" # Word and case sensitive
+alias {rgsw,rgwc,rgws}='rg -sw' # Word and case sensitive
 
 alias shc='shellcheck'
+alias shs='shellspec'
 
 # shellcheck disable=SC2139
 alias {sshc,ssh_copy_key,copy_ssh_key}='cb < ~/.ssh/id_*.pub'
-alias sshconf='mvim_open ~/.ssh/config'
+alias sshconf='vim_open ~/.ssh/config'
 
 alias str='stree .' # cSpell:ignore stree
-
-# Enable aliases to be sudo'ed
-alias sudo='nocorrect sudo '
 
 alias t="tail" # common-aliases oh-my-zsh plugin sets this to tail -f
 alias tf="tail -f"
@@ -152,10 +157,8 @@ alias trg='traceroute google.com'
 
 alias th='tree -a'
 
-alias v='mvim_open'
-alias sv='sudo mvim'
+alias v='vim_open'
+alias sv='SUDO=1 vim_open'
 alias vimrc='$EDITOR ~/.vimrc'
 
 alias wu='who -u'
-
-alias xbar_cd='cd ~/Library/Application\ Support/xbar/plugins'

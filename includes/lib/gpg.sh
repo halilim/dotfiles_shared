@@ -1,10 +1,10 @@
-# cSpell:ignore libgpg
 
 # See also: omz.zsh > gpg-agent
-export GPG_TTY=$TTY
+if [[ $- == *i* ]]; then
+  export GPG_TTY=$TTY
+fi
 
-# shellcheck disable=SC2139
-alias libgpg="$EDITOR $0"
+alias libgpg='$EDITOR "$DOTFILES_INCLUDES"/lib/gpg.sh' # cSpell:ignore libgpg
 
 # shellcheck disable=SC2139
 alias gpg_edit="gpg --edit-key $GPG_KEY" # adduid > enter details > save
@@ -18,7 +18,7 @@ function gpg_check_key() {
   local expiry_date expiry_seconds now remaining_days
 
   expiry_date=$(gpg --list-key "$GPG_KEY" | rg 'pub.*expires: (.*)\]' -r '$1')
-  expiry_seconds=$(gdate -d"$expiry_date" +%s)
+  expiry_seconds=$("$GNU_DATE" -d"$expiry_date" +%s)
 
   now=$(date +%s)
   remaining_days=$(( (expiry_seconds - now) / 86400 ))

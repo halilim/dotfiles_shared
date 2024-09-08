@@ -1,9 +1,5 @@
-:
-# shellcheck disable=SC2139
-alias fn="$EDITOR $0"
-# cSpell:ignore refn
-# shellcheck disable=SC2139
-alias refn="source $0"
+alias fn='$EDITOR "$DOTFILES_INCLUDES"/functions.sh'
+alias refn='source "$DOTFILES_INCLUDES"/functions.sh' # cSpell:ignore refn
 
 function bak_toggle() {
   if [[ $1 == *.bak ]]; then
@@ -73,12 +69,9 @@ function color_arrow() {
 }
 
 function content_length() {
-  # Dependencies:
-  # * gnumfmt - macOS: brew install coreutils, already in ~/Brewfile
-
   curl -ILs "$1" |
-      http_header_value Content-Length |
-      gnumfmt --to=si --suffix=B
+    http_header_value Content-Length |
+    "$GNU_NUMFMT" --to=si --suffix=B
 }
 # cSpell:ignore cuil
 alias cuil="content_length"
@@ -184,9 +177,7 @@ function join_array() {
 }
 
 function list_file_names() {
-  # ls -B "$1"
-  # find "$1" -type_str f | rg -N .
-  gfind "$1" -type_str f -printf "%f\n" | sort
+  "$GNU_FIND" "$1" -type f -printf "%f\n" | sort
 }
 
 function diff_file_names() {
@@ -212,28 +203,37 @@ function myip_whois() {
 }
 alias whois_myip='myip_whois'
 
-# https://stackoverflow.com/a/5945322/372654
-function mvim_open() {
+function vim_open() {
+  local vim_cmd=()
+  if [[ ${SUDO:-} ]]; then
+    vim_cmd+=(sudo)
+  fi
+  vim_cmd+=("$VIM")
+
+  # https://stackoverflow.com/a/5945322/372654
   if [[ "$#" -eq 1 ]]; then
     if [[ -d $1 ]]; then
-      mvim "$1" +':lcd %'
+      vim_cmd+=("$1" +':lcd %')
     else
-      mvim --remote-silent "$1"
+      if [[ ! ${VIM_NO_SERVER:-} ]]; then
+        vim_cmd+=("--remote-silent")
+      fi
+      vim_cmd+=("$1")
     fi
-  else
-    mvim
   fi
+
+  "${vim_cmd[@]}"
 }
 
 function date_older_than() {
   local ts=$1 ago=$2 threshold
-  threshold=$(gdate -d "$ago ago" +%s)
+  threshold=$("$GNU_DATE" -d "$ago ago" +%s)
   [[ $ts < $threshold ]]
 }
 
 function last_mod_older_than() {
   local file=$1 ago=$2 last_mod
-  last_mod=$(gdate -r "$file" +%s)
+  last_mod=$("$GNU_DATE" -r "$file" +%s)
   [[ -f $file ]] && date_older_than "$last_mod" "$ago"
 }
 
@@ -246,6 +246,19 @@ function needs_update_and_mark() {
     return 0
   else
     return 1
+  fi
+}
+
+function open_with_editor() {
+  local abs_path_line_col=$1
+
+  if [[ $EDITOR = "$VIM" ]]; then
+    vim_open "$abs_path_line_col"
+  elif [[ $EDITOR = code || $EDITOR = code-insiders ]]; then
+    # https://code.visualstudio.com/docs/editor/command-line#_core-cli-options
+    /usr/local/bin/"$EDITOR" -g "$abs_path_line_col"
+  else
+    open "$abs_path_line_col"
   fi
 }
 
@@ -307,6 +320,29 @@ function prompt() {
   fi
 }
 
+function remove_broken_links()  {
+  local folder=${1:-.} recursive=${2:-} find_args=()
+
+  if [[ ! $recursive ]]; then
+    find_args+=('-maxdepth 1')
+  fi
+
+  find_args+=('-xtype l' '-print')
+
+  if [[ ! ${EE_DRY_RUN:-} ]]; then
+    find_args+=('-delete')
+  fi
+
+  EE_DRY_RUN='' echo_eval "$GNU_FIND %q ${find_args[*]}" "$folder"
+}
+
+function same_inode() {
+  local inode_count
+  inode_count=$($GNU_STAT --format %i "$1" "$2" | uniq | wc -l | tr -d '[:space:]')
+  [[ $inode_count == 1 ]]
+}
+alias are_hardlinks='same_inode'
+
 function ssl_check() {
   local domain=$1
   printf Q | openssl s_client -servername "$domain" -connect "$domain":443 | openssl x509 -noout -dates
@@ -322,13 +358,17 @@ function which_() {
     echo "$file_path"
   fi
 }
-alias wb="which_ bat"
-alias wl="which_ less"
+alias wb='which_ "$BAT_CMD"'
+alias wl='which_ less'
 
 # Why not in ~/bin? Because this needs the whole environment to be able to detect all types of
 # symbols. And loading all that is a slow process. This way, it's all in the current shell.
 function which_detailed() {
-  local input=$1 type_str type_ret
+  local input=$1 type_str type_ret is_zsh
+
+  if [ -n "${ZSH_VERSION:-}" ]; then
+    is_zsh=1
+  fi
 
   # When it's a variable name in 2nd round
   if [[ $input == '$'* ]]; then
@@ -340,7 +380,7 @@ function which_detailed() {
 
     if [[ $declare_output == 'typeset -g'* ]]; then
       local func_name
-      if [ -n "${ZSH_VERSION:-}" ]; then
+      if [ $is_zsh ]; then
         # shellcheck disable=SC2154
         func_name="${funcstack[1]}"
       else
@@ -360,29 +400,57 @@ function which_detailed() {
     return
   fi
 
-  type_str=$(type "$input")
+  local type_args=()
+  if [[ $is_zsh ]]; then
+    type_args+=(-w) # "...: function" / "...: command"
+  else
+    type_args+=(-t) # "function" / "...: file"
+  fi
+
+  type_str=$(type "${type_args[@]}" "$input")
   type_ret=$?
 
-  if [[ $type_str == *' function '* ]]; then
-    whence -v "$input"
-    echo '--------------------------------------------------------------------------------------------'
-    echo 'Comments are not shown, and there can be other differences between the output and the source'
-    echo '--------------------------------------------------------------------------------------------'
-    which -x 2 "$input" | bat --language=sh
+  if [[ $type_str == *'function'* ]]; then
+    local bat=("$BAT_CMD" --language=sh --paging=never)
 
-  elif [[ $type_str == *' alias '* ]]; then
-    echo "$type_str"
-    local full_cmd=${type_str#*for } cmd
-    cmd=${full_cmd%% *}
-    [[ $cmd == "$input" ]] && return # Prevent infinite loop, e.g. `alias ls=ls -etc`
-    which_detailed "$cmd"
+    # Check out if you have (a lot of) time :) https://unix.stackexchange.com/a/85250/4678
+    if [[ $is_zsh ]]; then
+      whence -v "$input"
+      which -x 2 "$input" | "${bat[@]}"
+    else
+      declare -F "$input"
+      declare -f "$input" | "${bat[@]}"
+    fi
 
-  elif [[ $type_str == *' is '* ]]; then
-    local file="${type_str#*is }"
+    color >&2 yellow 'Comments are not shown, and the output can differ from the source'
+
+  elif [[ $type_str == *'alias'* ]]; then
+    local type_output
+    exec 5>&1
+    type_output=$(type "$input" 2>&1 | tee >(cat - >&5))
+    exec 5>&-
+
+    if [ $is_zsh ]; then
+      type_output=${type_output#*for } # Zsh says "... is an alias for ..."
+    else
+      type_output=${type_output#*to \`} # Bash says "... is aliased to `...'"
+      type_output=${type_output%\'*}
+    fi
+
+    type_output=${type_output%% *} # Remove arguments
+
+    [[ $type_output == "$input" ]] && return # Prevent infinite loop, e.g. `alias ls=ls -etc`
+    which_detailed "$type_output"
+
+  elif [[ $type_str == *'command'* || $type_str == *'file'* ]]; then
+    local file_out
+    file_out=$(type "$input")
+    local file="${file_out#*is }"
+
     if [[ -L $file ]]; then
       ls -l "$file"
     else
-      echo "$type_str"
+      echo "$file"
     fi
 
   else

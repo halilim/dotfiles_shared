@@ -7,16 +7,18 @@
 # Note: Limited environment, bare `mine`/`code` doesn't work
 # To debug: call open_from_iterm_debug
 
-:
+: # TODO: Remove after https://github.com/koalaman/shellcheck/issues/1877 here and everywhere else
+  #       Without it, it disables for the whole file
+
 # shellcheck disable=SC1090
 . ~/bin/open_from_iterm_functions
 
 debug_print '------------------------------'
 
 # shellcheck disable=SC1090
-. ~/.dotfiles_paths.sh
+. ~/.dotfiles_bootstrap.sh
 # shellcheck disable=SC1091
-. "$DOTFILES_INCLUDES"/env.sh
+. "$DOTFILES_INCLUDES"/functions.sh
 # debug_vars EDITOR OSTYPE CPUTYPE
 # exit
 

@@ -75,8 +75,8 @@
 		"prefix": "ec",
 		"body": [
 			"exec 5>&1",
-			"local output",
-			"output=$(CMD 2>&1 | tee >(cat - >&5))",
+			"local ${1:output}",
+			"$1=$(${2:cmd} 2>&1 | tee >(cat - >&5))",
 			"exec 5>&-"
 		],
 	},
@@ -225,11 +225,31 @@
 		],
 	},
 
+	"if not": {
+		"prefix": "ifn",
+		"body": [
+			"if [[ ! $1 ]]; then",
+				"\t$0",
+			"fi"
+		],
+	},
+
 	"if starts with": {
 		"prefix": "ifs",
 		"body": [
 			"if [[ ${1:var} == '${2:str}'* ]]; then",
 				"\t$0",
+			"fi"
+		],
+	},
+
+	"if ZSH": {
+		"prefix": "ifz",
+		"body": [
+			"if [ -n \"\\${ZSH_VERSION:-}\" ]; then",
+				"\t$1",
+			"else",
+				"\t$2",
 			"fi"
 		],
 	},

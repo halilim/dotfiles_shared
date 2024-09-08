@@ -1,14 +1,11 @@
-# Interactive mode setup
-
-:
-# shellcheck disable=SC2139
-alias env_i="$EDITOR $0"
+alias env_i='$EDITOR "$DOTFILES_INCLUDES"/env_interactive.sh'
 
 if [ -n "${ZSH_VERSION-}" ]; then
   # https://docs.brew.sh/Shell-Completion#configuring-completions-in-zsh
   FPATH="$HOMEBREW_PREFIX/share/zsh/site-functions:${FPATH}"
 fi
 
+# TODO: Pass from client on SSH
 function color_mode() {
   if [[ $OSTYPE == darwin* ]]; then
     [[ $(defaults read -g AppleInterfaceStyle >/dev/null 2>&1) == 'Dark' ]] && echo dark || echo light

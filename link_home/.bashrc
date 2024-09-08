@@ -1,22 +1,15 @@
 export BUILTIN_URL='https://www.gnu.org/software/bash/manual/html_node/Bash-Builtins.html'
 
-# shellcheck disable=SC2139
-alias bashrc="$EDITOR $0"
+alias bashrc='$EDITOR ~/.bashrc'
 
 alias read_array='read -ra'
 
 # shellcheck disable=SC1091
-. "$HOME"/.dotfiles_paths.sh
+. "$HOME"/.dotfiles_bootstrap.sh
 # shellcheck disable=SC1091
-. "$DOTFILES"/shared/includes/env.sh
+. "$DOTFILES_INCLUDES"/bash_shared.sh
 # shellcheck disable=SC1091
 . "$DOTFILES_INCLUDES"/env_interactive.sh
-
-# If not running interactively, don't do anything
-case $- in
-    *i*) ;;
-      *) return;;
-esac
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
@@ -24,9 +17,6 @@ HISTCONTROL=ignoreboth
 
 # append to the history file, don't overwrite it
 shopt -s histappend
-
-# Use case-insensitive filename globbing
-shopt -s nocaseglob
 
 # cSpell:ignore apaache
 # When changing directory small typos can be ignored by bash
@@ -41,18 +31,8 @@ HISTFILESIZE=2000
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
 
-# If set, the pattern "**" used in a pathname expansion context will
-# match all files and zero or more directories and subdirectories.
-#shopt -s globstar
-
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
-
-# shellcheck source=/dev/null
-. "$DOTFILES_SHARED"/includes.sh
-
-# shellcheck source=/dev/null
-. "$HOMEBREW_PREFIX"/etc/bash_completion.d/git-prompt.sh
 
 export PS1='\[\e]0;\w\a\]\n\[\e[32m\]\u@\h \[\e[33m\]\w\[\e[0m\]\[\033[32m\]$(__git_ps1)\n\$ '
 

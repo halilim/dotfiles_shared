@@ -2,8 +2,7 @@
 # Intentionally disabled for the whole file, mostly for RUBY_CMD_PREFIX/RAILS_CMD/RAKE_CMD
 # TODO: Replace with block level disables if it gets implemented
 
-# cSpell:ignore libr
-alias libr="$EDITOR $0"
+alias libr='$EDITOR "$DOTFILES_INCLUDES"/lib/ruby_rails.sh' # cSpell:ignore libr
 
 export RUBY_CMD_PREFIX=${RUBY_CMD_PREFIX:-'bundle exec '} # or 'bin/'
 export RAILS_CMD="${RUBY_CMD_PREFIX}rails"
@@ -12,13 +11,11 @@ export RAKE_CMD="${RUBY_CMD_PREFIX}rake"
 if [ -n "${ZSH_VERSION:-}" ]; then
   alias -g CNE='-- --with-cflags="-Wno-error=implicit-function-declaration"'
   alias -g DS='DISABLE_SPRING=1'
-  # TODO: What's gem_select? Find (from history) or remove
-  alias -g GD='$(bundle info --path "$(gem_select)")'
   alias -g RW0='RUBYOPT="-W0"'
 fi
 
 # cSpell:ignore biq bebr beru berua besf bucq
-alias bundle_conf="$EDITOR ~/.bundle/config"
+alias bundle_conf='$EDITOR ~/.bundle/config'
 alias b='bundle'
 alias {biq,bq}='bundle install --quiet'
 alias bebr='bundle exec brakeman'
@@ -149,20 +146,6 @@ function gem_() {
     src) gem_uri_open "$name" "$version" 'source_code_uri' ;;
   esac
 }
-if [ -n "${ZSH_VERSION:-}" ]; then
-  _gem_()  {
-    local state
-
-    _arguments '1: :->cmd' '2: :->gem'
-
-    # shellcheck disable=2046
-    case $state in
-      cmd) compadd 'cd' 'doc' 'src' ;;
-      gem) compadd $(bundle exec gem list | tr ' ' '/' | tr -d '()') ;;
-    esac
-  }
-  compdef _gem_ gem_
-fi
 
 # cSpell:ignore gemcd gemdoc gemsrc
 # shellcheck disable=SC2139
@@ -230,7 +213,7 @@ function rails_update_migration() {
   dummy_output=$("${RAILS_CMD}" generate migration dummy --pretend)
   new_version=$(rails_migration_version "$dummy_output")
 
-  new_file=$(echo "$file" | gsed -e "s/$current_version/$new_version/")
+  new_file=$(echo "$file" | "$GNU_SED" -e "s/$current_version/$new_version/")
   echo_eval 'mv %q %q' "$file" "$new_file"
 
   echo_eval "$RAKE_CMD db:migrate"

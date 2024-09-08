@@ -30,6 +30,7 @@ autoupdate
 AWS
 Ayu
 B2C
+backblaze
 backfill
 backfiller
 backfills
@@ -37,6 +38,7 @@ backref
 backrefs
 badware
 bashrc
+batcat
 bazel
 beeftornado
 berksfile
@@ -48,6 +50,7 @@ Bitwarden
 blockapp
 blueutil
 bootsnap
+brandbook
 Brewfile
 britive
 broadcasted
@@ -82,6 +85,7 @@ colorsaurus
 commissionable
 compadd
 compdef
+compinit
 config
 cookiemonster
 coreutils
@@ -99,6 +103,7 @@ datatracker
 datname
 DBeaver
 Deel
+delaycompress
 deluid
 devcenter
 devs
@@ -117,6 +122,8 @@ dotall
 dotenv
 dotfile
 dotfiles
+dport
+dports
 drawdown
 dropdowns
 dyno
@@ -141,6 +148,7 @@ esdoc
 eshead
 evilmartians
 excelviewer
+extdebug
 factorybot
 falsey
 fanout
@@ -178,6 +186,7 @@ globbing
 Gmail
 gnumfmt
 googleauth
+googlecode
 gotmpl
 govcloud
 gpg
@@ -188,6 +197,7 @@ gsed
 gstat
 gtail
 GTM
+gtouch
 guardfile
 gvimrc
 gxargs
@@ -198,6 +208,7 @@ halilim
 halilozgur
 haml
 hardlink
+hardlinks
 hashable
 headshot
 heroku
@@ -217,6 +228,7 @@ HubSpot
 IBAN
 icalendar
 ideavimrc
+IDEs
 ifconfig
 ifconfigparser
 ignoreboth
@@ -242,11 +254,13 @@ javascripts
 jbuilder
 jdoe
 jetbrains
+JetBrains
 Jira
 jshintignore
 JSON
 Kaminari
 karafka
+kcov
 kdiff
 kdiff3
 Keychain
@@ -264,6 +278,7 @@ lazygit
 lesspipe
 libexec
 libxslt
+lifecycle
 linebreak
 Liskov
 listnetworkserviceorder
@@ -273,6 +288,8 @@ lograge
 lookback
 mackup
 MAILCATCHER
+mailname
+mailutils
 MAKEFLAGS
 mapfs
 markdownlint
@@ -289,13 +306,16 @@ microsoftonline
 mimemagic
 mindepth
 minio
+missingok
 mkdir
+mkpath
 mkspell
 mktmpdir
 monospace
 moreutils
 multidb
 multihomed
+multiport
 mvim
 myaddr
 MySQL
@@ -304,8 +324,10 @@ nanorc
 ncdu
 Neovim
 Nerdfont
+netfilter
 networksetup
 Neue
+newaliases
 newkey
 newrelic
 newsyslog
@@ -318,18 +340,21 @@ nohl
 nohup
 Nokogiri
 noout
+notifempty
 nounset
 npm
 npmjs
 nproc
 nullglob
 numericality
+numfmt
 nvim
 nvmrc
 OBJC
 occams
 omz
 omzrc
+onboarding
 OOS
 openai
 openpgp
@@ -371,6 +396,7 @@ plutil
 POC
 popen
 postgre
+postmap
 Powerlevel
 precompile
 prefetch
@@ -408,11 +434,13 @@ rdbg
 RDBMS
 rdoc
 readline
+readlink
 realpath
 redco
 Redis
 rediss
 reindex
+relayhost
 remoteless
 REPORTTIME
 rescuable
@@ -442,6 +470,7 @@ rxvt
 S3
 SAAS
 Salesforce
+sasl
 sassc
 schemaname
 screencapture
@@ -453,12 +482,15 @@ SEO
 Sergey
 servername
 setairportnetwork
+setenv
 setnetworkserviceenabled
+setopt
 shadowsocks
 shellcheck
 shellcheckrc
 shellenv
 shellformat
+shellspec
 shellwords
 shfmt
 shoulda
@@ -478,6 +510,7 @@ Sonoma
 sparsebundle
 sparseimage
 Speedify
+spellfile
 SQLite
 srand
 srcfolder
@@ -500,7 +533,9 @@ teamookla
 timecop
 Timecop
 tldr
+TMPDIR
 tmuxinator
+todo
 TODO
 Toggl
 toplevel
@@ -529,6 +564,7 @@ VDSL
 vendored
 viml
 vimrc
+VIMRUNTIME
 Vimscript
 visualstar
 vscodevim
@@ -553,6 +589,7 @@ xonshrc
 xpack
 XPUT
 xscenario
+xtype
 xxhash
 YAML
 yamllint

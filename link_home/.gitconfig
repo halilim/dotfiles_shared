@@ -73,7 +73,7 @@
 
 [difftool "sourcetree"]
 	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
-	path = 
+	path =
 
 [difftool "yml"]
 	cmd = yaml_diff \"$LOCAL\" \"$REMOTE\"
@@ -136,6 +136,7 @@
 	ff = only
 
 [push]
+	autoSetupRemote = true
 	default = simple
 	useForceIfIncludes = true
 

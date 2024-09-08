@@ -1,7 +1,12 @@
-# alias zprofile="$EDITOR $0" # Doesn't work, $0=`-zsh`
 alias zprofile='$EDITOR ~/.zprofile'
 
+setopt NULL_GLOB
+
 # shellcheck disable=SC1091
-. "$HOME"/.dotfiles_paths.sh
+. "$HOME"/.dotfiles_bootstrap.sh
+
 # shellcheck disable=SC1091
 . "$DOTFILES_INCLUDES"/env.sh
+
+# shellcheck disable=SC1091
+. "$DOTFILES_SHARED"/includes.sh

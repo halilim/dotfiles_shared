@@ -11,36 +11,26 @@ function source_with_custom() {
   source_custom "$1"
 }
 
-# shellcheck disable=SC2139
-alias envsh='$EDITOR '"$0"
-
-export EDITOR='code'
-export BUNDLER_EDITOR='code'
-export VISUAL='vim' # Needed for `crontab -e` (`code --wait` doesn't work)
+alias envsh='$EDITOR "$DOTFILES_INCLUDES"/env.sh'
 
 # eza (ls alternative)
 export EZA_ICONS_AUTO=true
 export EZA_ICON_SPACING=2
 export TIME_STYLE=long-iso
 
-export HOMEBREW_NO_AUTO_UPDATE=1 # Covered by update_and_backup ($UPDATE_BACKUP_CMDS)
-export HOMEBREW_NO_ENV_HINTS=1
-eval "$(/opt/homebrew/bin/brew shellenv)"
+if [[ $OSTYPE == darwin* ]]; then
+  source_with_custom mac_env.sh
+elif [[ $OSTYPE == linux* ]]; then
+  source_with_custom linux_env.sh
+fi
 
-# Set this so that tr_TR is not sent in SSH connections
-# https://bugzilla.mindrot.org/show_bug.cgi?id=1285
-# https://bugs.php.net/bug.php?id=18556
-export LANG="en_US.UTF-8"
-export LC_CTYPE="en_US.UTF-8"
-
-num_procs=$(nproc) # nproc is installed via Homebrew, thus it needs to come after it
-half_procs=$((num_procs / 2)) # Rounds down
-export BUNDLE_JOBS=$half_procs # TODO: Why half?
+num_procs=$(nproc) # On Mac, nproc is installed via Homebrew, thus it needs to come after mac_env
+export BUNDLE_JOBS=$num_procs
 # https://build.betterup.com/one-weird-trick-that-will-speed-up-your-bundle-install/
 # This version breaks other builds, e.g. ruby-build
 # export MAKE="make -j$num_procs"
 export MAKEFLAGS="-j$num_procs"
-unset num_procs half_procs
+unset num_procs
 
 # Start: oh-my-zsh config
 
@@ -124,7 +114,7 @@ source_custom env.sh
 
 # Put the manual/external steps at the end
 UPDATE_BACKUP_CMDS+=(
-  'mvim +"PlugUpgrade | PlugUpdate"'
+  "$VIM +'PlugUpgrade | PlugUpdate'"
   'open_dotfile_tabs'
   'o /Applications # Manually update the non-App Store, infrequently-opened, etc. apps'
 )

@@ -1,10 +1,6 @@
 # See also: OMZ/npm & OMZ/yarn plugins
 
-:
-
-# cSpell:ignore libn
-# shellcheck disable=SC2139
-alias libn="$EDITOR $0"
+alias libn='$EDITOR "$DOTFILES_INCLUDES"/lib/node.sh' # cSpell:ignore libn
 
 alias nv="node -v"
 

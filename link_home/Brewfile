@@ -41,6 +41,7 @@ brew 'node' # coc.nvim & probably others
 # brew 'pygmentize'
 
 brew 'ripgrep'
+brew 'rsync' # MacOS one is ancient
 
 # Ruby
 brew 'libxml2' # Nokogiri
@@ -52,6 +53,7 @@ brew 'readline'
 brew 'shared-mime-info' # mimemagic gem
 
 brew 'shellcheck'
+brew 'shellspec/shellspec/shellspec'
 brew 'shfmt' # VS Code extension shell-format
 
 brew 'teamookla/speedtest/speedtest'

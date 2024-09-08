@@ -1,6 +1,4 @@
-:
-# shellcheck disable=SC2139
-alias omzrc="$EDITOR $0"
+alias omzrc='$EDITOR "$DOTFILES_INCLUDES"/omz.zsh' # cSpell:ignore libm
 
 omz_path=~/.oh-my-zsh
 
@@ -15,8 +13,7 @@ omz_path=~/.oh-my-zsh
 # To customize prompt, run `p10k configure` or edit .p10k*.zsh.
 . "$DOTFILES_INCLUDES"/.p10k.zsh
 
-# shellcheck disable=SC2139
-alias p10kc="$EDITOR $DOTFILES_INCLUDES/.p10k.zsh"
+alias p10kc='$EDITOR "$DOTFILES_INCLUDES"/.p10k.zsh'
 
 export ZSH_THEME=powerlevel10k/powerlevel10k
 
