@@ -36,14 +36,12 @@ setopt NULL_GLOB
 . "$DOTFILES_INCLUDES"/omz.zsh
 
 # Must be after OMZ to be able to override its aliases
-source_with_custom aliases.sh
-for alias_file in {"$DOTFILES_SHARED","$DOTFILES_CUSTOM"}/includes/lib/*_aliases.sh; do
-  . "$alias_file"
-done
+# shellcheck disable=SC1091
+. "$DOTFILES_INCLUDES"/aliases.sh
 
 # Completions depend on compinit etc. via OMZ
-for comp in {"$DOTFILES_SHARED","$DOTFILES_CUSTOM"}/includes/lib/*_completions.zsh; do
-  . "$comp"
+for lib in "${DOTFILES_INCLUDE_LIBS[@]}"; do
+  source_with_custom "lib/$lib/${lib}_completions.zsh"
 done
 
 # Ctrl+Backspace/Delete to delete whole words

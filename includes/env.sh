@@ -1,14 +1,18 @@
-function source_custom() {
-  local file="$DOTFILES_CUSTOM"/includes/"$1"
-  # shellcheck disable=SC1090
-  [[ -e "$file" ]] && . "$file"
-  return 0
+function source_with_custom() {
+  local file="$DOTFILES_INCLUDES"/"$1"
+  source_if_exists "$file"
+  source_custom "$1"
 }
 
-function source_with_custom() {
-  # shellcheck disable=SC1090
-  . "$DOTFILES_INCLUDES"/"$1"
-  source_custom "$1"
+function source_if_exists() {
+  if [[ -e "$1" ]]; then
+    # shellcheck disable=SC1090
+    . "$1"
+  fi
+}
+
+function source_custom() {
+  source_if_exists "$DOTFILES_CUSTOM"/includes/"$1"
 }
 
 alias envsh='$EDITOR "$DOTFILES_INCLUDES"/env.sh'
