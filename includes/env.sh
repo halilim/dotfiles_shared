@@ -1,3 +1,5 @@
+alias envsh='$EDITOR "$DOTFILES_INCLUDES"/env.sh'
+
 function source_with_custom() {
   local file="$DOTFILES_INCLUDES"/"$1"
   source_if_exists "$file"
@@ -14,8 +16,6 @@ function source_if_exists() {
 function source_custom() {
   source_if_exists "$DOTFILES_CUSTOM"/includes/"$1"
 }
-
-alias envsh='$EDITOR "$DOTFILES_INCLUDES"/env.sh'
 
 # eza (ls alternative)
 export EZA_ICONS_AUTO=true

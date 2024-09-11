@@ -399,6 +399,7 @@ popen
 postgre
 postmap
 Powerlevel
+precheck
 precompile
 prefetch
 prefetched
@@ -510,6 +511,8 @@ Solargraph
 Sonoma
 sparsebundle
 sparseimage
+specfile
+specfiles
 Speedify
 spellfile
 SQLite
@@ -554,6 +557,7 @@ unbreak
 unimport
 unpair
 unscope
+unsetenv
 uplevel
 upsert
 upserted
