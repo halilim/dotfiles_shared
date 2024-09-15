@@ -26,11 +26,10 @@ function gem_uri_open() {
 }
 
 function gem_() {
-  local cmd=$1 selected arr name version
+  local cmd=$1 selected name version
   selected=$2 # etc/1.0
-  IFS='/' read_array arr <<< "$selected"
-  name=${arr[1]}
-  version=${arr[2]}
+  name=${selected%%/*}
+  version=${selected#*/}
   # echo "cmd: $cmd, name: $name, version: $version"
 
   case "$cmd" in

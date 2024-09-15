@@ -6,7 +6,7 @@ jobs:
     name: Shellcheck
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Run ShellCheck
         # cSpell:ignore ludeeus
         uses: ludeeus/action-shellcheck@master
@@ -15,3 +15,16 @@ jobs:
           SHELLCHECK_OPTS: -s bash
         with:
           ignore_paths: "**/.p10k*.zsh"
+
+  # https://github.com/shellspec/shellspec
+  shellspec:
+    name: ShellSpec
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install ShellSpec
+        run: curl -fsSL https://git.io/shellspec | sh -s latest.tar.gz --bin /usr/local/bin --yes
+      - name: Display ShellSpec version
+        run: shellspec --version
+      - name: Run ShellSpec
+        run: shellspec

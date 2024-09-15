@@ -201,6 +201,17 @@
 		],
 	},
 
+	"if DRY_RUN": {
+		"prefix": "ifd",
+		"body": [
+			"if [[ \\$DRY_RUN ]]; then",
+				"\t$1",
+			"else",
+				"\t$2",
+			"fi"
+		],
+	},
+
 	// cSpell:ignore ife
 	"if else": {
 		"prefix": "ife",

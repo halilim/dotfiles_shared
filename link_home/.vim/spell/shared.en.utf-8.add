@@ -122,6 +122,7 @@ dotall
 dotenv
 dotfile
 dotfiles
+dotglob
 dport
 dports
 drawdown
@@ -146,6 +147,7 @@ errexit
 esac
 esdoc
 eshead
+evented
 evilmartians
 excelviewer
 extdebug
@@ -156,6 +158,7 @@ fastcgi
 fielddata
 findutils
 Fira
+FIXME
 FPATH
 frontends
 ftplugin
@@ -296,6 +299,7 @@ markdownlint
 markdownlintrc
 maxdepth
 mediainfo
+Memcached
 memsize
 Menlo
 mergetool
@@ -345,6 +349,7 @@ nounset
 npm
 npmjs
 nproc
+NSCF
 nullglob
 numericality
 numfmt
@@ -397,6 +402,7 @@ plutil
 POC
 popen
 postgre
+Postgres
 postmap
 Powerlevel
 precheck

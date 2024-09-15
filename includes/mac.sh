@@ -14,25 +14,14 @@ alias xbar_cd='cd ~/Library/Application\ Support/xbar/plugins'
 
 # https://iterm2.com/documentation-scripting-fundamentals.html#setting-user-defined-variables
 function iterm2_print_user_vars() {
-  iterm2_set_user_var pathShort "$(iterm2_custom_path_short)"
-}
-
-function iterm2_custom_path_short() {
-  local dir
-  dir=$(git rev-parse --show-toplevel 2> /dev/null || pwd)
-  if [[ $dir == "$HOME" ]]; then
-    dir='~'
+  # Usage: Profile > Session > Configure Status Bar > Interpolated String > `\(user.gitBranch)`
+  local branch
+  branch=$(git_current_branch)
+  if [[ $branch ]]; then
+    # SF Symbols > arrow.triangle.branch
+    branch="􀙠 $branch"
   fi
-  echo "${dir:t}"
-}
-
-# https://superuser.com/a/1625752/59919
-# Or move the Dock to the active display, and the app switcher should follow it
-# cSpell:ignore appswitcher
-function mac_app_switcher_all_displays() {
-  local value="${1:-true}"
-  defaults write com.apple.dock appswitcher-all-displays -bool "$value"
-  killall Dock
+  iterm2_set_user_var gitBranch "$branch"
 }
 
 function mac_set_screenshot_format() {

@@ -1,0 +1,8 @@
+{
+  "**/*.sh": {
+    "alternate": "spec/{dirname}/{basename}_spec.sh"
+  },
+  "**/bin/*": {
+    "alternate": "spec/{dirname}/bin/{basename}_spec.sh"
+  }
+}

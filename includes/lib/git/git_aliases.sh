@@ -1,6 +1,6 @@
-# cSpell:ignore libga gcpn gcae gcane gcano gcmb gcom gdnc gdtc gdtk gmmnc gmtk gpft gpla gplb gplp grgu grpo
+# cSpell:ignore libga gcpn gcae gcane gcano gcem gcmb gcemb gcom gdnc gdtc gdtk gmmnc gmtk gpft gpla gplb gplp grgu grpo
 
-alias libga='$EDITOR "$DOTFILES_INCLUDES"/lib/git_aliases.sh'
+alias libga='$EDITOR "$DOTFILES_INCLUDES"/lib/git/git_aliases.sh'
 
 alias ga='git add -p'
 alias gan='git add -N'
@@ -8,8 +8,10 @@ alias gcpn='git cherry-pick --no-commit'
 alias gcae='git commit --amend --edit'
 # shellcheck disable=SC2139
 alias {gcane,gcano}='git commit --amend --no-edit'
-alias gcm="git commit --verbose --message '"
-alias gcmb='git commit --verbose --message "$(git rev-parse --abbrev-ref HEAD)"'
+alias gcm="git commit --message '"
+alias gcem="git commit --allow-empty --message '"
+alias gcmb='git commit --message "$(git rev-parse --abbrev-ref HEAD)"'
+alias gcemb='git commit --allow-empty --message "$(git rev-parse --abbrev-ref HEAD) ."'
 alias gcn='git commit --no-edit'
 alias gcom='git checkout $(git_main_branch)'
 

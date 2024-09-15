@@ -8,7 +8,7 @@ fi
 # TODO: Pass from client on SSH
 function color_mode() {
   if [[ $OSTYPE == darwin* ]]; then
-    [[ $(defaults read -g AppleInterfaceStyle) == 'Dark' ]] && echo dark || echo light
+    [[ $(defaults read -g AppleInterfaceStyle 2>&1) == 'Dark' ]] && echo dark || echo light
   elif [[ $OSTYPE == linux* ]]; then
     # TODO: Implement
     :

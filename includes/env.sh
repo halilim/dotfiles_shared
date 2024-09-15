@@ -73,6 +73,7 @@ export OMZ_PLUGINS=(
   safe-paste
   yarn
   z
+  zsh-autosuggestions
   zsh-syntax-highlighting
   zsh-vi-mode
 )

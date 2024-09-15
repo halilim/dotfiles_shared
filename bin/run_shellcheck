@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+set -euo pipefail
+IFS=$'\n\t'
+
+# This is for the local run. Also helps to detect CI action config or file discrepancies.
+
+shopt -s globstar
+
+# cSpell:ignore shrc
+files=(**/*.*sh **/.*sh)
+files+=(**/.*shrc)
+files+=(**/.bash_profile **/.inputrc **/.zprofile)
+files+=(**/bin/*)
+files+=(.husky/*[^_])
+files+=(setup)
+
+files_cleaned=()
+for file in "${files[@]}"; do
+  if [[ $file == *.applescript ||
+    $file == *.p10k.zsh ||
+    $file == *iterm_tab ||
+    $file == *smerge ||
+    $file == *url_to_* ]]; then
+    continue
+  fi
+
+  files_cleaned+=("$file")
+done
+
+if [[ ${DRY_RUN:-} ]]; then
+  printf '%s\n' "${files_cleaned[@]}" | sort
+else
+  shellcheck -s bash "${files_cleaned[@]}"
+fi

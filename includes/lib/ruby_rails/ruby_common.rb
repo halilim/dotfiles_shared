@@ -164,4 +164,10 @@ def pm(obj, *options) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticCompl
   data.size
 end
 
+# `alias_method :r!, :reload!` doesn't work because #alias_method is defined on `Module`,
+#   not on `Object`, which is the context here.
+def r!
+  reload!
+end
+
 # rubocop:enable Style/NumericPredicate

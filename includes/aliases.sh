@@ -56,7 +56,6 @@ alias dse='dotfiles setup'
 
 alias e='open_with_editor'
 alias ee="echo_eval"
-alias EED='EE_DRY_RUN=1'
 alias ek="echo"
 
 alias f='fd -t f'

@@ -1,1 +1,2 @@
-act
+bin/run_shellcheck
+shellspec

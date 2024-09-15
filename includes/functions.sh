@@ -98,7 +98,7 @@ function curl_time() {
   # cSpell:enable
 }
 
-# Usage: EE_DRY_RUN=1 FAKE_RETURN=foo echo_eval 'bar %q' "$baz"
+# Usage: DRY_RUN=1 FAKE_RETURN=foo echo_eval 'bar %q' "$baz"
 function echo_eval() {
   local cmd
   # shellcheck disable=SC2059
@@ -106,7 +106,7 @@ function echo_eval() {
   color_arrow >&2 green "$cmd"
   # Dry-run output is not always accurate, since some intermediate conditionals depend on a
   # previous step actually running
-  if [[ ${EE_DRY_RUN:-} ]]; then
+  if [[ ${DRY_RUN:-} ]]; then
     echo >&2 'Dry running...'
     [[ ${FAKE_RETURN:-} ]] && echo "$FAKE_RETURN"
     return 0
@@ -114,6 +114,17 @@ function echo_eval() {
     eval "$cmd"
   fi
 }
+
+function edit_function() {
+  local location
+  location=$(locate_function "$1")
+  if [[ ! $location ]]; then
+    return 1
+  fi
+
+  open_with_editor "$location"
+}
+alias ef='edit_function'
 
 function encode_uri_component() {
   jq -rR @uri <<< "$1"
@@ -185,6 +196,37 @@ function diff_file_names() {
 }
 alias dfn='diff_file_names'
 
+function locate_function() {
+  local function_name=$1 output file line is_zsh
+
+  if [ -n "${ZSH_VERSION:-}" ]; then
+    is_zsh=1
+  fi
+
+  if [ $is_zsh ]; then
+    output=$(whence -v "$function_name") # fun is a shell function from /foo/bar.sh
+    file=${output#*from }
+  else
+    output=$(declare -F "$function_name") # fun 123 /foo/bar.sh
+    output=${output#*"$function_name "}
+    file=${output#* }
+  fi
+
+  if [[ ! -e $file ]]; then
+    echo >&2 "$output"
+    return 1
+  fi
+
+  if [[ $is_zsh ]]; then
+    line=$(grep -n "$function_name(" "$file")
+    line=${line%%:*}
+  else
+    line=${output%% *}
+  fi
+
+  echo "$file:$line"
+}
+
 function md5_of_str() {
   printf '%s' "$1" | md5
 }
@@ -202,28 +244,6 @@ function myip_whois() {
   echo_eval 'whois %q' "$ip"
 }
 alias whois_myip='myip_whois'
-
-function vim_open() {
-  local vim_cmd=()
-  if [[ ${SUDO:-} ]]; then
-    vim_cmd+=(sudo)
-  fi
-  vim_cmd+=("$VIM")
-
-  # https://stackoverflow.com/a/5945322/372654
-  if [[ "$#" -eq 1 ]]; then
-    if [[ -d $1 ]]; then
-      vim_cmd+=("$1" +':lcd %')
-    else
-      if [[ ! ${VIM_NO_SERVER:-} ]]; then
-        vim_cmd+=("--remote-silent")
-      fi
-      vim_cmd+=("$1")
-    fi
-  fi
-
-  "${vim_cmd[@]}"
-}
 
 function date_older_than() {
   local ts=$1 ago=$2 threshold
@@ -329,11 +349,11 @@ function remove_broken_links()  {
 
   find_args+=('-xtype l' '-print')
 
-  if [[ ! ${EE_DRY_RUN:-} ]]; then
+  if [[ ! ${DRY_RUN:-} ]]; then
     find_args+=('-delete')
   fi
 
-  EE_DRY_RUN='' echo_eval "$GNU_FIND %q ${find_args[*]}" "$folder"
+  DRY_RUN='' echo_eval "$GNU_FIND %q ${find_args[*]}" "$folder"
 }
 
 function same_inode() {
@@ -348,6 +368,28 @@ function ssl_check() {
   printf Q | openssl s_client -servername "$domain" -connect "$domain":443 | openssl x509 -noout -dates
 }
 alias tls_check='ssl_check'
+
+function vim_open() {
+  local vim_cmd=()
+  if [[ ${SUDO:-} ]]; then
+    vim_cmd+=(sudo)
+  fi
+  vim_cmd+=("$VIM")
+
+  # https://stackoverflow.com/a/5945322/372654
+  if [[ "$#" -eq 1 ]]; then
+    if [[ -d $1 ]]; then
+      vim_cmd+=("$1" +':lcd %')
+    else
+      if [[ ! ${VIM_NO_SERVER:-} ]]; then
+        vim_cmd+=("--remote-silent")
+      fi
+      vim_cmd+=("$1")
+    fi
+  fi
+
+  "${vim_cmd[@]}"
+}
 
 function which_() {
   local cmd=$1 name=$2 file_path
@@ -414,11 +456,10 @@ function which_detailed() {
     local bat=("$BAT_CMD" --language=sh --paging=never)
 
     # Check out if you have (a lot of) time :) https://unix.stackexchange.com/a/85250/4678
+    locate_function "$input"
     if [[ $is_zsh ]]; then
-      whence -v "$input"
       which -x 2 "$input" | "${bat[@]}"
     else
-      declare -F "$input"
       declare -f "$input" | "${bat[@]}"
     fi
 

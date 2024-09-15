@@ -17,7 +17,7 @@ mkdir "$dotfiles_dir"/custom # Add custom config based on `custom_example`
 
 git clone .../dotfiles.git "$dotfiles_dir"/shared
 "$dotfiles_dir"/shared/setup
-# To dry-run: EE_DRY_RUN=1 "$dotfiles_dir"/shared/setup
+# To dry-run: DRY_RUN=1 "$dotfiles_dir"/shared/setup
 ```
 
 After that, open a new terminal tab for the changes to take effect. The end result should be:
