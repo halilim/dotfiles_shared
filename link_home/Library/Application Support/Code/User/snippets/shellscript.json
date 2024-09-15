@@ -201,6 +201,15 @@
 		],
 	},
 
+	"if command exists": {
+		"prefix": "ifco",
+		"body": [
+			"if command -v ${1:cmd}; then",
+				"\t$0",
+			"fi"
+		],
+	},
+
 	"if DRY_RUN": {
 		"prefix": "ifd",
 		"body": [

@@ -49,8 +49,15 @@ function setup() {
 
 function sync() {
   local type=${1:-all} plug_installed=${2:-true}
-  [[ $type == all || $type == shared ]] && setup_shared_links
-  [[ $type == all || $type == custom ]] && setup_custom_links
+
+  if [[ $type == all || $type == shared ]]; then
+    setup_shared_links
+  fi
+
+  if [[ $type == all || $type == custom ]]; then
+    setup_custom_links
+  fi
+
   vim_mk_spell false "$plug_installed"
 }
 
@@ -281,6 +288,10 @@ function echo_eval_with_sudo() {
 }
 
 function vim_mk_spell() {
+  if ! command -v "$VIM" &> /dev/null || [[ ${NO_VIM:-} ]]; then
+    return 0
+  fi
+
   # TODO: Is this the correct process, or should multiple files for a locale be merged? Check Vim
   local force=${1:-false} plug_installed=${2:-true} file files=()
   for file in "$VIM_SPELL"/*.add; do
