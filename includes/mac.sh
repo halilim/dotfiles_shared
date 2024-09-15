@@ -18,7 +18,7 @@ function iterm2_print_user_vars() {
   local branch
   branch=$(git_current_branch)
   if [[ $branch ]]; then
-    # SF Symbols > arrow.triangle.branch
+    # SF Symbols > arrow.triangle.branch > Copy symbol
     branch="􀙠 $branch"
   fi
   iterm2_set_user_var gitBranch "$branch"

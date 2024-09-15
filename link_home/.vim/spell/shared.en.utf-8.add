@@ -45,6 +45,8 @@ berksfile
 bgnotify
 bigdecimal
 bindkey
+binstub
+binstubs
 bitnami
 Bitwarden
 blockapp
