@@ -99,10 +99,12 @@ alias {rfd,sfd}="${RUBY_CMD_PREFIX}rspec --format documentation"
 # cSpell:ignore nosp spk spp spps psg spsr spst
 alias {nosp,spd}='DISABLE_SPRING=1'
 alias spk="pgrep 'spring (app|server)' | xargs kill -9"
-alias {spg,spp,spps}='psg spring'
-alias sps="${RUBY_CMD_PREFIX}spring status"
+ps_spring='psg spring'
+alias {spg,spp,spps}="$ps_spring"
+alias sps="${RUBY_CMD_PREFIX}spring status && $ps_spring"
 alias spsr="${RUBY_CMD_PREFIX}spring server"
-alias spst="${RUBY_CMD_PREFIX}spring stop"
+alias spst="${RUBY_CMD_PREFIX}spring stop && $ps_spring"
+unset ps_spring
 
 alias sq="${RUBY_CMD_PREFIX}sidekiq"
 
