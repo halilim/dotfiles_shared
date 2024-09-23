@@ -61,7 +61,7 @@ function write_log_conf() {
     local output
     if output=$(can_sudo); then
       # man newsyslog.conf
-      echo "$LOG_FILE : 644 1 1024 *" | sudo tee -a "$LOG_CONF" > /dev/null
+      echo "$LOG_FILE $(id -un):$(id -gn) 644 1 1024 *" | sudo tee -a "$LOG_CONF" > /dev/null
     else
       log "Couldn't write $LOG_CONF: $output"
     fi
@@ -77,7 +77,7 @@ function set_data() {
   # (2) Service 2
   # (Hardware Port: Wi-Fi, Device: en1)
   # ...
-  local index networks number name display_name name_sep='·' device connection_status wifi_name
+  local index networks number name display_name name_sep='·' device connection_status
 
   if [ -n "${ZSH_VERSION:-}" ]; then
     index=1
@@ -108,22 +108,6 @@ function set_data() {
         connection_status=true
       else
         connection_status=false
-      fi
-
-      if [[ $display_name == *Wi-Fi* ]]; then
-        if wifi_name=$(networksetup -getairportnetwork "$device") && [[ $wifi_name != *'not associated'* ]]; then
-          wifi_name=$(echo "$wifi_name" | cut -d : -f 2)
-          wifi_name="${wifi_name#"${wifi_name%%[![:space:]]*}"}"
-        else
-          connection_status=false
-          if [[ $wifi_name == *'power is currently off'* ]]; then
-            wifi_name='Off'
-          else
-            wifi_name='Not Associated'
-          fi
-        fi
-
-        display_name="$display_name $name_sep $wifi_name"
       fi
 
       display_name="$display_name $([[ $connection_status == true ]] && echo '✓' || echo '✗')"

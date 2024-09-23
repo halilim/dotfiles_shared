@@ -2,7 +2,6 @@
 
 export ESHEAD_DIR="$HOME/code/tools/elasticsearch-head"
 export GPG_KEY=123ABC # gpg --list-keys > The hex number below "pub"
-export ITERM2_COLOR_SCHEMES=~/code/tools/iTerm2-Color-Schemes
 export RUBY_CMD_PREFIX='bin/'
 DOTFILES_INCLUDE_LIBS+=(gpg)
 OMZ_PLUGINS+=(rbenv)

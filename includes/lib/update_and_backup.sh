@@ -23,10 +23,3 @@ function update_bat_syntaxes() {
 
   bat cache --build
 }
-
-function update_iterm2_color_schemes() {
-  # TODO: Replace with downloading/official setup, almost always ends up with thousands of conflicts
-  # TODO: Do various terminal setting files at ~ come from this? iTerm2-only mode?
-  git_clone_or_pull https://github.com/mbadolato/iTerm2-Color-Schemes.git "$ITERM2_COLOR_SCHEMES"
-  "$ITERM2_COLOR_SCHEMES"/tools/import-scheme.sh "$ITERM2_COLOR_SCHEMES"/schemes/*
-}

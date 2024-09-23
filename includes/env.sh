@@ -98,12 +98,12 @@ export DOTFILES_INCLUDE_LIBS=(
 
 # shellcheck disable=SC2016
 export UPDATE_BACKUP_CMDS=(
+  'brew update --quiet'
   'brew upgrade --quiet' # Removed --greedy because apps auto-download in the background anyway
   'npm_update_globals'
   'omz update --unattended'
   'omz_update_custom'
   update_bat_syntaxes
-  update_iterm2_color_schemes
 )
 
 # Global troubleshooting reminder: Some apps treat PATH as case-insensitive, causing problems when
