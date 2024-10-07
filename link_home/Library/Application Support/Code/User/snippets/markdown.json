@@ -8,6 +8,15 @@
 		],
 	},
 
+	"```plain": {
+		"prefix": "`p",
+		"body": [
+			"```plain",
+			"$0",
+			"```"
+		],
+	},
+
 	"```ruby": {
 		"prefix": "`r",
 		"body": [

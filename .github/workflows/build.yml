@@ -24,7 +24,14 @@ jobs:
       - uses: actions/checkout@v4
       - name: Install ShellSpec
         run: curl -fsSL https://git.io/shellspec | sh -s latest.tar.gz --bin /usr/local/bin --yes
+      - name: Install Zsh
+        run: sudo apt-get install -y zsh
       - name: Display ShellSpec version
         run: shellspec --version
+      - name: Display Bash version
+        run: bash --version
+      - name: Display Zsh version
+        run: zsh --version
+      # NOTE: If the test suite starts taking long enough, switch to the matrix strategy
       - name: Run ShellSpec
-        run: shellspec
+        run: bin/run_shellspec

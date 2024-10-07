@@ -48,7 +48,7 @@ alias rgrw="rgr -w"
 alias rp='ruby -rpry -ramazing_print'
 alias rv='ruby -v'
 
-# cSpell:ignore raa rav rcac rgg rgm rgmp rgmo rrz rro rrow rsl rvv
+# cSpell:ignore raa rav rcac rgg rgm rgmp rgmo rrz rro rrow rrowe rsl rvv
 alias raa="$RAILS_CMD about"
 alias rav="$RAILS_CMD -v"
 alias rc="$RAILS_CMD console"
@@ -64,7 +64,9 @@ alias rnv='rails _7.1.0_ new'
 alias rr="$RAILS_CMD runner"
 alias {rrf,rrz}="$RAILS_CMD routes | fzf"
 alias rro="$RAILS_CMD routes"
-alias rrow="$RAILS_CMD routes --expanded | sed 's/[[:space:]]*$//' > routes.txt" # sed removes trailing whitespace from `Prefix | `
+# sed removes trailing whitespace from `Prefix | `
+alias rrow="$RAILS_CMD routes | sed 's/[[:space:]]*$//' > routes.txt"
+alias rrowe="$RAILS_CMD routes --expanded | sed 's/[[:space:]]*$//' > routes_expanded.txt"
 alias rrp="$RAILS_CMD runner -e production"
 alias rrt="$RAILS_CMD runner -e test"
 alias rs="$RAILS_CMD server"
@@ -96,15 +98,12 @@ alias ss="${RUBY_CMD_PREFIX}rspec --seed"
 alias {rsb,rst,sb,st}="${RUBY_CMD_PREFIX}rspec --backtrace" # Replaces `rails server --bind` from oh-my-zsh Rails plugin
 alias {rfd,sfd}="${RUBY_CMD_PREFIX}rspec --format documentation"
 
-# cSpell:ignore nosp spk spp spps psg spsr spst
+# cSpell:ignore nosp spk spst spp spps spsr
+# Not using `spring stop/status` etc., because they miss zombie processes and are slow
 alias {nosp,spd}='DISABLE_SPRING=1'
-alias spk="pgrep 'spring (app|server)' | xargs kill -9"
-ps_spring='psg spring'
-alias {spg,spp,spps}="$ps_spring"
-alias sps="${RUBY_CMD_PREFIX}spring status && $ps_spring"
+alias {spk,spst}='kill_spring'
+alias {spg,spp,spps,sps}='psg spring'
 alias spsr="${RUBY_CMD_PREFIX}spring server"
-alias spst="${RUBY_CMD_PREFIX}spring stop && $ps_spring"
-unset ps_spring
 
 alias sq="${RUBY_CMD_PREFIX}sidekiq"
 

@@ -36,6 +36,8 @@ brew 'ncdu'
 
 brew 'node' # coc.nvim & probably others
 
+brew 'patchutils'
+
 # Without this, zsh-tab-completions emits 3 lines of "_normal:6: command not found: pygmentize"
 # Though even with this, it outputs pygmentize help :)
 # brew 'pygmentize'

@@ -32,6 +32,7 @@ Ayu
 B2C
 backblaze
 backfill
+backfillable
 backfiller
 backfills
 backref
@@ -110,6 +111,7 @@ deluid
 devcenter
 devs
 dgram
+dhtmlx
 dic
 difftool
 dind
@@ -170,6 +172,7 @@ funcstack
 fuser
 fuubar
 fzf
+gantt
 gdate
 Gemfile
 gemfiles
@@ -197,6 +200,7 @@ govcloud
 gpg
 grayscale
 grealpath
+grepdiff
 gruvbox
 gsed
 gstat
@@ -246,6 +250,7 @@ inet
 Inflector
 initializers
 inodes
+inplace
 inputrc
 ioreg
 ipynb
@@ -380,6 +385,7 @@ packwerk
 paraiso
 parseable
 passwordless
+patchutils
 Pavel
 Payoneer
 pbcopy
@@ -562,10 +568,12 @@ ulid
 Unarchiver
 unblockapp
 unbreak
+unidiff
 unimport
 unpair
 unscope
 unsetenv
+unstaged
 uplevel
 upsert
 upserted
@@ -573,6 +581,7 @@ upserts
 urlhaus
 usr
 utf
+vcard
 VDSL
 vendored
 viml

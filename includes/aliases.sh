@@ -2,28 +2,10 @@ alias al='$EDITOR "$DOTFILES_INCLUDES"/aliases.sh'
 alias real='source "$DOTFILES_INCLUDES"/aliases.sh'
 alias alc='$EDITOR "$DOTFILES_CUSTOM"/includes/aliases.sh'
 
-# cSpell:ignore brbc brun brbf brsl brup brupd cdiff cronl
-
-# See also: OMZ/brew plugin
-# shellcheck disable=SC2139
-alias {bru,brun}='brew uninstall'
-alias brb='brew bundle'
-alias brbc='brew bump-cask-pr --version=ver name'
-alias brbf='brew bump-formula-pr --version=ver name'
-alias brewfile='$EDITOR ~/Brewfile'
-alias bri='brew install'
-alias bric='brew install --cask'
-alias brin='brew info'
-alias brl='brew list'
-alias brs='brew search'
-alias brsl='brew services list'
-alias brup='brew upgrade'
-alias brupd='brew update'
-
 alias c='code'
 # alias c='code-insiders'
 alias ci='code-insiders'
-alias cdiff='code --diff'
+alias cdiff='code --diff' # cSpell:ignore cdiff
 
 # `chrome` is an OS-specific alias defined in lib/linux and lib/mac
 alias chrome_incognito='chrome --incognito'
@@ -32,7 +14,7 @@ alias chrome_incognito='chrome --incognito'
 alias chrome_with_logging='chrome --enable-logging=stderr --v=1'
 
 alias crone='crontab -e'
-alias cronl='crontab -l | bat --language=crontab'
+alias cronl='crontab -l | bat --language=crontab' # cSpell:ignore cronl
 
 # cSpell:ignore cuiv
 alias ct="echo_eval 'rm tags && ctags -f tags -R'"
@@ -138,6 +120,7 @@ alias {rgsw,rgwc,rgws}='rg -sw' # Word and case sensitive
 
 alias shc='shellcheck'
 alias shs='shellspec'
+alias shsfd='shellspec -f d' # cSpell:ignore shsfd
 
 # shellcheck disable=SC2139
 alias {sshc,ssh_copy_key,copy_ssh_key}='cb < ~/.ssh/id_*.pub'

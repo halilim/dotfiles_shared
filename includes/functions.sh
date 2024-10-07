@@ -124,7 +124,8 @@ function edit_function() {
 
   open_with_editor "$location"
 }
-alias ef='edit_function'
+# shellcheck disable=SC2139
+alias {ef,fe}='edit_function'
 
 function encode_uri_component() {
   jq -rR @uri <<< "$1"
@@ -179,12 +180,16 @@ function http_header_value() {
       tr -d '\r'
 }
 
-# https://stackoverflow.com/a/49418778/372654
-# Usage: join_array '|' "${array[@]}" (Bash/Zsh) - join_array '|' $array (Zsh)
+# Usage: join_array '|' "${array[@]}"
 function join_array() {
-  local delim=$1 arr=$2
-  shift 2
-  printf %s "${arr[*]}${*/#/$delim}"
+  local separator=$1
+  shift
+  local el out=''
+  for el in "$@"; do
+    out+="$el$separator"
+  done
+  out=${out%"$separator"}
+  printf '%s' "$out"
 }
 
 function list_file_names() {

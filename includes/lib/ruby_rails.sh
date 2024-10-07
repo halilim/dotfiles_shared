@@ -48,6 +48,10 @@ alias {gem_doc,gemdoc}='gem_ doc'
 # shellcheck disable=SC2139
 alias {gem_src,gemsrc}='gem_ src'
 
+function kill_spring() {
+  pgrep 'spring (app|server)' | xargs kill -9
+}
+
 # Roll back branch-specific migrations before switching to main
 function rails_reset_to_main() {
   local new_migrations
@@ -132,6 +136,10 @@ function ruby_cd_pull_migrate() {
     local bundle_cmd=${BUNDLE_CMD:-'bundle install --quiet'}
     echo_eval "$bundle_cmd"
     echo_eval 'git checkout Gemfile.lock'
+  fi
+
+  if [[ -f bin/spring ]]; then
+    echo_eval 'kill_spring'
   fi
 
   local should_migrate

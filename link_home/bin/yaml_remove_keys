@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+set -euo pipefail
+IFS=$'\n\t'
+
+# Remove comma-separated keys from a set of yaml files and discard any other changes
+# Usage: yaml_remove_keys .foo.bar.baz,.qux.etc.something_else file1 file2 ...
+# Dependencies: git, yq, patchutils (grepdiff)
+#
+# What problems does this solve?
+# 1. In-place editing with yq reformats the whole file (https://github.com/mikefarah/yq/issues/465)
+# 2. yq doesn't support editing multiple files at once (https://mikefarah.gitbook.io/yq/usage/tips-and-tricks#update-multiple-files)
+#
+# This minimizes it by preserving the indentation level of each file and then removing any
+# remaining irrelevant changes by including only the hunks whose changes include the key suffixes.
+#
+# Note: irrelevant changes in lines adjacent to the removals are considered parts of hunks. Please
+# remove them manually, and make sure to review the changes before committing.
+#
+# Workflow to run this multiple times on same the files:
+# 1. Run the script
+# 2. Review the changes, stage wanted, discard unwanted
+# 3. Rinse and repeat
+
+KEYS=$1
+FILES=("${@:2}")
+
+key_suffixes=''
+IFS=',' read -r -a key_arr <<< "$KEYS"
+for key in "${key_arr[@]}"; do
+  key_suffixes+="${key##*.}|"
+done
+key_suffixes=${key_suffixes%|}
+
+has_errors=''
+
+for file in "${FILES[@]}"; do
+  if [[ $(git diff "$file") ]]; then
+    echo >&2 "$file has unstaged changes. Please stage/stash/revert them."
+    has_errors=true
+    continue
+  fi
+
+  indent_level=$(grep -Eo -m1 '^\s+' "$file" | tr -d "\n" | wc -c | tr -d ' ')
+  yq -i -I"$indent_level" e "del($KEYS)" "$file"
+
+  # Instead of trying to invert grepdiff, generate the wanted diff, restore file, and apply the diff
+  diff=$(git diff -U0 --no-color  "$file" |
+      grepdiff -E "($key_suffixes)" --only-match=removals --output-matching=hunk)
+  git restore "$file"
+  git apply --unidiff-zero <<< "$diff"
+done
+
+if [[ $has_errors ]]; then
+  exit 1
+fi

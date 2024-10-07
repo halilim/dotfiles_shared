@@ -81,11 +81,19 @@
 		],
 	},
 
-	"echo error return": {
+	"echo error return (functions)": {
 		"prefix": "eer",
 		"body": [
 			"echo >&2 '${1:error message}'",
 			"return ${2:1}"
+		],
+	},
+
+	"echo error exit (scripts)": {
+		"prefix": "eex",
+		"body": [
+			"echo >&2 '${1:error message}'",
+			"exit ${2:1}"
 		],
 	},
 

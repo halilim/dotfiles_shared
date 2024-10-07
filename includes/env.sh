@@ -87,6 +87,7 @@ fi
 # End: oh-my-zsh config
 
 export DOTFILES_INCLUDE_LIBS=(
+  brew
   docker
   elasticsearch
   git

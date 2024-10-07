@@ -58,27 +58,4 @@ bindkey '\e[3;6~' kill-line
 bindkey "^[a" beginning-of-line
 bindkey "^[e" end-of-line
 
-# NOTE: Doesn't work with zsh-vi-mode, enabled globalias OMZ plugin instead
-# # Cmd+E expand aliases and history, expand_alias is defined in
-# # iTerm2 Preferences > (Profiles>) Keys > [Cmd+e, Send Escape Sequence, expand_alias]
-# # bindkey "^[expand_alias" _expand_alias
-# # fzf-tab breaks expansion, this is a workaround for that.
-# # See also: plugins > globalias
-# bindkey "^[expand_alias" my_expand_alias
-# function my_expand_alias() {
-#   disable-fzf-tab
-#   zle _expand_alias
-#   enable-fzf-tab
-# }
-# zle -N my_expand_alias
-
-# https://www.reddit.com/r/zsh/comments/bbbluo/comment/ekhpxer/
-# function expand-alias() {
-# 	zle _expand_alias
-# 	zle self-insert
-# }
-# zle -N expand-alias
-# bindkey -M main ' ' expand-alias
-# NOTE: Doesn't work with zsh-vi-mode either, enabled globalias OMZ plugin instead
-
 source_custom .zshrc

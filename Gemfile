@@ -4,5 +4,9 @@
 
 source 'https://rubygems.org'
 
+# These are no longer default gems
+gem 'fiddle' # irb
+gem 'rdoc' # irb
+
 gem 'rubocop'
 gem 'rubocop-performance'

@@ -1,2 +1,2 @@
 bin/run_shellcheck
-shellspec
+bin/run_shellspec

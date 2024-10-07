@@ -47,6 +47,7 @@ function setup() {
   fi
 }
 
+# TODO: Fix: this is creating .git.linked and .git.linked/info directories. Tests with matrix? :)
 function sync() {
   local type=${1:-all} plug_installed=${2:-true}
 
@@ -292,6 +293,7 @@ function vim_mk_spell() {
     return 0
   fi
 
+  # TODO: Replace plug_installed and vim_cmd_pre with vim_cmds
   # TODO: Is this the correct process, or should multiple files for a locale be merged? Check Vim
   local force=${1:-false} plug_installed=${2:-true} file files=()
   for file in "$VIM_SPELL"/*.add; do

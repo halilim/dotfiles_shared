@@ -47,7 +47,7 @@ def ar_table(items, *given_fields) # rubocop:disable Metrics/AbcSize, Metrics/Cy
 
   calc_max_row_len = ->(max_len, fields, add = 0) { max_len.values.sum + fields.length * 3 + 1 + add }
 
-  term_width = Readline.get_screen_size[1] # or Rake.application.terminal_width
+  term_width = Reline.get_screen_size[1]
   max_row_len = calc_max_row_len.call(cur_max_len, cur_fields)
   term_width_exceeded = false
 
@@ -106,21 +106,16 @@ alias art ar_table
 #   ls bar -g baz
 #
 # @param obj [Object] an instance or class
-# @param options [Array<Regexp, Symbol>] <code>Regexp</code>: filter methods by a regular
-#   expression. <code>:more</code>: include methods from Object
+# @param pattern [Regexp, String] Filter methods by a regular expression
 #
 # @return [Integer] number of methods printed
 #
 # @example
 #   pm Foo
 #   pm bar, /baz/
-#   pm baz, /qux/, :more
-def pm(obj, *options) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
+def pm(obj, pattern = nil) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
   methods = obj.methods
-  methods -= Object.methods unless options.include?(:more)
-
-  filter = options.select { |opt| opt.is_a?(Regexp) }.first
-  methods = methods.grep(filter) if filter
+  methods = methods.grep(Regexp.new(pattern.to_s, 'i')) if pattern
 
   data = methods.sort.collect do |name|
     method = obj.method(name)
@@ -164,10 +159,28 @@ def pm(obj, *options) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticCompl
   data.size
 end
 
-# `alias_method :r!, :reload!` doesn't work because #alias_method is defined on `Module`,
-#   not on `Object`, which is the context here.
-def r!
-  reload!
+# Print hash key-value pairs whose keys match a regular expression
+#
+# @param hash [Hash]
+# @param pattern [Regexp, String]
+def pk(hash, pattern)
+  hash.select { |k, _v| k.to_s =~ Regexp.new(pattern.to_s, 'i') }
+end
+
+# Print hash key-value pairs whose values match a regular expression
+#
+# @param hash [Hash]
+# @param pattern [Regexp, String]
+def pv(hash, pattern)
+  hash.select { |_k, v| v.to_s =~ Regexp.new(pattern.to_s, 'i') }
+end
+
+if defined?(reload!)
+  # `alias_method :r!, :reload!` doesn't work because #alias_method is defined on `Module`,
+  #   not on `Object`, which is the context here.
+  def r!
+    reload!
+  end
 end
 
 # rubocop:enable Style/NumericPredicate
