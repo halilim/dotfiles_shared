@@ -112,6 +112,21 @@
 		],
 	},
 
+	"echo_eval no dry-run": {
+		"prefix": "eend",
+		"body": [
+			"DRY_RUN='' echo_eval '${1:foo %q}' \"$${2:bar}\""
+		],
+	},
+
+	"else": {
+		"prefix": "el",
+		"body": [
+			"else",
+				"\t$0"
+		],
+	},
+
 	"export": {
 		"prefix": "ex",
 		"body": "export ${1:name}=${2:value}",
@@ -204,6 +219,15 @@
 			"if ${1:cmd}; then",
 				"\t$2",
 			"else",
+				"\t$0",
+			"fi"
+		],
+	},
+
+	"if command not": {
+		"prefix": "ifcn",
+		"body": [
+			"if ! ${1:cmd}; then",
 				"\t$0",
 			"fi"
 		],

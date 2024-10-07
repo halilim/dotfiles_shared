@@ -61,6 +61,7 @@ brew 'shfmt' # VS Code extension shell-format
 brew 'teamookla/speedtest/speedtest'
 
 brew 'terminal-notifier'
+brew 'tldr'
 brew 'tree'
 # brew 'wget'
 brew 'yq'
