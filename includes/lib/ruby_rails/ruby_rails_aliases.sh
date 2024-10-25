@@ -65,8 +65,8 @@ alias rr="$RAILS_CMD runner"
 alias {rrf,rrz}="$RAILS_CMD routes | fzf"
 alias rro="$RAILS_CMD routes"
 # sed removes trailing whitespace from `Prefix | `
-alias rrow="$RAILS_CMD routes | sed 's/[[:space:]]*$//' > routes.txt"
-alias rrowe="$RAILS_CMD routes --expanded | sed 's/[[:space:]]*$//' > routes_expanded.txt"
+alias rrow="$RAILS_CMD routes | sed 's/[[:space:]]*$//' > .routes.txt"
+alias rrowe="$RAILS_CMD routes --expanded | sed 's/[[:space:]]*$//' > .routes_expanded.txt"
 alias rrp="$RAILS_CMD runner -e production"
 alias rrt="$RAILS_CMD runner -e test"
 alias rs="$RAILS_CMD server"
@@ -92,16 +92,17 @@ alias rkro="$RAKE_CMD routes"
 alias rkT="$RAKE_CMD -T"
 alias rrs="gco db/schema.rb && $RAKE_CMD db:drop db:create db:schema:load db:migrate"
 
-# cSpell:ignore sfd
-alias s="${RUBY_CMD_PREFIX}rspec"
-alias ss="${RUBY_CMD_PREFIX}rspec --seed"
-alias {rsb,rst,sb,st}="${RUBY_CMD_PREFIX}rspec --backtrace" # Replaces `rails server --bind` from oh-my-zsh Rails plugin
-alias {rfd,sfd}="${RUBY_CMD_PREFIX}rspec --format documentation"
+rspec_cmd="${RUBY_CMD_PREFIX}rspec --format progress"
+alias s="$rspec_cmd"
+alias ss="$rspec_cmd --seed"
+alias {rsb,rst,sb,st}="$rspec_cmd --backtrace" # Replaces `rails server --bind` from oh-my-zsh Rails plugin
+alias {rfd,sfd}="${RUBY_CMD_PREFIX}rspec --format documentation" # cSpell:ignore sfd
+unset rspec_cmd
 
 # cSpell:ignore nosp spk spst spp spps spsr
 # Not using `spring stop/status` etc., because they miss zombie processes and are slow
 alias {nosp,spd}='DISABLE_SPRING=1'
-alias {spk,spst}='kill_spring'
+alias {ksp,spk,spst}='kill_spring'
 alias {spg,spp,spps,sps}='psg spring'
 alias spsr="${RUBY_CMD_PREFIX}spring server"
 

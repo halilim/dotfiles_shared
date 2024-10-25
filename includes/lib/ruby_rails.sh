@@ -52,6 +52,29 @@ function kill_spring() {
   pgrep 'spring (app|server)' | xargs kill -9
 }
 
+# More functionality is in *_completions.zsh
+function rails_build_request() {
+  local method_and_uri=$1 method uri tool=${2:-postman} # GET /users
+
+  method=$(echo "$method_and_uri" | cut -d ' ' -f 1)
+
+  uri=$(echo "$method_and_uri" | cut -d ' ' -f 2)
+  uri=$(echo "$uri" | sed -E 's/\(\.:format\)//')
+
+  case "$tool" in
+    curl)
+      echo "curl -X $method $uri"
+      ;;
+    httpie)
+      echo "http $method $uri"
+      ;;
+    postman)
+      echo "curl -X $method {{baseUrl}}$(echo "$uri" | sed -E 's/:([^\/]+)/{{\1}}/g')"
+      ;;
+  esac
+}
+alias rbr='rails_build_request'
+
 # Roll back branch-specific migrations before switching to main
 function rails_reset_to_main() {
   local new_migrations

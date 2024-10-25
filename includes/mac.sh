@@ -4,6 +4,9 @@ alias ahr='air_buddy_handoff receive'
 alias ahs='air_buddy_handoff send'
 alias cb="pbcopy"
 alias chrome='/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome'
+
+alias colima_start_apple_silicon='colima start --vm-type=vz --vz-rosetta --mount-type=virtiofs --memory 6 --cpu 4'
+
 alias fdns='sudo killall -HUP mDNSResponder' # cSpell:ignore fdns
 alias lc="launchctl"
 

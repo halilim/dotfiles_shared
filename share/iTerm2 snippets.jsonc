@@ -1,0 +1,45 @@
+[
+  {
+    "group_name": "--- Rails ---",
+    "snippets": [
+      {
+        "title": "AR conn config",
+        "value": "ActiveRecord::Base.public_send(Rails.gem_version >= '6.1' ? :connection_db_config : :connection_config)"
+      },
+
+      {
+        "title": "AR exec_query",
+        "value": "result = ActiveRecord::Base.connection.exec_query(\"select version()\")"
+      },
+
+      { "value": ".errors.messages" },
+
+      {
+        "title": "include URL helpers",
+        "value": "include Rails.application.routes.url_helpers"
+      },
+
+      { "value": "Rails.backtrace_cleaner.clean(e.backtrace) # or caller" },
+      { "value": "Rails.cache.clear" }
+    ]
+  },
+
+  {
+    "group_name": "--- Ruby ---",
+    "snippets": [
+      { "value": "h.keys.select { |k| k.to_s =~ /pattern/i }" },
+      { "value": "h.values.select { |v| v.to_s =~ /pattern/i }" },
+      { "value": "h.select { |k, v| v.to_s =~ /pattern/i }" },
+      { "value": ".methods.select { |m| m.to_s =~ /pattern/i }" }
+    ]
+  },
+
+  {
+    "group_name": "--- Shell ---",
+    "snippets": [
+      { "value": "bundle exec" },
+      { "value": "bundle exec rails c" },
+      { "value": "ps aux | grep -v \" grep \" | grep -i " }
+    ]
+  }
+]

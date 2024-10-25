@@ -1,0 +1,153 @@
+// Stored as data instead of plain text to support import/export of search engines one day
+// NOTE: Some are templates / need customization
+[
+  {
+    "name": "Archive.org",
+    "shortcut": "ar",
+    "url": "https://web.archive.org/web/*/%s"
+  },
+
+  {
+    "name": "Can I email",
+    "shortcut": "canie", // cSpell:ignore canie
+    "url": "https://www.caniemail.com/search/?s=%s"
+  },
+
+  {
+    "name": "Can I use",
+    "shortcut": "cani",
+    "url": "https://caniuse.com/?search=%s"
+  },
+
+  {
+    "name": "Docker Hub",
+    "shortcut": "dk",
+    "url": "https://hub.docker.com/search?q=%s"
+  },
+
+  {
+    "name": "GitHub",
+    "shortcut": "gh",
+    "url": "https://github.com/search?q=%s&type=repositories"
+  },
+
+  {
+    "name": "Gmail",
+    "shortcut": "m",
+    "url": "https://mail.google.com/mail/u/0/#search/%s"
+  },
+
+  {
+    "name": "Google Calendar",
+    "shortcut": "cal",
+    "url": "https://calendar.google.com/calendar/u/0/r/search?q=%s"
+  },
+
+  {
+    "name": "Google define word",
+    "shortcut": "def",
+    "url": "{google:baseURL}search?q=define %s&{google:RLZ}{google:originalQueryForSuggestion}{google:assistedQueryStats}{google:searchFieldtrialParameter}{google:iOSSearchLanguage}{google:searchClient}{google:sourceId}{google:contextualSearchVersion}ie={inputEncoding}"
+  },
+
+  {
+    "name": "Google Drive",
+    "shortcut": "drv",
+    "url": "https://drive.google.com/drive/u/0/search?q=%s"
+  },
+
+  {
+    "name": "Google Maps",
+    "shortcut": "maps",
+    "url": "https://www.google.com/maps/search/%s?source=opensearch"
+  },
+
+  {
+    "name": "Jira: TEAM issues",
+    "shortcut": "teams or js",
+    "url": "https://example.atlassian.net/issues/?jql=project%20%3D%20TEAM%20AND%20text%20~%20%22%s%22%20ORDER%20BY%20created%20DESC"
+  },
+
+  {
+    "name": "Jira: TEAM bugs",
+    "shortcut": "teamb or jb", // cSpell:ignore teamb
+    "url": "https://example.atlassian.net/issues/?jql=project%20%3D%20TEAM%20AND%20text%20~%20%22%s%22%20AND%20type%20%3D%20Bug%20ORDER%20BY%20created%20DESC"
+  },
+
+  {
+    "name": "Jira: TEAM issues by title (summary)",
+    "shortcut": "teamt or jt", // cSpell:ignore teamt
+    "url": "https://example.atlassian.net/issues/?jql=project%20%3D%20TEAM%20AND%20summary%20~%20%22%s%22%20ORDER%20BY%20created%20DESC"
+  },
+
+  {
+    "name": "Jira: TEAM-",
+    "shortcut": "team or ji",
+    "url": "https://example.atlassian.net/browse/TEAM-%s"
+  },
+
+  {
+    "name": "LaunchDarkly flag",
+    "shortcut": "ld",
+    "url": "https://app.launchdarkly.com/projects/default/flags/%s"
+  },
+
+  {
+    "name": "MDN",
+    "shortcut": "mdn",
+    "url": "https://developer.mozilla.org/en-US/search?q=%s"
+  },
+
+  {
+    "name": "npm packages",
+    "shortcut": "npm",
+    "url": "https://www.npmjs.com/search?q=%s"
+  },
+
+  {
+    "name": "Rollbar occurrence by UUID",
+    "shortcut": "ruid", // cSpell:ignore ruid
+    "url": "https://rollbar.com/occurrence/uuid/?uuid=%s"
+  },
+
+  {
+    "name": "Ruby gems",
+    "shortcut": "gem",
+    "url": "https://rubygems.org/search?query=%s"
+  },
+
+  {
+    "name": "Stack Overflow",
+    "shortcut": "so",
+    "url": "https://stackoverflow.com/search?q=%s"
+  },
+
+  {
+    "name": "Synonyms",
+    "shortcut": "syn",
+    "url": "https://www.thesaurus.com/browse/%s"
+  },
+
+  {
+    "name": "Translate EN -> TR",
+    "shortcut": "entr", // cSpell:ignore entr
+    "url": "https://translate.google.com/?sl=en&tl=tr&text=%s&op=translate"
+  },
+
+  {
+    "name": "Translate TR -> EN",
+    "shortcut": "tren",
+    "url": "https://translate.google.com/?sl=tr&tl=en&text=%s&op=translate"
+  },
+
+  {
+    "name": "whois.domaintools.com",
+    "shortcut": "who",
+    "url": "https://whois.domaintools.com/%s"
+  },
+
+  {
+    "name": "Wikipedia",
+    "shortcut": "wiki",
+    "url": "https://en.wikipedia.org/wiki/%s"
+  }
+]

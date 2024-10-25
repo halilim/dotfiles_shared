@@ -38,6 +38,7 @@ backfills
 backref
 backrefs
 badware
+bashdb
 bashrc
 batcat
 bazel
@@ -61,6 +62,7 @@ buildpack
 buildpacks
 buildx
 byebug
+caddyserver
 callout
 canonicalize
 canva
@@ -90,6 +92,7 @@ compadd
 compdef
 compinit
 config
+conventionalcomments
 cookiemonster
 coreutils
 CORS
@@ -102,6 +105,7 @@ Ctags
 CTYPE
 Cyclomatic
 dasherized
+datadoghq
 datatracker
 datname
 DBeaver
@@ -122,6 +126,7 @@ dockerd
 dockerhub
 dockerignore
 Dokku
+domaintools
 dotall
 dotenv
 dotfile
@@ -210,6 +215,7 @@ gtouch
 guardfile
 gvimrc
 gxargs
+hackmd
 hadolint
 halil
 Halil
@@ -375,6 +381,7 @@ opentelemetry
 opsgenie
 orbstack
 ordernetworkservices
+oreilly
 orgname
 osascript
 osxfuse
@@ -488,6 +495,7 @@ SAAS
 Salesforce
 sasl
 sassc
+scaleway
 schemaname
 screencapture
 Searchkick
@@ -544,10 +552,12 @@ Struct
 stty
 stylesheet
 substr
+sumologic
 systempreferences
 tablename
 tabnine
 teamookla
+thoughtbot
 timecop
 Timecop
 tldr
@@ -563,6 +573,7 @@ Transferwise
 tsrange
 turboframe
 Turborepo
+typicode
 ublock
 ulid
 Unarchiver
@@ -588,6 +599,7 @@ viml
 vimrc
 VIMRUNTIME
 Vimscript
+virtiofs
 visualstar
 vscodevim
 vsicons

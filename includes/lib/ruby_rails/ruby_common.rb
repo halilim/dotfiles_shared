@@ -3,7 +3,7 @@
 # rubocop:disable Style/NumericPredicate
 
 # Displays a MySQL-style table for ActiveRecord objects. Limits the number of columns based on the
-# terminal width. Prioritizes columns with data over empty columns.
+# terminal width. Prioritizes id and columns with data over empty columns. Deprioritizes timestamps.
 #
 # Modified from https://gist.github.com/bgreenlee/72234
 #
@@ -58,11 +58,13 @@ def ar_table(items, *given_fields) # rubocop:disable Metrics/AbcSize, Metrics/Cy
     max_row_len += dot_col_len
 
     first_item = items.first
-    comparator = ->(f) { first_item.read_attribute(f).to_s.length.positive? }
-    cur_fields.sort! do |a, b|
-      # TODO: De-prioritize timestamps, etc. too and add to the method documentation
-      a_present = comparator.call(a)
-      b_present = comparator.call(b)
+    presence = ->(field) { first_item.read_attribute(field).to_s.length.positive? }
+    cur_fields.sort! do |field_a, field_b|
+      next 1 if field_b == 'id' # Prioritize id
+      next 1 if %w[created_at updated_at].include?(field_a) # Deprioritize timestamps
+
+      a_present = presence.call(field_a)
+      b_present = presence.call(field_b)
       if a_present == b_present
         0
       elsif a_present

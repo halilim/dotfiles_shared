@@ -8,6 +8,7 @@
     "csv (semicolon)": true,
     "csv": true,
     "env": true,
+    "git-commit": true,
     "gotmpl": true,
     "icalendar": true,
     "markdown": true,

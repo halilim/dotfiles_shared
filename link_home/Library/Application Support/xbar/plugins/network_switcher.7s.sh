@@ -14,7 +14,7 @@ IFS=$'\n\t'
 
 # NOTE: Keep variables in sync with init_config
 # <xbar.var>select(VAR_CHECK_METHOD="ping"): Experimental [ping, curl]</xbar.var>
-# <xbar.var>string(VAR_CHECK_HOST="1.1.1.1"): Preferably always on and close, so that the happy path is as fast as possible</xbar.var>
+# <xbar.var>string(VAR_CHECK_HOST="1.1.1.1"): Preferably always on and geographically close, so that the happy path is as fast as possible</xbar.var>
 # <xbar.var>string(VAR_CHECK_TIMEOUT="3"): After this number of seconds, deem it down</xbar.var>
 # <xbar.var>boolean(VAR_DISABLE_AUTO_SWITCH=false): For debugging or connecting to the router</xbar.var>
 # <xbar.var>boolean(VAR_SUDO=false): Use sudo for switching (automatically detected)</xbar.var>
@@ -329,6 +329,6 @@ echo '---'
 
 echo "Connected: $CURRENT_DISPLAY_NAME$([[ $CURRENT_CONNECTED == false ]] && echo ' | color=#663333')"
 echo "Switch to: $NEXT_DISPLAY_NAME$([[ $NEXT_CONNECTED == false ]] && echo ' | color=#993333') | bash=$SELF_PATH | param1=switch"
-# Another shortcut: Click the Wi-Fi icon in the menu bar and hold ⌥ option
+# Another shortcut: Click the Wi-Fi icon in the menu bar and hold ⌥ (option)
 echo 'Network Settings | shell=open | param1="x-apple.systempreferences:com.apple.preference.network"'
 printf 'Open logs | shell=open | param1="%q"\n' "$LOG_FILE"

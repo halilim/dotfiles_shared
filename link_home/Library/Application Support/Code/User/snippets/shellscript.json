@@ -56,6 +56,14 @@
 		"body": "cd '$0' || return"
 	},
 
+	"color": {
+		"prefix": "color",
+		"body": [
+			"# ${1|regular (0),bold (1)|} ${2|black (30),red (31),green (32),yellow (33),blue (34),magenta (35),cyan (36),white (37)|}",
+			"printf '\\e[${1/[^0-9]//gi};${2/[^0-9]//gi}m%s\\e[0m' \"$0\""
+		],
+	},
+
 	"declare -p": {
 		"prefix": "dp",
 		"body": [

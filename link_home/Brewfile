@@ -9,7 +9,12 @@ brew 'gnu-sed' # gsed
 
 brew 'act' # Run GitHub Actions locally https://github.com/nektos/act
 brew 'bash' # macOS one is ancient
-brew 'bat' # regular use + vim fzf preview
+brew 'bashdb' # Bash debugger
+brew 'bat' # cat alternative in Rust (regular use + vim fzf preview)
+brew 'colima' # Docker alternative
+brew 'docker' # Required for Docker runtime
+brew 'docker-compose'
+brew 'docker-credential-helper'
 brew 'dust' # du in Rust with percentage bars
 brew 'eza' # ls alternative in Rust
 brew 'fd'

@@ -9,6 +9,7 @@
 
 .mix_tasks
 .rake_tasks
+.routes*
 
 error_log
 
