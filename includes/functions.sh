@@ -201,6 +201,7 @@ function diff_file_names() {
 }
 alias dfn='diff_file_names'
 
+# TODO: Add support for aliases
 function locate_function() {
   local function_name=$1 output file line is_zsh
 

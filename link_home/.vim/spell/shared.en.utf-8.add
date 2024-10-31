@@ -22,6 +22,7 @@ Arity
 asdf
 auth
 Authable
+auths
 autoindex
 autoload
 autoloaders
@@ -98,6 +99,7 @@ coreutils
 CORS
 Covid
 CPUTYPE
+creds
 CSRF
 csvq
 CTA
@@ -385,6 +387,7 @@ oreilly
 orgname
 osascript
 osxfuse
+osxkeychain
 Ozgur
 Özgür
 packagecloud
@@ -618,6 +621,7 @@ xbar
 xbarapp
 xclip
 xcontext
+Xdebug
 xmlrpc
 xonshrc
 xpack

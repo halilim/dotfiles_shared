@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -euvo pipefail
+IFS=$'\n\t'
+
+trap 'mysql.server stop' SIGTERM SIGINT
+
+mysql.server start
+
+while true
+do
+  sleep 999999999
+done

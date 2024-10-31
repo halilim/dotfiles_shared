@@ -2,8 +2,10 @@
 
 alias libd='$EDITOR "$DOTFILES_INCLUDES"/lib/docker.sh'
 
+alias cos='colima start'
+
 alias dk='docker'
-alias dks='docker stats'
+alias dks='docker stats --no-stream'
 alias dcrr='dcr --rm'
 
 alias dcos='docker-compose stats'

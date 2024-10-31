@@ -22,6 +22,10 @@ export EZA_ICONS_AUTO=true
 export EZA_ICON_SPACING=2
 export TIME_STYLE=long-iso
 
+# Ports in use: 80: Docker, 8080: nginx.conf, 8081-8084: reserve for apps
+# Run install_nginx_config after changing
+export HOST_NGINX_PORT=8085
+
 if [[ $OSTYPE == darwin* ]]; then
   source_with_custom mac_env.sh
 elif [[ $OSTYPE == linux* ]]; then
@@ -87,6 +91,8 @@ fi
 # End: oh-my-zsh config
 
 export DOTFILES_INCLUDE_LIBS=(
+  adminer
+  nginx_php
   brew
   docker
   elasticsearch

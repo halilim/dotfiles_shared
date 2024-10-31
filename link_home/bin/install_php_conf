@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -euo pipefail
+IFS=$'\n\t'
+
+# brew info php
+php_conf_path=$(php --ini | rg -F 'Configuration File (php.ini) Path' | cut -d: -f 2 | tr -d ' ')
+custom_php_path="$DOTFILES_INCLUDES"/lib/nginx_php/php
+
+# It seems like these are no longer necessary, maybe except for Xdebug etc.
+# ln -sf "$custom_php_path"/php.ini $php_conf_path/...
+# ln -sf "$custom_php_path"/php-fpm.conf $php_conf_path/...
+# ln -sf "$custom_php_path"/php-fpm.d.www.conf /private/etc/php-fpm.d/...
+
+# Issue workarounds
+ln -sf "$custom_php_path"/php-fpm.d/www.custom.conf "$php_conf_path"/php-fpm.d

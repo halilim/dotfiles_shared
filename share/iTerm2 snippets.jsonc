@@ -13,6 +13,7 @@
       },
 
       { "value": ".errors.messages" },
+      { "value": ".group(:foo_id).count" },
 
       {
         "title": "include URL helpers",
@@ -38,7 +39,7 @@
     "group_name": "--- Shell ---",
     "snippets": [
       { "value": "bundle exec" },
-      { "value": "bundle exec rails c" },
+      { "value": "bundle exec rails console" },
       { "value": "ps aux | grep -v \" grep \" | grep -i " }
     ]
   }

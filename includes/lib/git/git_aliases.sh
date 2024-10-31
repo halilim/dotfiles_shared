@@ -14,6 +14,7 @@ alias gcmb='git commit --message "$(git rev-parse --abbrev-ref HEAD)"'
 alias gcemb='git commit --allow-empty --message "$(git rev-parse --abbrev-ref HEAD) Re-trigger checks"'
 # shellcheck disable=SC2139
 alias {gcn,gcne,gcno}='git commit --no-edit' # cSpell:ignore gcne gcno
+alias gcnn='git commit --no-edit --no-verify' # cSpell:ignore gcne gcnn
 alias gcnv='git commit --no-verify' # cSpell:ignore gcnv
 alias gcom='git checkout $(git_main_branch)'
 

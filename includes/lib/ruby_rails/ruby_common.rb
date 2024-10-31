@@ -32,6 +32,11 @@
 #   +----+-------+-------+-------+-------+-----+
 #
 # @todo Move to a forked gist?
+# TODO: Add hash support
+# TODO: Add header-less support
+# TODO: Add array of hashes support
+# TODO: Add plain array support
+# TODO: Add tests (bundle inline?)
 def ar_table(items, *given_fields) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
   cur_fields = given_fields.dup
 

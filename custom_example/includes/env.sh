@@ -1,7 +1,12 @@
 # Custom environment variables and setup
 
+export ADMINER_DIR="$HOME/code/tools/adminer"
+# $  php -r 'password_hash("<Password manager: adminer passwordless password>", PASSWORD_DEFAULT);'
+# shellcheck disable=SC2016
+export ADMINER_HASH='...'
 export ESHEAD_DIR="$HOME/code/tools/elasticsearch-head"
 export GPG_KEY=123ABC # gpg --list-keys > The hex number below "pub"
+export PHP_ROOT=~/code
 export RUBY_CMD_PREFIX='bin/'
 DOTFILES_INCLUDE_LIBS+=(gpg)
 OMZ_PLUGINS+=(rbenv)
