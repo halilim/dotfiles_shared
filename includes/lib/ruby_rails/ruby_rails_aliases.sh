@@ -48,7 +48,7 @@ alias rgrw="rgr -w"
 alias rp='ruby -rpry -ramazing_print'
 alias rv='ruby -v'
 
-# cSpell:ignore raa rav rcac rgg rgm rgmp rgmo rrz rro rrow rrowe rsl rvv
+# cSpell:ignore raa rav rcac rgg rgm rgmp rgmo rkan rrz rro rrow rrowe rsl rvv
 alias raa="$RAILS_CMD about"
 alias rav="$RAILS_CMD -v"
 alias rc="$RAILS_CMD console"
@@ -59,6 +59,7 @@ alias rgm="$RAILS_CMD generate migration"
 alias rgmp="$RAILS_CMD generate migration dummy --pretend"
 alias rgmo="$RAILS_CMD generate model"
 alias rgs="$RAILS_CMD generate scaffold"
+alias rkan="$RAKE_CMD annotate --models app/models/model.rb"
 alias rnd="rails new dummy --minimal --skip-active-record --skip-test --skip-git --skip-gemfile"
 alias rnv='rails _7.1.0_ new'
 alias rr="$RAILS_CMD runner"
@@ -73,18 +74,19 @@ alias rs="$RAILS_CMD server"
 alias rsl='rails_serve_lan' # Allow access from LAN (must be in the same network/Wi-Fi etc.)
 alias rvv="ruby -v && $RAILS_CMD -v"
 
-# cSpell:ignore rkdc rkdcl rkdct rkdm rkdmdv rkdms rkdmst rkdmt rkdmv rkdr rkdrt rkds rkro rrs gco
+# cSpell:ignore rkdc rkdcl rkdct rkdm rkdmuv rkdmdv rkdms rkdmst rkdmt rkdmv rkdr rkdrt rkds rkro rrs gco
 alias rk="$RAKE_CMD"
 alias rkdc="$RAKE_CMD db:create"
 alias rkdcl="$RAKE_CMD db:create db:schema:load"
 alias rkdct="$RAKE_CMD db:create RAILS_ENV=test"
 alias rkdm="$RAKE_CMD db:migrate"
-alias rkdmdv="$RAKE_CMD db:migrate:up VERSION=" # Migrate SPECIFIED version
+alias rkdmuv="$RAKE_CMD db:migrate:up VERSION=" # Migrate SPECIFIED version
 alias rkdmdv="$RAKE_CMD db:migrate:down VERSION=" # Roll back SPECIFIED version
-alias rkdms="$RAKE_CMD db:migrate:status"
-alias rkdmst="$RAKE_CMD db:migrate:status RAILS_ENV=test"
+alias rkdms="$RAKE_CMD db:migrate:status | tail -n 40 | sort -k 2"
+alias rkdmst="$RAKE_CMD db:migrate:status RAILS_ENV=test | tail -n 40 | sort -k 2"
 alias rkdmt="$RAKE_CMD db:migrate RAILS_ENV=test"
-alias rkdmv="$RAKE_CMD db:migrate VERSION=" # Migrate up/down UNTIL version
+# Migrate up/down UNTIL version (including the version, i.e. it also gets migrated/reverted)
+alias rkdmv="$RAKE_CMD db:migrate VERSION="
 alias rkdr="$RAKE_CMD db:rollback"
 alias rkdrt="$RAKE_CMD db:rollback RAILS_ENV=test"
 alias rkds="$RAKE_CMD db:seed"

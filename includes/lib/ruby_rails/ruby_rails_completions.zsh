@@ -21,7 +21,7 @@ _rails_build_request() {
     method_and_uri)
       local file=.routes_expanded.txt pairs=()
 
-      if [[ ! -e $file ]] || last_mod_older_than "$file" '1 day'; then
+      if [[ ! -s $file ]] || last_mod_older_than "$file" '1 day'; then
         printf >&2 "\nRegenerating %s ...\n" "$file"
         $RAILS_CMD routes --expanded > "$file"
       fi

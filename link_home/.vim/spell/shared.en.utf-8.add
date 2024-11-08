@@ -68,6 +68,7 @@ callout
 canonicalize
 canva
 Caskaydia
+cbrt
 CDN
 cdspell
 certdir
@@ -217,6 +218,7 @@ gtouch
 guardfile
 gvimrc
 gxargs
+hackathon
 hackmd
 hadolint
 halil
@@ -315,6 +317,7 @@ markdownlintrc
 maxdepth
 mediainfo
 Memcached
+memoizer
 memsize
 Menlo
 mergetool
@@ -453,6 +456,7 @@ rabbitmq
 RabbitMQ
 railtie
 railties
+rakefile
 rbenv
 rbql
 rbspy

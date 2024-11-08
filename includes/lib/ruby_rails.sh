@@ -173,6 +173,10 @@ function ruby_cd_pull_migrate() {
     [[ -e db/schema.rb ]] && echo_eval 'git checkout db/schema.rb' # Sometimes migrations modify db/schema.rb
   fi
 
+  if [[ -d log ]]; then
+    echo_eval "$RAKE_CMD log:clear LOGS=all"
+  fi
+
   printf '\n'
 }
 # shellcheck disable=SC2139

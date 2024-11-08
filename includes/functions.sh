@@ -49,6 +49,7 @@ function color() {
     magenta*) code='35' ;;
     cyan*) code='36' ;;
     white*) code='37' ;;
+    gray*) code='90' ;;
   esac
 
   local style
@@ -104,12 +105,13 @@ function echo_eval() {
   # shellcheck disable=SC2059
   cmd=$(printf "$@")
   color_arrow >&2 green "$cmd"
-  # Dry-run output is not always accurate, since some intermediate conditionals depend on a
+  # NOTE: Dry-run output is not always accurate, since some intermediate conditionals depend on a
   # previous step actually running
   if [[ ${DRY_RUN:-} ]]; then
     echo >&2 'Dry running...'
-    [[ ${FAKE_RETURN:-} ]] && echo "$FAKE_RETURN"
-    return 0
+    if [[ ${FAKE_RETURN:-} ]]; then
+      echo "$FAKE_RETURN"
+    fi
   else
     eval "$cmd"
   fi
@@ -224,7 +226,7 @@ function locate_function() {
   fi
 
   if [[ $is_zsh ]]; then
-    line=$(grep -n "$function_name(" "$file")
+    line=$(grep -En "$function_name\s*\(" "$file")
     line=${line%%:*}
   else
     line=${output%% *}
@@ -472,6 +474,8 @@ function which_detailed() {
     color >&2 yellow 'Comments are not shown, and the output can differ from the source'
 
   elif [[ $type_str == *'alias'* ]]; then
+    # TODO: Extract into a function
+    # TODO: Split functions.sh?
     local type_output
     exec 5>&1
     type_output=$(type "$input" 2>&1 | tee >(cat - >&5))

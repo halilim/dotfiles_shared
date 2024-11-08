@@ -30,7 +30,7 @@
 	"array element access": {
 		"prefix": "ae",
 		"body": [
-			"\"${${1:ARR_NAME}[@]:${2:offset}:${3:length}}\"",
+			"\"${${1:ARR_NAME}[*]:${2:offset}:${3:length}}\"",
 		],
 	},
 
@@ -68,6 +68,19 @@
 		"prefix": "dp",
 		"body": [
 			"declare -p $0 1>&2"
+		],
+	},
+
+	// https://stackoverflow.com/a/16491478/372654
+	"do while (emulate)": {
+		"prefix": ["dow", "dw"],
+		"body": [
+			"while",
+				"\t$0 # Do some stuff",
+				"\t\\$x == 'y' # Conditions",
+			"do",
+				"\t:",
+			"done"
 		],
 	},
 

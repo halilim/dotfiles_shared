@@ -7,6 +7,8 @@
 # PHP Composer - disabled because Rails vendor shouldn't be ignored, include per repo
 # vendor/*
 
+# Command auto-complete caches
+.launch_darkly_flags*
 .mix_tasks
 .rake_tasks
 .routes*

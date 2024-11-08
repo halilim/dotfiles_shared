@@ -326,6 +326,7 @@ Plug 'editorconfig/editorconfig-vim'
 " Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries', 'for': 'go' }
 Plug 'inkarkat/vim-ReplaceWithRegister'
 Plug 'jiangmiao/auto-pairs'
+Plug 'kshenoy/vim-signature'
 Plug 'luochen1990/rainbow'
 
 " Plug 'kana/vim-textobj-user' " Required by nelstrom/vim-textobj-rubyblock

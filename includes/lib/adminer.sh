@@ -1,20 +1,29 @@
 alias liba='$EDITOR "$DOTFILES_INCLUDES"/lib/adminer.sh' # cSpell:ignore liba
 
-alias adminer_pg_local='adminer "pgsql=127.0.0.1&username=postgres" postgres'
+alias adminer_pg_local='adminer postgres 127.0.0.1 postgres postgres'
 
-function adminer_np() {
+function adminer() {
   # shellcheck disable=SC2034
-  local params=$1 \
-    password=$2
+  local db_type=$1 host=$2 username=$3 password=$4 database=$5 table=$6
+
+  local adminer_type=$db_type
+  case "$adminer_type" in
+    mysql) adminer_type=server ;;
+    postgres) adminer_type=pgsql ;;
+  esac
 
   pbcopy_tmp "$password"
 
   echo_eval 'nginx_php_start'
 
+  local params="$adminer_type=$host&username=$username"
+  if [[ $db_type == postgres ]]; then
+    params+="&ns=public"
+  fi
+  params+="&db=$database&table=$table"
   local url="http://localhost:$HOST_NGINX_PORT/tools/adminer/adminer/?$params"
   echo_eval 'o %q' "$url"
 }
-alias adminer='adminer_np'
 
 function adminer_install() {
   if [[ ! ${ADMINER_DIR:-} ]]; then
@@ -24,6 +33,33 @@ function adminer_install() {
 
   git clone --recurse-submodules https://github.com/adminerevo/adminerevo "$ADMINER_DIR"
   adminer_update_activate
+}
+
+function adminer_params_to_url() {
+  local params=$1 # `pgsql=127.0.0.1&username=postgres` or `server=127.0.0.1&username=postgres`
+  local password=$2
+
+  # shellcheck disable=SC2207
+  local parsed=($(rg --only-matching '(pgsql|server)=(.+)&username=(.+)' --replace '$1 $2 $3' <<< "$params"))
+  local db_type="${parsed[*]:0:1}"
+  local host="${parsed[*]:1:1}"
+  local username="${parsed[*]:2:1}"
+
+  local scheme
+  case "$db_type" in
+    pgsql)
+      scheme=postgres
+      ;;
+    server)
+      scheme=mysql
+      ;;
+    default)
+      echo >&2 "Unknown db_type: $db_type"
+      return 1
+      ;;
+  esac
+
+  echo "$scheme://$username:$password@$host"
 }
 
 # Instead of using the single file adminer, using the full repo to get updates to plugins as well.
