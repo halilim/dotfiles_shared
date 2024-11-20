@@ -32,6 +32,12 @@
   },
 
   {
+    "name": "GitHub compare",
+    "shortcut": "ghc",
+    "url": "https://github.com/org/repo/compare/base...%s"
+  },
+
+  {
     "name": "Gmail",
     "shortcut": "m",
     "url": "https://mail.google.com/mail/u/0/#search/%s"

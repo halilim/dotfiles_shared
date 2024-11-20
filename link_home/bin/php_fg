@@ -7,7 +7,7 @@ IFS=$'\n\t'
 
 # User configs: "$HOMEBREW_PREFIX"/etc/php
 
-trap 'kill -15 $PHP_FPM_PID;' SIGTERM SIGINT
+trap 'kill $PHP_FPM_PID;' SIGTERM SIGINT
 
 php-fpm -F 2>&1 &
 PHP_FPM_PID=$!

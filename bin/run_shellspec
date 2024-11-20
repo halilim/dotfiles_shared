@@ -2,7 +2,7 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-both_specs=(spec/includes/functions_spec.sh)
+both_specs=(spec/includes/lib/*_spec.sh)
 
 bash_specs=(
   spec/link_home/bin_spec.sh # This should work in both, but not much point in testing for both

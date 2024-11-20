@@ -1,7 +1,5 @@
 alias includes='$EDITOR "$DOTFILES_SHARED"/includes.sh'
 
-source_with_custom functions.sh
-
 for lib in "${DOTFILES_INCLUDE_LIBS[@]}"; do
   source_with_custom "lib/$lib.sh"
 done

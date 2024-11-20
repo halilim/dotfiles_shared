@@ -3,6 +3,7 @@ alias real='source "$DOTFILES_INCLUDES"/aliases.sh'
 alias alc='$EDITOR "$DOTFILES_CUSTOM"/includes/aliases.sh'
 
 alias c='code'
+alias cb='$CLIP'
 # alias c='code-insiders'
 alias ci='code-insiders'
 alias cdiff='code --diff' # cSpell:ignore cdiff
@@ -138,6 +139,7 @@ alias tr192="traceroute 192.168.1.1"
 alias trg='traceroute google.com'
 
 alias th='tree -a'
+alias tv='bat .tool-versions'
 
 alias v='vim_open'
 alias sv='SUDO=1 vim_open'

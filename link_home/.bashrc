@@ -1,8 +1,8 @@
 export BUILTIN_URL='https://www.gnu.org/software/bash/manual/html_node/Bash-Builtins.html'
+export ARRAY_START=0
+export READ_ARRAY=(read -ra)
 
 alias bashrc='$EDITOR ~/.bashrc'
-
-alias read_array='read -ra'
 
 # shellcheck disable=SC1091
 . "$HOME"/.dotfiles_bootstrap.sh

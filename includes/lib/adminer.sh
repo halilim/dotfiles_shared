@@ -4,30 +4,77 @@ alias adminer_pg_local='adminer postgres 127.0.0.1 postgres postgres'
 
 function adminer() {
   # shellcheck disable=SC2034
-  local db_type=$1 host=$2 username=$3 password=$4 database=$5 table=$6
+  local db_type=${1:-} host username password db ns table started_nginx_php
+
+  if [[ $db_type == 'sqlite' ]]; then
+    db=${2:-}
+    table=${3:-}
+  else
+    host=${2:-}
+    username=${3:-}
+    password=${4:-}
+    # shellcheck disable=SC2034
+    db=${5:-}
+    # shellcheck disable=SC2034
+    table=${6:-}
+  fi
 
   local adminer_type=$db_type
+  # shellcheck disable=SC2034
   case "$adminer_type" in
-    mysql) adminer_type=server ;;
-    postgres) adminer_type=pgsql ;;
+    mariadb|mysql) adminer_type=server ;;
+    postgres) adminer_type=pgsql; ns=public ;;
   esac
 
-  pbcopy_tmp "$password"
-
-  echo_eval 'nginx_php_start'
-
-  local params="$adminer_type=$host&username=$username"
-  if [[ $db_type == postgres ]]; then
-    params+="&ns=public"
+  if [[ $password ]]; then
+    cb_tmp "$password"
   fi
-  params+="&db=$database&table=$table"
+
+  if ! pgrep -f nginx_php_fg > /dev/null 2>&1; then
+    echo_eval 'nginx_php_fg &'
+    if [[ ! ${DRY_RUN:-} ]]; then
+      started_nginx_php=1
+    fi
+  fi
+
+  local host_param
+  if [[ $host = *.docker ]]; then
+    local container=${host%.docker} port
+    port=$(docker inspect "$container" |
+      jq -r '.[0].HostConfig.PortBindings | to_entries.[0].value.[0].HostPort')
+    host_param="docker:$port"
+  else
+    host_param=$host
+  fi
+
+  # Even if empty, username param is required for passwordless login
+  local params="$adminer_type=$host_param&username=$username"
+
+  local param value
+  for param in db ns table; do
+    if [ -n "${ZSH_VERSION:-}" ]; then
+      # shellcheck disable=SC2296
+      value=${(P)param}
+    else
+      value=${!param}
+    fi
+
+    if [[ $value ]]; then
+      params+="&$param=$value"
+    fi
+  done
+
   local url="http://localhost:$HOST_NGINX_PORT/tools/adminer/adminer/?$params"
   echo_eval 'o %q' "$url"
+
+  if [[ $started_nginx_php ]]; then
+    fg
+  fi
 }
 
 function adminer_install() {
   if [[ ! ${ADMINER_DIR:-} ]]; then
-    _adminer_var_set_warning ADMINER_DIR
+    echo >&2 'Set ADMINER_DIR in custom/includes/env.sh. Example: custom_example/includes/env.sh'
     return 1
   fi
 
@@ -68,7 +115,7 @@ function adminer_update() {
     cd "$ADMINER_DIR" || return
 
     if [[ -f adminer/index.orig.php ]]; then
-      rm -f adminer/index.php
+      rm -f adminer/index.php adminer/adminer_password.php
       mv adminer/index{.orig,}.php
     fi
 
@@ -84,19 +131,11 @@ function adminer_update_activate() {
   (
     cd "$ADMINER_DIR"/adminer || return
 
-    if [[ ! ${ADMINER_HASH:-} ]]; then
-      _adminer_var_set_warning ADMINER_HASH
-      return 1
-    fi
-
     mv index{,.orig}.php
     cp "$DOTFILES_SHARED"/share/adminer_custom.php index.php
+    cp "$DOTFILES_CUSTOM"/share/adminer_password.php .
     # Docker LAMP raises "AH00037: Symbolic link not allowed or link target not accessible",
     #   probably because the target is outside the doc root.
     # ln -s .../adminer_custom.php "$ADMINER_DIR"/adminer/custom.php
   )
-}
-
-function _adminer_var_set_warning() {
-  echo >&2 "Set $1 in custom/includes/env.sh. Example: custom_example/includes/env.sh"
 }

@@ -1,6 +1,7 @@
 export VIM=mvim
 export OPEN_CMD='open'
 export BAT_CMD=bat
+export CLIP='pbcopy'
 
 export GNU_DATE=gdate
 export GNU_FIND=gfind
@@ -9,6 +10,7 @@ export GNU_REALPATH=grealpath
 export GNU_SED=gsed
 export GNU_STAT=gstat
 export GNU_TOUCH=gtouch
+export GNU_XARGS=gxargs
 
 export HOMEBREW_NO_AUTO_UPDATE=1 # Covered by update_and_backup ($UPDATE_BACKUP_CMDS)
 export HOMEBREW_NO_ENV_HINTS=1

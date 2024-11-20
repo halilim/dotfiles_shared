@@ -146,7 +146,7 @@ function ruby_cd_pull_migrate() {
 
   cd_checkout_pull "$dir" "$branch"
   last_status=$?
-  if [[ $last_status != 0 ]]; then
+  if [[ $last_status != 0 && ! $FORCE ]]; then
     printf '\n'
     return $last_status
   fi

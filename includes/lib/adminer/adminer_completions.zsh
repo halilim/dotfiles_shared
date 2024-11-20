@@ -1,98 +1,76 @@
 function _adminer() {
-  local state db_type host username password url
-  local LOCALHOST='127.0.0.1'
+  # shellcheck disable=SC2034
+  local context state state_descr line
+  # shellcheck disable=SC2034
+  typeset -A opt_args
 
-  _arguments '1: :->db_type' '2: :->host' '3: :->username' '4: :->password' '5: :->database' '6: :->table'
+  local db_type host username password url
 
   # shellcheck disable=SC2154
   if [[ ${#words} -ge 2 ]]; then
     db_type="${words[*]:1:1}"
   fi
-  if [[ ${#words} -ge 3 ]]; then
-    host="${words[*]:2:1}"
-  fi
-  if [[ ${#words} -ge 4 ]]; then
-    username="${words[*]:3:1}"
-  fi
-  if [[ ${#words} -ge 5 ]]; then
-    password="${words[*]:4:1}"
-  fi
 
-  if [[ $host && $password ]]; then
+  if [[ $db_type == 'sqlite' ]]; then
+    _arguments '1: :->db_type' '2: :->database' '3: :->table'
+
+    database="${words[*]:2:1}"
+  else
+    _arguments '1: :->db_type' '2: :->host' '3: :->username' '4: :->password' '5: :->database' '6: :->table'
+
+    host="${words[*]:2:1}"
+    username="${words[*]:3:1}"
+    password="${words[*]:4:1}"
+    database="${words[*]:5:1}"
     url="$db_type://$username:$password@$host"
   fi
 
   case $state in
-    db_type) compadd postgres mysql ;;
-    host) compadd "$LOCALHOST" ;;
+    db_type) compadd mariadb mysql postgres sqlite ;;
+    host)
+      local hosts=('127.0.0.1')
+      # shellcheck disable=SC2207
+      hosts+=($(docker_hosts "$db_type"))
+      compadd -a hosts
+      ;;
 
     username)
       local username_suggestions=()
       case "$db_type" in
-        postgres)
-          username_suggestions+=("$(whoami)" postgres)
-          ;;
-
-        mysql)
-          username_suggestions+=(root)
-          ;;
+        mariadb|mysql) username_suggestions+=(root) ;;
+        postgres) username_suggestions+=("$(whoami)" postgres) ;;
       esac
-
-      if [[ ${#username_suggestions} -gt 0 ]]; then
-        compadd -a username_suggestions
-      fi
+      compadd -a username_suggestions
       ;;
 
     password)
       local password_suggestions=()
-      if [[ $host == "$LOCALHOST" ]]; then
-        case "$db_type" in
-          postgres)
-            password_suggestions+=(postgres '')
-            ;;
-
-          mysql)
-            password_suggestions+=(root)
-            ;;
-        esac
-
-        if [[ ${#password_suggestions} -gt 0 ]]; then
-          compadd -a password_suggestions
-        fi
-      fi
+      case "$db_type" in
+        mariadb|mysql) password_suggestions+=(root) ;;
+        postgres) password_suggestions+=(postgres) ;;
+      esac
+      compadd -a password_suggestions
       ;;
 
     database)
-      local databases=()
-      case $url in
-        postgre*)
-          # shellcheck disable=SC2034
-          databases=("$(postgres_databases "$url")")
-          ;;
-        default)
-          # Not supported yet
-          return 1
-          ;;
+      # shellcheck disable=2046
+      case $db_type in
+        mariadb) compadd $(mariadb_databases "$host" "$username" "$password") ;;
+        mysql) compadd $(mysql_databases "$host" "$username" "$password") ;;
+        postgres) compadd $(postgres_databases "$url") ;;
+        sqlite) _files ;;
       esac
-
-      compadd -a databases
       ;;
 
     table)
-      local database="${words[*]:5:1}"
-
       local tables=()
-      case $url in
-        postgre*)
-          # shellcheck disable=SC2034
-          tables=("$(postgres_tables "$url" "$database")")
-          ;;
-        default)
-          # Not supported yet
-          return 1
-          ;;
+      # shellcheck disable=SC2034,SC2207
+      case $db_type in
+        mariadb) tables=($(mariadb_tables "$host" "$username" "$password" "$database")) ;;
+        mysql) tables=($(mysql_tables "$host" "$username" "$password" "$database")) ;;
+        postgres) tables=($(postgres_tables "$url" "$database")) ;;
+        sqlite) tables=($(sqlite3 "$database" '.tables')) ;;
       esac
-
       compadd -a tables
       ;;
   esac

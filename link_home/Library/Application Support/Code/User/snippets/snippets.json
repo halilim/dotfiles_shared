@@ -12,7 +12,7 @@
 	},
 
 	"${n:...} - VSCode snippet variable": {
-		"prefix": "$",
+		"prefix": ["$", "v"],
 		"body": "\\${${1:1}:${2:name}}",
 		// "scope": "string.quoted.double.json"
 	},

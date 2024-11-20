@@ -1,9 +1,6 @@
 # Custom environment variables and setup
 
 export ADMINER_DIR="$HOME/code/tools/adminer"
-# $ php -r 'echo password_hash("<Password manager: adminer passwordless password>", PASSWORD_DEFAULT);'
-# shellcheck disable=SC2016
-export ADMINER_HASH='...'
 export ESHEAD_DIR="$HOME/code/tools/elasticsearch-head"
 export GPG_KEY=123ABC # gpg --list-keys > The hex number below "pub"
 # Replace ld_client with your LaunchDarkly client, or the whole command

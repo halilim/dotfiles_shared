@@ -20,7 +20,7 @@
         "value": "include Rails.application.routes.url_helpers"
       },
 
-      { "value": "Rails.backtrace_cleaner.clean(e.backtrace) # or caller" },
+      { "value": "Rails.backtrace_cleaner.clean caller # or e.backtrace" },
       { "value": "Rails.cache.clear" }
     ]
   },
@@ -28,16 +28,17 @@
   {
     "group_name": "--- Ruby ---",
     "snippets": [
+      { "value": ".methods.select { |m| m.to_s =~ /pattern/i }" },
       { "value": "h.keys.select { |k| k.to_s =~ /pattern/i }" },
       { "value": "h.values.select { |v| v.to_s =~ /pattern/i }" },
-      { "value": "h.select { |k, v| v.to_s =~ /pattern/i }" },
-      { "value": ".methods.select { |m| m.to_s =~ /pattern/i }" }
+      { "value": "h.select { |k, v| v.to_s =~ /pattern/i }" }
     ]
   },
 
   {
     "group_name": "--- Shell ---",
     "snippets": [
+      { "value": "bin/rails" },
       { "value": "bundle exec" },
       { "value": "bundle exec rails console" },
       { "value": "ps aux | grep -v \" grep \" | grep -i " }

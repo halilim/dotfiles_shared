@@ -1,5 +1,5 @@
-alias fn='$EDITOR "$DOTFILES_INCLUDES"/functions.sh'
-alias refn='source "$DOTFILES_INCLUDES"/functions.sh' # cSpell:ignore refn
+alias fn='$EDITOR "$DOTFILES_INCLUDES"/lib/functions.sh'
+alias refn='source "$DOTFILES_INCLUDES"/lib/functions.sh' # cSpell:ignore refn
 
 function bak_toggle() {
   if [[ $1 == *.bak ]]; then
@@ -16,6 +16,23 @@ function builtin_help() {
 }
 alias bh='builtin_help'
 
+function cb_tmp() {
+  # https://github.com/lastpass/lastpass-cli/issues/59#issuecomment-439316889
+  # Usage: cb_tmp "$secret" 10
+  local str=$1
+  if [[ $str ]]; then
+    local expiry=${2:-20} name=${3:-PASSWORD}
+    if [[ ${DRY_RUN:-} ]]; then
+      echo >&2 " !!! $name WILL BE COPIED TO YOUR CLIPBOARD FOR $expiry SECONDS !!! (DRY RUN)"
+      return
+    else
+      echo >&2 " !!! $name IS COPIED TO YOUR CLIPBOARD FOR $expiry SECONDS !!! "
+    fi
+    printf %s "$str" | "${CLIP[*]}"
+    ( sleep  "$expiry" && printf '' | "${CLIP[*]}" ) &
+  fi
+}
+
 function cd_with_header() {
   local dir=$1
   color >&2 white-bold "---> $dir"
@@ -23,8 +40,7 @@ function cd_with_header() {
 }
 
 function color() {
-  local color=${1:-''} text=${2:-''}
-  if [[ ! $color || ! $text ]]; then
+  if [[ $# -lt 2 ]]; then
     local func_name
     if [ -n "${ZSH_VERSION:-}" ]; then
       # shellcheck disable=SC2154
@@ -37,6 +53,14 @@ function color() {
     echo "$($func_name green "$func_name") white $($func_name yellow "'some text'")"
     echo "$($func_name green "$func_name") red-bold $($func_name yellow "'some text'")"
     return 1
+  fi
+
+  local color=$1
+  shift
+  local rest=("$@")
+  if [[ $- != *i* ]]; then
+    echo "${rest[@]}"
+    return
   fi
 
   local code
@@ -60,13 +84,19 @@ function color() {
   fi
 
   local prefix='\033['
-  echo -e "$prefix$style;${code}m$text${prefix}0m"
+  rest[ARRAY_START+0]="$prefix$style;${code}m${rest[ARRAY_START+0]}"
+  local len="${#rest[@]}"
+  rest[ARRAY_START+len-1]+="${prefix}0m"
+  echo -e "${rest[@]}"
 }
 
 function color_arrow() {
   # Usage: color_arrow green "text"
-  # shellcheck disable=SC2154
-  color "$1" "-> $2"
+  local color=$1
+  shift
+  local rest=('->')
+  rest+=("$@")
+  color "$color" "${rest[@]}"
 }
 
 function content_length() {
@@ -290,18 +320,6 @@ function open_with_editor() {
   fi
 }
 
-function pbcopy_tmp() {
-  # https://github.com/lastpass/lastpass-cli/issues/59#issuecomment-439316889
-  # Usage: pbcopy_tmp "$secret" 10
-  local str=$1
-  if [[ $str ]]; then
-    local expiry=${2:-20} name=${3:-PASSWORD}
-    echo -n "$str" | cb
-    echo " !!! $name IS COPIED TO YOUR CLIPBOARD FOR $expiry SECONDS !!! "
-    ( sleep "$expiry"  && echo -n '' | cb ) &
-  fi
-}
-
 function port_check() {
   local port=$1 \
     out
@@ -312,16 +330,6 @@ function port_check() {
   if [[ $out =~ docker ]]; then
     docker container ls --format "table {{.ID}}\t{{.Names}}\t{{.Ports}}" -a | rg -n -w "$port"
   fi
-}
-
-function postgres_databases() {
-  local uri=$1
-  psql "$uri"/postgres -Atc 'SELECT datname FROM pg_database'
-}
-
-function postgres_tables() {
-  local uri=$1 db=$2
-  psql "$uri"/"$db" -Atc "SELECT tablename FROM pg_catalog.pg_tables WHERE schemaname='public'"
 }
 
 function read_prompt() {
@@ -511,7 +519,7 @@ function which_detailed() {
 }
 alias wh="which_detailed"
 
-  # cSpell:ignore whoip
+# cSpell:ignore whoip
 function whoip() {
   local ip
   ip=$(dig +short "$1" | head -n1)

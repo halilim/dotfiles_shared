@@ -115,6 +115,7 @@ DBeaver
 Deel
 delaycompress
 deluid
+descr
 devcenter
 devs
 dgram
@@ -636,6 +637,7 @@ xxhash
 YAML
 yamllint
 zeitwerk
+zellij
 Zscript
 zshenv
 zshrc

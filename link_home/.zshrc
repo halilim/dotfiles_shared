@@ -8,10 +8,10 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 fi
 
 export BUILTIN_URL='https://zsh.sourceforge.io/Doc/Release/Shell-Builtin-Commands.html'
+export ARRAY_START=1
+export READ_ARRAY=(read -rA)
 
 alias zshrc='$EDITOR ~/.zshrc'
-
-alias read_array='read -rA'
 
 # Enable aliases to be sudo'ed
 alias sudo='nocorrect sudo '
@@ -26,6 +26,7 @@ alias -g G='| rg -n' # Case insensitive by default due to ~/.ripgreprc
 alias -g G3='| rg -n -A 1 -B 1'
 alias -g HL='| grep_hl'
 alias -g RGG="-g '!'"
+alias -g V='VERBOSE=1'
 alias -g WCL='| wc -l'
 
 setopt NULL_GLOB

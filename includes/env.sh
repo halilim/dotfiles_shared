@@ -94,8 +94,10 @@ export DOTFILES_INCLUDE_LIBS=(
   adminer
   nginx_php
   brew
+  databases
   docker
   elasticsearch
+  functions
   git
   node
   redis

@@ -327,6 +327,17 @@
 		"body": "errors.messages",
 	},
 
+	"group pluck": {
+		"prefix": "gp",
+		"body": [
+			"${1:scope}.",
+				"\tgroup(:foo_id).",
+				"\tpluck(:foo_id, Arel.sql('ARRAY_AGG(bar_id)')).each do |foo_id, bar_ids|",
+					"\t\t$0",
+				"\tend"
+		],
+	},
+
 	"logger.debug": {
 		"prefix": "logd",
 		"body": "logger.debug { $0 }",
