@@ -297,6 +297,7 @@ launchdarkly
 lazydocker
 lazygit
 lesspipe
+libev
 libexec
 libxslt
 lifecycle
@@ -308,6 +309,7 @@ localstack
 lograge
 lookback
 mackup
+macvim
 MAILCATCHER
 mailname
 mailutils
@@ -413,6 +415,7 @@ pgrep
 pgsql
 phpcs
 pids
+pinentry
 pinger
 pipefail
 pkill

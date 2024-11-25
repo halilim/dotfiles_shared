@@ -2,7 +2,7 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-# Remove comma-separated keys from a set of yaml files and discard any other changes
+# Remove given keys from a set of yaml files and discard any irrelevant changes resulting from that
 # Usage: yaml_remove_keys .foo.bar.baz,.qux.etc.something_else file1 file2 ...
 # Dependencies: git, yq, patchutils (grepdiff)
 #
@@ -10,13 +10,13 @@ IFS=$'\n\t'
 # 1. In-place editing with yq reformats the whole file (https://github.com/mikefarah/yq/issues/465)
 # 2. yq doesn't support editing multiple files at once (https://mikefarah.gitbook.io/yq/usage/tips-and-tricks#update-multiple-files)
 #
-# This minimizes it by preserving the indentation level of each file and then removing any
+# This minimizes reformatting by preserving the indentation level of each file and removing any
 # remaining irrelevant changes by including only the hunks whose changes include the key suffixes.
 #
 # Note: irrelevant changes in lines adjacent to the removals are considered parts of hunks. Please
-# remove them manually, and make sure to review the changes before committing.
+# remove them manually and make sure to review the changes before committing.
 #
-# Workflow to run this multiple times on same the files:
+# Workflow for running this multiple times on the same set of files:
 # 1. Run the script
 # 2. Review the changes, stage wanted, discard unwanted
 # 3. Rinse and repeat

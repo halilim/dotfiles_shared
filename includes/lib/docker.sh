@@ -2,8 +2,6 @@
 
 alias libd='$EDITOR "$DOTFILES_INCLUDES"/lib/docker.sh'
 
-alias cos='colima start'
-
 # cSpell:ignore dkcl dkcs dkcst dkei dkin dkins dkst dkrm dkrr
 alias dk='docker'
 alias dkc='docker container'
@@ -24,6 +22,11 @@ alias dks='docker stats --no-stream'
 alias dcrr='dcr --rm'
 
 alias dcos='docker-compose stats'
+
+function colima_start() {
+  echo_eval 'colima status > /dev/null 2>&1 || colima start'
+}
+alias cos='colima_start'
 
 function docker_hosts() {
   if ! command -v docker > /dev/null 2>&1 || ! docker info > /dev/null 2>&1; then

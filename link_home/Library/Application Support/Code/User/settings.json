@@ -339,7 +339,9 @@
     "selectionRanges": true,
     "semanticHighlighting": true
   },
-  "rubyLsp.enableExperimentalFeatures": true,
+  "rubyLsp.featureFlags": {
+    "all": true
+  },
 
   "scm.diffDecorationsGutterPattern": {
     "added": true

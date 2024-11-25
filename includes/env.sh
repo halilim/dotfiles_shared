@@ -26,6 +26,9 @@ export TIME_STYLE=long-iso
 # Run install_nginx_config after changing
 export HOST_NGINX_PORT=8085
 
+# https://github.com/npm/cli/issues/7857
+export NODE_OPTIONS='--disable-warning=ExperimentalWarning'
+
 if [[ $OSTYPE == darwin* ]]; then
   source_with_custom mac_env.sh
 elif [[ $OSTYPE == linux* ]]; then

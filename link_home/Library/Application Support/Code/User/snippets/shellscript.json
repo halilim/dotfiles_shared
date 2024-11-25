@@ -408,7 +408,7 @@
 	"unalias": {
 		"prefix": "una",
 		"body": [
-			"unalias ${1:alias} 2>/dev/null || true"
+			"unalias ${1:alias} 2> /dev/null || true"
 		],
 	},
 
