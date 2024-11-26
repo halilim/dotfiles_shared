@@ -4,14 +4,14 @@ Describe "echo_eval"
   It "prints, evaluates a string"
     When call echo_eval 'echo "foo"'
     The stdout should eq "foo"
-    The stderr should eq '-> echo "foo"'
+    The stderr should include '-> echo "foo"'
   End
 
   It "returns status"
     When call echo_eval 'false'
     The status should eq 1
     The stdout should eq ''
-    The stderr should eq '-> false'
+    The stderr should include '-> false'
   End
 
   It "escapes with %q"
@@ -21,7 +21,7 @@ Describe "echo_eval"
     # shellcheck disable=SC2016
     The stdout should eq 'foo "$bar'
     # shellcheck disable=SC2016
-    The stderr should eq '-> echo foo\ \"\$bar'
+    The stderr should include '-> echo foo\ \"\$bar'
   End
 End
 

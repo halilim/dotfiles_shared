@@ -55,13 +55,7 @@ function color() {
     return 1
   fi
 
-  local color=$1
-  shift
-  local rest=("$@")
-  if [[ $- != *i* ]]; then
-    echo "${rest[@]}"
-    return
-  fi
+  local color=$1 text=$2
 
   local code
   case "$color" in
@@ -84,19 +78,12 @@ function color() {
   fi
 
   local prefix='\033['
-  rest[ARRAY_START+0]="$prefix$style;${code}m${rest[ARRAY_START+0]}"
-  local len="${#rest[@]}"
-  rest[ARRAY_START+len-1]+="${prefix}0m"
-  echo -e "${rest[@]}"
+  echo -e "$prefix$style;${code}m$text${prefix}0m"
 }
 
 function color_arrow() {
   # Usage: color_arrow green "text"
-  local color=$1
-  shift
-  local rest=('->')
-  rest+=("$@")
-  color "$color" "${rest[@]}"
+  color "$1" "-> $2"
 }
 
 function content_length() {
