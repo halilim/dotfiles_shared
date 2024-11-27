@@ -25,7 +25,7 @@ set surround
 
 set ideajoin
 
-" For <Action>s: Cmd+Shift+P > IdeaVim: Track Action Ids
+" For <Action>s: Cmd+Shift+P > IdeaVim: Track Action IDs
 
 " Emulate vim-wordmotion
 map <leader>w [w
@@ -43,9 +43,8 @@ map <C-J> <Action>(GotoNextError)
 map <C-K> <Action>(GotoPreviousError)
 " map <leader>c<space> <Plug>(commentary-gcc)
 map <Leader>c <Action>(CommentByLineComment)
-" map <leader>cp <Action>(CopyContentRootPath)
-" Was cpl
-map <Leader>cp <Action>(CopyPathFromRepositoryRootProvider)
+map <Leader>cp :call CopyGitPathLine()<CR>
+map <Leader>cps :call CopyGitPathLineS()<CR>
 map <Leader>da <Action>(CloseAllEditors)
 map <Leader>de <Action>(CloseAllEditorsButActive)
 map <Leader>% <Action>(EditorCodeBlockEnd)
@@ -71,3 +70,17 @@ endfor
 for c in "abcdefghijklmnopqrstuvwxyz"
   call s:MapBookmark(c)
 endfor
+
+function! CopyGitPath()
+  exec 'action CopyPathFromRepositoryRootProvider'
+endfunction
+
+function! CopyGitPathLine()
+  call CopyGitPath()
+  let @+ = @+ . ':' . line('.')
+endfunction
+
+function! CopyGitPathLineS()
+  call CopyGitPathLine()
+  let @+ = 's ' . @+
+endfunction

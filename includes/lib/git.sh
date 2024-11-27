@@ -88,3 +88,25 @@ function git_find_file() {
   echo "$git_log"
 }
 alias gff='git_find_file'
+
+function _git_commits_with_message() {
+  local search=$1 log_output
+  log_output=$(FAKE_RETURN="123abc Foo bar\ndef456 Baz qux" echo_eval \
+    'git log --no-color --oneline --all --grep %q' "$search")
+  echo >&2 "$log_output"
+  echo "$log_output" | cut -d ' ' -f 1
+}
+
+function _git_contains_args_with_message() {
+  local commit_ids
+  commit_ids=$(_git_commits_with_message "$1")
+  echo "$commit_ids"| xargs printf -- '--contains %s '
+}
+
+function git_search_branches() {
+  echo_eval "git branch -r $(_git_contains_args_with_message "$1")"
+}
+
+function git_search_tags() {
+  echo_eval "git tag --sort=-v:refname $(_git_contains_args_with_message "$1")| head -n 5"
+}

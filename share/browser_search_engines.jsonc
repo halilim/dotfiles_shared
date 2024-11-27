@@ -38,6 +38,12 @@
   },
 
   {
+    "name": "GitHub releases",
+    "shortcut": "ghr",
+    "url": "https://github.com/org/repo/releases?q=%s&expanded=true"
+  },
+
+  {
     "name": "Gmail",
     "shortcut": "m",
     "url": "https://mail.google.com/mail/u/0/#search/%s"

@@ -195,7 +195,7 @@ function http_header_value() {
 
   echo "$headers" |
       grep -i "^$header:" |
-      cut -d " " -f 2 |
+      cut -d ' ' -f 2 |
       tr -d '\r'
 }
 

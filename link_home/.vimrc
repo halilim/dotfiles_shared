@@ -155,9 +155,8 @@ fun! CopyProblem()
 endfun
 nnoremap <leader>cpp :call CopyProblem()<CR>
 
-" nnoremap <leader>cp :CopyGitPath<CR>
-" Was cpl
 nnoremap <leader>cp :CopyGitPathLine<CR>
+nnoremap <leader>cps :call CopyAndEcho('s ' . GitPathLine())<CR>
 
 " Why did I need this (vs. plain bd)?
 " nnoremap <leader>dd :bp\|bd#<CR>
@@ -987,8 +986,12 @@ fun! CopyAndEcho(val)
   echo 'Copied "' . getreg('+') . '"'
 endfun
 
+fun! GitPathLine()
+  return GitPath() . ':' . line('.')
+endfun
+
 fun! CopyAndEchoGitPathLine()
-  call CopyAndEcho(GitPath() . ':' . line('.'))
+  call CopyAndEcho(GitPathLine())
 endfun
 
 command SnipViewUltiSnips call Snip('UltiSnips', 'view')
