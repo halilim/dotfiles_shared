@@ -18,7 +18,7 @@ debug_print '------------------------------'
 # shellcheck disable=SC1090
 . ~/.dotfiles_bootstrap.sh
 # shellcheck disable=SC1091
-. "$DOTFILES_INCLUDES"/functions.sh
+. "$DOTFILES_INCLUDES"/lib/functions.sh
 # debug_vars EDITOR OSTYPE CPUTYPE
 # exit
 

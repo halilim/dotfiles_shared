@@ -118,13 +118,18 @@ function curl_time() {
 
 # Usage: DRY_RUN=1 FAKE_RETURN=foo echo_eval 'bar %q' "$baz"
 function echo_eval() {
-  local cmd
+  local cmd silent=${SILENT:-} dry_run=${DRY_RUN:-}
   # shellcheck disable=SC2059
   cmd=$(printf "$@")
-  color_arrow >&2 green "$cmd"
+
+  # Print only when dry running
+  if [[ $dry_run || ! $silent ]]; then
+    color_arrow >&2 green "$cmd"
+  fi
+
   # NOTE: Dry-run output is not always accurate, since some intermediate conditionals depend on a
   # previous step actually running
-  if [[ ${DRY_RUN:-} ]]; then
+  if [[ $dry_run ]]; then
     echo >&2 'Dry running...'
     if [[ ${FAKE_RETURN:-} ]]; then
       echo "$FAKE_RETURN"

@@ -31,9 +31,9 @@ function setup() {
   for var in "${vars[@]}"; do
     bootstrap+="$(declare -p "$var")"$'\n'
   done
-  echo_eval 'echo %q > ~/.dotfiles_bootstrap.sh' "$bootstrap"
+  echo_eval 'echo %q > %q/.dotfiles_bootstrap.sh' "$bootstrap" "$HOME"
 
-  local plug=~/.vim/autoload/plug.vim plug_installed=true
+  local plug=$HOME/.vim/autoload/plug.vim plug_installed=true
   if [[ ! -f $plug ]]; then
     echo_eval 'curl -fLo %q --create-dirs \
       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim ' "$plug"
@@ -47,7 +47,7 @@ function setup() {
   fi
 }
 
-# TODO: Fix: this is creating .git.linked and .git.linked/info directories. Tests with matrix? :)
+# TODO: Add archive feature: unarchive when the app is installed again
 function sync() {
   local type=${1:-all} plug_installed=${2:-true}
 
@@ -76,11 +76,18 @@ function do_import() {
 
   local dotfile_type=${1:-''}
   if [[ $dotfile_type != shared && $dotfile_type != custom ]]; then
-    [[ $dotfile_type ]] && log_error 'Unknown dotfile type'
-    log_error "$usage" 1 && return 1
+    if [[ $dotfile_type ]]; then
+      log_error 'Unknown dotfile type'
+    fi
+
+    log_error "$usage" 1
+    return
   fi
 
-  [[ $# -lt 2 ]] && log_error "$usage" 1 && return 1
+  if [[ $# -lt 2 ]]; then
+    log_error "$usage" 1
+    return
+  fi
 
   local msg_type msg_home
   msg_type=$(color red "$dotfile_type")
@@ -98,7 +105,11 @@ function do_import() {
 
 function import_path() {
   local dotfile_type=$1 item_path=$2 revert=${REVERT_IMPORT:-''}
-  [[ ! $revert && ! -e $item_path ]] && log_error 'Does not exist' && return 1
+
+  if [[ ! $revert && ! -e $item_path ]]; then
+    log_error 'Does not exist'
+    return
+  fi
 
   local relative_path
   relative_path=$(relative_to "$HOME" "$item_path")
@@ -119,7 +130,10 @@ function import_path() {
   [[ $is_local_git ]] && path_in_dotfiles=${path_in_dotfiles//\/.git\//\/.git.linked\/}
 
   if [[ $revert ]]; then
-    [[ ! -e $path_in_dotfiles ]] && log_error 'Does not exist in dotfiles' && return 1
+    if [[ ! -e $path_in_dotfiles ]]; then
+      log_error 'Does not exist in dotfiles'
+      return
+    fi
 
     [[ -e $item_path && ! -L $item_path || $(readlink -f "$item_path") != "$path_in_dotfiles" ]] && backup "$item_path" home
 
@@ -157,12 +171,22 @@ function setup_links() {
 }
 
 function link_recursive() {
+  RECURSION_LEVEL=${RECURSION_LEVEL:-0}
+  RECURSION_LEVEL=$((RECURSION_LEVEL + 1))
+  if [[ $RECURSION_LEVEL -gt 10 ]]; then
+    log_error 'Too many levels of recursion'
+    return
+  fi
+
   local current_source_dir=$1 source_base=$2 type=$3 relative_base target_base target_dir
   relative_base=$(relative_to "$source_base" "$current_source_dir")
 
   [[ -L "$current_source_dir" ]] && current_source_dir=$(readlink -f "$current_source_dir")
 
-  [[ $relative_base == '.' ]] && relative_base=''
+  case "$relative_base" in
+    .) relative_base='' ;;
+    */.git.linked*) relative_base=${relative_base/.git.linked/.git} ;;
+  esac
 
   case "$type" in
     home)
@@ -173,7 +197,7 @@ function link_recursive() {
       ;;
     *)
       log_error "Unknown link type: $type"
-      return 1
+      return
       ;;
   esac
 
@@ -187,7 +211,7 @@ function link_recursive() {
   local dir_source
   # shellcheck disable=SC2044
   for dir_source in $(find_immediate_children "$current_source_dir" d); do
-    link_recursive "$dir_source" "$source_base" "$type"
+    RECURSION_LEVEL=$RECURSION_LEVEL link_recursive "$dir_source" "$source_base" "$type"
   done
 
   local file_source
@@ -200,7 +224,7 @@ function link_recursive() {
   # shellcheck disable=SC2044
   for link_source in $(find_immediate_children "$current_source_dir" l); do
     if [[ -d $(readlink -f "$link_source") ]]; then
-      link_recursive "$link_source" "$source_base" "$type"
+      RECURSION_LEVEL=$RECURSION_LEVEL link_recursive "$link_source" "$source_base" "$type"
     else
       link_file "$link_source" "$target_dir" "$type"
     fi
@@ -231,13 +255,14 @@ function link_file() {
   [[ $source_base == '.DS_Store' ]] && return 0
 
   # TODO: Remove hardlink-ing, it's unreliable. Backup instead
+  # TODO: Or create structure: {link,hardlink}/{home,root} (& mac/linux?)
+  # TODO: Move iTerm2 config to default location
   # macOS no longer accepts symlinks to plist files https://github.com/lra/mackup/issues/1924
   # So for now, we use hard links. Note that they are prone to being replaced by actual files.
   local hard_link=false
   [[ $source == *.plist ]] && hard_link=true
 
   local target=$target_dir/$source_base
-  [[ $source == */.git.linked/*  ]] && target=${target//\/.git.linked\//\/.git\/}
 
   need_to_link "$source" "$target" "$hard_link" || return 0
 
@@ -289,7 +314,7 @@ function echo_eval_with_sudo() {
 }
 
 function vim_mk_spell() {
-  if ! command -v "$VIM" &> /dev/null || [[ ${NO_VIM:-} ]]; then
+  if ! command -v "$VIM" &> /dev/null || [[ ${NO_VIM:-} || ! -d "$VIM_SPELL" ]]; then
     return 0
   fi
 
@@ -297,13 +322,12 @@ function vim_mk_spell() {
   # TODO: Is this the correct process, or should multiple files for a locale be merged? Check Vim
   local force=${1:-false} plug_installed=${2:-true} file files=()
   for file in "$VIM_SPELL"/*.add; do
-    [[ $force == true || ! $(find $VIM_SPELL -name "$(basename "$file")*.spl" -print -quit) ]] && files+=("$file")
+    [[ $force == true || ! $(find "$VIM_SPELL" -name "$(basename "$file")*.spl" -print -quit) ]] && files+=("$file")
   done
 
   local num_files=${#files[@]}
   [[ $num_files -eq 0 ]] && return 0
 
-  # TODO: This doesn't seem to be working in Vim. Try word: 'dotfiles' https://vi.stackexchange.com/a/15053
   local vim_cmd_pre=''
   if [[ $plug_installed == false ]]; then
     vim_cmd_pre='PlugInstall | '
@@ -318,12 +342,13 @@ function log_error {
   else
     color red "$msg" >&2
   fi
+  return 1
 }
 
 export DOTFILES_CMD
 DOTFILES_CMD=$(basename "$0")
 
-export VIM_SPELL=~/.vim/spell
+export VIM_SPELL=$HOME/.vim/spell
 
 export DOTFILES
 DOTFILES="$(dirname "$(dirname "$(dirname "$(dirname "$(realpath "$0")")")")")"
@@ -331,11 +356,17 @@ export DOTFILES_SHARED=$DOTFILES/shared
 export DOTFILES_INCLUDES=$DOTFILES_SHARED/includes
 export DOTFILES_CUSTOM=$DOTFILES/custom
 
+# TODO: Change with minimal dependencies
 # shellcheck disable=SC1091
-. "$DOTFILES_INCLUDES"/bash_shared.sh
+# . "$DOTFILES_INCLUDES"/bash_shared.sh
+# shellcheck disable=SC1091
+. "$DOTFILES_INCLUDES"/lib/functions.sh
+# shellcheck disable=SC1091
+. "$DOTFILES_INCLUDES"/env.sh
 
 USAGE_BASE="Usage: $(color green "$DOTFILES_CMD")"
 
+# TODO: Add rm command: removes both the file and the symlink
 case "${1:-''}" in
   setup) setup ;;
   sync) sync "${2:-}" ;;
