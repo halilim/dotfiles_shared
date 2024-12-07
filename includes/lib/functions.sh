@@ -300,16 +300,22 @@ function needs_update_and_mark() {
 }
 
 function open_with_editor() {
-  local abs_path_line_col=$1
+  local abs_path_line_col=$1 silent=1 cmd
+
+  if [[ ${DRY_RUN:-} ]]; then
+    silent=''
+  fi
 
   if [[ $EDITOR = "$VIM" ]]; then
-    vim_open "$abs_path_line_col"
+    cmd='vim_open %q'
   elif [[ $EDITOR = code || $EDITOR = code-insiders ]]; then
     # https://code.visualstudio.com/docs/editor/command-line#_core-cli-options
-    /usr/local/bin/"$EDITOR" -g "$abs_path_line_col"
+    cmd="/usr/local/bin/$EDITOR -g %q"
   else
-    open "$abs_path_line_col"
+    cmd='open %q'
   fi
+
+  SILENT=$silent echo_eval "$cmd" "$abs_path_line_col"
 }
 
 function port_check() {
@@ -464,7 +470,7 @@ function which_detailed() {
     local bat=("$BAT_CMD" --language=sh --paging=never)
 
     # Check out if you have (a lot of) time :) https://unix.stackexchange.com/a/85250/4678
-    locate_function "$input"
+    color magenta "$(locate_function "$input")"
     if [[ $is_zsh ]]; then
       which -x 2 "$input" | "${bat[@]}"
     else

@@ -1,7 +1,7 @@
 alias libr='$EDITOR "$DOTFILES_INCLUDES"/lib/ruby_rails.sh' # cSpell:ignore libr
 
 # Use the Rails defaults - binstubs, Spring, etc. Change only when needed.
-export RUBY_CMD_PREFIX=${RUBY_CMD_PREFIX:-'bin/'} # or 'bundle exec '
+export RUBY_CMD_PREFIX=${RUBY_CMD_PREFIX-'bin/'} # or 'bundle exec '
 export RAILS_CMD="${RUBY_CMD_PREFIX}rails"
 export RAKE_CMD="${RUBY_CMD_PREFIX}rake"
 

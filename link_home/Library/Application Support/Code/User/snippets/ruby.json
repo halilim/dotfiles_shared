@@ -25,6 +25,7 @@
 	},
 
 	"begin ... rescue": {
+		// cSpell:disable-next-line
 		"prefix": "begr",
 		"body": [
 			"begin",
@@ -77,6 +78,7 @@
 	},
 
 	"class << self": {
+		// cSpell:disable-next-line
 		"prefix": "clase",
 		"body": [
 			"class << self",
@@ -86,6 +88,7 @@
 	},
 
 	"Class = Struct.new(...) do": {
+		// cSpell:disable-next-line
 		"prefix": "clast",
 		"body": [
 			"${1:${TM_FILENAME/(?:\\A|_)([A-Za-z0-9]+)(?:\\.rb)?/(?2::\\u$1)/g}} = Struct.new(${2:vars}) do",
@@ -104,6 +107,7 @@
 	},
 
 	"define_method": {
+		// cSpell:disable-next-line
 		"prefix": "defm",
 		"body": [
 			"define_method ${1:name} do |${2:params}|",
@@ -113,6 +117,7 @@
 	},
 
 	"def ... rescue": {
+		// cSpell:disable-next-line
 		"prefix": "defr",
 		"body": [
 			"def ${1:method_name(params)}",
@@ -160,6 +165,7 @@
 	},
 
 	"each do |k, v|": {
+		// cSpell:disable-next-line
 		"prefix": "eadh",
 		"body": [
 			"each do |${1:k}, ${2:v}|",
@@ -178,6 +184,7 @@
 	},
 
 	"each_with_object for hash": {
+		// cSpell:disable-next-line
 		"prefix": "ewoh",
 		"body": [
 			"each_with_object(${1:obj}) do |(${2:k}, ${3:v}), ${4:memo_obj}|",
@@ -228,6 +235,7 @@
 	},
 
 	"map do": {
+		// cSpell:disable-next-line
 		"prefix": "mapd",
 		"body": [
 			"map do |${1:e}|",
@@ -287,11 +295,13 @@
 	},
 
 	"require_relative": {
+		// cSpell:disable-next-line
 		"prefix": "reqr",
 		"body": "require_relative '${1:file}'",
 	},
 
 	"rubocop:disable": {
+		// cSpell:disable-next-line
 		"prefix": "rudi",
 		"body": "# rubocop:disable $0",
 	},
@@ -302,6 +312,7 @@
 	},
 
 	"tap do": {
+		// cSpell:disable-next-line
 		"prefix": "tapd",
 		"body": [
 			"tap do |${1:variable}|",
@@ -318,6 +329,7 @@
 	// Rails
 
 	"errors.add": {
+		// cSpell:disable-next-line
 		"prefix": "erra",
 		"body": "errors.add(:${1:attr}, :${2:message_key})",
 	},
@@ -339,6 +351,7 @@
 	},
 
 	"logger.debug": {
+		// cSpell:disable-next-line
 		"prefix": "logd",
 		"body": "logger.debug { $0 }",
 	},
@@ -349,31 +362,37 @@
 	},
 
 	"logger.info": {
+		// cSpell:disable-next-line
 		"prefix": "logi",
 		"body": "logger.info { $0 }",
 	},
 
 	"logger.warn": {
+		// cSpell:disable-next-line
 		"prefix": "logw",
 		"body": "logger.warn { $0 }",
 	},
 
 	"Rails.logger.debug": {
+		// cSpell:disable-next-line
 		"prefix": "rlogd",
 		"body": "Rails.logger.debug { $0 }",
 	},
 
 	"Rails.logger.error": {
+		// cSpell:disable-next-line
 		"prefix": "rloge",
 		"body": "Rails.logger.error { $0 }",
 	},
 
 	"Rails.logger.info": {
+		// cSpell:disable-next-line
 		"prefix": "rlogi",
 		"body": "Rails.logger.info { $0 }",
 	},
 
 	"Rails.logger.warn": {
+		// cSpell:disable-next-line
 		"prefix": "rlogw",
 		"body": "Rails.logger.warn { $0 }",
 	},
@@ -384,6 +403,7 @@
 	},
 
 	"controller & params in console": {
+		// cSpell:disable-next-line
 		"prefix": "racp",
 		"body": [
 			"uri = '${1:URI}'",
@@ -416,31 +436,37 @@
 	// Unit tests & RSpec
 
 	"allow(...).to receive(:...).and_return(...)": {
+		// cSpell:disable-next-line
 		"prefix": "allr",
 		"body": "allow(${1:object}).to receive(:${2:method}).and_return(${0:value})",
 	},
 
 	"allow(...).to receive(:...).and_raise(...)": {
+		// cSpell:disable-next-line
 		"prefix": "allra",
 		"body": "allow(${1:object}).to receive(:${2:method}).and_raise(${3:'test error'})",
 	},
 
 	"allow(...).to receive(:...).and_call_original": {
+		// cSpell:disable-next-line
 		"prefix": "allro",
 		"body": "allow(${1:object}).to receive(:${2:method}).and_call_original",
 	},
 
 	"allow(...).to receive(:...).with(...).and_return(...)": {
+		// cSpell:disable-next-line
 		"prefix": "allrw",
 		"body": "allow(${1:object}).to receive(:${2:method}).with(${3:args}).and_return(${0:value})",
 	},
 
-	// https://relishapp.com/rspec/rspec-mocks/docs/configuring-responses/wrapping-the-original-implementation
+	// https://rspec.info/features/3-13/rspec-mocks/configuring-responses/wrapping-the-original-implementation/
+	// https://www.rubydoc.info/github/rspec/rspec-mocks/RSpec%2FMocks%2FMessageExpectation:and_wrap_original
 	"allow(...).to receive(...).and_wrap_original do": {
+		// cSpell:disable-next-line
 		"prefix": "allrwo",
 		"body": [
-			"allow(${1:object}).to receive(:${2:method}).and_wrap_original do |orig_method, *params|",
-				"\torig_method.call(*params)$0",
+			"allow(${1:object}).to receive(:${2:method}).and_wrap_original do |orig_method, *params, &block|",
+				"\torig_method.call(*params, &block)$0",
 			"end"
 		],
 	},
@@ -461,6 +487,7 @@
 	},
 
 	"before do ...": {
+		// cSpell:disable-next-line
 		"prefix": "befd",
 		"body": [
 			"before do",
@@ -470,6 +497,7 @@
 	},
 
 	"be_falsy": {
+		// cSpell:disable-next-line
 		"prefix": "befa",
 		"body": "be_falsy",
 	},
@@ -508,26 +536,31 @@
 	},
 
 	"expect contain_exactly": {
+		// cSpell:disable-next-line
 		"prefix": "exce",
 		"body": "expect($1).to contain_exactly($0)",
 	},
 
 	"expect(...).to have_attributes(...)": {
+		// cSpell:disable-next-line
 		"prefix": "exha",
 		"body": "expect($1).to have_attributes($0)",
 	},
 
 	"expect(response).to have_http_status(:...)": {
+		// cSpell:disable-next-line
 		"prefix": ["exhh", "exrh"],
 		"body": "expect(response).to have_http_status(:${0:ok})",
 	},
 
 	"expect match_array": {
+		// cSpell:disable-next-line
 		"prefix": "exma",
 		"body": "expect(${1:object}).to match_array($0)",
 	},
 
 	"expect(response).to redirect_to(...)": {
+		// cSpell:disable-next-line
 		"prefix": "exrr",
 		"body": "expect(response).to redirect_to(${1:path})",
 	},
@@ -547,11 +580,13 @@
 	},
 
 	"is_expected.to ...": {
+		// cSpell:disable-next-line
 		"prefix": "isex",
 		"body": "is_expected.to $0",
 	},
 
 	"is_expected.to eq(...)": {
+		// cSpell:disable-next-line
 		"prefix": "isexe",
 		"body": [
 			"is_expected.to eq($0)"
@@ -577,26 +612,31 @@
 	},
 
 	"it { is_expected.to ... }": {
+		// cSpell:disable-next-line
 		"prefix": "itie",
 		"body": "it { is_expected.to $0 }",
 	},
 
 	"it { is_expected.not_to ... }": {
+		// cSpell:disable-next-line
 		"prefix": "itien",
 		"body": "it { is_expected.not_to $0 }",
 	},
 
 	"it { is_expected.to be_... }": {
+		// cSpell:disable-next-line
 		"prefix": "itieb",
 		"body": "it { is_expected.to be_$0 }",
 	},
 
 	"it { is_expected.to be_falsy }": {
+		// cSpell:disable-next-line
 		"prefix": "itiebf",
 		"body": "it { is_expected.to be_falsy }",
 	},
 
 	"it { is_expected.to be_truthy }": {
+		// cSpell:disable-next-line
 		"prefix": "itiebt",
 		"body": "it { is_expected.to be_truthy }",
 	},
@@ -612,6 +652,7 @@
 	},
 
 	"let(...) do ...": {
+		// cSpell:disable-next-line
 		"prefix": "letd",
 		"body": [
 			"let(:$1) do",

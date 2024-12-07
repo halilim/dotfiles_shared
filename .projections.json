@@ -4,5 +4,8 @@
   },
   "**/bin/*": {
     "alternate": "spec/{dirname}/bin/{basename}_spec.sh"
+  },
+  "**/*.rb": {
+    "alternate": "spec/{dirname}/{basename}_spec.rb"
   }
 }

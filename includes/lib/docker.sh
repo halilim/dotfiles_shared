@@ -27,6 +27,7 @@ function colima_start() {
   echo_eval 'colima status > /dev/null 2>&1 || colima start'
 }
 alias cos='colima_start'
+alias cost='colima stop'
 
 function docker_hosts() {
   if ! command -v docker > /dev/null 2>&1 || ! docker info > /dev/null 2>&1; then

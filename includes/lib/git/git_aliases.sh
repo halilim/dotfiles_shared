@@ -49,10 +49,11 @@ alias grh~='git reset HEAD~'
 alias grgu='git remote get-url'
 alias grpo='git remote prune origin'
 
-# cSpell:ignore gsta gstp gstpb gsts ghprc ghprv grhh
+# cSpell:ignore gsta gstdiff gstp gstpb gsts ghprc ghprv grhh
 
 # Original gsta (omz/git.plugin.zsh) sounds like apply :)
 alias gsta="git stash apply"
+alias gstdiff='git stash show --patch'
 alias gstp="git stash push --include-untracked -m"
 alias gstpb='git stash push --include-untracked -m"$(git rev-parse --abbrev-ref HEAD)"'
 # alias gsts="git stash save"

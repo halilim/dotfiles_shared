@@ -1,0 +1,23 @@
+require:
+  - rubocop-performance
+  - rubocop-rspec
+
+AllCops:
+  NewCops: enable
+
+Layout/LineLength:
+  Max: 100
+
+Metrics/BlockLength:
+  CountAsOne: ["array", "hash", "heredoc", "method_call"]
+Metrics/ClassLength:
+  CountAsOne: ["array", "hash", "heredoc", "method_call"]
+Metrics/MethodLength:
+  CountAsOne: ["array", "hash", "heredoc", "method_call"]
+Metrics/ModuleLength:
+  CountAsOne: ["array", "hash", "heredoc", "method_call"]
+RSpec/ExampleLength:
+  CountAsOne: ["array", "hash", "heredoc", "method_call"]
+
+Style/Documentation:
+  Enabled: false

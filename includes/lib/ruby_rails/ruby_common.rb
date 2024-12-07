@@ -2,112 +2,145 @@
 
 # rubocop:disable Style/NumericPredicate
 
-# Displays a MySQL-style table for ActiveRecord objects. Limits the number of columns based on the
-# terminal width. Prioritizes id and columns with data over empty columns. Deprioritizes timestamps.
+# Displays a DB style table for a list of ActiveRecord objects, hashes, or arrays. Limits the
+# number of columns based on the terminal width. Prioritizes id and columns with data over empty
+# columns and timestamps.
 #
 # Modified from https://gist.github.com/bgreenlee/72234
 #
-# @param items [Array<ActiveRecord::Base>, ActiveRecord_Relation] an array/scope of
-#   ActiveRecord objects
-# @param given_fields [Array<Symbol>] optional list of fields to display
+# Alternatives:
+# - https://github.com/tj/terminal-table
+# - https://github.com/arches/table_print
+# - https://github.com/aptinio/text-table
+#
+# @param items [Array<ActiveRecord::Base, Array, Hash>, ActiveRecord_Relation]
+# @param cols [Array<Symbol>] optional list of columns to display
 #
 # @example
-#   art Foo.all, :id, :title
+#   table [{ id: 1, title: 'Bar', qux: 'yay' }, { id: 2, title: 'Baz', qux: 'nay' }], :id, :title
 #   =>
-#   +----+-------+
-#   | id | title |
-#   +----+-------+
-#   | 1  | Bar   |
-#   | 2  | Baz   |
-#   +----+-------+
+#   id│title
+#   ──┼─────
+#   1 │Bar
+#   2 │Baz
 #
 # @example
-#   art Baz.where(foo: 'bar')
+#   table Baz.where(foo: 'bar')
 #   =>
-#   +----+-------+-------+-------+-------+-----+
-#   | id | title | foo   | bar   | etc   | ... |
-#   +----+-------+-------+-------+-------+-----+
-#   | 1  | Bar   | bar   | baz   | true  | ... |
-#   | 2  | Baz   | bar   | qux   | false | ... |
-#   +----+-------+-------+-------+-------+-----+
+#   id│title     │foo│foo_bar│etc  │…
+#   ──┼──────────┼───┼───────┼─────┼───
+#   1 │Lorem ips.│bar│baz    │true │…
+#   2 │Dolor     │bar│qux    │false│…
+#
+# @example
+#   table [[2, :foo], [4, :bar]]
+#   =>
+#   0│1
+#   ─┼───
+#   2│foo
+#   4│bar
 #
 # @todo Move to a forked gist?
-# TODO: Add hash support
-# TODO: Add header-less support
-# TODO: Add array of hashes support
-# TODO: Add plain array support
-# TODO: Add tests (bundle inline?)
-def ar_table(items, *given_fields) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
-  cur_fields = given_fields.dup
+def table(items, *cols) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
+  # Load ActiveRecord to prevent extra query by first_item
+  items = items.load.to_a if items.respond_to?(:load)
 
-  # find max length for each field; start with the field names themselves
-  cur_fields = items.first.class.column_names if cur_fields.empty?
-  cur_max_len = Hash[*cur_fields.map { |f| [f, f.to_s.length] }.flatten]
+  first_item = items[0]
+
+  # Convert everything to an array of hashes
+  if first_item.respond_to?(:attributes)
+    items.map!(&:attributes)
+  elsif first_item.is_a?(Array)
+    items.map! { |arr| (0..arr.length - 1).zip(arr).to_h }
+  end
+
+  first_item = items[0]
+
+  cols = first_item.keys if cols.empty?
+
+  empty_cols = first_item.filter_map { |k, v| k if v.to_s.empty? }
+
+  prioritize = lambda do |cur_cols, col|
+    val = cur_cols.delete(col)
+    cur_cols.unshift(col) if val
+  end
+  prioritize.call(cols, 'id')
+
+  deprioritize = lambda do |cur_cols, col|
+    val = cur_cols.delete(col)
+    cur_cols.push(col) if val
+  end
+  [*empty_cols, 'created_at', 'updated_at'].each { |col| deprioritize.call(cols, col) }
+
+  col2len = cols.to_h { |col| [col, col.to_s.length] }
+
+  title_color = :yellow
+  border_color = :magenta
+  # https://www.compart.com/en/unicode/block/U+2500
+  b_v = color('│', border_color)
+  b_h = '─'
+  b_vh = '┼'
+  ellipsis = '…'
+
+  # Find max length for each column; start with the column names themselves
+
   items.each do |item|
-    cur_fields.each do |field|
-      len = item.read_attribute(field).to_s.length
-      cur_max_len[field] = len if len > cur_max_len[field]
+    col2len.each_key do |col|
+      len = item[col].to_s.length
+      col2len[col] = [len, col2len[col]].max
     end
   end
 
-  calc_max_row_len = ->(max_len, fields, add = 0) { max_len.values.sum + fields.length * 3 + 1 + add }
+  calc_max_row_len = ->(cur_col2len, add = 0) { cur_col2len.values.sum + cur_col2len.length + add }
 
-  term_width = Reline.get_screen_size[1]
-  max_row_len = calc_max_row_len.call(cur_max_len, cur_fields)
-  term_width_exceeded = false
+  terminal_width = Reline.get_screen_size[1]
+  max_row_len = calc_max_row_len.call(col2len)
+  terminal_width_exceeded = false
 
-  if max_row_len > term_width
-    term_width_exceeded = true
-    # We're going to exceed for sure, add the ... column
-    dot_col_len = 6
+  if max_row_len > terminal_width
+    terminal_width_exceeded = true
+    # We're going to exceed for sure, add the … column
+    dot_col_len = ellipsis.length
     max_row_len += dot_col_len
-
-    first_item = items.first
-    presence = ->(field) { first_item.read_attribute(field).to_s.length.positive? }
-    cur_fields.sort! do |field_a, field_b|
-      next 1 if field_b == 'id' # Prioritize id
-      next 1 if %w[created_at updated_at].include?(field_a) # Deprioritize timestamps
-
-      a_present = presence.call(field_a)
-      b_present = presence.call(field_b)
-      if a_present == b_present
-        0
-      elsif a_present
-        -1
-      else
-        1
-      end
-    end
-
-    while max_row_len > term_width && cur_fields.length > 1
-      popped_field = cur_fields.pop
-      cur_max_len.delete(popped_field)
-      max_row_len = calc_max_row_len.call(cur_max_len, cur_fields, dot_col_len)
+    while max_row_len > terminal_width && col2len.length > 1
+      col2len.delete(col2len.keys.last)
+      max_row_len = calc_max_row_len.call(col2len, dot_col_len)
     end
   end
 
-  # rubocop:disable Style/StringConcatenation
-  border = '+-' + cur_fields.map { |f| '-' * cur_max_len[f] }.join('-+-') + '-+'
-  border << '-----+' if term_width_exceeded
-  title_row = '| ' + cur_fields.map { |f| format("%-#{cur_max_len[f]}s", f.to_s) }.join(' | ') + ' |'
-  title_row << ' ... |' if term_width_exceeded
+  max_col_i = col2len.length - 1
+  gen_row = lambda do |color: nil, &block|
+    cells = col2len.map.with_index do |(k, len), i|
+      text = block.call(k)
+      text = format("%-#{len}s", text) if i < max_col_i || terminal_width_exceeded
+      color(text, color) if color
+      text
+    end
 
-  puts border
-  puts title_row
-  puts border
+    if terminal_width_exceeded
+      ell = ellipsis
+      ell = color(ell, color) if color
+      cells << ell
+    end
+
+    cells.join(b_v)
+  end
+
+  puts gen_row.call(color: title_color) { |k| k }
+
+  border = col2len.values.map { |len| b_h * len }.join(b_vh)
+  border << b_vh << b_h if terminal_width_exceeded
+  puts color(border, border_color)
 
   items.each do |item|
-    row = '| ' + cur_fields.map { |f| format("%-#{cur_max_len[f]}s", item.read_attribute(f)) }.join(' | ') + ' |'
-    row << ' ... |' if term_width_exceeded
-    puts row
+    puts(gen_row.call { |k| item[k] })
   end
-  # rubocop:enable Style/StringConcatenation
 
-  puts border
-  puts "#{items.length} rows in set\n"
+  puts color("(#{items.length} rows in set)\n", :cyan)
 end
 
-alias art ar_table
+alias art table
+alias tbl table
 
 # Print methods of an object/class. IRB alternative:
 #   ls bar -g baz
@@ -132,16 +165,16 @@ def pm(obj, pattern = nil) # rubocop:disable Metrics/AbcSize, Metrics/Cyclomatic
     elsif method.arity == 0
       args = '()'
     elsif method.arity == -1
-      args = '(...)'
+      args = '(…)'
     elsif method.arity < -1
       n = -method.arity - 1
-      args = "(#{(1..n).collect { |i| "arg#{i}" }.join(', ')}, ...)"
+      args = "(#{(1..n).collect { |i| "arg#{i}" }.join(', ')}, …)"
     end
 
     # Remove ActiveRecord attributes
     # Example inspects:
-    #   #<Method: FooBar(ActiveRecord::Base)#baz(id: integer, ...) .../etc.rb:42>
-    #   #<Method: FooBar(ActiveRecord::Base).baz(qux, options=..., &block) .../etc.rb:42>
+    #   #<Method: FooBar(ActiveRecord::Base)#baz(id: integer, …) …/etc.rb:42>
+    #   #<Method: FooBar(ActiveRecord::Base).baz(qux, options=…, &block) …/etc.rb:42>
     #   #<Class:FooBar>(ActiveRecord::Base)
     inspection = method.inspect
     matches = inspection.match %r{ # rubocop:disable Style/RegexpLiteral
@@ -158,9 +191,9 @@ def pm(obj, pattern = nil) # rubocop:disable Metrics/AbcSize, Metrics/Cyclomatic
   max_name = data.collect { |item| item[0].size }.max
   max_args = data.collect { |item| item[1].size }.max
   data.each do |item|
-    print " #{IRB::Color.colorize(item[0].to_s.rjust(max_name), [:YELLOW])}"
-    print IRB::Color.colorize(item[1].ljust(max_args), [:BLUE])
-    print "   #{IRB::Color.colorize(item[2], [:MAGENTA])}\n"
+    print " #{color(item[0].to_s.rjust(max_name), :yellow)}"
+    print color(item[1].ljust(max_args), :blue)
+    print "   #{color(item[2], :magenta)}\n"
   end
 
   data.size
@@ -188,6 +221,10 @@ if defined?(reload!)
   def r!
     reload!
   end
+end
+
+def color(text, *color)
+  IRB::Color.colorize(text, color.map { |c| c.to_s.upcase.to_sym })
 end
 
 # rubocop:enable Style/NumericPredicate

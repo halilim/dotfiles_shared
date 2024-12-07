@@ -54,6 +54,7 @@ bitnami
 Bitwarden
 blockapp
 blueutil
+bmbm
 bootsnap
 brandbook
 Brewfile
@@ -115,6 +116,7 @@ DBeaver
 Deel
 delaycompress
 deluid
+deprioritize
 descr
 devcenter
 devs
@@ -168,6 +170,8 @@ factorybot
 falsey
 fanout
 fastcgi
+fcontext
+fdescribe
 fielddata
 findutils
 Fira
@@ -370,6 +374,7 @@ nohl
 nohup
 Nokogiri
 noout
+notags
 notifempty
 nounset
 npm
@@ -573,6 +578,7 @@ substr
 sumologic
 systempreferences
 tablename
+tablify
 tabnine
 teamookla
 thoughtbot

@@ -1,2 +1,11 @@
+echo "--> Running ShellCheck..."
 bin/run_shellcheck
+
+printf "\n--> Running ShellSpec...\n"
 bin/run_shellspec
+
+printf "\n--> Running RuboCop...\n"
+bundle exec rubocop
+
+printf "\n--> Running RSpec...\n"
+bundle exec rspec
