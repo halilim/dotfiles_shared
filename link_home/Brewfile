@@ -76,8 +76,9 @@ brew 'tree'
 # brew 'wget'
 brew 'yq'
 
-# In case macOS falls behind here too. Note: set chsh https://gist.github.com/ngocphamm/4978435
+# In case macOS falls behind here too
 brew 'zsh'
+at_exit { system '"$DOTFILES_SHARED"/share/switch_to_homebrew_zsh' }
 
 # Start: Casks
 

@@ -10,7 +10,7 @@ export LAUNCH_DARKLY_URL='https://app.launchdarkly.com/projects/default/flags/%s
 export PHP_ROOT=~/code
 export RUBY_CMD_PREFIX='bin/'
 
-DOTFILES_INCLUDE_LIBS+=(gpg example_lib)
+DOTFILES_INCLUDE_LIBS+=(example_lib gpg rbenv)
 OMZ_PLUGINS+=(rbenv)
 UPDATE_BACKUP_CMDS=(pre_update_cmd "${UPDATE_BACKUP_CMDS[@]}") # Prepend
 UPDATE_BACKUP_CMDS+=(gpg_check_key update_foo backup_bar) # Append

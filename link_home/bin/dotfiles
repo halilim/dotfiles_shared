@@ -43,7 +43,7 @@ function setup() {
   sync all $plug_installed
 
   if [[ $OSTYPE == darwin* && -n "${ZSH_VERSION:-}" ]]; then
-    echo_eval '%q/bin/iterm_tab %q omz_install_custom_plugins' "$HOME" "$PWD"
+    echo_eval '%q/bin/iterm_tab %q omz_install_custom' "$HOME" "$PWD"
   fi
 }
 
@@ -167,7 +167,16 @@ function setup_custom_links() {
 }
 
 function setup_links() {
-  link_recursive "$1"/link_home "$1"/link_home home
+  start_link_recursive "$1"/link_home home
+  start_link_recursive "$1"/link/root root
+}
+
+function start_link_recursive() {
+  local dir=$1 type=$2
+  if [[ ! -d "$dir" ]]; then
+    return 0
+  fi
+  link_recursive "$dir" "$dir" "$type"
 }
 
 function link_recursive() {
@@ -178,7 +187,7 @@ function link_recursive() {
     return
   fi
 
-  local current_source_dir=$1 source_base=$2 type=$3 relative_base target_base target_dir
+  local current_source_dir=$1 source_base=$2 type=$3 relative_base target_base target_base_name target_dir
   relative_base=$(relative_to "$source_base" "$current_source_dir")
 
   [[ -L "$current_source_dir" ]] && current_source_dir=$(readlink -f "$current_source_dir")
@@ -191,9 +200,11 @@ function link_recursive() {
   case "$type" in
     home)
       target_base=$HOME
+      target_base_name=$HOME
       ;;
     root)
       target_base=/
+      target_base_name=''
       ;;
     *)
       log_error "Unknown link type: $type"
@@ -202,7 +213,7 @@ function link_recursive() {
   esac
 
   target_dir=$target_base
-  [[ $relative_base ]] && target_dir=$target_base/$relative_base
+  [[ $relative_base ]] && target_dir=$target_base_name/$relative_base
 
   if [[ $current_source_dir != "$source_base" ]]; then
     mk_dir "$target_dir" "$type"
@@ -269,7 +280,7 @@ function link_file() {
   backup "$target" "$type" "$hard_link" "$source"
 
   local link_arg=' -s' comment=''
-  [[ $hard_link == true ]] && link_arg='' && comment=' # Hard link'
+  [[ $hard_link == true ]] && link_arg=' -f' && comment=' # Hard link'
 
   echo_eval_with_sudo "$type" 'ln%s %q %q%s' "$link_arg" "$source" "$target" "$comment"
 }

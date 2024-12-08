@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+IFS=$'\n\t'
+
+conf_base="$HOME/Library/Application Support"
+
+for f in snippets keybindings.json settings.json; do
+  ln -sf "$conf_base/Code/User/$f" "$conf_base/Code - Insiders/User/$f"
+done

@@ -100,7 +100,7 @@ function _git_commits_with_message() {
 function _git_contains_args_with_message() {
   local commit_ids
   commit_ids=$(_git_commits_with_message "$1")
-  echo "$commit_ids"| xargs printf -- '--contains %s '
+  echo "$commit_ids" | xargs printf -- '--contains %s '
 }
 
 function git_search_branches() {
@@ -108,5 +108,5 @@ function git_search_branches() {
 }
 
 function git_search_tags() {
-  echo_eval "git tag --sort=-v:refname $(_git_contains_args_with_message "$1")| head -n 5"
+  echo_eval "git tag --sort=-v:refname $(_git_contains_args_with_message "$1") | head -n 5"
 }

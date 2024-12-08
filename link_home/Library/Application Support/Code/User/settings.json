@@ -161,8 +161,6 @@
     "**/.config/bat/config": "properties",
     "**/.git*/info/exclude": "ignore",
     "**/.husky/*": "shellscript",
-    "**/.mackup.cfg": "ini",
-    "**/.mackup/*.cfg": "ini",
     "**/.ssh/config": "ssh_config",
     "**/chrome/exts/uBlock.txt": "json",
     "**/nginx*.conf*": "nginx",

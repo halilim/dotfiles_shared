@@ -45,9 +45,12 @@ function zvm_vi_yank() {
 	zvm_exit_visual_mode
 }
 
-function omz_install_custom_plugins() {
+function omz_install_custom() {
   (
-    cd "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}"/plugins || return
+    local zsh_custom=${ZSH_CUSTOM:-~/.oh-my-zsh/custom}
+
+    cd_or_fail "$zsh_custom"/plugins 'Oh My Zsh custom plugins directory' || return
+
     git clone https://github.com/Aloxaf/fzf-tab
     git clone https://github.com/jeffreytse/zsh-vi-mode
     git clone https://github.com/lincheney/fzf-tab-completion
@@ -55,12 +58,17 @@ function omz_install_custom_plugins() {
     git clone https://github.com/zsh-users/zsh-autosuggestions
     git clone https://github.com/zsh-users/zsh-completions
     git clone https://github.com/zsh-users/zsh-syntax-highlighting
+
+    cd_or_fail "$zsh_custom"/themes 'Oh My Zsh custom themes directory' || return
+
+    git clone --depth=1 https://github.com/romkatv/powerlevel10k
   )
 }
 
 function omz_update_custom() {
   (
-    cd "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}" || return
+    cd_or_fail "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}" 'Oh My Zsh custom directory' || return
+
     for_each_dir 'for_each_dir "git pull --prune"'
   )
 }

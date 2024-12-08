@@ -33,6 +33,19 @@ function cb_tmp() {
   fi
 }
 
+function cd_or_fail() {
+  local dir=${1:?dir is required} name=${2:-Directory}
+  if [[ ! -d "$dir" ]]; then
+    echo >&2 "$name does not exist: $dir"
+    return 1
+  fi
+
+  if ! cd "$dir"; then
+    echo >&2 "Could not change directory to $dir"
+    return 1
+  fi
+}
+
 function cd_with_header() {
   local dir=$1
   color >&2 white-bold "---> $dir"

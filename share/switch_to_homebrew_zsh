@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -euo pipefail
+IFS=$'\n\t'
+
+zsh_path="$HOMEBREW_PREFIX"/bin/zsh
+shells=/etc/shells
+
+if ! grep "$zsh_path" $shells > /dev/null 2>&1; then
+  echo "$zsh_path" | sudo tee -a $shells > /dev/null
+fi
+
+chsh -s "$zsh_path"
