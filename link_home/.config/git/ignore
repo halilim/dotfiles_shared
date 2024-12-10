@@ -96,3 +96,7 @@ cscope.po.out
 
 # https://github.com/ruby/vscode-rdbg
 .rdbgrc.breakpoints
+
+# Yarn
+.pnp.cjs
+.pnp.loader.mjs

@@ -26,10 +26,6 @@ export TIME_STYLE=long-iso
 # Run install_nginx_config after changing
 export HOST_NGINX_PORT=8085
 
-# Prevent: Ruby UTF-8 to US-ASCII Encoding::UndefinedConversionError, ...
-export LANG='en_US.UTF-8'
-export LC_ALL='en_US.UTF-8'
-
 # https://github.com/npm/cli/issues/7857
 export NODE_OPTIONS='--disable-warning=ExperimentalWarning'
 

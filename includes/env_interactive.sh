@@ -5,7 +5,6 @@ if [ -n "${ZSH_VERSION-}" ]; then
   FPATH="$HOMEBREW_PREFIX/share/zsh/site-functions:${FPATH}"
 fi
 
-# TODO: Pass from client on SSH
 function color_mode() {
   if [[ $OSTYPE == darwin* ]]; then
     [[ $(defaults read -g AppleInterfaceStyle 2>&1) == 'Dark' ]] && echo dark || echo light
@@ -14,6 +13,9 @@ function color_mode() {
     :
   fi
 }
+
+export COLOR_MODE
+COLOR_MODE=${COLOR_MODE:-$(color_mode)}
 
 export FZF_DEFAULT_OPTS
 FZF_DEFAULT_OPTS="--cycle --reverse --color=$(color_mode)"

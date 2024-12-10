@@ -1,5 +1,9 @@
 alias libm='$EDITOR "$DOTFILES_INCLUDES"/mac.sh' # cSpell:ignore libm
 
+# Prevent: Ruby UTF-8 to US-ASCII Encoding::UndefinedConversionError, ...
+export LANG='en_US.UTF-8'
+export LC_ALL='en_US.UTF-8'
+
 alias ahr='air_buddy_handoff receive'
 alias ahs='air_buddy_handoff send'
 alias chrome='/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome'
