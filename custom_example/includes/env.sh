@@ -1,4 +1,4 @@
-# Custom environment variables and setup
+alias envshc='$EDITOR "$DOTFILES_CUSTOM"/includes/env.sh' # cSpell:ignore envshc
 
 export ADMINER_DIR="$HOME/code/tools/adminer"
 export ESHEAD_DIR="$HOME/code/tools/elasticsearch-head"

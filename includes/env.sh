@@ -33,6 +33,9 @@ export LC_ALL='en_US.UTF-8'
 # https://github.com/npm/cli/issues/7857
 export NODE_OPTIONS='--disable-warning=ExperimentalWarning'
 
+# Allow overriding stuff defined later anywhere
+export POST_INIT_HOOKS=()
+
 if [[ $OSTYPE == darwin* ]]; then
   source_with_custom mac_env.sh
 elif [[ $OSTYPE == linux* ]]; then

@@ -51,7 +51,7 @@ function docker_hosts() {
           ;;
 
         *)
-          cmd+=(--filter "$(printf 'ancestor=%q' "$arg")")
+          cmd+=(--filter "$(printf 'name=%q' "$arg")")
           ;;
       esac
     done

@@ -16,11 +16,11 @@ Describe "docker_hosts"
           'baz'
         ;;
 
-      "$ps_base --filter ancestor=qux"|"$ps_base --filter ancestor=qux --filter ancestor=baz")
+      "$ps_base --filter name=qux"|"$ps_base --filter name=qux --filter name=baz")
         echo 'bar'
         ;;
 
-      "$ps_base --filter ancestor=baz")
+      "$ps_base --filter name=baz")
         echo ''
         ;;
 

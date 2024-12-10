@@ -39,3 +39,6 @@ shopt -s checkwinsize
 export PS1='\[\e]0;\w\a\]\n\[\e[32m\]\u@\h \[\e[33m\]\w\[\e[0m\]\[\033[32m\]$(__git_ps1)\n\$ '
 
 source_custom .bashrc
+
+# shellcheck disable=SC1091
+. "$DOTFILES_SHARED"/post_init_hooks.sh

@@ -1,3 +1,5 @@
+export ZPROFILE_LOADED=1
+
 alias zprofile='$EDITOR ~/.zprofile'
 
 setopt NULL_GLOB

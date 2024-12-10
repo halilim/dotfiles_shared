@@ -315,7 +315,7 @@ function needs_update_and_mark() {
 function open_with_editor() {
   local abs_path_line_col=$1 silent=1 cmd
 
-  if [[ ${DRY_RUN:-} ]]; then
+  if [[ ${VERBOSE:-} ]]; then
     silent=''
   fi
 

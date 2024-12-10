@@ -32,9 +32,6 @@
     "custom_tr": { "path": "~/.vim/spell/custom.tr.utf-8.add" },
     "custom": true
   },
-  "cSpell.enableFiletypes": [
-    "shellscript"
-  ],
   "cSpell.ignoreRegExpList": [
     "/[^\\s]{40,}/"
   ],
@@ -136,7 +133,8 @@
   // cSpell:ignore apacheconf
   "files.associations": {
     ".config/git/ignore*": "ignore",
-    ".env*": "dotenv",
+    ".env.*": "dotenv",
+    "**/*.env": "dotenv",
     ".gvimrc": "viml",
     ".ideavimrc": "viml",
     ".inputrc": "shellscript",
@@ -175,7 +173,8 @@
     "coc-settings.json": "jsonc",
     "default-gems": "properties",
     "pybritive.config": "ini",
-    "Procfile.*": "procfile"
+    "Procfile.*": "procfile",
+    ".env*": "dotenv"
   },
 
   "files.exclude": {

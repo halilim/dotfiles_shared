@@ -7,6 +7,13 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+# Some tools (probably by mistake) don't load it
+if [[ ! ${ZPROFILE_LOADED:-} ]]; then
+  # shellcheck disable=SC1091
+  . "$HOME"/.zprofile
+fi
+unset ZPROFILE_LOADED
+
 export BUILTIN_URL='https://zsh.sourceforge.io/Doc/Release/Shell-Builtin-Commands.html'
 export ARRAY_START=1
 export READ_ARRAY=(read -rA)
@@ -60,3 +67,6 @@ bindkey "^[a" beginning-of-line
 bindkey "^[e" end-of-line
 
 source_custom .zshrc
+
+# shellcheck disable=SC1091
+. "$DOTFILES_SHARED"/post_init_hooks.sh
