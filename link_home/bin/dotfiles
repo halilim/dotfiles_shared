@@ -31,7 +31,7 @@ function setup() {
   for var in "${vars[@]}"; do
     bootstrap+="$(declare -p "$var")"$'\n'
   done
-  echo_eval 'echo %q > %q/.dotfiles_bootstrap.sh' "$bootstrap" "$HOME"
+  echo_eval 'printf %q > %q/.dotfiles_bootstrap.sh' "$bootstrap" "$HOME"
 
   local plug=$HOME/.vim/autoload/plug.vim plug_installed=true
   if [[ ! -f $plug ]]; then
@@ -43,7 +43,7 @@ function setup() {
   sync all $plug_installed
 
   if [[ $OSTYPE == darwin* && -n "${ZSH_VERSION:-}" ]]; then
-    echo_eval '%q/bin/iterm_tab %q omz_install_custom' "$HOME" "$PWD"
+    echo_eval 'iterm_tab %q omz_install_custom' "$PWD"
   fi
 }
 

@@ -1,7 +1,7 @@
 script='link_home/bin/dotfiles'
 
 Describe "$script"
-  tmp_dir=$TMPDIR/shellspec/$script
+  tmp_dir=${TMPDIR%/}/shellspec/$script
   shared_dir=$tmp_dir/dotfiles/shared
   custom_dir=$tmp_dir/dotfiles/custom
   base_dir=$(dirname "$script")
@@ -10,7 +10,7 @@ Describe "$script"
   copied_script=$script_dir/$name
 
   orig_home=''
-  home_dir=$tmp_dir/home
+  mock_home=$tmp_dir/home
 
   create_file_with_content() {
     local file=$1 content=$2
@@ -31,9 +31,8 @@ Describe "$script"
     done
 
     orig_home=$HOME
-    HOME=$home_dir
-
-    unset GNU_REALPATH # Emulate run script
+    mkdir -p "$mock_home"
+    HOME=$mock_home
   }
 
   cleanup() {
@@ -48,11 +47,24 @@ Describe "$script"
     :
   End
 
+  Mock iterm_tab
+    :
+  End
+
   Mock vim
     if [[ $1 != +"$expected_vim_arg" ]]; then
       echo >&2 "Unregistered docker mock: $*"
       exit 1
     fi
+  End
+
+  Describe 'setup'
+    Example 'no args'
+      When run script "$copied_script" setup
+      The stdout should eq ''
+      The stderr should not include 'No such'
+      The path "$mock_home"/.dotfiles_bootstrap.sh should be exist
+    End
   End
 
   Describe 'sync'
@@ -63,9 +75,9 @@ Describe "$script"
       When run script "$copied_script" sync
       The stdout should eq ''
       The stderr should include 'repo_one'
-      The contents of file "$home_dir"/code/repo_one/.git/info/exclude should equal \
+      The contents of file "$mock_home"/code/repo_one/.git/info/exclude should equal \
         'synced_local_ignore'
-      The path "$home_dir"/code/repo_one/.git.linked should not be exist
+      The path "$mock_home"/code/repo_one/.git.linked should not be exist
     End
   End
 
@@ -77,7 +89,7 @@ Describe "$script"
     End
 
     Example 'with args'
-      local_exclude_to_import=$home_dir/code/repo_two/.git/info/exclude
+      local_exclude_to_import=$mock_home/code/repo_two/.git/info/exclude
       create_file_with_content "$local_exclude_to_import" 'imported_local_ignore'
 
       When run script "$copied_script" import custom "$local_exclude_to_import"
@@ -90,7 +102,7 @@ Describe "$script"
   End
 
   Example 'vim_mk_spell'
-    vim_spell_dir=$home_dir/.vim/spell
+    vim_spell_dir=$mock_home/.vim/spell
     vim_spell_file_1=$vim_spell_dir/test1.en.utf-8.add
     vim_spell_file_2=$vim_spell_dir/test2.en.utf-8.add
     expected_vim_arg="mkspell! $vim_spell_file_1 | mkspell! $vim_spell_file_2 | q"

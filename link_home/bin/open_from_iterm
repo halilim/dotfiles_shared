@@ -46,27 +46,21 @@ abs_path_line_col=$abs_path
 dir=$(dirname "$abs_path")
 cd "$dir" || ( >&2 print_to_log "Couldn't cd into $dir" && exit 1 )
 
-git_path=$(git rev-parse --show-toplevel)
-git_dir=$(basename "$git_path")
+git_path=$(git rev-parse --show-toplevel 2> /dev/null)
 
-debug_vars dir git_path git_dir
+if [[ $git_path ]]; then
+  git_dir=$(basename "$git_path")
+  debug_vars dir git_path git_dir
 
-# TODO: (still needed?) create a list of candidates, split and test all path segments, in word mode
+  # TODO: (still needed?) create a list of candidates, split and test all path segments, in word mode
 
-if should_open_in_rubymine "$git_dir" "$abs_path"; then
-  # https://www.jetbrains.com/help/ruby/opening-files-from-command-line.html#88f1a126
-  # Note: column is only documented in the "Windows" tab. -1: it goes to the next character (bug?)
-  /usr/local/bin/mine --line "$line" --column $((column - 1)) "$abs_path"
-  exit
+  if open_in_rubymine "$git_dir" "$abs_path" "$line" "$column"; then
+    exit
+  fi
+
+  if open_in_editor "$git_dir" "$git_path" "$line" "$abs_path_line_col"; then
+    exit
+  fi
 fi
 
-parent_path=$(dirname "$git_path")
-
-debug_vars parent_path
-
-# $line: Coming from grep etc., probably a text file
-if is_in_editor_titles "$git_dir" "$parent_path" || [[ $line ]]; then
-  open_with_editor "$abs_path_line_col"
-else
-  open "$abs_path"
-fi
+open "$abs_path"

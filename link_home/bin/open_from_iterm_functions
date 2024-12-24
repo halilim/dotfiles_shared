@@ -48,8 +48,23 @@ function get_project_path() {
   echo "$dir"
 }
 
-function should_open_in_rubymine() {
-  local git_dir=$1 abs_path=$2
+function open_in_editor() {
+  local git_dir=$1 git_path=$2 parent_path line=$3 abs_path_line_col=$4
+
+  parent_path=$(dirname "$git_path")
+  debug_vars parent_path
+
+  # $line: Coming from grep etc., probably a text file
+  if is_in_editor_titles "$git_dir" "$parent_path" || [[ $line ]]; then
+    open_with_editor "$abs_path_line_col"
+    return
+  fi
+
+  return 1
+}
+
+function open_in_rubymine() {
+  local git_dir=$1 abs_path=$2 line=$3 column=$4
 
   local rubymine_titles
   rubymine_titles=$(window_names RubyMine)
@@ -64,7 +79,10 @@ function should_open_in_rubymine() {
   done
 
   if [[ $rubymine_titles && ${abs_path##*.} == 'rb' ]]; then
-    return 0
+    # https://www.jetbrains.com/help/ruby/opening-files-from-command-line.html#88f1a126
+    # Note: column is only documented in the "Windows" tab. -1: it goes to the next character (bug?)
+    /usr/local/bin/mine --line "$line" --column $((column - 1)) "$abs_path"
+    return
   fi
 
   return 1
@@ -93,7 +111,7 @@ function is_in_editor_titles() {
   local editor_title
   for editor_title in ${editor_titles//,/ }; do
     if [[ $editor_title &&
-          $editor_title == *$git_dir
+          ($git_dir && $editor_title == *$git_dir)
           || ($parent_dir && $editor_title == *$parent_dir)
           || ($project_dir && $editor_title == *$project_dir) ]]; then
       return 0
