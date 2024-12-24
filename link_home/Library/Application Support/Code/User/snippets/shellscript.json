@@ -365,13 +365,29 @@
 	},
 
 	// https://stackoverflow.com/a/32931403/372654
-	"read into array (Zsh: -A, Bash: -a)": {
+	"read into array": {
 		"prefix": "ra",
 		"body": [
 			"${1:array}=()",
-			"IFS=\\$'\\n' read -r${2|a,A|} -d '' $1 < <( ${3:command} && printf '\\0' )"
+			"IFS=\\$'\\n' \"\\${READ_ARRAY[@]}\" -d '' $1 < <( ${0:command} && printf '\\0' )"
 		],
 	},
+
+	"read into array Bash": {
+		"prefix": "rab",
+		"body": [
+			"${1:array}=()",
+			"IFS=\\$'\\n' read -ra -d '' $1 < <( ${0:command} && printf '\\0' )"
+		],
+	},
+
+	"read into array Zsh": {
+		"prefix": "raz",
+ 		"body": [
+ 			"${1:array}=()",
+			"IFS=\\$'\\n' read -rA -d '' $1 < <( ${0:command} && printf '\\0' )"
+ 		],
+ 	},
 
 	"safe bash options": {
 		"prefix": "safe",

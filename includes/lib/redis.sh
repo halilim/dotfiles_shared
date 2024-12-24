@@ -20,16 +20,17 @@ function redco() {
     fi
 
     # cSpell:ignore noload nosave
-    echo_eval "NODE_TLS_REJECT_UNAUTHORIZED=0 redis-commander --redis-label ""${REDCO_LABEL:-$host}"" \
-      --redis-host ""$host"" --redis-port ""$port"" --redis-password ""$password"" \
-      --noload --nosave --open ""$tls_param"" ""$read_only_param"""
+    echo_eval "NODE_TLS_REJECT_UNAUTHORIZED=0 redis-commander --redis-label %q \
+      --redis-host %q --redis-port %q --redis-password %q \
+      --noload --nosave --open $tls_param $read_only_param" \
+      "${REDCO_LABEL:-$host}" "$host" "$port" "$password"
   )
 }
 alias redco_w='REDCO_WRITABLE=1 redco'
 
 function redco_uri() {
   local uri=$1 uri_arr
-  IFS=$'\n' read_array -d '' uri_arr < <( redis_url_to_redco "$uri" && printf '\0' )
+  IFS=$'\n' "${READ_ARRAY[@]}" -d '' uri_arr < <( redis_url_to_redco "$uri" && printf '\0' )
   redco "${uri_arr[1]}" "${uri_arr[2]}" "${uri_arr[3]}" "${uri_arr[4]}"
 }
 alias redco_uri_w='REDCO_WRITABLE=1 redco_uri'

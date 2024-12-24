@@ -12,7 +12,7 @@ function bak_toggle() {
 function builtin_help() {
   local url
   url="$(printf "$BUILTIN_URL#:~:text=%s [" "$1")"
-  echo_eval 'o %q' "$url"
+  echo_eval "$OPEN_CMD %q" "$url"
 }
 alias bh='builtin_help'
 

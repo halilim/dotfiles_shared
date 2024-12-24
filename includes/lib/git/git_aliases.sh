@@ -1,4 +1,4 @@
-# cSpell:ignore libga gcpn gcae gcane gcano gcem gcmb gcemb gcom gdnc gdtc gdtk gmmnc gmtk gpft gpla gplb gplp grgu grpo
+# cSpell:ignore libga gcpn gcae gcane gcano gcanev gcanov gcem gcmb gcemb gcom gdnc gdtc gdtk gmmnc gmtk gpft gpla gplb gplp grgu grpo
 
 alias libga='$EDITOR "$DOTFILES_INCLUDES"/lib/git/git_aliases.sh'
 
@@ -8,13 +8,16 @@ alias gcpn='git cherry-pick --no-commit'
 alias gcae='git commit --amend --edit'
 # shellcheck disable=SC2139
 alias {gcane,gcano}='git commit --amend --no-edit'
+# shellcheck disable=SC2139
+alias {gcanev,gcanov}='git commit --amend --no-edit --no-verify'
 alias gcm="git commit --message '"
 alias gcem="git commit --allow-empty --message '"
 alias gcmb='git commit --message "$(git rev-parse --abbrev-ref HEAD)"'
 alias gcemb='git commit --allow-empty --message "$(git rev-parse --abbrev-ref HEAD) Re-trigger checks"'
 # shellcheck disable=SC2139
 alias {gcn,gcne,gcno}='git commit --no-edit' # cSpell:ignore gcne gcno
-alias gcnn='git commit --no-edit --no-verify' # cSpell:ignore gcne gcnn
+# shellcheck disable=SC2139
+alias {gcnev,gcnov,gcnn}='git commit --no-edit --no-verify' # cSpell:ignore gcnev gcnov gcnn
 alias gcnv='git commit --no-verify' # cSpell:ignore gcnv
 alias gcom='git checkout $(git_main_branch)'
 

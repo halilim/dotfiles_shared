@@ -1,6 +1,7 @@
 alias libr='$EDITOR "$DOTFILES_INCLUDES"/lib/ruby_rails.sh' # cSpell:ignore libr
 
 # Use the Rails defaults - binstubs, Spring, etc. Change only when needed.
+# Alternative: Oh My Zsh bundler plugin (_run-with-bundler), but it uses an alias which breaks some flows.
 export RUBY_CMD_PREFIX=${RUBY_CMD_PREFIX-'bin/'} # or 'bundle exec '
 export RAILS_CMD="${RUBY_CMD_PREFIX}rails"
 export RAKE_CMD="${RUBY_CMD_PREFIX}rake"
@@ -19,10 +20,11 @@ function gem_uri_open() {
   uri=$(jq -r ".$uri_field // .$home_uri_field" <<< "$json")
 
   if [[ $uri ]]; then
-    o "$uri"
+    echo_eval "$OPEN_CMD %q" "$uri"
   else
     echo "No $uri_field or $home_uri_field"
     jq <<< "$json"
+    return 1
   fi
 }
 

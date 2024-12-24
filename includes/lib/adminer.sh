@@ -65,7 +65,7 @@ function adminer() {
   done
 
   local url="http://localhost:$HOST_NGINX_PORT/tools/adminer/adminer/?$params"
-  echo_eval 'o %q' "$url"
+  echo_eval "$OPEN_CMD %q" "$url"
 
   if [[ $started_nginx_php ]]; then
     fg

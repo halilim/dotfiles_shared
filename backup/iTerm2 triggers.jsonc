@@ -1,0 +1,7 @@
+// Profiles > Advanced > Triggers
+{
+  "regex": "remote:\\s*(https:\\/\\/github.com\\/[a-zA-Z0-9-]+\\/[a-zA-Z0-9-]+\\/pull\\/new\\/[a-zA-Z0(9)]+)",
+  "action": "Run Command...",
+  "parameters": "open \"\\1\"",
+  "enabled": "false" // It opens a browser tab as soon as it sees it, even from auto-complete
+}

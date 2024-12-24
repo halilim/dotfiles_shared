@@ -4,7 +4,7 @@ function es_get_uri() {
   echo "${1:-${ES_URI:-127.0.0.1:9200}}"
 }
 
-# Set a default "0 replicas" template for all new indices so that they are green
+# Set a default "0 replicas" template for all new indices so that they are green (local dev)
 function es_no_replicas_tpl() {
   local es_uri \
         version \
@@ -15,8 +15,8 @@ function es_no_replicas_tpl() {
   es_uri=$(es_get_uri "$1")
 
   version=$(curl -fLs "$es_uri" | jq -r '.version.number')
-  IFS='.' read_array version_arr <<< "$version"
-  major_version=${version_arr[1]}
+  IFS='.' "${READ_ARRAY[@]}" version_arr <<< "$version"
+  major_version=${version_arr[*]:0:1}
 
   if [[ $major_version -le 5 ]]; then
     read -r -d '' data <<JSON
@@ -134,7 +134,7 @@ function eshead_open() {
 
   es_uri=$(es_get_uri "$2")
   es_uri=$(encode_uri_component "$es_uri")
-  echo_eval 'o %q?lang=en&base_uri=%q' "$eshead_uri" "$es_uri"
+  echo_eval "$OPEN_CMD %q?lang=en&base_uri=%q" "$eshead_uri" "$es_uri"
 }
 
 function eshead_update() {

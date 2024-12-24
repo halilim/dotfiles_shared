@@ -47,7 +47,7 @@ function git_cp_remoteless() {
     git remote | xargs -n1 git remote remove
   )
   iterm_tab "$dest"
-  o "$dest"
+  echo_eval "$OPEN_CMD %q" "$dest"
 }
 
 function git_diff_save() {

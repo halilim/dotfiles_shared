@@ -15,12 +15,11 @@ alias hv="heroku --version"
 function adminer_heroku() {
   local app=${1:?Heroku app name is required} db_url adminer_values=() adminer_params password
 
-  # db_url='postgres://user:pass@host:123/db'
   db_url=$(heroku_db_url "$app")
 
-  IFS=$'\n' read_array -d '' adminer_values < <( db_url_to_adminer_params "$db_url" && printf '\0' )
-  adminer_params=${adminer_values[1]}
-  password=${adminer_values[2]}
+  IFS=$'\n' "${READ_ARRAY[@]}" -d '' adminer_values < <( db_url_to_adminer_params "$db_url" && printf '\0' )
+  adminer_params=${adminer_values[*]:0:0}
+  password=${adminer_values[*]:0:1}
 
   # `adminer` uses system PHP which doesn't support SSL
   echo_eval 'adminer %q %q' "$adminer_params" "$password"
@@ -33,12 +32,12 @@ function heroku_config_get() {
 
 function heroku_db_url() {
   local app=$1
-  heroku_config_get DATABASE_URL "$app"
+  FAKE_RETURN='postgres://user:pass@host:123/db' heroku_config_get DATABASE_URL "$app"
 }
 
 function heroku_deploy_dash() {
   local app=${1:?Heroku app name is required}
-  o "https://dashboard.heroku.com/apps/$app/deploy/github"
+  echo_eval "$OPEN_CMD %q" "https://dashboard.heroku.com/apps/$app/deploy/github"
 }
 
 function heroku_deploy_git_branch() {
@@ -80,7 +79,7 @@ function heroku_remotes() {
 
 function heroku_redco() {
   local app=${1:?Heroku app name is required} redis_url
-  redis_url=$(heroku_config_get REDIS_TLS_URL "$app")
+  redis_url=$(FAKE_RETURN='rediss://user:pass@host:6379' heroku_config_get REDIS_TLS_URL "$app")
   REDCO_LABEL=$app redco_uri "$redis_url"
 }
 alias heroku_redco_w='REDCO_WRITABLE=1 heroku_redco'

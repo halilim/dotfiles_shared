@@ -10,15 +10,15 @@ if [ -n "${ZSH_VERSION:-}" ]; then
   alias -g RW0='RUBYOPT="-W0"'
 fi
 
-# cSpell:ignore biq bebr beru berua besf bucq
+# cSpell:ignore biq bebr
 alias bundle_conf='$EDITOR ~/.bundle/config'
 alias b='bundle'
 alias {biq,bq}='bundle install --quiet'
 alias bebr='bundle exec brakeman'
 alias bep='bundle exec puma'
 alias berk='bundle exec rake'
-alias beru='bundle exec rubocop'
-alias berua='bundle exec rubocop -a'
+
+# cSpell:ignore  besf bucq
 alias bes='bundle exec standardrb'
 alias besf='bundle exec standardrb --fix'
 alias bub='bundle update --bundler'
@@ -93,6 +93,11 @@ alias rkds="$RAKE_CMD db:seed"
 alias rkro="$RAKE_CMD routes"
 alias rkT="$RAKE_CMD -T"
 alias rrs="gco db/schema.rb && $RAKE_CMD db:drop db:create db:schema:load db:migrate"
+
+# cSpell:ignore rubo beru ruboa berua
+alias {rubo,beru}='bundle exec rubocop'
+alias {rubog,ruboc,beruc,berug,rubocop_changes}='bundle exec rubocop $(git diff --name-only HEAD | xargs printf -- " %s")'
+alias {ruboa,berua}='bundle exec rubocop -a'
 
 rspec_cmd="${RUBY_CMD_PREFIX}rspec --format progress"
 alias s="$rspec_cmd"

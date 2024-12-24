@@ -136,5 +136,5 @@ source_custom env.sh
 UPDATE_BACKUP_CMDS+=(
   "$VIM +'PlugUpgrade | PlugUpdate'"
   'open_dotfile_tabs'
-  'o /Applications # Manually update the non-App Store, infrequently-opened, etc. apps'
+  "$OPEN_CMD /Applications # Manually update the non-App Store, infrequently-opened, etc. apps"
 )

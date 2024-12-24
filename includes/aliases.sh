@@ -26,7 +26,8 @@ alias dp='declare -p'
 
 # cSpell:ignore dcdc dcds dric dris
 alias dcd='cd $DOTFILES'
-alias dcdc='cd $DOTFILES_CUSTOM'
+# shellcheck disable=SC2139
+alias {dcdc,cdd}='cd $DOTFILES_CUSTOM'
 alias dcds='cd $DOTFILES_SHARED'
 alias di='dotfiles import'
 alias dic='dotfiles import custom'
