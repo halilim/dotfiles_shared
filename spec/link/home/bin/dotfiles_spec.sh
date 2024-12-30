@@ -1,4 +1,4 @@
-script='link_home/bin/dotfiles'
+script='link/home/bin/dotfiles'
 
 Describe "$script"
   tmp_dir=${TMPDIR%/}/shellspec/$script
@@ -69,7 +69,7 @@ Describe "$script"
 
   Describe 'sync'
     Example 'no args'
-      local_exclude_to_sync=$custom_dir/link_home/code/repo_one/.git.linked/info/exclude
+      local_exclude_to_sync=$custom_dir/link/home/code/repo_one/.git.linked/info/exclude
       create_file_with_content "$local_exclude_to_sync" 'synced_local_ignore'
 
       When run script "$copied_script" sync
@@ -96,7 +96,7 @@ Describe "$script"
       The stdout should include 'Importing'
       The stdout should include 'custom'
       The stderr should include '.git.linked'
-      The contents of file "$custom_dir/link_home/code/repo_two/.git.linked/info/exclude" should equal \
+      The contents of file "$custom_dir/link/home/code/repo_two/.git.linked/info/exclude" should equal \
         'imported_local_ignore'
     End
   End

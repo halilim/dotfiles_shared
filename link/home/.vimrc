@@ -119,7 +119,7 @@ nnoremap <D-.> :ALEFix<CR>
 nnoremap <leader><leader>c :CocConfig<CR>
 nnoremap <leader><leader>g :e ~/.gvimrc<CR>
 nnoremap <leader><leader>v :e $MYVIMRC<CR>
-nnoremap <leader><leader>vc :e $DOTFILES_CUSTOM/link_home/.vim/autoload/custom.vim<CR>
+nnoremap <leader><leader>vc :e $DOTFILES_CUSTOM/link/home/.vim/autoload/custom.vim<CR>
 nnoremap <leader><leader>r :source $MYVIMRC<CR>
 " nnoremap <leader><leader>ft :e ~/.vim/ftplugin/
 nnoremap <leader><leader>ft :exe 'e' '~/.vim/ftplugin/' . &ft . '.vim'<CR>

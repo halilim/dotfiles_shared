@@ -1,6 +1,6 @@
 Describe 'bin/*'
   Example 'are executable'
-    for file in link_home/bin/*; do
+    for file in link/home/bin/*; do
       if [[ $file == *functions* ]]; then
         continue
       fi

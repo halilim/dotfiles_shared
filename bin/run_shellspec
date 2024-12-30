@@ -5,8 +5,8 @@ IFS=$'\n\t'
 both_specs=(spec/includes/lib/*_spec.sh)
 
 bash_specs=(
-  spec/link_home/bin_spec.sh # This should work in both, but not much point in testing for both
-  spec/link_home/bin/dotfiles_spec.sh
+  spec/link/home/bin_spec.sh # This should work in both, but not much point in testing for both
+  spec/link/home/bin/dotfiles_spec.sh
 )
 bash_specs+=("${both_specs[@]}")
 

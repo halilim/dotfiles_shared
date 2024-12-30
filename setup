@@ -3,4 +3,4 @@ set -euo pipefail
 IFS=$'\n\t'
 
 this_dir=$(dirname "$(realpath "$0")")
-"$this_dir"/link_home/bin/dotfiles setup
+"$this_dir"/link/home/bin/dotfiles setup

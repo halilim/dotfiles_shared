@@ -120,7 +120,7 @@ function import_path() {
     custom) dotfile_dir=$DOTFILES_CUSTOM ;;
   esac
 
-  local path_in_dotfiles=$dotfile_dir/link_home/$relative_path
+  local path_in_dotfiles=$dotfile_dir/link/home/$relative_path
 
   # Git doesn't allow sym-linked .gitignore files, so we link .git/info/exclude instead
   # But .git is a special name that is always ignored, so we rename it within dotfiles
@@ -142,7 +142,7 @@ function import_path() {
     local relative_dir=${relative_path%/*}
     [[ $is_local_git ]] && relative_dir=${relative_dir//\/.git\//\/.git.linked\/}
     [[ $relative_dir == "$relative_path" ]] && relative_dir=''
-    mk_dir "$dotfile_dir/link_home/$relative_dir"
+    mk_dir "$dotfile_dir/link/home/$relative_dir"
     echo_eval_with_sudo home 'mv %q %q' "$item_path" "$path_in_dotfiles"
 
     case "$dotfile_type" in
@@ -167,7 +167,7 @@ function setup_custom_links() {
 }
 
 function setup_links() {
-  start_link_recursive "$1"/link_home home
+  start_link_recursive "$1"/link/home home
   start_link_recursive "$1"/link/root root
 }
 
@@ -362,7 +362,7 @@ DOTFILES_CMD=$(basename "$0")
 export VIM_SPELL=$HOME/.vim/spell
 
 export DOTFILES
-DOTFILES="$(dirname "$(dirname "$(dirname "$(dirname "$(realpath "$0")")")")")"
+DOTFILES="$(dirname "$(dirname "$(dirname "$(dirname "$(dirname "$(realpath "$0")")")")")")"
 export DOTFILES_SHARED=$DOTFILES/shared
 export DOTFILES_INCLUDES=$DOTFILES_SHARED/includes
 export DOTFILES_CUSTOM=$DOTFILES/custom
