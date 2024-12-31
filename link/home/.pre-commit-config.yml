@@ -10,6 +10,11 @@ repos:
       - id: check-merge-conflict
       - id: check-yaml
       - id: end-of-file-fixer
+        # https://pre-commit.com/#regular-expressions
+        exclude: |
+            (?x)^(
+                .+/Code/User/.+\.json
+            )$
       - id: fix-byte-order-marker
       - id: mixed-line-ending
         args: [--fix=no]

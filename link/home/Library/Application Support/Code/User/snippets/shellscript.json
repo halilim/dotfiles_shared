@@ -368,7 +368,7 @@
 	"read into array": {
 		"prefix": "ra",
 		"body": [
-			"${1:array}=()",
+			"local ${1:array}=()",
 			"IFS=\\$'\\n' \"\\${READ_ARRAY[@]}\" -d '' $1 < <( ${0:command} && printf '\\0' )"
 		],
 	},
