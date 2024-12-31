@@ -93,8 +93,6 @@ cask 'quicklook-json'
 cask 'kdiff3' # For Sourcetree
 cask 'sourcetree'
 
-cask 'sublime-merge'
-
 # Vim
 brew 'editorconfig' # Used by vim plugin
 brew 'neovim'

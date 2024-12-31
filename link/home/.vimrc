@@ -453,6 +453,7 @@ let g:ale_linters = {
 \ }
 " Comment-like virtual text, causes layout shifts & can be confused with comments
 let g:ale_virtualtext_cursor = 0
+let g:ale_sh_shellcheck_dialect = 'bash'
 
 " ===== Plugin settings for easymotion/vim-easymotion =====
 map <leader> <Plug>(easymotion-prefix)

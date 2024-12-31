@@ -154,6 +154,7 @@
     "*.tpl.php": "smarty",
     "*.yml.*": "yaml",
     "*.zone.txt": "zone",
+    "**/*ghostty/config": "ini",
     "**/.aws/credentials": "ini",
     "**/.bundle/config": "yaml",
     "**/.config/bat/config": "properties",
