@@ -11,10 +11,12 @@ Describe "$script"
 
   orig_home=''
   mock_home=$tmp_dir/home
+  mock_root=$tmp_dir
 
   create_file_with_content() {
-    local file=$1 content=$2
-    mkdir -p "$(dirname "$file")"
+    local file=$1 dir content=$2
+    dir=$(dirname "$file")
+    mkdir -p "$dir"
     echo "$content" > "$file"
   }
 
@@ -31,13 +33,16 @@ Describe "$script"
     done
 
     orig_home=$HOME
+    orig_root=${ROOT_DIR:-/}
     mkdir -p "$mock_home"
     HOME=$mock_home
+    export ROOT_DIR=$mock_root
   }
 
   cleanup() {
     rm -rf "$tmp_dir"
     HOME=$orig_home
+    ROOT_DIR=$orig_root
   }
 
   BeforeAll 'setup'
@@ -69,15 +74,16 @@ Describe "$script"
 
   Describe 'sync'
     Example 'no args'
-      local_exclude_to_sync=$custom_dir/link/home/code/repo_one/.git.linked/info/exclude
-      create_file_with_content "$local_exclude_to_sync" 'synced_local_ignore'
+      source_file=$custom_dir/link/home/code1/.git.linked/info/exclude
+      create_file_with_content "$source_file" 'ignored1'
 
       When run script "$copied_script" sync
       The stdout should eq ''
-      The stderr should include 'repo_one'
-      The contents of file "$mock_home"/code/repo_one/.git/info/exclude should equal \
-        'synced_local_ignore'
-      The path "$mock_home"/code/repo_one/.git.linked should not be exist
+      The stderr should include 'code1'
+      synced_file="$mock_home"/code1/.git/info/exclude
+      The file "$synced_file" should be exist
+      The contents of file "$synced_file" should equal 'ignored1'
+      The path "$mock_home"/code1/.git.linked should not be exist
     End
   End
 
@@ -88,16 +94,35 @@ Describe "$script"
       The status should eq 1
     End
 
-    Example 'with args'
-      local_exclude_to_import=$mock_home/code/repo_two/.git/info/exclude
-      create_file_with_content "$local_exclude_to_import" 'imported_local_ignore'
+    Describe 'with args'
+      Parameters
+        custom "$custom_dir" home "$mock_home" code2/.git/info/exclude code2/.git.linked/info/exclude 'ignored2'
+        shared "$shared_dir" root "$mock_root" etc/foo etc/foo 'bar=baz'
+      End
 
-      When run script "$copied_script" import custom "$local_exclude_to_import"
-      The stdout should include 'Importing'
-      The stdout should include 'custom'
-      The stderr should include '.git.linked'
-      The contents of file "$custom_dir/link/home/code/repo_two/.git.linked/info/exclude" should equal \
-        'imported_local_ignore'
+      Example "with a $3 file to $1"
+        dotfile_type=$1
+        dotfile_dir=$2
+        dir_type=$3
+        dir_root=$4
+        file_path=$5
+        imported_path=$6
+        content=$7
+        source_file=$dir_root/$file_path
+        create_file_with_content "$source_file" "$content"
+
+        When run script "$copied_script" import "$dotfile_type" "$source_file"
+        The file "$source_file" should be exist
+        The contents of file "$source_file" should equal "$content"
+        The stdout should include 'Importing'
+        The stdout should include "$dotfile_type"
+        The stderr should include "$file_path"
+        The stderr should include "$imported_path"
+
+        imported_file="$dotfile_dir/link/$dir_type/$imported_path"
+        The file "$imported_file" should be exist
+        The contents of file "$imported_file" should equal "$content"
+      End
     End
   End
 

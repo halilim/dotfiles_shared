@@ -367,6 +367,10 @@ function prompt() {
   fi
 }
 
+function relative_to() {
+  $GNU_REALPATH -s --relative-to="$1" "$2"
+}
+
 function remove_broken_links()  {
   local folder=${1:-.} recursive=${2:-} find_args=()
 
