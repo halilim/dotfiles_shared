@@ -1,19 +1,30 @@
 #!/usr/bin/env python3
 
 # For use with e.g. BONSAI_URL from Heroku
-# Example: es_url_to_eshead_params 'https://user:pass@host:443'
-#          => eshead 'https://host&auth_user=user&auth_password=pass'
-#          => http://localhost:9100/?lang=en&base_uri=https://host&auth_user=user&auth_password=pass
+# Example: es_url_to_eshead_url 'https://user:pass@host:443/foo?bar=baz'
+#          => https://host/foo?bar=baz&auth_user=user&auth_password=pass
+#          eshead 'http://host/foo?bar=baz&auth_user=user&auth_password=pass'
+#          => http://eshead/?lang=en&base_uri=https%3A%2F%2Fhost%2Ffoo%3Fbar%3Dbaz%26auth_user%3Duser%26auth_password%3Dpass
 
 import sys
-from urllib.parse import urlparse, urlencode
+from urllib.parse import urlparse, parse_qsl, urlencode
+
+if len(sys.argv) < 2:
+  print('Usage: es_url_to_eshead_url <es_url>')
+  sys.exit(1)
 
 url = sys.argv[1]
 parsed = urlparse(url)
+parsed_qsl = parse_qsl(parsed.query)
 
-params = {
-  'auth_user': parsed.username,
-  'auth_password': parsed.password
-}
-base_host = parsed.scheme + "://" + parsed.hostname
-print(base_host + "&" + urlencode(params))
+parsed_qsl.append(('auth_user', parsed.username))
+parsed_qsl.append(('auth_password', parsed.password))
+
+if (parsed.scheme == 'https' and parsed.port == 443) or (parsed.scheme == 'http' and parsed.port == 80):
+  port_part = ''
+else:
+  port_part = ':' + str(parsed.port)
+
+parsed_new = parsed._replace(netloc=(parsed.hostname + port_part), query=urlencode(parsed_qsl))
+
+print(parsed_new.geturl())

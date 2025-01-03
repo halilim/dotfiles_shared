@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require Pathname.new(__FILE__).dirname.dirname
+require Pathname.new(__FILE__).dirname.dirname.dirname
                 .join('includes', 'lib', 'ruby_rails', 'ruby_common').to_s
 
 if defined?(PryByebug)
