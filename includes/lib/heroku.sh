@@ -13,16 +13,19 @@ alias hrkdm="heroku run rake db:migrate" # cSpell:ignore hrkdm
 alias hv="heroku --version"
 
 function adminer_heroku() {
-  local app=${1:?Heroku app name is required} db_url adminer_values=() adminer_params password
+  local app=${1:?Heroku app name is required} db_url adminer_values=() db_type host username password db
 
   db_url=$(heroku_db_url "$app")
 
   IFS=$'\n' "${READ_ARRAY[@]}" -d '' adminer_values < <( db_url_to_adminer_params "$db_url" && printf '\0' )
-  adminer_params=${adminer_values[*]:0:0}
-  password=${adminer_values[*]:0:1}
+  db_type=${adminer_values[*]:0:1}
+  host=${adminer_values[*]:1:1}
+  username=${adminer_values[*]:2:1}
+  password=${adminer_values[*]:3:1}
+  db=${adminer_values[*]:4:1}
 
-  # `adminer` uses system PHP which doesn't support SSL
-  echo_eval 'adminer %q %q' "$adminer_params" "$password"
+  # TODO: system PHP doesn't support SSL
+  echo_eval 'adminer %q %q %q %q %q' "$db_type" "$host" "$username" "$password" "$db"
 }
 
 function heroku_config_get() {

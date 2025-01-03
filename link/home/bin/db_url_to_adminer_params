@@ -2,22 +2,30 @@
 
 # For use with e.g. DATABASE_URL from Heroku
 # Example: db_url_to_adminer_params 'postgres://user:pass@host:123/db'
+#          => postgres
+#             host:123
+#             user
+#             pass
+#             db
 
 import sys
-from urllib.parse import urlparse, urlencode
+from urllib.parse import urlparse
+
+if len(sys.argv) < 2:
+  print('Usage: db_url_to_adminer_params <db_url>')
+  sys.exit(1)
 
 url = sys.argv[1]
 parsed = urlparse(url)
 
-db_mapping = {
-  'postgres': "pgsql",
-  'mysql': "server"
-}
+db_type = parsed.scheme
+host = parsed.hostname + ":" + str(parsed.port)
+username = parsed.username
+password = parsed.password
+db = parsed.path.lstrip('/')
 
-print(urlencode({
-  f'{db_mapping[parsed.scheme]}': parsed.hostname + ":" + str(parsed.port),
-  'username': parsed.username,
-  'db': parsed.path.lstrip('/')
-}))
-
-print(parsed.password)
+print(db_type)
+print(host)
+print(username)
+print(password)
+print(db)
