@@ -96,7 +96,7 @@ alias rrs="gco db/schema.rb && $RAKE_CMD db:drop db:create db:schema:load db:mig
 
 # cSpell:ignore rubo beru ruboa berua
 alias {rubo,beru}='bundle exec rubocop'
-alias {rubog,ruboc,beruc,berug,rubocop_changes}='bundle exec rubocop $(git diff --name-only HEAD | xargs printf -- " %s")'
+alias {rubog,ruboc,beruc,berug,rubocop_changes}='bundle exec rubocop --force-exclusion $(git diff --name-only HEAD | xargs printf -- " %s")'
 alias {ruboa,berua}='bundle exec rubocop -a'
 
 rspec_cmd="${RUBY_CMD_PREFIX}rspec --format progress"
