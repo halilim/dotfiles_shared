@@ -13,6 +13,7 @@
     "icalendar": true,
     "markdown": true,
     "nginx": true,
+    "NGINX": true,
     "plaintext": true,
     "plist": true,
     "procfile": true,
@@ -36,6 +37,7 @@
     "/[^\\s]{40,}/"
   ],
   "cSpell.language": "en,tr",
+  "cSpell.usePnP": true,
 
   "css.format.spaceAroundSelectorSeparator": true,
   "css.lint.compatibleVendorPrefixes": "warning",
@@ -162,8 +164,8 @@
     "**/.husky/*": "shellscript",
     "**/.ssh/config": "ssh_config",
     "**/chrome/exts/uBlock.txt": "json",
-    "**/nginx*.conf*": "nginx",
-    "**/nginx/**/*.conf*": "nginx",
+    "**/nginx*.conf*": "NGINX",
+    "**/nginx/**/*.conf*": "NGINX",
     "**/php*/**/*.conf": "ini",
     "/etc/**/*.conf": "plain",
     "/etc/apache2/**/*.conf": "apacheconf",

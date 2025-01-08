@@ -29,6 +29,14 @@ if [[ ! -f $cert_file ]] || cert_expires_in_days "$cert_file" 90; then
     -keyout "$key_file" -out "$cert_file"
 fi
 
-mkdir -p "$NGINX_CONF_PATH"/servers
-erb -T '-' "$DOTFILES_INCLUDES"/lib/nginx_php/nginx.servers.default.conf.erb \
-  > "$NGINX_CONF_PATH"/servers/default.conf
+servers_path="$NGINX_CONF_PATH"/servers
+mkdir -p "$servers_path"
+
+ln -sf "$DOTFILES_INCLUDES"/lib/nginx_php/nginx/includes "$NGINX_CONF_PATH"
+
+erb -T '-' "$DOTFILES_INCLUDES"/lib/nginx_php/nginx/servers/default.conf.erb > "$servers_path"/default.conf
+
+custom_conf=$DOTFILES_CUSTOM/includes/lib/nginx_php/nginx/servers/custom.conf.erb
+if [[ -s $custom_conf ]]; then
+  erb -T '-' "$custom_conf" > "$servers_path"/custom.conf
+fi

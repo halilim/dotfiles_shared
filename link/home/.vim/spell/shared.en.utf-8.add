@@ -97,7 +97,9 @@ compadd
 compdef
 compinit
 config
+contentlayer
 conventionalcomments
+convertkit
 cookiemonster
 coreutils
 CORS
@@ -129,6 +131,7 @@ difftool
 dind
 direnv
 diskutil
+disqus
 divmod
 dockerd
 dockerhub
@@ -153,6 +156,7 @@ easyprivacy
 ecparam
 elasticsearch
 Elasticsearch
+emailoctopus
 endfor
 endfunction
 endswith
@@ -200,6 +204,7 @@ getpass
 gfind
 ghead
 ghostty
+giscus
 gitconfig
 gitdir
 github
@@ -290,6 +295,7 @@ jshintignore
 JSON
 Kaminari
 karafka
+kbar
 kcov
 kdiff
 kdiff3
@@ -299,6 +305,7 @@ Keymap
 keyout
 keyserver
 killall
+klaviyo
 konsole
 kwargs
 langmap
@@ -321,6 +328,7 @@ lookback
 mackup
 macvim
 MAILCATCHER
+mailchimp
 mailname
 mailutils
 MAKEFLAGS
@@ -442,6 +450,7 @@ POC
 popen
 postgre
 Postgres
+Posthog
 postmap
 Powerlevel
 powerline
@@ -605,6 +614,7 @@ Turborepo
 typicode
 ublock
 ulid
+umami
 Unarchiver
 unblockapp
 unbreak
