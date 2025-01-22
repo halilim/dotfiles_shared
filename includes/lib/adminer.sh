@@ -37,9 +37,10 @@ function adminer() {
     fi
   fi
 
-  local host_param
-  if [[ $host = *.docker ]]; then
-    local container=${host%.docker} port
+  local host_param container
+  container=$(docker_host_to_container "$host")
+  if [[ $container ]]; then
+    local port
     port=$(docker inspect "$container" |
       jq -r '.[0].HostConfig.PortBindings | to_entries.[0].value.[0].HostPort')
     host_param="docker:$port"

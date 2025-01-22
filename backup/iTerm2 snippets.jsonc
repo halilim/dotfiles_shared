@@ -41,6 +41,7 @@
       { "value": "bin/rails" },
       { "value": "bundle exec" },
       { "value": "bundle exec rails console" },
+      { "value": "declare -p " },
       { "value": "ps aux | grep -v \" grep \" | grep -i " }
     ]
   }

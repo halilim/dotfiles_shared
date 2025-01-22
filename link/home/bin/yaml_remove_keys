@@ -44,7 +44,7 @@ for file in "${FILES[@]}"; do
   yq -i -I"$indent_level" e "del($KEYS)" "$file"
 
   # Instead of trying to invert grepdiff, generate the wanted diff, restore file, and apply the diff
-  diff=$(git diff -U0 --no-color  "$file" |
+  diff=$(git diff -U0 --no-color "$file" |
       grepdiff -E "($key_suffixes)" --only-match=removals --output-matching=hunk)
   git restore "$file"
   git apply --unidiff-zero <<< "$diff"

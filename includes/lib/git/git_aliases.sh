@@ -1,8 +1,9 @@
-# cSpell:ignore libga gcpn gcae gcane gcano gcanev gcanov gcem gcmb gcemb gcom gdnc gdtc gdtk gmmnc gmtk gpft gpla gplb gplp grgu grpo
+# cSpell:ignore libga gcpn gcae gcane gcano gcanev gcanov gcem gcmb gcemb gcom gdma gdnc gdtc gdtk gmmnc gmtk gpft gpla gplb gplp grgu grpo
 
 alias libga='$EDITOR "$DOTFILES_INCLUDES"/lib/git/git_aliases.sh'
 
 alias ga='git add -p'
+alias gam='git_matching add -p'
 alias gan='git add -N'
 alias gcpn='git cherry-pick --no-commit'
 alias gcae='git commit --amend --edit'
@@ -24,6 +25,7 @@ alias gcom='git checkout $(git_main_branch)'
 alias gdh='git diff HEAD'
 alias gdh~='git diff HEAD~'
 alias gdm='git diff $(git_main_branch)'
+alias gdma='git_matching diff'
 alias gdnc='git diff --no-color'
 alias gdtc='git difftool --tool=code'
 alias gdtk='git difftool --tool=kdiff3'

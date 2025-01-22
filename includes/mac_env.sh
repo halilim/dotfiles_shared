@@ -1,4 +1,4 @@
-export VIM=mvim
+export VIM_CMD=mvim
 export OPEN_CMD='open'
 export BAT_CMD=bat
 export CLIP='pbcopy'

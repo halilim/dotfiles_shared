@@ -19,15 +19,32 @@ alias dkr='docker run'
 alias dkrm='docker rm'
 alias dkrr='docker run --rm'
 alias dks='docker stats --no-stream'
-alias dcrr='dcr --rm'
 
-alias dcos='docker-compose stats'
+# cSpell:ignore dceis
+# shellcheck disable=SC2139
+alias {dceis,dcs}='docker compose exec -it ... sh'
+alias dcos='docker compose stats'
+alias dcrr='dcr --rm'
 
 function colima_start() {
   echo_eval 'colima status > /dev/null 2>&1 || colima start'
 }
 alias cos='colima_start'
 alias cost='colima stop'
+
+# Internal utils to pass Docker containers as hosts and vice versa
+function docker_host_to_container() {
+  local host=$1
+  local container=${host%.docker}
+  if [[ $container == "$host" ]]; then
+    echo  "$container"
+  else
+    return 1
+  fi
+}
+function docker_container_to_host() {
+  printf "%s.docker\n" "$1"
+}
 
 function docker_hosts() {
   if ! command -v docker > /dev/null 2>&1 || ! docker info > /dev/null 2>&1; then
@@ -40,7 +57,7 @@ function docker_hosts() {
     local arg
     for arg in "$@"; do
       case "$arg" in
-        -h|--help)
+        -h | --help)
           echo >&2 'Usage: docker_hosts [-h,--help] [<image1> <image2> ...]'
           return
           ;;
@@ -71,7 +88,7 @@ function docker_hosts() {
   local line name
   while IFS= read -r line; do
     name=${line%%=*}
-    printf "%s.docker\n" "$name"
+    docker_container_to_host "$name"
   done < <(printf '%s\n' "$docker_output")
 }
 alias dkh='docker_hosts'

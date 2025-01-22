@@ -54,7 +54,7 @@
 [diff]
 	colorMoved = default
 
-; Broken with both brew imgcat & iterm2 imgcat
+; TODO: Broken with both brew imgcat & iterm2 imgcat
 ; [diff "image"]
 ;   command = imgcat
 ;   textconv = imgcat
@@ -84,6 +84,7 @@
 	process = git-lfs filter-process
 	required = true
 
+; cSpell:ignore Creset
 [format]
 	pretty = %C(yellow)%h%Creset %s %C(red)(%an, %cr)%Creset
 
@@ -119,17 +120,9 @@
 [mergetool "kdiff3"]
 	cmd = /Applications/kdiff3.app/Contents/MacOS/kdiff3 \"$BASE\" \"$LOCAL\" \"$REMOTE\" -o \"$MERGED\"
 
-[mergetool "smerge"]
-	cmd = smerge mergetool \"$BASE\" \"$LOCAL\" \"$REMOTE\" -o \"$MERGED\"
-	trustExitCode = true
-
 [mergetool "sourcetree"]
 	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
 	trustExitCode = true
-
-[mergetool "sublime"]
-	cmd = subl -w $MERGED
-	trustExitCode = false
 
 [pull]
 	rebase = false

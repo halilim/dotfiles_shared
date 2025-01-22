@@ -380,7 +380,7 @@ function dotfiles::_echo_eval_with_sudo() {
 }
 
 function dotfiles::vim_mk_spell() {
-  if ! command -v "$VIM" &> /dev/null || [[ ${NO_VIM:-} || ! -d "$VIM_SPELL" ]]; then
+  if ! command -v "$VIM_CMD" &> /dev/null || [[ ${NO_VIM:-} || ! -d "$VIM_SPELL" ]]; then
     return 0
   fi
 

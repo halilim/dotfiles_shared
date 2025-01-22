@@ -18,16 +18,14 @@ function mysql_exec() {
   local host=${1:-127.0.0.1} username=${2:-root} password=${3:-root} database=${4:-} cmd=''
 
   if [[ $# -lt 1 ]]; then
-    echo >&2 'Usage: mysql_databases <host> [<username> <password>]'
+    echo >&2 'Usage: mysql_exec [<host> <username> <password>]'
     return 1
   fi
 
-  local host_param
-  if [[ $host = *.docker ]]; then
-    local container=${host%.docker}
+  local container
+  container=$(docker_host_to_container "$host")
+  if [[ $container ]]; then
     cmd+="docker exec $container"
-  else
-    host_param="-h$host"
   fi
 
   if [[ ${TYPE:-} && $TYPE = 'mariadb' ]]; then
@@ -36,8 +34,12 @@ function mysql_exec() {
     cmd+=" mysql"
   fi
 
-  if [[ $host_param ]]; then
-    cmd+=" $host_param"
+  if [[ ! $container ]]; then
+    cmd+=" -h$host"
+    local port=${host#*:}
+    if [[ $port ]]; then
+      cmd+=" -P$port"
+    fi
   fi
 
   if [[ $username ]]; then
@@ -69,12 +71,61 @@ function mysql_exec() {
 }
 
 function postgres_databases() {
-  local host=${1:-127.0.0.1} username=${2:-$(whoami)} password=${3:-postgres}
-  PGPASSWORD=$password psql -h "$host" -U "$username" --list --tuples-only |
+  psql_exec "$@" '' --list --tuples-only |
     cut -d\| -f 1 | awk NF | tr -d ' ' | \grep --color -v -e postgres -e template
 }
 
 function postgres_tables() {
-  local host=${1:-127.0.0.1} username=${2:-$(whoami)} password=${3:-postgres} database=${4:?db is required}
-  PGPASSWORD=$password psql -h "$host" -U "$username" -d "$database" -Atc '\dt public.*' | cut -d\| -f 2
+  psql_exec "$@" -Atc '\\\dt public.*' | cut -d\| -f 2
 }
+
+function psql_exec() {
+  local host=${1:-127.0.0.1} username=${2:-$(whoami)} password=${3:-postgres} database=${4:-} cmd=''
+
+  if [[ $# -lt 1 ]]; then
+    echo >&2 'Usage: psql_exec [<host> <username> <password>]'
+    return 1
+  fi
+
+  if [[ $password ]]; then
+    cmd+="PGPASSWORD=${password}"
+  fi
+
+  local container
+  container=$(docker_host_to_container "$host")
+  if [[ $container ]]; then
+    cmd+=" docker exec $container"
+  fi
+
+  cmd+=' psql'
+
+  if [[ ! $container ]]; then
+    cmd+=" -h $host"
+    local port=${host#*:}
+    if [[ $port ]]; then
+      cmd+=" -p $port"
+    fi
+  fi
+
+  if [[ $username ]]; then
+    cmd+=" -U $username"
+  fi
+
+  if [[ $database ]]; then
+    cmd+=" -d $database"
+  fi
+
+  if [[ $# -gt 4 ]]; then
+    cmd+=" ${*:5}"
+  fi
+
+  if [[ ${QUERY:-} ]]; then
+    cmd+=$(printf ' %q' "$QUERY")
+  fi
+
+  if [[ ${VERBOSE:-} ]]; then
+    echo_eval "$cmd"
+  else
+    eval "$cmd"
+  fi
+ }

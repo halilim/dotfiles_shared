@@ -15,6 +15,11 @@ alias nu="npm update"
 # alias nus="npm uninstall -S"
 alias nug="npm update -g"
 
+alias yl='yarn link'
+alias yul='yarn unlink'
+alias ysa='yarn start'
+alias ysb='yarn storybook'
 # OMZ/yarn sets this to `yarn version`, let's keep it compatible with the other *v aliases
 alias yv='yarn --version'
 alias yvv='yarn version'
+alias yw='yarn why'

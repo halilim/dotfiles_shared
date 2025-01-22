@@ -1,4 +1,4 @@
-export VIM=vim
+export VIM_CMD=vim
 export OPEN_CMD='nohup xdg-open'
 export BAT_CMD=batcat # Because of a name clash, see: apt-cache show bat
 export CLIP='xclip -sel clip'

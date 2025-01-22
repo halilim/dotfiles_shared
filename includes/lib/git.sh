@@ -21,7 +21,7 @@ function cd_checkout_pull() {
   echo_eval 'git checkout %q' "$branch"
 
   local git_pull_result
-  git_pull_result=$(echo_eval 'git pull --prune')
+  git_pull_result=$(echo_eval 'git pull --prune --quiet')
   [[ $git_pull_result ]] && echo "$git_pull_result"
   if [[ $git_pull_result == *'up to date'* ]]; then
     return "$GIT_ALREADY_UP_TO_DATE"
@@ -48,6 +48,33 @@ function git_cp_remoteless() {
   )
   iterm_tab "$dest"
   echo_eval "$OPEN_CMD %q" "$dest"
+}
+
+function git_matching() {
+  if [[ $# -lt 2 ]]; then
+    echo >&2 'Usage: git_matching <git command> [<git args> ...] <search pattern>'
+    return 1
+  fi
+
+  local argc=$#
+  local pattern=${*:$argc:1}
+  local git_args="${*:1:$argc-1}"
+
+  # git diff -G<regex> doesn't support case-insensitive regexes (or I couldn't find it)
+  local file matching_files=''
+  while IFS= read -r file; do
+    if git diff --unified=0 --no-color "$file" |
+         grep -v "$file" |
+         grep -i "$pattern" > /dev/null 2>&1; then
+      matching_files+=$(printf ' %q' "$file")
+    fi
+  done < <(git diff --name-only)
+
+  if [[ ! $matching_files ]]; then
+    return 1
+  fi
+
+  echo_eval "git $git_args$matching_files"
 }
 
 function git_diff_save() {

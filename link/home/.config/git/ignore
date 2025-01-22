@@ -97,6 +97,9 @@ cscope.po.out
 # https://github.com/ruby/vscode-rdbg
 .rdbgrc.breakpoints
 
+# jest-junit
+junit.xml
+
 # Yarn
 .pnp.cjs
 .pnp.loader.mjs

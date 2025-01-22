@@ -12,6 +12,7 @@
     "gotmpl": true,
     "icalendar": true,
     "markdown": true,
+    "mdx": true,
     "nginx": true,
     "NGINX": true,
     "plaintext": true,
@@ -33,10 +34,16 @@
     "custom_tr": { "path": "~/.vim/spell/custom.tr.utf-8.add" },
     "custom": true
   },
+  "cSpell.dictionaryDefinitions": [
+    { "name": "vim", "path": "${workspaceFolder}/vs-code/dictionaries/vim.txt" }
+  ],
   "cSpell.ignoreRegExpList": [
     "/[^\\s]{40,}/"
   ],
   "cSpell.language": "en,tr",
+  "cSpell.languageSettings": [
+    { "languageId": "viml", "dictionaries": ["vim"] },
+  ],
   "cSpell.usePnP": true,
 
   "css.format.spaceAroundSelectorSeparator": true,
@@ -133,50 +140,27 @@
 
   // cSpell:ignore apacheconf
   "files.associations": {
-    ".config/git/ignore*": "ignore",
-    ".env.*": "dotenv",
-    "**/*.env": "dotenv",
-    ".gvimrc": "viml",
-    ".ideavimrc": "viml",
-    ".inputrc": "shellscript",
-    ".jshintignore": "ignore",
     ".markdownlintrc": "jsonc",
-    ".ruby-version": "properties",
-    ".shellspec": "shellscript",
-    "*.ctags": "shellscript",
+    "{.config/git/ignore*,.jshintignore,*.ignore,**/.git*/info/exclude}": "ignore",
+    "{.env.*,.env*,**/*.env}": "dotenv",
+    "{.gvimrc,.ideavimrc}": "viml",
+    "{.inputrc,.shellspec,*.ctags,**/.husky/*,/etc/defaults/**/*.conf,/etc/periodic/**/*.conf}": "shellscript",
+    "{.ruby-version,.tool-versions,**/.config/bat/config,default-gems}": "properties",
+    "{*.gitconfig*,**/.aws/credentials,**/*ghostty/config,**/php*/**/*.conf,pybritive.config}": "ini",
+    "{*.jbuilder,aprc,Brewfile*}": "ruby",
+    "{*.sublime-settings,*.tgn,**/chrome/exts/uBlock.txt}": "json",
+    "{*.yml.*,**/.bundle/config}": "yaml",
+    "{**/nginx*.conf*,**/nginx/**/*.conf*}": "NGINX",
     "*.erb.deface": "erb",
-    "*.gitconfig*": "ini",
     "*.haml.deface": "haml",
-    "*.ignore": "ignore",
-    "*.jbuilder": "ruby",
-    "*.sublime-settings": "json",
-    "*.tgn": "json",
-    ".tool-versions": "properties",
+    "*.mdx": "markdown",
     "*.tpl.php": "smarty",
-    "*.yml.*": "yaml",
     "*.zone.txt": "zone",
-    "**/*ghostty/config": "ini",
-    "**/.aws/credentials": "ini",
-    "**/.bundle/config": "yaml",
-    "**/.config/bat/config": "properties",
-    "**/.git*/info/exclude": "ignore",
-    "**/.husky/*": "shellscript",
     "**/.ssh/config": "ssh_config",
-    "**/chrome/exts/uBlock.txt": "json",
-    "**/nginx*.conf*": "NGINX",
-    "**/nginx/**/*.conf*": "NGINX",
-    "**/php*/**/*.conf": "ini",
     "/etc/**/*.conf": "plain",
     "/etc/apache2/**/*.conf": "apacheconf",
-    "/etc/defaults/**/*.conf": "shellscript",
-    "/etc/periodic/**/*.conf": "shellscript",
-    "aprc": "ruby",
-    "Brewfile*": "ruby",
     "coc-settings.json": "jsonc",
-    "default-gems": "properties",
-    "pybritive.config": "ini",
-    "Procfile.*": "procfile",
-    ".env*": "dotenv"
+    "Procfile.*": "procfile"
   },
 
   "files.exclude": {
@@ -618,6 +602,10 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
 
+  "[mdx]": {
+    "editor.defaultFormatter": "unifiedjs.vscode-mdx"
+  },
+
   "[python]": {
     "editor.formatOnType": true
   },
@@ -645,6 +633,10 @@
   },
 
   "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
+  "[typescriptreact]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
 

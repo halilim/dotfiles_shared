@@ -4,7 +4,7 @@ function _adminer() {
   # shellcheck disable=SC2034
   typeset -A opt_args
 
-  local db_type host username password url
+  local db_type host username password database
 
   # shellcheck disable=SC2154
   if [[ ${#words} -ge 2 ]]; then
@@ -22,7 +22,6 @@ function _adminer() {
     username="${words[*]:3:1}"
     password="${words[*]:4:1}"
     database="${words[*]:5:1}"
-    url="$db_type://$username:$password@$host"
   fi
 
   case $state in
@@ -57,7 +56,7 @@ function _adminer() {
       case $db_type in
         mariadb) compadd $(mariadb_databases "$host" "$username" "$password") ;;
         mysql) compadd $(mysql_databases "$host" "$username" "$password") ;;
-        postgres) compadd $(postgres_databases "$url") ;;
+        postgres) compadd $(postgres_databases "$host" "$username" "$password") ;;
         sqlite) _files ;;
       esac
       ;;
@@ -68,7 +67,7 @@ function _adminer() {
       case $db_type in
         mariadb) tables=($(mariadb_tables "$host" "$username" "$password" "$database")) ;;
         mysql) tables=($(mysql_tables "$host" "$username" "$password" "$database")) ;;
-        postgres) tables=($(postgres_tables "$url" "$database")) ;;
+        postgres) tables=($(postgres_tables "$host" "$username" "$password" "$database")) ;;
         sqlite) tables=($(sqlite3 "$database" '.tables')) ;;
       esac
       compadd -a tables

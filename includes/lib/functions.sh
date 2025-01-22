@@ -319,7 +319,7 @@ function open_with_editor() {
     silent=''
   fi
 
-  if [[ $EDITOR = "$VIM" ]]; then
+  if [[ $EDITOR == "$VIM_CMD" ]]; then
     cmd='vim_open %q'
   elif [[ $EDITOR = code || $EDITOR = code-insiders ]]; then
     # https://code.visualstudio.com/docs/editor/command-line#_core-cli-options
@@ -387,6 +387,11 @@ function remove_broken_links()  {
   DRY_RUN='' echo_eval "$GNU_FIND %q ${find_args[*]}" "$folder"
 }
 
+function remove_line_including() {
+ gsed -i "/$1/d" "${@:2}"
+}
+alias rml='remove_line_including'
+
 function same_inode() {
   local inode_count
   inode_count=$($GNU_STAT --format %i "$1" "$2" | uniq | wc -l | tr -d '[:space:]')
@@ -401,25 +406,25 @@ function ssl_check() {
 alias tls_check='ssl_check'
 
 function vim_open() {
-  local vim_cmd=()
+  local vim_cmd_=()
   if [[ ${SUDO:-} ]]; then
-    vim_cmd+=(sudo)
+    vim_cmd_+=(sudo)
   fi
-  vim_cmd+=("$VIM")
+  vim_cmd_+=("$VIM_CMD")
 
   # https://stackoverflow.com/a/5945322/372654
   if [[ "$#" -eq 1 ]]; then
     if [[ -d $1 ]]; then
-      vim_cmd+=("$1" +':lcd %')
+      vim_cmd_+=("$1" +':lcd %')
     else
       if [[ ! ${VIM_NO_SERVER:-} ]]; then
-        vim_cmd+=("--remote-silent")
+        vim_cmd_+=("--remote-silent")
       fi
-      vim_cmd+=("$1")
+      vim_cmd_+=("$1")
     fi
   fi
 
-  "${vim_cmd[@]}"
+  "${vim_cmd_[@]}"
 }
 
 function which_() {

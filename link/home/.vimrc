@@ -30,6 +30,7 @@ augroup SpellIgnore
   autocmd BufEnter * :syn match HexWords +\<\p*[0-9A-F]\{4,}\p*\c\>+ contains=@NoSpell
 augroup end
 
+" cSpell:ignore neoclide
 " More under neoclide/coc.nvim settings
 
 " set list                " Show whitespace
@@ -236,6 +237,7 @@ cmap w!! w !sudo tee > /dev/null %
 " Move a line of text using ALT+[jk] or Command+[jk] on mac
 nmap <M-j> mz:m+<CR>`z
 nmap <M-k> mz:m-2<CR>`z
+" cSpell:ignore mzgv
 vmap <M-j> :m'>+<CR>`<my`>mzgv`yo`z
 vmap <M-k> :m'<-2<CR>`>my`<mzgv`yo`z
 " See .gvimrc for mac keys
@@ -257,7 +259,7 @@ augroup END
 
 " Check if the buffer was modified outside Vim and reload
 set autoread
-fun! MyChecktime()
+fun! MyChecktime() " cSpell:ignore Checktime
   " let l:buf_name = bufname('%')
   " echo {
   "       \ 'buftype': &buftype,
@@ -281,22 +283,18 @@ augroup my_checktime
         \ echohl WarningMsg | echo "File changed on disk. Buffer reloaded." | echohl None
 augroup end
 
+" cSpell:ignore nelstrom
 " Required for nelstrom/vim-textobj-rubyblock
 " See note around the plugin
 " runtime macros/matchit.vim
 
-if exists('*custom#begin')
-  call custom#begin()
-endif
-
-if !exists('g:custom_ai_plugin')
-  let g:custom_ai_plugin = ''
-endif
+call custom#begin()
 
 " https://github.com/junegunn/vim-plug#usage
 " call plug#begin('~/.config/nvim/plugged')
 call plug#begin()
 
+" cSpell:ignore Exafunction madox2
 if g:custom_ai_plugin == 'codeium'
   Plug 'Exafunction/codeium.vim' " See also: AirlineAddCustomSections
 elseif g:custom_ai_plugin == 'copilot'
@@ -306,6 +304,8 @@ elseif g:custom_ai_plugin == 'openai'
 elseif g:custom_ai_plugin != ''
   autocmd VimEnter * echoerr 'Unknown AI plugin: ' . g:custom_ai_plugin
 endif
+
+" cSpell:ignore junegunn airblade chaoren chrisbra darfink inkarkat jiangmiao kshenoy luochen1990
 
 " https://github.com/junegunn/fzf.vim#using-vim-plug
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -334,6 +334,8 @@ Plug 'luochen1990/rainbow'
 " block part etc, and do/end can be covered by vim-indent-object
 " Plug 'nelstrom/vim-textobj-rubyblock' " ar/ir
 
+" cSpell:ignore mechatroner michaeljsmith ludovicchabant skywind3000 majutsushi mattn mbbill mhinz
+
 Plug 'mechatroner/rainbow_csv'
 Plug 'michaeljsmith/vim-indent-object' " ai/ii/aI
 
@@ -344,6 +346,8 @@ Plug 'skywind3000/gutentags_plus'
 " Plug 'mattn/emmet-vim', { 'for': ['*html', '*css', '*jsx', 'php', 'erb'] }
 Plug 'mbbill/undotree'
 Plug 'mhinz/vim-startify'
+
+" cSpell:ignore nathanaelkane Yggdroot osyo prabirshrestha godlygeek preservim scrooloose honza
 
 Plug 'nathanaelkane/vim-indent-guides'
 " Plug 'Yggdroot/indentLine' " Alternative with lines instead of bg color
@@ -364,7 +368,9 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeFind'] }
 
 Plug 'SirVer/ultisnips' " Snippet manager
-Plug 'honza/vim-snippets' " Actual snippets - both snipMate & UltiSnips formnats exist
+Plug 'honza/vim-snippets' " Actual snippets - both snipMate & UltiSnips formats exist
+
+" cSpell:ignore tpope tommcdo valloric
 
 " Plug 'skywind3000/vim-preview'
 " Plug 'slim-template/vim-slim', { 'for': 'slim' }
@@ -391,16 +397,18 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
 Plug 'vim-ruby/vim-ruby', { 'for': '*ruby' }
-" Plug 'tpope/vim-bundler', { 'for': '*ruby' } - Autocommand errors
+" Plug 'tpope/vim-bundler', { 'for': '*ruby' } - autocommand errors
 Plug 'tpope/vim-rails', { 'for': '*ruby' }
 Plug 'tpope/vim-rbenv', { 'for': '*ruby' }
 " Plug 'tpope/vim-rake', { 'for': '*ruby' } - errors
+
+" cSpell:ignore vitalk wsdjeg endel lifepillar liuchengxu rakr
 
 Plug 'vitalk/vim-simple-todo'
 " Jump to the specified line & column. E.g. when Vim is invoked with colon: file:LN
 Plug 'wsdjeg/vim-fetch'
 
-" Colorschemes
+" Color schemes
 " Plug 'endel/vim-github-colorscheme'
 " Plug 'lifepillar/vim-solarized8'
 " Plug 'junegunn/seoul256.vim'
@@ -437,7 +445,7 @@ let g:wordmotion_prefix = mapleader
 
 " ===== Plugin settings for dense-analysis/ale =====
 let g:ale_echo_msg_format = '[%linter%] %code: %%s [%severity%]'
-" NOTE: Solargraph can ramp up to 1G memory on large folders (e.g. with multipe repos)
+" NOTE: Solargraph can ramp up to 1G memory on large folders (e.g. with multiple repos)
 " TODO: Per project setting
 " ftplugin versions seem to be not working (solargraph is still running)
 " let g:ale_php_phan_use_client = 1
