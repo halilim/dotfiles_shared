@@ -19,6 +19,7 @@ alias yl='yarn link'
 alias yul='yarn unlink'
 alias ysa='yarn start'
 alias ysb='yarn storybook'
+alias yts='yarn test --silent'
 # OMZ/yarn sets this to `yarn version`, let's keep it compatible with the other *v aliases
 alias yv='yarn --version'
 alias yvv='yarn version'

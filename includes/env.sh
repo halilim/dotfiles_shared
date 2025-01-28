@@ -26,9 +26,6 @@ export TIME_STYLE=long-iso
 # Run install_nginx_config after changing
 export HOST_NGINX_PORT=8085
 
-# https://github.com/npm/cli/issues/7857
-export NODE_OPTIONS='--disable-warning=ExperimentalWarning'
-
 # Allow overriding stuff defined later anywhere
 export POST_INIT_HOOKS=()
 
