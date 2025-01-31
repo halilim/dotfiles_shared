@@ -1,0 +1,8 @@
+#!/usr/bin/osascript
+
+on run argv
+  if count of argv > 0 then
+    set theText to the first item of argv
+    display notification theText
+  end if
+end run

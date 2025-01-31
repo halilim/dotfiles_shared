@@ -11,6 +11,7 @@
     "git-commit": true,
     "gotmpl": true,
     "icalendar": true,
+    "ignore": true,
     "markdown": true,
     "mdx": true,
     "nginx": true,
@@ -141,7 +142,7 @@
   // cSpell:ignore apacheconf
   "files.associations": {
     ".markdownlintrc": "jsonc",
-    "{.config/git/ignore*,.jshintignore,*.ignore,**/.git*/info/exclude}": "ignore",
+    "{.config/git/ignore*,.jshintignore,**/*.ignore,**/.git*/info/exclude}": "ignore",
     "{.env.*,.env*,**/*.env}": "dotenv",
     "{.gvimrc,.ideavimrc}": "viml",
     "{.inputrc,.shellspec,*.ctags,**/.husky/*,/etc/defaults/**/*.conf,/etc/periodic/**/*.conf}": "shellscript",

@@ -131,6 +131,7 @@ source_custom env.sh
 # Put the manual/external steps at the end
 UPDATE_BACKUP_CMDS+=(
   "$VIM_CMD +'PlugUpgrade | PlugUpdate'"
-  'open_dotfile_tabs'
+  'update_open_tabs'
   "$OPEN_CMD /Applications # Manually update the non-App Store, infrequently-opened, etc. apps"
+  'update_notify_chrome'
 )

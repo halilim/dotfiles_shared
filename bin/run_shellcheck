@@ -19,6 +19,7 @@ for file in "${files[@]}"; do
   if [[ $file == *.applescript ||
     $file == *.p10k.zsh ||
     $file == *iterm_tab ||
+    $file == *osascript_* ||
     $file == *smerge ||
     $file == *url_to_* ]]; then
     continue
