@@ -140,7 +140,6 @@
 
   // cSpell:ignore apacheconf
   "files.associations": {
-    ".env*": "dotenv", // It seems like the extension keeps adding this
     ".markdownlintrc": "jsonc",
     "{.config/git/ignore*,.jshintignore,*.ignore,**/.git*/info/exclude}": "ignore",
     "{.env.*,.env*,**/*.env}": "dotenv",
@@ -161,7 +160,8 @@
     "/etc/**/*.conf": "plain",
     "/etc/apache2/**/*.conf": "apacheconf",
     "coc-settings.json": "jsonc",
-    "Procfile.*": "procfile"
+    "Procfile.*": "procfile",
+    ".env*": "dotenv"
   },
 
   "files.exclude": {

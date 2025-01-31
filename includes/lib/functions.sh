@@ -54,13 +54,7 @@ function cd_with_header() {
 
 function color() {
   if [[ $# -lt 2 ]]; then
-    local func_name
-    if [ -n "${ZSH_VERSION:-}" ]; then
-      # shellcheck disable=SC2154
-      func_name="${funcstack[1]}"
-    else
-      func_name="${FUNCNAME[0]}"
-    fi
+    local func_name=${funcstack[1]:-${FUNCNAME[0]}}
 
     echo 'Usage examples:'
     echo "$($func_name green "$func_name") white $($func_name yellow "'some text'")"
@@ -172,7 +166,7 @@ function for_each_dir() {
   local dir
   for dir in */; do
     (
-      cd_with_header "$dir" || return
+      cd_with_header "$dir"
       echo_eval "$@"
       printf '\n'
     )
@@ -388,7 +382,12 @@ function remove_broken_links()  {
 }
 
 function remove_line_including() {
- gsed -i "/$1/d" "${@:2}"
+  if [[ $# -lt 2 ]]; then
+    echo >&2 "Usage: ${funcstack[1]:-${FUNCNAME[0]}} text file1 [file2 ...]"
+    return 1
+  fi
+
+  $GNU_SED -i "/$1/d" "${@:2}"
 }
 alias rml='remove_line_including'
 
@@ -457,15 +456,7 @@ function which_detailed() {
     printf %s "$declare_output"
 
     if [[ $declare_output == 'typeset -g'* ]]; then
-      local func_name
-      if [ $is_zsh ]; then
-        # shellcheck disable=SC2154
-        func_name="${funcstack[1]}"
-      else
-        func_name="${FUNCNAME[0]}"
-      fi
-
-      printf %s " # -g (global) flag is probably due to the local scope of $func_name"
+      printf %s " # -g (global) flag is probably due to the local scope of ${funcstack[1]:-${FUNCNAME[0]}}"
     fi
 
     printf '\n'

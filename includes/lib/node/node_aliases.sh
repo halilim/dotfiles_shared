@@ -15,6 +15,7 @@ alias nu="npm update"
 # alias nus="npm uninstall -S"
 alias nug="npm update -g"
 
+alias yi='yarn install'
 alias yl='yarn link'
 alias yul='yarn unlink'
 alias ysa='yarn start'

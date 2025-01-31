@@ -169,6 +169,13 @@
 		"body": "export ${1:name}=${2:value}",
 	},
 
+	"function name": {
+		"prefix": ["fname", "fnm"], // cSpell:ignore fname
+		"body": [
+			"${funcstack[1]:-${FUNCNAME[0]}}"
+		],
+	},
+
 	"function": {
 		"prefix": ["f", "fn"],
 		"body": [
@@ -180,16 +187,6 @@
 
 	// https://github.com/DeepInThought/vscode-shell-snippets/blob/master/snippets/shellscript.json
 	// Overridden to add locals - otherwise the iterator variables leak out of functions
-	"for in": {
-		"prefix": "forin", // cSpell:ignore forin
-		"body": [
-			"local $0",
-			"for ${0:VAR} in $${1:LIST}; do",
-				"\techo \"$${0:VAR}\"",
-			"done"
-		],
-		"description": "for loop in list"
-	},
 	"for i": {
 		"prefix": "fori", // cSpell:ignore fori
 		"body": [
@@ -200,6 +197,16 @@
 			],
 		"description": "An index-based iteration for loop."
 	},
+	"for in": {
+		"prefix": "forin", // cSpell:ignore forin
+		"body": [
+			"local $0",
+			"for ${0:VAR} in $${1:LIST}; do",
+				"\techo \"$${0:VAR}\"",
+			"done"
+		],
+		"description": "for loop in list"
+	},
 
 	"for in array": {
 		"prefix": "forina", // cSpell:ignore forina
@@ -209,6 +216,20 @@
 				"\techo \"$${0:VAR}\"",
 			"done"
 		]
+	},
+
+	"for in each directory": {
+		"prefix": "forind", // cSpell:ignore forind
+		"body": [
+			"local dir",
+			"for dir in */; do",
+				"\t(",
+					"\t\tcd_with_header \"\\$dir\"",
+					"\t\t$0",
+					"\t\tprintf '\\n'",
+				"\t)",
+			"done"
+		],
 	},
 
 	"pass heredoc to function": {

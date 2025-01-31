@@ -3,7 +3,12 @@ acked
 actioncable
 actionmailbox
 actionmailer
+actionpack
 actiontext
+actionview
+activejob
+activemodel
+activerecord
 activestorage
 activesupport
 adduid
@@ -31,6 +36,7 @@ autoindex
 autoload
 autoloaders
 Automator
+autoprefixer
 autosquash
 autotag
 autoupdate
@@ -70,6 +76,7 @@ bufferline
 buildpack
 buildpacks
 buildx
+bunx
 byebug
 caddyserver
 callout
@@ -90,6 +97,7 @@ citizenships
 clawback
 clawbacks
 CLI
+cloneable
 Cloudflare
 CloudFront
 CMDS
@@ -97,9 +105,11 @@ CNAME
 coc
 codeclimate
 codeium
+coderay
 Codeship
 colorsaurus
 commissionable
+commonmarker
 compadd
 compdef
 compinit
@@ -120,6 +130,7 @@ CTA
 Ctags
 CTYPE
 Cyclomatic
+dalli
 darcs
 dasherized
 datadoghq
@@ -165,6 +176,7 @@ easylist
 easymotion
 easyprivacy
 ecparam
+einhorn
 elasticsearch
 Elasticsearch
 emailoctopus
@@ -177,14 +189,20 @@ envrc
 envsh
 erb
 errexit
+erubi
 eruby
 esac
 esdoc
 eshead
+ethon
 evented
+eventsource
+eventstream
 evilmartians
 excelviewer
 excludesfile
+excon
+execjs
 extdebug
 factorybot
 falsey
@@ -196,11 +214,13 @@ fielddata
 findutils
 Fira
 FIXME
+formatador
 FPATH
 frontends
 ftplugin
 fullpath
 fulltitle
+FUNCNAME
 funcstack
 fuser
 fuubar
@@ -213,6 +233,7 @@ gemfiles
 gemrc
 genkey
 genrsa
+geokit
 getairportnetwork
 getchar
 getinfo
@@ -229,6 +250,7 @@ gitstatusd
 Gitter
 Glassdoor
 globalias
+globalid
 globbing
 Gmail
 gnumfmt
@@ -265,6 +287,8 @@ haml
 hardlink
 hardlinks
 hashable
+hashdiff
+hashie
 headshot
 heroku
 herokuapp
@@ -278,6 +302,8 @@ Honeybadger
 hotfixes
 hozgur
 htmlentities
+httparty
+httpclient
 httpie
 HubSpot
 IBAN
@@ -314,6 +340,8 @@ jdoe
 jetbrains
 JetBrains
 Jira
+jmespath
+jquery
 jshintignore
 JSON
 jsonls
@@ -351,6 +379,7 @@ linebreak
 Liskov
 listnetworkserviceorder
 ljust
+llhttp
 localstack
 lograge
 lookback
@@ -358,6 +387,7 @@ lspconfig
 lualine
 mackup
 macvim
+magick
 MAILCATCHER
 mailchimp
 mailname
@@ -390,6 +420,7 @@ mkspell
 mktmpdir
 monospace
 moreutils
+msgpack
 multidb
 multihomed
 multiport
@@ -448,6 +479,7 @@ openpgp
 openssl
 opentelemetry
 opsgenie
+orbi
 orbstack
 ordernetworkservices
 oreilly
@@ -491,6 +523,7 @@ PLP
 plutil
 POC
 popen
+portile
 postgre
 Postgres
 Posthog
@@ -510,6 +543,7 @@ printenv
 Procfile
 procs
 progname
+protos
 pryrc
 psql
 publickey
@@ -536,6 +570,7 @@ rbql
 rbspy
 rdbg
 RDBMS
+rdkafka
 rdoc
 reactnative
 readline

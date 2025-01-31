@@ -13,7 +13,8 @@ repos:
         # https://pre-commit.com/#regular-expressions
         exclude: |
             (?x)^(
-                .+/Code/User/.+\.json
+                .+/Code/User/.+\.json|
+                backup/.+\.json
             )$
       - id: fix-byte-order-marker
       - id: mixed-line-ending
