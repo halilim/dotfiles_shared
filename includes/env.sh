@@ -72,7 +72,6 @@ export OMZ_PLUGINS=(
   git-extras
   globalias
   httpie
-  npm
   rails
   rake-fast
   ruby
@@ -112,7 +111,7 @@ export DOTFILES_INCLUDE_LIBS=(
 export UPDATE_BACKUP_CMDS=(
   'brew update --quiet'
   'brew upgrade --quiet' # Removed --greedy because apps auto-download in the background anyway
-  'npm_update_globals'
+  'js_update_globals'
   'omz update --unattended'
   'omz_update_custom'
   update_bat_syntaxes
