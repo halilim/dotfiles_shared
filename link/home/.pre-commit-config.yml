@@ -5,7 +5,11 @@ repos:
     rev: v5.0.0
     hooks:
       - id: check-added-large-files
-        exclude: com.googlecode.iterm2.plist
+        exclude: |
+            (?x)^(
+                com\.googlecode\.iterm2\.plist|
+                .*/test_data/.*
+            )$
       - id: check-case-conflict
       - id: check-merge-conflict
       - id: check-yaml
