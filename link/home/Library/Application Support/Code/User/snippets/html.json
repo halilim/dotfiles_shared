@@ -3,4 +3,19 @@
 		"prefix": "<?",
 		"body": "<?php",
 	},
+
+	// https://htmlhint.com/docs/user-guide/list-rules -> Browser console
+	/*
+	const pf = '/docs/user-guide/rules/'
+	const elArr = [...document.querySelectorAll(`a[href^="${pf}"]`)]
+	const hrefArr = elArr.map(a => a.href.split(pf)[1])
+	[...new Set(hrefArr)].sort().join(',')
+	*/
+	"HTMLHint disable": {
+		"prefix": "hhd",
+		"body": [
+			"<!-- htmlhint ${1|alt-require,attr-lowercase,attr-no-duplication,attr-no-unnecessary-whitespace,attr-sorted,attr-unsafe-chars,attr-value-double-quotes,attr-value-not-empty,attr-value-single-quotes,attr-whitespace,doctype-first,doctype-html5,empty-tag-not-self-closed,head-script-disabled,href-abs-or-rel,html-lang-require,id-class-ad-disabled,id-class-value,id-unique,inline-script-disabled,inline-style-disabled,input-requires-label,script-disabled,space-tab-mixed-disabled,spec-char-escape,src-not-empty,style-disabled,tag-pair,tag-self-close,tagname-lowercase,tagname-specialchars,tags-check,title-require|}:false -->",
+			"$0"
+		],
+	},
 }

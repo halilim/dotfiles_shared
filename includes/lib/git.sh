@@ -137,3 +137,16 @@ function git_search_branches() {
 function git_search_tags() {
   echo_eval "git tag --sort=-v:refname $(_git_contains_args_with_message "$1") | head -n 5"
 }
+
+# https://stackoverflow.com/a/1260982/372654
+function git_submodule_rm() {
+  if [[ $# -lt 1 ]]; then
+    echo >&2 "Usage: ${funcstack[1]:-${FUNCNAME[0]}} <path-to-submodule>"
+    return 1
+  fi
+
+  local submodule_path=$1
+  echo_eval 'git rm %q' "$submodule_path"
+  echo_eval 'rm -rf .git/modules/%q' "$submodule_path"
+  echo_eval 'git config remove-section submodule.%q' "$submodule_path"
+}

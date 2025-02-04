@@ -58,6 +58,7 @@ bazel
 beeftornado
 berksfile
 bgnotify
+bidi
 bigdecimal
 bindkey
 binstub
@@ -177,6 +178,7 @@ easymotion
 easyprivacy
 ecparam
 einhorn
+elasticlunr
 elasticsearch
 Elasticsearch
 emailoctopus
@@ -245,6 +247,7 @@ giscus
 gitconfig
 gitdir
 github
+gitmodules
 gitsigns
 gitstatusd
 Gitter
@@ -302,6 +305,7 @@ Honeybadger
 hotfixes
 hozgur
 htmlentities
+htmlhint
 httparty
 httpclient
 httpie
@@ -376,6 +380,7 @@ libexec
 libxslt
 lifecycle
 linebreak
+linkita
 Liskov
 listnetworkserviceorder
 ljust
@@ -469,6 +474,7 @@ nvim
 nvmrc
 OBJC
 occams
+oklch
 omz
 omzrc
 onboarding
@@ -672,6 +678,7 @@ Struct
 stty
 stylesheet
 subl
+Subproject
 substr
 sumologic
 systempreferences

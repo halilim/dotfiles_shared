@@ -31,6 +31,7 @@ function colima_start() {
 }
 alias cos='colima_start'
 alias cost='colima stop'
+alias costa='colima status'
 
 # Internal utils to pass Docker containers as hosts and vice versa
 function docker_host_to_container() {

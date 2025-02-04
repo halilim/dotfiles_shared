@@ -1,3 +1,5 @@
+alias libdb='$EDITOR "$DOTFILES_INCLUDES"/lib/databases.sh' # cSpell:ignore libdb
+
 function mariadb_databases() {
   TYPE=mariadb QUERY='SHOW DATABASES' mysql_exec "$@"
 }
