@@ -69,7 +69,7 @@
   "diffEditor.codeLens": true,
   "diffEditor.diffAlgorithm": "advanced",
   "diffEditor.hideUnchangedRegions.enabled": true,
-  "diffEditor.ignoreTrimWhitespace": false,
+  "diffEditor.ignoreTrimWhitespace": true,
   "diffEditor.renderSideBySide": false,
 
   "docker.containers.description": [

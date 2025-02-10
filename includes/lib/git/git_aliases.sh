@@ -1,4 +1,4 @@
-# cSpell:ignore libga gcpn gcae gcane gcano gcanev gcanov gcem gcmb gcemb gcom gdhh gdma gdnc gdtc gdtk gmmnc gmtk gpft gpla gplb gplp grgu grpo
+# cSpell:ignore libga gcpn gcae gcane gcano gcanev gcanov gcbu gcem gcmb gcemb gcom
 
 alias libga='$EDITOR "$DOTFILES_INCLUDES"/lib/git/git_aliases.sh'
 
@@ -11,6 +11,7 @@ alias gcae='git commit --amend --edit'
 alias {gcane,gcano}='git commit --amend --no-edit'
 # shellcheck disable=SC2139
 alias {gcanev,gcanov}='git commit --amend --no-edit --no-verify'
+alias gcbu="git commit --message 'Backup updates'" # :)
 alias gcm="git commit --message '"
 alias gcem="git commit --allow-empty --message '"
 alias gcmb='git commit --message "$(git rev-parse --abbrev-ref HEAD)"'
@@ -22,6 +23,7 @@ alias {gcnev,gcnov,gcnn}='git commit --no-edit --no-verify' # cSpell:ignore gcne
 alias gcnv='git commit --no-verify' # cSpell:ignore gcnv
 alias gcom='git checkout $(git_main_branch)'
 
+# cSpell:ignore gdhh gdma gdnc gdtc gdtk
 alias gdh='git diff HEAD'
 alias gdh~='git diff HEAD~'
 alias gdhh='git diff HEAD~ HEAD'
@@ -31,6 +33,7 @@ alias gdnc='git diff --no-color'
 alias gdtc='git difftool --tool=code'
 alias gdtk='git difftool --tool=kdiff3'
 
+# cSpell:ignore gmmnc gmtk
 alias glg='git log --graph --stat'
 alias gmd='git merge --no-edit $(git_develop_branch)'
 alias gmm='git merge --no-edit $(git_main_branch)'
@@ -38,6 +41,8 @@ alias gmmnc='git merge --no-edit $(git_main_branch) --no-commit'
 alias gmn='git merge --no-edit'
 alias gmt='git mergetool'
 alias gmtk='git mergetool --tool=kdiff3'
+
+# cSpell:ignore gpft gpla gplb gplp grgu grpo
 
 # push with annotated & reachable tags, remove dry-run after confirming
 alias gpft='git push --follow-tags --dry-run'

@@ -18,7 +18,7 @@ function cd_checkout_pull() {
   # Must be after cd since the git branch depends on the folder
   [[ -z $branch ]] && branch=$(git_main_branch)
 
-  echo_eval 'git checkout %q' "$branch"
+  echo_eval 'git checkout --quiet %q' "$branch"
 
   local git_pull_result
   git_pull_result=$(echo_eval 'git pull --prune --quiet')

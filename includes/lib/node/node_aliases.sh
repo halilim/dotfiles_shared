@@ -1,6 +1,7 @@
 alias libna='$EDITOR "$DOTFILES_INCLUDES"/lib/node/node_aliases.sh' # cSpell:ignore libna
 
 alias bui='bun i'
+alias buu='bun update'
 
 alias nv="node -v"
 

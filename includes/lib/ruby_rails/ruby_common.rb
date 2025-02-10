@@ -1,5 +1,11 @@
 # frozen_string_literal: true
 
+require 'io/console'
+
+# RubyMine debugger doesn't load .irbrc/.pryrc. Add live template `lrc`:
+# (live templates are available in the interactive console)
+# load File.join(ENV['DOTFILES_INCLUDES'], 'lib', 'ruby_rails', 'ruby_common.rb')
+
 # rubocop:disable Style/NumericPredicate
 
 # Displays a DB style table for a list of ActiveRecord objects, hashes, or arrays. Limits the
@@ -126,17 +132,24 @@ def table(items, *cols) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticCom
     cells.join(b_v)
   end
 
-  puts gen_row.call(color: title_color) { |k| k }
+  outputs = [gen_row.call(color: title_color) { |k| k }]
 
   border = col2len.values.map { |len| b_h * len }.join(b_vh)
   border << b_vh << b_h if terminal_width_exceeded
-  puts color(border, border_color)
+  outputs << color(border, border_color)
 
   items.each do |item|
-    puts(gen_row.call { |k| item[k] })
+    outputs << (gen_row.call { |k| item[k] })
   end
 
-  puts color("(#{items.length} rows in set)\n", :cyan)
+  outputs << color("(#{items.length} rows in set)\n", :cyan)
+
+  output = outputs.join("\n")
+  if output?
+    puts output
+  else
+    output
+  end
 end
 
 alias art table
@@ -188,6 +201,8 @@ def pm(obj, pattern = nil) # rubocop:disable Metrics/AbcSize, Metrics/Cyclomatic
     [name.to_s, args, matches ? "#{matches[:class]}#{matches[:base]}" : inspection]
   end
 
+  return data unless output?
+
   max_name = data.collect { |item| item[0].size }.max
   max_args = data.collect { |item| item[1].size }.max
   data.each do |item|
@@ -225,6 +240,11 @@ end
 
 def color(text, *color)
   IRB::Color.colorize(text, color.map { |c| c.to_s.upcase.to_sym })
+end
+
+# RubyMine debugger doesn't show the output, so we return it instead
+def output?
+  $stdout.is_a?(StringIO) || $stdout.echo?
 end
 
 # rubocop:enable Style/NumericPredicate
