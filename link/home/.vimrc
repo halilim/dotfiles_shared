@@ -288,21 +288,23 @@ augroup end
 " See note around the plugin
 " runtime macros/matchit.vim
 
-call custom#begin()
+silent! call custom#begin()
 
 " https://github.com/junegunn/vim-plug#usage
 " call plug#begin('~/.config/nvim/plugged')
 call plug#begin()
 
-" cSpell:ignore Exafunction madox2
-if g:custom_ai_plugin == 'codeium'
-  Plug 'Exafunction/codeium.vim' " See also: AirlineAddCustomSections
-elseif g:custom_ai_plugin == 'copilot'
-  Plug 'github/copilot.vim' , { 'do': ':Copilot setup' }
-elseif g:custom_ai_plugin == 'openai'
-  Plug 'madox2/vim-ai' " ~/.config/openai.token
-elseif g:custom_ai_plugin != ''
-  autocmd VimEnter * echoerr 'Unknown AI plugin: ' . g:custom_ai_plugin
+if exists('g:custom_ai_plugin')
+  " cSpell:ignore Exafunction madox2
+  if g:custom_ai_plugin == 'codeium'
+    Plug 'Exafunction/codeium.vim' " See also: AirlineAddCustomSections
+  elseif g:custom_ai_plugin == 'copilot'
+    Plug 'github/copilot.vim' , { 'do': ':Copilot setup' }
+  elseif g:custom_ai_plugin == 'openai'
+    Plug 'madox2/vim-ai' " ~/.config/openai.token
+  elseif g:custom_ai_plugin != ''
+    autocmd VimEnter * echoerr 'Unknown AI plugin: ' . g:custom_ai_plugin
+  endif
 endif
 
 " cSpell:ignore junegunn airblade chaoren chrisbra darfink inkarkat jiangmiao kshenoy luochen1990
@@ -673,7 +675,7 @@ endfun
 
 fun! AirlineAddCustomSections(...)
   if !exists('g:airline_added_custom_sections')
-    if g:custom_ai_plugin == 'codeium'
+    if exists('g:custom_ai_plugin') && g:custom_ai_plugin == 'codeium'
       call AirlinePrependSectionY('{…} Codeium:%3{codeium#GetStatusString()}')
     endif
 

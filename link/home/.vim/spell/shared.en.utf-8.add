@@ -298,6 +298,8 @@ headshot
 healthcheck
 heroku
 herokuapp
+Herokuish
+herokuishuser
 hexdigest
 Hirb
 hirber
@@ -334,6 +336,7 @@ inodes
 inplace
 inputrc
 ioreg
+iputils
 ipynb
 IRB
 irbrc
@@ -378,6 +381,7 @@ lazypath
 lazyrepo
 lazyvim
 lesspipe
+letsencrypt
 libev
 libexec
 libxslt
@@ -451,6 +455,7 @@ newkey
 newrelic
 newsyslog
 nextdns
+nixpacks
 nmap
 NOBUG
 nocaseglob
@@ -616,6 +621,7 @@ RUBYGEMS
 rubymine
 rubyonrails
 RUBYOPT
+runcmd
 rupa
 rxvt
 S3
@@ -658,6 +664,7 @@ Skynet
 sluggable
 Smartcase
 smerge
+snakeoil
 socat
 Solargraph
 Sonoma
@@ -722,6 +729,7 @@ unbreak
 unidiff
 unifiedjs
 unimport
+unminimize
 unnotified
 unpair
 unscope
@@ -731,6 +739,7 @@ uplevel
 upsert
 upserted
 upserts
+urandom
 urlhaus
 usr
 utf

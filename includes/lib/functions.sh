@@ -441,7 +441,7 @@ alias wl='which_ less'
 # Why not in ~/bin? Because this needs the whole environment to be able to detect all types of
 # symbols. And loading all that is a slow process. This way, it's all in the current shell.
 function which_detailed() {
-  local input=$1 type_str type_ret is_zsh
+  local input=$1 is_zsh
 
   if [ -n "${ZSH_VERSION:-}" ]; then
     is_zsh=1
@@ -469,15 +469,13 @@ function which_detailed() {
     return
   fi
 
-  local type_args=()
-  if [[ $is_zsh ]]; then
-    type_args+=(-w) # "...: function" / "...: command"
-  else
-    type_args+=(-t) # "function" / "...: file"
-  fi
-
-  type_str=$(type "${type_args[@]}" "$input")
+  local type_str type_ret
+  type_str=$(type -a "$input" 2>&1)
   type_ret=$?
+  if [[ $type_ret -ne 0 ]]; then
+    echo >&2 "${type_str:-'not found'}"
+    return 1
+  fi
 
   if [[ $type_str == *'function'* ]]; then
     local bat=("$BAT_CMD" --language=sh --paging=never)
@@ -522,10 +520,6 @@ function which_detailed() {
     else
       echo "$file"
     fi
-
-  else
-    echo "$type_str"
-    return $type_ret
   fi
 }
 alias wh="which_detailed"
@@ -548,6 +542,7 @@ function whoip() {
   fi
 }
 
+# TODO: Replace with ${JS_PM}x ... or yq
 function yaml_lint() {
   local file
   for file in "$@"; do
