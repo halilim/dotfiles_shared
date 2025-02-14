@@ -27,7 +27,11 @@ alias dcos='docker compose stats'
 alias dcrr='dcr --rm'
 
 function colima_start() {
-  echo_eval 'colima status > /dev/null 2>&1 || colima start'
+  local args=''
+  if [[ $OSTYPE == darwin* ]]; then
+    args='--vm-type=vz --vz-rosetta --mount-type=virtiofs --cpu 4'
+  fi
+  echo_eval "colima status > /dev/null 2>&1 || colima start $args"
 }
 alias cos='colima_start'
 alias cost='colima stop'
@@ -38,9 +42,9 @@ function docker_host_to_container() {
   local host=$1
   local container=${host%.docker}
   if [[ $container == "$host" ]]; then
-    echo  "$container"
-  else
     return 1
+  else
+    echo "$container"
   fi
 }
 function docker_container_to_host() {

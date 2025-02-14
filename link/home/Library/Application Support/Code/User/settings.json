@@ -185,6 +185,8 @@
     "*.sublime-*": true
   },
 
+
+  "git.blame.editorDecoration.enabled": false,
   "git.branchProtection": [
     "main",
     "master"

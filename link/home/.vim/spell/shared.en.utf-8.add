@@ -295,6 +295,7 @@ hashable
 hashdiff
 hashie
 headshot
+healthcheck
 heroku
 herokuapp
 hexdigest
@@ -512,6 +513,7 @@ pcre
 PDP
 Percona
 pgdg
+pgdump
 PGGSSENCMODE
 PGPASSWORD
 pgrep

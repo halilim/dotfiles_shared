@@ -3,4 +3,4 @@
 	email = 123+user@users.noreply.github.com
 	signingkey = 123ABC...
 	; Or for SSH signing:
-	; signingkey = ~/.ssh/id_rsa.pub
+	; signingkey = ~/.ssh/id_ed25519.pub

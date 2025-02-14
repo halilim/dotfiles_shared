@@ -53,6 +53,20 @@
 		"body": "alias -g ${1:name}='$0'",
 	},
 
+	"convert to lower case": {
+		"prefix": ["case_l", "downcase"],
+		"body": [
+			"| tr '[:upper:]' '[:lower:]'"
+		],
+	},
+
+	"convert to upper case": {
+		"prefix": ["case_u", "upcase"],
+		"body": [
+			"| tr '[:lower:]' '[:upper:]'"
+		],
+	},
+
 	// cd already emits error with folder name, and exit & return defaults to last command's exit code
 
 	"cd or exit (within a script)": {

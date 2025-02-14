@@ -104,7 +104,7 @@ function psql_exec() {
   if [[ ! $container ]]; then
     cmd+=" -h $host"
     local port=${host#*:}
-    if [[ $port ]]; then
+    if [[ $port && $port != "$host" ]]; then
       cmd+=" -p $port"
     fi
   fi
