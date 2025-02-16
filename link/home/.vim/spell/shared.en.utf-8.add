@@ -167,6 +167,7 @@ dotenv
 dotfile
 dotfiles
 dotglob
+dpkg
 dport
 dports
 drawdown
@@ -239,6 +240,7 @@ genrsa
 geokit
 getairportnetwork
 getchar
+getconf
 gethostname
 getinfo
 getpass
@@ -393,6 +395,7 @@ listnetworkserviceorder
 ljust
 llhttp
 localstack
+logicalcpu
 lograge
 lookback
 lspconfig
@@ -782,6 +785,7 @@ xxhash
 YAML
 yamllint
 youtrack
+zcat
 zeitwerk
 zellij
 Zscript

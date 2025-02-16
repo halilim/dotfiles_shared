@@ -35,7 +35,7 @@ elif [[ $OSTYPE == linux* ]]; then
   source_with_custom linux_env.sh
 fi
 
-num_procs=$(nproc) # On Mac, nproc is installed via Homebrew, thus it needs to come after mac_env
+num_procs=$(getconf _NPROCESSORS_ONLN) # cSpell:ignore NPROCESSORS ONLN
 export BUNDLE_JOBS=$num_procs
 # https://build.betterup.com/one-weird-trick-that-will-speed-up-your-bundle-install/
 # This version breaks other builds, e.g. ruby-build

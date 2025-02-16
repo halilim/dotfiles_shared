@@ -520,6 +520,10 @@ function which_detailed() {
     else
       echo "$file"
     fi
+
+  else
+    echo "$type_str"
+
   fi
 }
 alias wh="which_detailed"

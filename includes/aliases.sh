@@ -131,10 +131,9 @@ alias sshconf='vim_open ~/.ssh/config'
 
 alias str='stree .' # cSpell:ignore stree
 
-alias t="tail" # common-aliases oh-my-zsh plugin sets this to tail -f
-alias tf="tail -f"
-alias tf50="tail -n50 -f"
-alias tf100="tail -n100 -f"
+alias taf="tail -f"
+alias taf50="tail -n50 -f"
+alias taf100="tail -n100 -f"
 
 alias tr1="traceroute 1.1.1.1"
 alias tr192="traceroute 192.168.1.1"
