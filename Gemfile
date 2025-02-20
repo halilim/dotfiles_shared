@@ -4,6 +4,7 @@ source 'https://rubygems.org'
 
 # These are no longer default gems
 gem 'fiddle' # irb
+gem 'irb'
 gem 'rdoc' # irb
 
 group :development, :test do

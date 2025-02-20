@@ -690,7 +690,7 @@ fun! AirlineAddCustomSections(...)
     let g:airline_added_custom_sections = 1
   endif
 endfun
-call airline#add_statusline_func('AirlineAddCustomSections')
+silent! call airline#add_statusline_func('AirlineAddCustomSections')
 
 " ===== Plugin settings for mhinz/vim-startify =====
 let g:startify_session_persistence = 1

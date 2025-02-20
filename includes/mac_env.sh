@@ -19,3 +19,20 @@ if [[ -z ${ZSH_VERSION:-} && $- == *i* ]]; then
   # shellcheck source=/dev/null
   . "$HOMEBREW_PREFIX"/etc/bash_completion.d/git-prompt.sh
 fi
+
+DOTFILES_INCLUDE_LIBS+=(
+  adminer
+  brew
+  elasticsearch
+  nginx_php
+  redis
+)
+
+UPDATE_BACKUP_CMDS+=(
+  'brew update --quiet'
+  'brew upgrade --quiet' # Removed --greedy because apps auto-download in the background anyway
+  'js_update_globals'
+  'update_open_tabs'
+  "$OPEN_CMD /Applications # Manually update the non-App Store, infrequently-opened, etc. apps"
+  'update_notify_chrome'
+)

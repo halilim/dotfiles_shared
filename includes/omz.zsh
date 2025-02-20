@@ -9,13 +9,13 @@ omz_path=~/.oh-my-zsh
 #   [+] Remove p10k (hm... fzf-tab is probably more important than p10k)
 #   [ ] Replace with simple prompt + REPORTTIME=... instead?
 
-# shellcheck source=/dev/null
-# To customize prompt, run `p10k configure` or edit .p10k*.zsh.
-. "$DOTFILES_INCLUDES"/.p10k.zsh
-
-alias p10kc='$EDITOR "$DOTFILES_INCLUDES"/.p10k.zsh'
-
-export ZSH_THEME=powerlevel10k/powerlevel10k
+if [[ ! -v TERMUX_VERSION ]]; then
+  # shellcheck source=/dev/null
+  # To customize prompt, run `p10k configure` or edit .p10k*.zsh.
+  . "$DOTFILES_INCLUDES"/.p10k.zsh
+  alias p10kc='$EDITOR "$DOTFILES_INCLUDES"/.p10k.zsh'
+  export ZSH_THEME=powerlevel10k/powerlevel10k
+fi
 
 export DISABLE_AUTO_UPDATE="true" # Handled by .functions#update_and_backup
 
@@ -59,9 +59,10 @@ function omz_install_custom() {
     git clone https://github.com/zsh-users/zsh-completions
     git clone https://github.com/zsh-users/zsh-syntax-highlighting
 
-    cd_or_fail "$zsh_custom"/themes 'Oh My Zsh custom themes directory' || return
-
-    git clone --depth=1 https://github.com/romkatv/powerlevel10k
+    if [[ ! -v TERMUX_VERSION ]]; then
+      cd_or_fail "$zsh_custom"/themes 'Oh My Zsh custom themes directory' || return
+      git clone --depth=1 https://github.com/romkatv/powerlevel10k
+    fi
   )
 }
 

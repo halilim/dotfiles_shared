@@ -29,6 +29,23 @@ export HOST_NGINX_PORT=8085
 # Allow overriding stuff defined later anywhere
 export POST_INIT_HOOKS=()
 
+export DOTFILES_INCLUDE_LIBS=(
+  databases
+  docker
+  functions
+  git
+  node
+  ruby_rails
+  update_and_backup
+)
+
+# shellcheck disable=SC2016
+export UPDATE_BACKUP_CMDS=(
+  '$ZSH/tools/upgrade.sh -v silent' # https://github.com/ohmyzsh/ohmyzsh/wiki/FAQ#how-do-i-update-oh-my-zsh
+  'omz_update_custom'
+  update_bat_syntaxes
+)
+
 if [[ $OSTYPE == darwin* ]]; then
   source_with_custom mac_env.sh
 elif [[ $OSTYPE == linux* ]]; then
@@ -92,31 +109,6 @@ fi
 
 # End: oh-my-zsh config
 
-export DOTFILES_INCLUDE_LIBS=(
-  adminer
-  nginx_php
-  brew
-  databases
-  docker
-  elasticsearch
-  functions
-  git
-  node
-  redis
-  ruby_rails
-  update_and_backup
-)
-
-# shellcheck disable=SC2016
-export UPDATE_BACKUP_CMDS=(
-  'brew update --quiet'
-  'brew upgrade --quiet' # Removed --greedy because apps auto-download in the background anyway
-  'js_update_globals'
-  '$ZSH/tools/upgrade.sh -v silent' # https://github.com/ohmyzsh/ohmyzsh/wiki/FAQ#how-do-i-update-oh-my-zsh
-  'omz_update_custom'
-  update_bat_syntaxes
-)
-
 # Global troubleshooting reminder: Some apps treat PATH as case-insensitive, causing problems when
 # a variable named lowercase `path` used in scripts or functions.
 PATH="$PATH:$HOME/bin"
@@ -131,7 +123,4 @@ source_custom env.sh
 # Put the manual/external steps at the end
 UPDATE_BACKUP_CMDS+=(
   "$VIM_CMD +'PlugUpgrade | PlugUpdate'"
-  'update_open_tabs'
-  "$OPEN_CMD /Applications # Manually update the non-App Store, infrequently-opened, etc. apps"
-  'update_notify_chrome'
 )

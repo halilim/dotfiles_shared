@@ -168,7 +168,7 @@
     "*.haml.deface": "haml",
     "*.mdx": "markdown",
     "*.tpl.php": "smarty",
-    "*.zone.txt": "zone",
+    "*.zone.txt": "zonefile",
     "**/.ssh/config": "ssh_config",
     "/etc/**/*.conf": "plain",
     "/etc/apache2/**/*.conf": "apacheconf",
@@ -497,6 +497,7 @@
   "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
 
   "window.autoDetectColorScheme": true,
+  "window.newWindowDimensions": "maximized",
 
   // cSpell:ignore matchtext
   "editor.tokenColorCustomizations": {
@@ -658,6 +659,10 @@
 
   "[typescriptreact]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
+  "[xml]": {
+    "editor.defaultFormatter": "redhat.vscode-xml"
   },
 
   "[xslt]": {
