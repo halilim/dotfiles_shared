@@ -16,9 +16,23 @@ if [[ -v TERMUX_VERSION ]]; then
   BAT_CMD=bat
   UPDATE_BACKUP_CMDS+=(
     'pkg update'
-    'pkg upgrade'
+    'pkg upgrade -y'
   )
 else
   BAT_CMD=batcat # Because of a name clash, see: apt-cache show bat
+
+  if [[ -r /etc/lsb-release ]]; then
+    # shellcheck disable=SC1091
+    . /etc/lsb-release
+
+    if [[ $DISTRIB_ID == Ubuntu ]]; then
+      OMZ_PLUGINS+=(ubuntu)
+
+      UPDATE_BACKUP_CMDS+=(
+        'apt update'
+        'apt upgrade -y'
+      )
+    fi
+  fi
 fi
 export BAT_CMD

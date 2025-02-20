@@ -39,29 +39,6 @@ export DOTFILES_INCLUDE_LIBS=(
   update_and_backup
 )
 
-# shellcheck disable=SC2016
-export UPDATE_BACKUP_CMDS=(
-  '$ZSH/tools/upgrade.sh -v silent' # https://github.com/ohmyzsh/ohmyzsh/wiki/FAQ#how-do-i-update-oh-my-zsh
-  'omz_update_custom'
-  update_bat_syntaxes
-)
-
-if [[ $OSTYPE == darwin* ]]; then
-  source_with_custom mac_env.sh
-elif [[ $OSTYPE == linux* ]]; then
-  source_with_custom linux_env.sh
-fi
-
-num_procs=$(getconf _NPROCESSORS_ONLN) # cSpell:ignore NPROCESSORS ONLN
-export BUNDLE_JOBS=$num_procs
-# https://build.betterup.com/one-weird-trick-that-will-speed-up-your-bundle-install/
-# This version breaks other builds, e.g. ruby-build
-# export MAKE="make -j$num_procs"
-export MAKEFLAGS="-j$num_procs"
-unset num_procs
-
-# Start: oh-my-zsh config
-
 # Disabled:
 #   * direnv: Breaks Powerlevel10k instant prompt, added to .zshrc manually
 #   * fzf-tab-completion: Broken. Outputs pygmentize (pygments) help. Without pygmentize, emits 3
@@ -71,12 +48,8 @@ unset num_procs
 #   * rake: Aliases rake to `noglob rake` which doesn't take bundler into account
 #   * zsh-nvm: Slow (1.5-2 s) to change folders, replaced with nodenv.
 #     If re-enabled: uncomment nvm lines below
-
 # Notes:
 #   * fzf-tab: Breaks _expand_alias
-
-# Custom: $ZSH_CUSTOM/plugins
-
 export OMZ_PLUGINS=(
   aliases
   bgnotify
@@ -101,13 +74,26 @@ export OMZ_PLUGINS=(
   zsh-vi-mode
 )
 
+# shellcheck disable=SC2016
+export UPDATE_BACKUP_CMDS=(
+  '$ZSH/tools/upgrade.sh -v silent' # https://github.com/ohmyzsh/ohmyzsh/wiki/FAQ#how-do-i-update-oh-my-zsh
+  'omz_update_custom'
+  update_bat_syntaxes
+)
+
 if [[ $OSTYPE == darwin* ]]; then
-  OMZ_PLUGINS+=(macos)
-elif [[ $(uname -a) == *Ubuntu* ]]; then
-  OMZ_PLUGINS+=(ubuntu)
+  source_with_custom mac_env.sh
+elif [[ $OSTYPE == linux* ]]; then
+  source_with_custom linux_env.sh
 fi
 
-# End: oh-my-zsh config
+num_procs=$(getconf _NPROCESSORS_ONLN) # cSpell:ignore NPROCESSORS ONLN
+export BUNDLE_JOBS=$num_procs
+# https://build.betterup.com/one-weird-trick-that-will-speed-up-your-bundle-install/
+# This version breaks other builds, e.g. ruby-build
+# export MAKE="make -j$num_procs"
+export MAKEFLAGS="-j$num_procs"
+unset num_procs
 
 # Global troubleshooting reminder: Some apps treat PATH as case-insensitive, causing problems when
 # a variable named lowercase `path` used in scripts or functions.

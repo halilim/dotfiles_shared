@@ -28,6 +28,8 @@ DOTFILES_INCLUDE_LIBS+=(
   redis
 )
 
+OMZ_PLUGINS+=(macos)
+
 UPDATE_BACKUP_CMDS+=(
   'brew update --quiet'
   'brew upgrade --quiet' # Removed --greedy because apps auto-download in the background anyway
