@@ -18,6 +18,8 @@ repos:
         exclude: |
             (?x)^(
                 .+/Code/User/.+\.json|
+                .+\.code-workspace|
+                \.docker\/config\.json|
                 backup/.+\.json
             )$
       - id: fix-byte-order-marker
