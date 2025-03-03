@@ -3,7 +3,7 @@
 tap 'beeftornado/rmtree'
 
 brew 'coreutils' # gdate, gnumfmt, realpath, ghead, gtail
-brew 'moreutils' # ts
+brew 'moreutils' # ?
 brew 'findutils' # gfind
 brew 'gnu-sed' # gsed
 

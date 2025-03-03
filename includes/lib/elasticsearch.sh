@@ -1,4 +1,4 @@
-alias libe='$EDITOR "$DOTFILES_INCLUDES"/lib/elasticsearch.sh' # cSpell:ignore libe
+alias libes='$EDITOR "$DOTFILES_INCLUDES"/lib/elasticsearch.sh' # cSpell:ignore libes
 
 function es_get_uri() {
   echo "${1:-${ES_URI:-127.0.0.1:9200}}"

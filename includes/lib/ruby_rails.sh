@@ -160,7 +160,6 @@ function ruby_cd_pull_migrate() {
   if [ -f Gemfile.lock ]; then
     local bundle_cmd=${BUNDLE_CMD:-'bundle install --quiet'}
     echo_eval "$bundle_cmd"
-    echo_eval 'git checkout Gemfile.lock'
   fi
 
   if [[ -f bin/spring ]]; then
@@ -172,7 +171,6 @@ function ruby_cd_pull_migrate() {
   if [[ $should_migrate ]]; then
     local migrate_cmd=${MIGRATE_CMD:-"$RAKE_CMD db:migrate"}
     echo_eval "$migrate_cmd"
-    [[ -e db/schema.rb ]] && echo_eval 'git checkout db/schema.rb' # Sometimes migrations modify db/schema.rb
   fi
 
   if [[ -d log ]]; then

@@ -6,6 +6,7 @@ export ESHEAD_DIR="$HOME/code/tools/elasticsearch-head"
 export FOO_PORT=8087 # Custom local app, start its dev server with this port too
 export GPG_KEY=123ABC # gpg --list-keys > The hex number below "pub"
 export JS_PM=bun # bun|npm
+export JS_PMX=bunx # bunx|npx
 # Replace ld_client with your LaunchDarkly client, or the whole command
 export LAUNCH_DARKLY_KEYS_CMD=(bin/rails runner 'puts ld_client.all_features.keys')
 # %s will be replaced with the flag key

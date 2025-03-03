@@ -1,5 +1,5 @@
 function chrome_user_js_css_prettier() {
-  "${JS_PM}"x --yes prettier -w "$DOTFILES_CUSTOM"/backup/chrome/exts/user-js-css.json
+  $JS_PMX --yes prettier -w "$DOTFILES_CUSTOM"/backup/chrome/exts/user-js-css.json
 }
 
 function update_and_backup() {

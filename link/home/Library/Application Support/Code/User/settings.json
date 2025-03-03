@@ -40,12 +40,10 @@
   "cSpell.dictionaryDefinitions": [
     { "name": "vim", "path": "${workspaceFolder}/vs-code/dictionaries/vim.txt" }
   ],
-  "cSpell.ignoreRegExpList": [
-    "/[^\\s]{40,}/"
-  ],
+  "cSpell.ignoreRegExpList": ["/[^\\s]{40,}/"],
   "cSpell.language": "en,tr",
   "cSpell.languageSettings": [
-    { "languageId": "viml", "dictionaries": ["vim"] },
+    { "languageId": "viml", "dictionaries": ["vim"] }
   ],
   "cSpell.usePnP": true,
 
@@ -69,13 +67,10 @@
   "diffEditor.codeLens": true,
   "diffEditor.diffAlgorithm": "advanced",
   "diffEditor.hideUnchangedRegions.enabled": true,
-  "diffEditor.ignoreTrimWhitespace": true,
+  "diffEditor.ignoreTrimWhitespace": false,
   "diffEditor.renderSideBySide": false,
 
-  "docker.containers.description": [
-    "RepositoryNameAndTag",
-    "Status"
-  ],
+  "docker.containers.description": ["RepositoryNameAndTag", "Status"],
   "docker.containers.label": "ContainerName",
   "docker.containers.sortBy": "Label",
 
@@ -185,25 +180,9 @@
     "*.sublime-*": true
   },
 
-
   "git.blame.editorDecoration.enabled": false,
-  "git.branchProtection": [
-    "main",
-    "master"
-  ],
+  "git.branchProtection": ["main", "master"],
   "git.openRepositoryInParentFolders": "never",
-
-  "git-graph.date.format": "ISO Date & Time",
-  "git-graph.dialog.fetchRemote.prune": true,
-  "git-graph.dialog.fetchRemote.pruneTags": true,
-  "git-graph.dialog.general.referenceInputSpaceSubstitution": "Hyphen",
-  "git-graph.dialog.merge.squashCommits": true,
-  "git-graph.maxDepthOfRepoSearch": 1,
-  "git-graph.openNewTabEditorGroup": "Beside",
-  "git-graph.openToTheRepoOfTheActiveTextEditorDocument": true,
-  "git-graph.repository.fetchAndPrune": true,
-  "git-graph.repository.onLoad.scrollToHead": true,
-  "git-graph.repository.onLoad.showCheckedOutBranch": true,
 
   "github.copilot.advanced": {},
   "github.copilot.enable": {
@@ -213,22 +192,13 @@
     "yaml": true
   },
 
-  "gruvboxMaterial.lightContrast": "hard",
-
   "html-css-class-completion.enableEmmetSupport": true,
 
   "html.format.extraLiners": "body",
 
-  "indentRainbow.ignoreErrorLanguages": [
-    "markdown",
-    "ruby"
-  ],
-
   "jqPlayground.binaryPath": "/opt/homebrew/bin/jq",
 
   "js/ts.implicitProjectConfig.checkJs": true,
-
-  "jshint.lintHTML": true,
 
   "json.maxItemsComputed": 10000,
 
@@ -341,6 +311,7 @@
   "rubyLsp.featureFlags": {
     "all": true
   },
+  "rubyLsp.formatter": "auto",
 
   "scm.diffDecorationsGutterPattern": {
     "added": true
@@ -380,8 +351,6 @@
   "solargraph.formatting": true,
 
   "svg.preview.mode": "svg",
-
-  "tabnine.experimentalAutoImports": true,
 
   "terminal.external.osxExec": "iTerm.app",
   "terminal.integrated.copyOnSelection": true,
@@ -440,19 +409,40 @@
   },
 
   "vim.normalModeKeyBindings": [
-    { "before": ["leader", "leader", "k"], "commands": ["workbench.action.openGlobalKeybindingsFile"] },
-    { "before": ["leader", "leader", "j"], "commands": ["workbench.action.openSettingsJson"] },
-    { "before": ["leader", "leader", "j", "w"], "commands": ["workbench.action.openWorkspaceSettingsFile"] },
+    {
+      "before": ["leader", "leader", "k"],
+      "commands": ["workbench.action.openGlobalKeybindingsFile"]
+    },
+    {
+      "before": ["leader", "leader", "j"],
+      "commands": ["workbench.action.openSettingsJson"]
+    },
+    {
+      "before": ["leader", "leader", "j", "w"],
+      "commands": ["workbench.action.openWorkspaceSettingsFile"]
+    },
 
     { "before": ["leader", "%"], "commands": ["editor.emmet.action.matchTag"] },
     { "before": ["leader", "a"], "commands": ["alternate.alternateFile"] },
     // TODO: Copy relative to git
     // { "before": ["leader", "c", "p"], "commands": ["copyRelativeFilePath"] },
-    { "before": ["leader", "c", "p"/*, "l"*/], "commands": ["copy-relative-path-and-line-numbers.both"] },
+    {
+      "before": ["leader", "c", "p" /*, "l"*/],
+      "commands": ["copy-relative-path-and-line-numbers.both"]
+    },
     // { "before": ["leader", "c", "p", "p"], "commands": ["problems.action.copy"] },
-    { "before": ["leader", "c", "space"], "commands": ["editor.action.commentLine"] },
-    { "before": ["leader", "d", "a"], "commands": ["workbench.action.closeAllEditors"] },
-    { "before": ["leader", "d", "e"], "commands": ["workbench.action.closeOtherEditors"] },
+    {
+      "before": ["leader", "c", "space"],
+      "commands": ["editor.action.commentLine"]
+    },
+    {
+      "before": ["leader", "d", "a"],
+      "commands": ["workbench.action.closeAllEditors"]
+    },
+    {
+      "before": ["leader", "d", "e"],
+      "commands": ["workbench.action.closeOtherEditors"]
+    },
     { "before": ["leader", "f"], "commands": ["workbench.action.quickOpen"] },
     { "before": ["leader", "r", "n"], "commands": ["editor.action.rename"] },
     // { "before": ["leader", "s", "r"], "commands": [{
@@ -460,10 +450,16 @@
     //     "args": { "fileUri": "~/Desktop/test\\ code/test.rb" }
     // }]},
     { "before": ["leader", "t"], "commands": ["workbench.action.gotoSymbol"] },
-    { "before": ["leader", "T"], "commands": ["workbench.action.showAllSymbols"] },
+    {
+      "before": ["leader", "T"],
+      "commands": ["workbench.action.showAllSymbols"]
+    },
 
     { "before": ["[", "m"], "commands": ["gotoNextPreviousMember.nextMember"] },
-    { "before": ["]", "m"], "commands": ["gotoNextPreviousMember.previousMember"] },
+    {
+      "before": ["]", "m"],
+      "commands": ["gotoNextPreviousMember.previousMember"]
+    },
 
     { "before": ["C-j"], "commands": ["editor.action.marker.next"] },
     { "before": ["C-k"], "commands": ["editor.action.marker.prev"] },
@@ -478,14 +474,20 @@
 
     // { "before": ["g", "]"], "commands": ["workbench.action.showAllSymbols"] },
     { "before": ["g", "]"], "commands": ["editor.action.peekDefinition"] },
-    { "before": ["K"], "commands": ["editor.action.showDefinitionPreviewHover"] },
+    {
+      "before": ["K"],
+      "commands": ["editor.action.showDefinitionPreviewHover"]
+    },
     // Workaround for https://github.com/VSCodeVim/Vim/issues/1490
     { "before": ["u"], "commands": ["undo"] },
     { "before": ["z", "g"], "commands": ["cSpell.addWordToDictionary"] }
   ],
 
   "vim.visualModeKeyBindings": [
-    { "before": ["leader", "c", "space"], "commands": ["editor.action.commentLine"] }
+    {
+      "before": ["leader", "c", "space"],
+      "commands": ["editor.action.commentLine"]
+    }
   ],
 
   "vscode-yaml-sort.emptyLinesUntilLevel": 1,
@@ -567,7 +569,7 @@
   },
 
   "workbench.colorTheme": "Ayu Mirage Bordered",
-  "workbench.preferredDarkColorTheme": "Ayu Mirage Bordered",
+  "workbench.preferredDarkColorTheme": "Spinel",
   "workbench.preferredLightColorTheme": "Ayu Light Bordered",
 
   "workbench.editor.decorations.colors": true,
@@ -584,9 +586,7 @@
 
   "xml.codeLens.enabled": true,
 
-  "yaml.customTags": [
-    "!ruby/regexp"
-  ],
+  "yaml.customTags": ["!ruby/regexp"],
   "yaml.maxItemsComputed": 10000,
 
   "yard.spacers.afterTags": false,

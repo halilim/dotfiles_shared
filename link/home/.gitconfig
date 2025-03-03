@@ -1,19 +1,28 @@
 ; Some tools don't recognize .config/git/config, and directly use .gitconfig
 
 [alias]
+	c = commit
+	cl = clone
 	co = checkout
 
 [apply]
 	whitespace = nowarn
 
+[branch]
+	sort = -committerdate
+
 [color]
 	ui = always
+
+[column]
+	ui = auto
 
 [commit]
 	; Disabled due to the inconvenience of having to enter password ~per day to unlock key
 	; Also: https://softwareengineering.stackexchange.com/q/212192/7611
 	; Using SSH signing for now
 	gpgsign = true
+	verbose = true
 
 [core]
 	; Using ~/.config/git/attributes
@@ -52,7 +61,10 @@
 	keep-plus-minus-markers = false
 
 [diff]
-	colorMoved = default
+	algorithm = histogram
+	colorMoved = plain
+	mnemonicPrefix = true
+	renames = true
 
 ; TODO: Broken with both brew imgcat & iterm2 imgcat
 ; [diff "image"]
@@ -78,6 +90,11 @@
 [difftool "yml"]
 	cmd = yaml_diff \"$LOCAL\" \"$REMOTE\"
 
+[fetch]
+	all = true
+	prune = true
+	pruneTags = true
+
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
@@ -95,6 +112,9 @@
 [gui]
 	encoding = utf-8
 
+[help]
+	autocorrect = prompt
+
 [init]
 	defaultBranch = main
 
@@ -103,10 +123,9 @@
 	diffFilter = delta --color-only --features=interactive
 
 [merge]
-	tool = gvimdiff ; Direct editing is simpler than 4 panes for conflicts
-	; tool = gvim
-	conflictstyle = diff3
 	autoStash = true
+	conflictstyle = zdiff3
+	tool = gvimdiff ; Direct editing is simpler than 4 panes for conflicts
 
 [mergetool]
 	keepBackup = false
@@ -125,17 +144,26 @@
 	trustExitCode = true
 
 [pull]
-	rebase = false
 	ff = only
+	rebase = false
 
 [push]
 	autoSetupRemote = true
 	default = simple
+	followTags = true
 	useForceIfIncludes = true
 
 [rebase]
-	autosquash = true
+	autoSquash = true
 	autoStash = true
+	updateRefs = true
+
+[rerere]
+	autoupdate = true
+	enabled = true
+
+[tag]
+	sort = version:refname
 
 [url "https://"]
 	insteadOf = git://

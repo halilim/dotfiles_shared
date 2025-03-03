@@ -32,8 +32,10 @@ export POST_INIT_HOOKS=()
 export DOTFILES_INCLUDE_LIBS=(
   databases
   docker
+  editing
   functions
   git
+  net
   node
   ruby_rails
   update_and_backup

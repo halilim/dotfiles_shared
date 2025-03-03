@@ -20,6 +20,16 @@ function debug_vars() {
   print_to_log ''
 }
 
+function get_editor_titles() {
+  if [[ $EDITOR = mvim* ]]; then
+    window_names 'MacVim'
+  elif [[ $EDITOR = code ]]; then
+    window_names 'Visual Studio Code.app' 'Code'
+  elif [[ $EDITOR = code-insiders ]]; then
+    window_names 'Visual Studio Code - Insiders.app' 'Code - Insiders'
+  fi
+}
+
 function print_to_log() {
   echo "$1" >> ~/bin/open_from_iterm.log
 }
@@ -49,13 +59,10 @@ function get_project_path() {
 }
 
 function open_in_editor() {
-  local git_dir=$1 git_path=$2 parent_path line=$3 abs_path_line_col=$4
+  local git_dir=$1 git_path=$2 line=$3 abs_path_line_col=$4 is_text=$5 editor_titles
+  editor_titles=$(get_editor_titles)
 
-  parent_path=$(dirname "$git_path")
-  debug_vars parent_path
-
-  # $line: Coming from grep etc., probably a text file
-  if is_in_editor_titles "$git_dir" "$parent_path" || [[ $line ]]; then
+  if is_in_editor_titles "$git_dir" "$git_path" "$editor_titles" || [[ $editor_titles && $is_text ]]; then
     open_with_editor "$abs_path_line_col"
     return
   fi
@@ -70,18 +77,20 @@ function open_in_rubymine() {
   rubymine_titles=$(window_names RubyMine)
   debug_vars rubymine_titles
 
-  local rubymine_title
-  for rubymine_title in ${rubymine_titles//,/ }; do
-    # Format: `<project>( – <file>)?` - not a regular dash
-    if [[ $rubymine_title == "$git_dir" || $rubymine_title == "$git_dir – "* ]]; then
-      open_with_rubymine "$abs_path" "$line" "$column"
-      return
-    fi
-  done
+  if [[ $git_dir ]]; then
+    local rubymine_title
+    for rubymine_title in ${rubymine_titles//,/ }; do
+      # Format: `<project>( – <file>)?` - not a regular dash
+      if [[ $rubymine_title == "$git_dir" || $rubymine_title == "$git_dir – "* ]]; then
+        open_with_rubymine "$abs_path" "$line" "$column"
+        return
+      fi
+    done
+  fi
 
   if [[ $rubymine_titles && ${abs_path##*.} == 'rb' ]]; then
     # https://www.jetbrains.com/help/ruby/opening-files-from-command-line.html#88f1a126
-    # Note: column is only documented in the "Windows" tab. -1: it goes to the next character (bug?)
+    # Note: column is only documented in the "Windows" tab
     open_with_rubymine "$abs_path" "$line" "$column"
     return
   fi
@@ -97,24 +106,12 @@ function open_with_rubymine() {
 }
 
 function is_in_editor_titles() {
-  local git_dir=$1 parent_path=$2 parent_dir project_path project_dir
+  local git_dir=$1 git_path=$2 editor_titles=$3 parent_path parent_dir project_path project_dir
+  parent_path=$(dirname "$git_path")
   parent_dir=$(basename "$parent_path")
   project_path=$(get_project_path "$parent_path")
   project_dir=$(basename "$project_path")
-  debug_vars parent_dir project_path project_dir
-
-  local editor_titles
-  if [[ $EDITOR = mvim* ]]; then
-    editor_titles=$(window_names 'MacVim')
-  elif [[ $EDITOR = code ]]; then
-    editor_titles=$(window_names 'Visual Studio Code.app' 'Code')
-  elif [[ $EDITOR = code-insiders ]]; then
-    editor_titles=$(window_names 'Visual Studio Code - Insiders.app' 'Code - Insiders')
-  else
-    editor_titles=""
-  fi
-
-  debug_vars editor_titles
+  debug_vars parent_path parent_dir project_path project_dir editor_titles
 
   local editor_title
   for editor_title in ${editor_titles//,/ }; do

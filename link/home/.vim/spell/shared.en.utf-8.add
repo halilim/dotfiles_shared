@@ -88,6 +88,7 @@ catppuccin
 cbrt
 CDN
 cdspell
+cellspacing
 certdir
 chacha
 charlock
@@ -111,6 +112,7 @@ Codeship
 colima
 colorsaurus
 commissionable
+committerdate
 commonmarker
 compadd
 compdef
@@ -137,6 +139,7 @@ darcs
 dasherized
 datadoghq
 datatracker
+datestamp
 datname
 DBeaver
 Deel
@@ -185,6 +188,8 @@ elasticlunr
 elasticsearch
 Elasticsearch
 emailoctopus
+endcapture
+endcomment
 endfor
 endfunction
 endswith
@@ -213,6 +218,7 @@ factorybot
 falsey
 fanout
 fastcgi
+favicons
 fcontext
 fdescribe
 fielddata
@@ -345,6 +351,7 @@ IRB
 irbrc
 Iseconds
 isready
+isutf
 iterm
 Itest
 javascripts
@@ -436,6 +443,7 @@ mkspell
 mktmpdir
 monospace
 moreutils
+msapplication
 msgpack
 multidb
 multihomed
@@ -602,6 +610,7 @@ reindex
 relayhost
 remoteless
 REPORTTIME
+rerere
 rescuable
 Resque
 RESTful
@@ -788,6 +797,7 @@ YAML
 yamllint
 youtrack
 zcat
+zdiff
 zeitwerk
 zellij
 Zscript

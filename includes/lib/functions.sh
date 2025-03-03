@@ -93,44 +93,14 @@ function color_arrow() {
   color "$1" "-> $2"
 }
 
-function content_length() {
-  curl -ILs "$1" |
-    http_header_value Content-Length |
-    "$GNU_NUMFMT" --to=si --suffix=B
-}
-# cSpell:ignore cuil
-alias cuil="content_length"
-
-function curl_time() {
-  if [[ ! $1 ]]; then
-    echo >&2 "Usage: $0 <url> [<interface>]"
-    return 1
-  fi
-
-  local params=()
-  [[ $2 ]] && params+=(--interface "$2")
-
-  # https://stackoverflow.com/a/22625150/372654
-  # cSpell:disable
-  curl "$1" "${params[@]}" -Isv -o /dev/null -w "     time_namelookup:  %{time_namelookup}s
-        time_connect:  %{time_connect}s
-     time_appconnect:  %{time_appconnect}s
-    time_pretransfer:  %{time_pretransfer}s
-       time_redirect:  %{time_redirect}s
-  time_starttransfer:  %{time_starttransfer}s
-                       ---------
-          time_total:  %{time_total}s\n"
-  # cSpell:enable
-}
-
 # Usage: DRY_RUN=1 FAKE_RETURN=foo echo_eval 'bar %q' "$baz"
 function echo_eval() {
-  local cmd silent=${SILENT:-} dry_run=${DRY_RUN:-}
+  local cmd dry_run=${DRY_RUN:-}
   # shellcheck disable=SC2059
   cmd=$(printf "$@")
 
-  # Print only when dry running
-  if [[ $dry_run || ! $silent ]]; then
+  # Print only when dry running or verbose
+  if [[ $dry_run || ! ${VERBOSE:-} ]]; then
     color_arrow >&2 green "$cmd"
   fi
 
@@ -157,10 +127,6 @@ function edit_function() {
 }
 # shellcheck disable=SC2139
 alias {ef,fe}='edit_function'
-
-function encode_uri_component() {
-  jq -rR @uri <<< "$1"
-}
 
 function for_each_dir() {
   local dir
@@ -192,23 +158,6 @@ function in_array() {
   shift
   for e; do [[ "$e" == "$match" ]] && return 0; done
   return 1
-}
-
-function http_header_value() {
-  local headers header
-
-  if [[ $# = 1 ]]; then
-    headers=$(cat -)
-    header=$1
-  else
-    headers=$1
-    header=$2
-  fi
-
-  echo "$headers" |
-      grep -i "^$header:" |
-      cut -d ' ' -f 2 |
-      tr -d '\r'
 }
 
 # Usage: join_array '|' "${array[@]}"
@@ -268,20 +217,6 @@ function md5_of_str() {
   printf '%s' "$1" | md5
 }
 
-function my_external_ip() {
-  # Doesn't recognize proxy (Caches the result?)
-  # dig -4 TXT +short o-o.myaddr.l.google.com @ns1.google.com | tr -d '"'
-  curl -fLs ifconfig.me
-}
-
-# cSpell:ignore myip
-function myip_whois() {
-  local ip
-  ip=$(echo_eval my_external_ip)
-  echo_eval 'whois %q' "$ip"
-}
-alias whois_myip='myip_whois'
-
 function date_older_than() {
   local ts=$1 ago=$2 threshold
   threshold=$("$GNU_DATE" -d "$ago ago" +%s)
@@ -303,37 +238,6 @@ function needs_update_and_mark() {
     return 0
   else
     return 1
-  fi
-}
-
-function open_with_editor() {
-  local abs_path_line_col=$1 silent=1 cmd
-
-  if [[ ${VERBOSE:-} ]]; then
-    silent=''
-  fi
-
-  if [[ $EDITOR == "$VIM_CMD" ]]; then
-    cmd='vim_open %q'
-  elif [[ $EDITOR = code || $EDITOR = code-insiders ]]; then
-    # https://code.visualstudio.com/docs/editor/command-line#_core-cli-options
-    cmd="/usr/local/bin/$EDITOR -g %q"
-  else
-    cmd='open %q'
-  fi
-
-  SILENT=$silent echo_eval "$cmd" "$abs_path_line_col"
-}
-
-function port_check() {
-  local port=$1 \
-    out
-
-  out=$(lsof -nP +c0 -iTCP:"$port" -sTCP:LISTEN)
-  echo "$out"
-
-  if [[ $out =~ docker ]]; then
-    docker container ls --format "table {{.ID}}\t{{.Names}}\t{{.Ports}}" -a | rg -n -w "$port"
   fi
 }
 
@@ -397,34 +301,6 @@ function same_inode() {
   [[ $inode_count == 1 ]]
 }
 alias are_hardlinks='same_inode'
-
-function ssl_check() {
-  local domain=$1
-  printf Q | openssl s_client -servername "$domain" -connect "$domain":443 | openssl x509 -noout -dates
-}
-alias tls_check='ssl_check'
-
-function vim_open() {
-  local vim_cmd_=()
-  if [[ ${SUDO:-} ]]; then
-    vim_cmd_+=(sudo)
-  fi
-  vim_cmd_+=("$VIM_CMD")
-
-  # https://stackoverflow.com/a/5945322/372654
-  if [[ "$#" -eq 1 ]]; then
-    if [[ -d $1 ]]; then
-      vim_cmd_+=("$1" +':lcd %')
-    else
-      if [[ ! ${VIM_NO_SERVER:-} ]]; then
-        vim_cmd_+=("--remote-silent")
-      fi
-      vim_cmd_+=("$1")
-    fi
-  fi
-
-  "${vim_cmd_[@]}"
-}
 
 function which_() {
   local cmd=$1 name=$2 file_path
@@ -528,25 +404,7 @@ function which_detailed() {
 }
 alias wh="which_detailed"
 
-# cSpell:ignore whoip
-function whoip() {
-  local ip
-  ip=$(dig +short "$1" | head -n1)
-  local cmd="whois $ip"
-  echo >&2 "$cmd"
-  printf "=%.0s" $(seq 1 ${#cmd})
-
-  # Yeah, the long version by default, since whois outputs are so inconsistent...
-  if [[ $2 == '-s' ]]; then
-    printf '\n'
-    eval "$cmd" | noglob grep -i orgname | sed -e 's/OrgName:[[:space:]]*//' | sed -e 's/[[:space:]]*$//'
-    printf '\n'
-  else
-    eval "$cmd" | more
-  fi
-}
-
-# TODO: Replace with ${JS_PM}x ... or yq
+# TODO: Replace with $JS_PMX ... or yq
 function yaml_lint() {
   local file
   for file in "$@"; do
