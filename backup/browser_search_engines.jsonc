@@ -167,5 +167,11 @@
     "name": "Wikipedia",
     "shortcut": "wiki",
     "url": "https://en.wikipedia.org/wiki/%s"
+  },
+
+  {
+    "name": "YouTube Music",
+    "shortcut": "ym",
+    "url": "https://music.youtube.com/search?q=%s&utm_source=opensearch"
   }
 ]
