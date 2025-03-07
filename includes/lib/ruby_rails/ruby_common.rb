@@ -56,6 +56,7 @@ def table(items, *cols) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticCom
   # Convert everything to an array of hashes
   if first_item.respond_to?(:attributes)
     items.map!(&:attributes)
+    cols.map!(&:to_s)
   elsif first_item.is_a?(Array)
     items.map! { |arr| (0..arr.length - 1).zip(arr).to_h }
   end

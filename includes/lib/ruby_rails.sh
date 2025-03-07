@@ -16,24 +16,25 @@ alias gemib='gem_install_bundler_gemfile'
 
 function gem_uri_open() {
   local name=$1 version=$2 uri_field=$3 home_uri_field=homepage_uri
-  json=$(curl -fLs https://rubygems.org/api/v2/rubygems/"$name"/versions/"$version".json)
+  json=$(FAKE_RETURN="{\"$uri_field\": \"https://example.com\", \"$home_uri_field\": \"\"}" echo_eval \
+    'curl -Ls %q' "https://rubygems.org/api/v2/rubygems/$name/versions/$version.json")
   uri=$(jq -r ".$uri_field // .$home_uri_field" <<< "$json")
 
   if [[ $uri ]]; then
     echo_eval "$OPEN_CMD %q" "$uri"
   else
-    echo "No $uri_field or $home_uri_field"
-    jq <<< "$json"
+    echo >&2 "No $uri_field or $home_uri_field"
+    echo >&2 "$json" | jq
     return 1
   fi
 }
 
 function gem_() {
   local cmd=$1 selected name version
-  selected=$2 # etc/1.0
-  name=${selected%%/*}
-  version=${selected#*/}
-  # echo "cmd: $cmd, name: $name, version: $version"
+  selected=$2 # foo/1.0/ or bar/2.0/default
+  name=$(echo "$selected" | cut -d '/' -f 1)
+  version=$(echo "$selected" | cut -d '/' -f 2)
+  # declare -p cmd name version 1>&2
 
   case "$cmd" in
     cd) cd "$(bundle info "$name" --path)" || return ;;

@@ -6,7 +6,8 @@ _gem_()  {
   # shellcheck disable=SC2046
   case $state in
     cmd) compadd 'cd' 'doc' 'src' ;;
-    gem) compadd $(bundle exec gem list | tr ' ' '/' | tr -d '()') ;;
+    gem) compadd $(bundle exec gem list |
+      rg --multiline --only-matching --replace '$1/$4/$3' '^([^( ]+)\s*\(((default):\s*)?([^) ]+)\)') ;;
   esac
 }
 compdef _gem_ gem_
