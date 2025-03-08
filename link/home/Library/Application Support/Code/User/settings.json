@@ -24,6 +24,7 @@
     "procfile": true,
     "snippets": true,
     "svg": true,
+    "tailwindcss": true,
     "vim-snippet": true,
     "viml": true,
     "Vimscript": true,
@@ -380,6 +381,8 @@
     }
   },
   "todo-tree.tree.scanMode": "current file",
+
+  "typescript.updateImportsOnFileMove.enabled": "always",
 
   // Implemented via regular keyboard shortcuts
   // "vim.handleKeys": {
