@@ -20,7 +20,8 @@ repos:
                 .+/Code/User/.+\.json|
                 .+\.code-workspace|
                 \.docker\/config\.json|
-                backup/.+\.json
+                backup/.+\.json|
+                backup/.+uBlock\.txt
             )$
       - id: fix-byte-order-marker
       - id: mixed-line-ending
