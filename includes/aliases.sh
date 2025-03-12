@@ -75,6 +75,7 @@ alias lzg='lazygit'
 alias m='mine .' # RubyMine
 alias mi='mediainfo'
 alias mii='mise install'
+alias mit='mise trust'
 alias myip='my_ips'
 
 alias mysql_dump='mysqldump --no-create-info -uroot -p db_name > db_name.sql'
