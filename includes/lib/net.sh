@@ -65,14 +65,6 @@ function myip_whois() {
 }
 alias whois_myip='myip_whois'
 
-function ping_router() {
-  local router_ip
-  router_ip=$(netstat -nr | rg --multiline 'Internet:\nDestination\s+Gateway.*\ndefault\s+(\S+).*' --replace '$1')
-  ping "$router_ip"
-}
-# shellcheck disable=SC2139
-alias {pgg,pingr}='ping_router' # cSpell:ignore pingr
-
 function port_check() {
   local port=$1 \
     out
@@ -84,6 +76,16 @@ function port_check() {
     docker container ls --format "table {{.ID}}\t{{.Names}}\t{{.Ports}}" -a | rg -n -w "$port"
   fi
 }
+
+function router_ip() {
+  netstat -nr | rg --multiline 'Internet:\nDestination\s+Gateway.*\ndefault\s+(\S+).*' --replace '$1'
+}
+
+function router_ping() {
+  ping "$(router_ip)"
+}
+# shellcheck disable=SC2139
+alias {pgg,pingr,ping_router}='router_ping' # cSpell:ignore pingr
 
 function ssl_check() {
   local domain=$1
