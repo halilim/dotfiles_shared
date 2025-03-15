@@ -40,7 +40,7 @@ jobs:
       - name: Install ShellSpec
         run: curl -fsSL https://git.io/shellspec | sh -s latest.tar.gz --bin /usr/local/bin --yes
       - name: Install Zsh
-        run: sudo apt-get install -y zsh
+        run: sudo apt-get update && sudo apt-get install --no-install-recommends -y zsh
       - name: Display ShellSpec version
         run: shellspec --version
       - name: Display Bash version

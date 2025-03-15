@@ -23,6 +23,7 @@ alias dkrm='docker rm'
 alias dkrr='docker run --rm'
 alias dkrri='docker run --rm -it'
 alias dks='docker stats --no-stream'
+alias dps="docker ps --format 'table {{.ID}}\t{{.Names}}\t{{.Status}}'"
 
 # cSpell:ignore dceis
 # shellcheck disable=SC2139

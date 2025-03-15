@@ -1,6 +1,9 @@
 #!/bin/bash
 
-shopt -s globstar nocaseglob nullglob
+shopt -s nocaseglob nullglob
+if shopt > /dev/null 2>&1 | grep globstar; then
+  shopt -s globstar
+fi
 if [[ $- = *i* ]]; then
   shopt -s extdebug
 fi

@@ -1,7 +1,7 @@
 Describe 'bin/*'
   Example 'are executable'
     for file in link/home/bin/*; do
-      if [[ $file == *functions* ]]; then
+      if [[ $file == *functions* || $file == */mine ]]; then
         continue
       fi
 

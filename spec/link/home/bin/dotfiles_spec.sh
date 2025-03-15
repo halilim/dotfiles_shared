@@ -58,7 +58,7 @@ Describe "$script"
 
   Mock vim
     if [[ $1 != +"$expected_vim_arg" ]]; then
-      echo >&2 "Unregistered docker mock: $*"
+      echo >&2 "Unregistered vim mock: $*"
       exit 1
     fi
   End

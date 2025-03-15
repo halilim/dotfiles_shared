@@ -32,7 +32,7 @@ function vim_open() {
   # https://stackoverflow.com/a/5945322/372654
   if [[ "$#" -gt 0 ]]; then
     if [[ -d $1 ]]; then
-      vim_cmd_+=" $* +':lcd %'"
+      vim_cmd_+=" $* +':lcd %%'"
     else
       if [[ ! ${VIM_NO_SERVER:-} ]]; then
         vim_cmd_+=" --remote-silent"

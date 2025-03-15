@@ -125,7 +125,8 @@ alias {rgsw,rgwc,rgws}='rg -sw' # Word and case sensitive
 
 alias shc='shellcheck'
 alias shs='shellspec'
-alias shsfd='shellspec -f d' # cSpell:ignore shsfd
+# shellcheck disable=SC2139
+alias {shsd,shsfd}='shellspec -f d' # cSpell:ignore shsd shsfd
 
 # shellcheck disable=SC2139
 alias {sshc,ssh_copy_key,copy_ssh_key}='cb < ~/.ssh/id_*.pub'

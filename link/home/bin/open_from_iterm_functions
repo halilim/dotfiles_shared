@@ -5,13 +5,17 @@ function is_debug_enabled() {
 }
 
 function debug_print() {
-  is_debug_enabled || return
+  if ! is_debug_enabled; then
+    return
+  fi
 
   print_to_log "$1"
 }
 
 function debug_vars() {
-  is_debug_enabled || return
+  if ! is_debug_enabled; then
+    return
+  fi
 
   for arg in "$@"; do
     print_to_log "$(declare -p "$arg")"
@@ -58,41 +62,17 @@ function get_project_path() {
   echo "$dir"
 }
 
-function open_in_editor() {
-  local git_dir=$1 git_path=$2 line=$3 abs_path_line_col=$4 is_text=$5 editor_titles
-  editor_titles=$(get_editor_titles)
-
-  if is_in_editor_titles "$git_dir" "$git_path" "$editor_titles" || [[ $editor_titles && $is_text ]]; then
-    open_with_editor "$abs_path_line_col"
-    return
-  fi
-
-  return 1
-}
-
-function open_in_rubymine() {
-  local git_dir=$1 abs_path=$2 line=$3 column=$4
-
-  local rubymine_titles
-  rubymine_titles=$(window_names RubyMine)
-  debug_vars rubymine_titles
+function is_in_rubymine_titles() {
+  local rubymine_titles=$1 git_dir=$2
 
   if [[ $git_dir ]]; then
     local rubymine_title
     for rubymine_title in ${rubymine_titles//,/ }; do
       # Format: `<project>( – <file>)?` - not a regular dash
       if [[ $rubymine_title == "$git_dir" || $rubymine_title == "$git_dir – "* ]]; then
-        open_with_rubymine "$abs_path" "$line" "$column"
-        return
+        return 0
       fi
     done
-  fi
-
-  if [[ $rubymine_titles && ${abs_path##*.} == 'rb' ]]; then
-    # https://www.jetbrains.com/help/ruby/opening-files-from-command-line.html#88f1a126
-    # Note: column is only documented in the "Windows" tab
-    open_with_rubymine "$abs_path" "$line" "$column"
-    return
   fi
 
   return 1
@@ -102,7 +82,7 @@ function open_with_rubymine() {
   local abs_path=$1 line=$2 column=$3
   # https://www.jetbrains.com/help/ruby/opening-files-from-command-line.html#88f1a126
   # Note: column is only documented in the "Windows" tab. -1: it goes to the next character (bug?)
-  /usr/local/bin/mine --line "$line" --column $((column - 1)) "$abs_path"
+  mine --line "$line" --column $((column - 1)) "$abs_path"
 }
 
 function is_in_editor_titles() {
@@ -111,7 +91,7 @@ function is_in_editor_titles() {
   parent_dir=$(basename "$parent_path")
   project_path=$(get_project_path "$parent_path")
   project_dir=$(basename "$project_path")
-  debug_vars parent_path parent_dir project_path project_dir editor_titles
+  debug_vars parent_path parent_dir project_path project_dir
 
   local editor_title
   for editor_title in ${editor_titles//,/ }; do

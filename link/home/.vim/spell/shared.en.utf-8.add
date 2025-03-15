@@ -96,6 +96,7 @@ charlock
 checkwinsize
 chezmoi
 chsh
+cimg
 citizenships
 clawback
 clawbacks
@@ -799,6 +800,7 @@ xtype
 xxhash
 YAML
 yamllint
+yarnrc
 youtrack
 zcat
 zdiff

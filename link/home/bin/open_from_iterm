@@ -10,14 +10,14 @@
 : # TODO: Remove after https://github.com/koalaman/shellcheck/issues/1877 here and everywhere else
   #       Without it, it disables for the whole file
 
-# shellcheck disable=SC1090
-. ~/.dotfiles_bootstrap.sh
+# shellcheck disable=SC1090,SC1091
+. "$HOME"/.dotfiles_bootstrap.sh
 # shellcheck disable=SC1091
 . "$DOTFILES_INCLUDES"/bash_shared.sh
 # debug_vars EDITOR OSTYPE CPUTYPE
 # exit
-# shellcheck disable=SC1090
-. ~/bin/open_from_iterm_functions
+# shellcheck disable=SC1090,SC1091
+. "$HOME"/bin/open_from_iterm_functions
 
 debug_print '------------------------------'
 
@@ -32,14 +32,6 @@ column=$3
 [[ ! $abs_path ]] && exit
 
 [[ -d $abs_path ]] && open "$abs_path" && exit
-
-# This is unreachable because iTerm2 doesn't recognize it as a file/folder
-# Instead, it's handled by the field-context-separator in .ripgreprc
-# # ripgrep -A/-B format, e.g. foo/bar.ext-123-
-# if [[ ! $line && $abs_path =~ (.+)-([0-9]+)-$ ]]; then
-#   file=${BASH_REMATCH[1]}
-#   line=${BASH_REMATCH[2]}
-# fi
 
 abs_path_line_col=$abs_path
 [[ $line ]] && abs_path_line_col="$abs_path_line_col:$line"
@@ -56,9 +48,24 @@ if [[ $git_path ]]; then
 fi
 debug_vars dir git_path git_dir
 
-# TODO: (still needed?) create a list of candidates, split and test all path segments, in word mode
+rubymine_titles=$(window_names RubyMine)
+debug_vars rubymine_titles
 
-if open_in_rubymine "$git_dir" "$abs_path" "$line" "$column"; then
+if is_in_rubymine_titles "$rubymine_titles" "$git_dir"; then
+  open_with_rubymine "$abs_path" "$line" "$column"
+  exit
+fi
+
+editor_titles=$(get_editor_titles)
+debug_vars editor_titles
+
+if is_in_editor_titles "$git_dir" "$git_path" "$editor_titles"; then
+  open_with_editor "$abs_path_line_col"
+  exit
+fi
+
+if [[ $rubymine_titles && ${abs_path##*.} == 'rb' ]]; then
+  open_with_rubymine "$abs_path" "$line" "$column"
   exit
 fi
 
@@ -68,12 +75,13 @@ if [[ $line ]]; then
   is_text=1
 fi
 
-if open_in_editor "$git_dir" "$git_path" "$line" "$abs_path_line_col" "$is_text"; then
+if [[ $editor_titles && $is_text ]]; then
+  open_with_editor "$abs_path_line_col"
   exit
 fi
 
 if [[ ! -d $abs_path && $is_text ]]; then
-  VERBOSE=1 vim_open "$abs_path_line_col"
+  vim_open "$abs_path_line_col"
   exit
 fi
 
