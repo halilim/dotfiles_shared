@@ -74,11 +74,12 @@ alias rs="$RAILS_CMD server"
 alias rsl='rails_serve_lan' # Allow access from LAN (must be in the same network/Wi-Fi etc.)
 alias rvv="ruby -v && $RAILS_CMD -v"
 
-# cSpell:ignore rkdc rkdcl rkdct rkdm rkdmuv rkdmdv rkdms rkdmst rkdmt rkdmv rkdr rkdrt rkds rkro rrs gco
+# cSpell:ignore rkdc rkdcl rkdct rkddt rkdm rkdmuv rkdmdv rkdms rkdmst rkdmt rkdmv rkdr rkdrt rkds rkro rrs gco
 alias rk="$RAKE_CMD"
 alias rkdc="$RAKE_CMD db:create"
 alias rkdcl="$RAKE_CMD db:create db:schema:load"
 alias rkdct="$RAKE_CMD db:create RAILS_ENV=test"
+alias rkddt="$RAKE_CMD db:drop RAILS_ENV=test"
 alias rkdm="$RAKE_CMD db:migrate"
 alias rkdmuv="$RAKE_CMD db:migrate:up VERSION=" # Migrate SPECIFIED version
 alias rkdmdv="$RAKE_CMD db:migrate:down VERSION=" # Roll back SPECIFIED version

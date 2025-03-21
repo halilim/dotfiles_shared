@@ -75,6 +75,7 @@ Brewfile
 britive
 broadcasted
 bufferline
+buildkit
 buildpack
 buildpacks
 buildx

@@ -49,10 +49,6 @@ brew 'node' # coc.nvim & probably others
 
 brew 'patchutils'
 
-# Without this, zsh-tab-completions emits 3 lines of "_normal:6: command not found: pygmentize"
-# Though even with this, it outputs pygmentize help :)
-# brew 'pygmentize'
-
 brew 'ripgrep'
 brew 'rsync' # MacOS one is ancient
 
@@ -66,10 +62,12 @@ brew 'readline'
 brew 'shared-mime-info' # mimemagic gem
 
 brew 'shellcheck'
-brew 'shellspec/shellspec/shellspec'
+tap 'shellspec/shellspec'
+brew 'shellspec'
 brew 'shfmt' # VS Code extension shell-format
 
-brew 'teamookla/speedtest/speedtest'
+tap 'teamookla/speedtest'
+brew 'speedtest'
 
 brew 'terminal-notifier'
 brew 'tldr'
@@ -79,14 +77,13 @@ brew 'yq'
 
 # In case macOS falls behind here too
 brew 'zsh'
-at_exit { system '"$DOTFILES_SHARED"/share/switch_to_homebrew_zsh' }
+at_exit { system '~/bin/switch_to_homebrew_zsh' }
 
 # Start: Casks
 
 cask 'font-sauce-code-pro-nerd-font' # Also works for Powerlevel10k
 
 cask 'qlcolorcode' # Source code files with syntax highlighting
-cask 'qlimagesize'
 cask 'qlstephen' # README, Makefile etc.
 cask 'qlvideo' # Finder thumbnails & Quick Look previews and thumbnails
 cask 'quicklook-json'
@@ -104,6 +101,6 @@ brew 'universal-ctags', args: ['HEAD']
 
 # End: Casks
 
-brewfile_custom = Pathname.new(File.readlink(__FILE__)).dirname.dirname.dirname
+brewfile_custom = Pathname.new(File.readlink(__FILE__)).dirname.dirname.dirname.dirname
                           .join('custom', 'includes', 'brewfile_custom.rb')
 instance_eval File.read(brewfile_custom), __FILE__, __LINE__ + 1 if brewfile_custom.exist?
