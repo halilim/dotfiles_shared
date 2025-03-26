@@ -1,0 +1,154 @@
+[
+  {
+    "guid": "34D2761A-FA2C-4E32-8F15-0DC779E9F2AD",
+    "escaping": 2,
+    "title": "",
+    "value": "--- Shell ---",
+    "version": 2
+  },
+  {
+    "guid": "61AD1533-C3FC-40A2-A858-DB0DA4D660D4",
+    "escaping": 2,
+    "tags": [],
+    "title": "",
+    "value": "bin\/rails",
+    "version": 2
+  },
+  {
+    "guid": "99C9D002-D235-4B20-B101-6982BEFBBD85",
+    "escaping": 2,
+    "tags": [],
+    "title": "",
+    "value": "bundle exec",
+    "version": 2
+  },
+  {
+    "guid": "0A78EA7F-517C-42DC-9920-4111F2261298",
+    "escaping": 2,
+    "tags": [],
+    "title": "",
+    "value": "declare -p ",
+    "version": 2
+  },
+  {
+    "guid": "1EC23FDA-12EC-4F3F-B11F-4D7FC54FEA9C",
+    "escaping": 2,
+    "title": "",
+    "value": "ps aux | grep -v \" grep \" | grep -i ",
+    "version": 2
+  },
+  {
+    "guid": "A46FAA77-A4C9-427A-A5B7-9B3675BA9DF4",
+    "escaping": 2,
+    "title": "",
+    "value": "--- Ruby ---",
+    "version": 2
+  },
+  {
+    "guid": "2E881687-D28C-4826-A174-9E6A81565953",
+    "escaping": 2,
+    "tags": [],
+    "title": "",
+    "value": ".methods.select { |m| m.to_s =~ \/pattern\/i }",
+    "version": 2
+  },
+  {
+    "guid": "88118D02-77CC-4B0F-9B57-11100CF80763",
+    "escaping": 2,
+    "tags": [],
+    "title": "",
+    "value": "h.keys.select { |k| k.to_s =~ \/pattern\/i }",
+    "version": 2
+  },
+  {
+    "guid": "719CDD47-74C4-46B4-BF3D-8526D8DED06C",
+    "escaping": 2,
+    "tags": [],
+    "title": "",
+    "value": "h.values.select { |v| v.to_s =~ \/pattern\/i }",
+    "version": 2
+  },
+  {
+    "guid": "A2B0FF8B-60BA-4055-A9C9-EAEF6E184677",
+    "escaping": 2,
+    "tags": [],
+    "title": "",
+    "value": "h.select { |k, v| v.to_s =~ \/pattern\/i }",
+    "version": 2
+  },
+  {
+    "guid": "5DB3F379-BA49-4D55-913B-E6B0E89CDE6B",
+    "escaping": 2,
+    "title": "",
+    "value": "--- Rails ---",
+    "version": 2
+  },
+  {
+    "guid": "4D055149-7FAE-4C9F-BD84-3FAC9C3F5144",
+    "escaping": 2,
+    "tags": [],
+    "title": "AR conn config",
+    "value": "ActiveRecord::Base.public_send(Rails.gem_version >= '6.1' ? :connection_db_config : :connection_config)",
+    "version": 2
+  },
+  {
+    "guid": "A03D7FB8-9458-4DA0-9016-C3AC004F4A54",
+    "escaping": 2,
+    "title": "AR exec_query",
+    "value": "result = ActiveRecord::Base.connection.exec_query(\"select version()\")",
+    "version": 2
+  },
+  {
+    "guid": "146fd956a96e5a621f047aab04957b1f9323d8e7984befe1c3fd9e1d8d96c4da",
+    "escaping": 1,
+    "tags": [],
+    "title": "",
+    "value": ".errors.messages",
+    "version": 2
+  },
+  {
+    "guid": "A19C7270-E775-4A09-AB62-8D631909396E",
+    "escaping": 2,
+    "tags": [],
+    "title": "",
+    "value": ".group(:foo_id).count",
+    "version": 2
+  },
+  {
+    "guid": "2A1A3588-F25F-478D-9F64-FEE68BB122F2",
+    "escaping": 2,
+    "title": "include URL helpers",
+    "value": "include Rails.application.routes.url_helpers",
+    "version": 2
+  },
+  {
+    "guid": "89B55B67-523E-4B0E-AD3A-0772ADF733BA",
+    "escaping": 2,
+    "tags": [],
+    "title": "",
+    "value": "Rails.backtrace_cleaner.clean caller # or e.backtrace",
+    "version": 2
+  },
+  {
+    "guid": "d29c6a099f98acc972f1a636b1fac279b71a656f2668f695ab9c76c134f19643",
+    "escaping": 1,
+    "tags": [],
+    "title": "",
+    "value": "Rails.cache.clear",
+    "version": 2
+  },
+  {
+    "guid": "42183109-E803-46DC-AF36-7EDE771F8C38",
+    "escaping": 2,
+    "title": "",
+    "value": "user = User.find_by(email: '')",
+    "version": 2
+  },
+  {
+    "guid": "7E046D00-C5AD-4ECC-BDF0-8198062512A7",
+    "escaping": 2,
+    "title": "",
+    "value": "; nil",
+    "version": 2
+  }
+]
