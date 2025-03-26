@@ -29,7 +29,7 @@ function cb_tmp() {
       echo >&2 " !!! $name IS COPIED TO YOUR CLIPBOARD FOR $expiry SECONDS !!! "
     fi
     printf %s "$str" | "${CLIP[*]}"
-    ( sleep  "$expiry" && printf '' | "${CLIP[*]}" ) &
+    ( sleep "$expiry" && printf '' | "${CLIP[*]}" ) &
   fi
 }
 

@@ -117,6 +117,10 @@ nnoremap <leader>* :Rg <C-R><C-W><CR>
 
 nnoremap <D-.> :ALEFix<CR>
 
+" Doesn't work: nnoremap <leader>g gx<CR>
+nnoremap <leader>g :!open <cWORD><CR>
+" https://example.com/
+
 nnoremap <leader><leader>c :CocConfig<CR>
 nnoremap <leader><leader>g :e ~/.gvimrc<CR>
 nnoremap <leader><leader>v :e $MYVIMRC<CR>

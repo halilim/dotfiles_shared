@@ -10,7 +10,6 @@ alias libgpg='$EDITOR "$DOTFILES_INCLUDES"/lib/gpg.sh' # cSpell:ignore libgpg
 alias gpg_edit="gpg --edit-key $GPG_KEY" # adduid > enter details > save
 # shellcheck disable=SC2139
 alias gpg_show_public_key="gpg --armor --export $GPG_KEY"
-# Password: iterm2 > cmd-alt-f > password, secret, etc. backup gpg
 alias gpg_encrypt='gpg -c --cipher-algo AES256 -o' # ... "$encrypted_file" "$file"
 alias gpg_decrypt='gpg --decrypt -o' # ... "$file" "$encrypted_file"
 
