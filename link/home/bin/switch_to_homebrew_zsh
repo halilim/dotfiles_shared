@@ -3,6 +3,11 @@ set -euo pipefail
 IFS=$'\n\t'
 
 zsh_path="$HOMEBREW_PREFIX"/bin/zsh
+
+if [[ $SHELL == "$zsh_path" ]]; then
+  exit
+fi
+
 shells=/etc/shells
 
 if ! grep "$zsh_path" $shells > /dev/null 2>&1; then

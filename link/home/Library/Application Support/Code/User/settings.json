@@ -497,7 +497,6 @@
   "vscode-yaml-sort.useLeadingDashes": false,
 
   // cSpell:ignore dont
-  "vsicons.dontShowNewVersionMessage": true,
 
   "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
 
