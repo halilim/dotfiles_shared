@@ -28,7 +28,8 @@
     "vim-snippet": true,
     "viml": true,
     "Vimscript": true,
-    "xml": true
+    "xml": true,
+    "zonefile": true
   },
 
   "cSpell.customDictionaries": {

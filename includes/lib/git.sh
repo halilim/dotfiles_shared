@@ -50,6 +50,10 @@ function git_cp_remoteless() {
   echo_eval "$OPEN_CMD %q" "$dest"
 }
 
+function git_current_commit() {
+  git rev-parse --verify HEAD
+}
+
 function git_matching() {
   if [[ $# -lt 2 ]]; then
     echo >&2 'Usage: git_matching <git command> [<git args> ...] <search pattern>'

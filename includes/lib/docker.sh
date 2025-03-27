@@ -2,7 +2,7 @@
 
 alias libd='$EDITOR "$DOTFILES_INCLUDES"/lib/docker.sh'
 
-# cSpell:ignore dkcl dkcs dkcst dkei dkeis dkin dkins dkst dkri dkrm dkrr dkrri
+# cSpell:ignore dkcl dkcs dkcst dkei dkeis dkirm dkin dkins dkst dkri dkrm dkrr dkrri
 alias dk='docker'
 alias dkb='docker build'
 alias dkc='docker container'
@@ -13,6 +13,7 @@ alias dkcst='docker container stop'
 alias dke='docker exec'
 alias dkei='docker exec -it'
 alias dkeis='docker exec -it ... bash'
+alias dkirm='docker images rm'
 alias dkin='docker info'
 alias dkins='docker inspect'
 alias dkk='docker kill'
