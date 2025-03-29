@@ -3,9 +3,6 @@ local vscode = require('vscode')
 vim.notify = vscode.notify
 
 local normalMaps = {
-  ["<C-j>"] = "editor.action.marker.next",
-  ["<C-k>"] = "editor.action.marker.prev",
-
   ["<leader><leader>j"] = "workbench.action.openSettingsJson",
   ["<leader><leader>jw"] = "workbench.action.openWorkspaceSettingsFile",
   ["<leader><leader>k"] = "workbench.action.openGlobalKeybindingsFile",

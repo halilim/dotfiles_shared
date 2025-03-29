@@ -29,9 +29,10 @@
     "viml": true,
     "Vimscript": true,
     "xml": true,
-    "zonefile": true
+    "zonefile": true // cSpell:ignore zonefile
   },
 
+  "cSpell.checkVSCodeSystemFiles": true,
   "cSpell.customDictionaries": {
     "shared_en": { "path": "~/.vim/spell/shared.en.utf-8.add" },
     "custom_en": { "path": "~/.vim/spell/custom.en.utf-8.add" },
@@ -40,7 +41,7 @@
     "custom": true
   },
   "cSpell.dictionaryDefinitions": [
-    { "name": "vim", "path": "${workspaceFolder}/vs-code/dictionaries/vim.txt" }
+    { "name": "vim", "path": "~/.config/vs-code/dictionaries/vim.txt" }
   ],
   "cSpell.ignoreRegExpList": ["/[^\\s]{40,}/"],
   "cSpell.language": "en,tr",
@@ -409,7 +410,7 @@
 
   // To improve performance
   "extensions.experimental.affinity": {
-    "asvetliakov.vscode-neovim": 1,
+    "asvetliakov.vscode-neovim": 1, // cSpell:ignore asvetliakov
     "vscodevim.vim": 1
   },
 
@@ -652,7 +653,7 @@
   },
 
   "[toml]": {
-    "editor.defaultFormatter": "tamasfe.even-better-toml"
+    "editor.defaultFormatter": "tamasfe.even-better-toml" // cSpell:ignore tamasfe
   },
 
   "[typescript]": {

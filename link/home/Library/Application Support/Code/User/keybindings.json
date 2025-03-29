@@ -209,5 +209,15 @@
     {
         "key": "ctrl+cmd+,",
         "command": "workbench.action.openWorkspaceSettings"
+    },
+    {
+        "key": "ctrl+j",
+        "command": "editor.action.marker.next",
+        "when": "editorTextFocus && neovim.mode == normal"
+    },
+    {
+        "key": "ctrl+k",
+        "command": "editor.action.marker.prev",
+        "when": "editorTextFocus && neovim.mode == normal"
     }
 ]
