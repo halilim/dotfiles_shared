@@ -21,7 +21,8 @@ repos:
                 .+\.code-workspace|
                 \.docker\/config\.json|
                 backup/.+\.json|
-                backup/.+uBlock\.txt
+                backup/.+uBlock\.txt|
+                .+/lazyvim\.json
             )$
       - id: fix-byte-order-marker
       - id: mixed-line-ending

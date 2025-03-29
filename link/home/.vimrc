@@ -319,6 +319,7 @@ Plug 'junegunn/fzf.vim'
 
 Plug 'airblade/vim-gitgutter'
 Plug 'airblade/vim-rooter'
+Plug 'AndrewRadev/switch.vim'
 " Extend words to camel case etc.
 Plug 'chaoren/vim-wordmotion'
 Plug 'Chiel92/vim-autoformat'
@@ -434,6 +435,9 @@ let g:rooter_patterns = [
       \ '.bzr/',
       \ '.svn/'
       \ ]
+
+" ===== Plugin settings for AndrewRadev/switch.vimn =====
+let g:switch_mapping = '.'
 
 " ===== Plugin settings for chaoren/vim-wordmotion =====
 let g:wordmotion_prefix = mapleader

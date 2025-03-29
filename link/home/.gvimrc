@@ -27,6 +27,7 @@ if has("gui_macvim")
   " Cmd + p, files
   macmenu File.Print key=<nop>
   nnoremap <D-p> :call MyFZF()<CR>
+  nnoremap <D-P> :
   " This is Cmd + Alt + p, entered via Ctrl + v :) https://vi.stackexchange.com/a/18080/6891
   " To use <D-M-p>, nomacmeta needs to be set, which would disable certain Alt-characters.
   nnoremap <D-π> :call MyFZF('<C-R><C-W>')<CR>

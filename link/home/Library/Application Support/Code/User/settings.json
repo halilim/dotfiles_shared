@@ -409,6 +409,7 @@
 
   // To improve performance
   "extensions.experimental.affinity": {
+    "asvetliakov.vscode-neovim": 1,
     "vscodevim.vim": 1
   },
 
@@ -496,8 +497,6 @@
 
   "vscode-yaml-sort.emptyLinesUntilLevel": 1,
   "vscode-yaml-sort.useLeadingDashes": false,
-
-  // cSpell:ignore dont
 
   "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
 
