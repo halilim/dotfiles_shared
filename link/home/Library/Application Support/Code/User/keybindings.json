@@ -114,18 +114,8 @@
         "command": "-workbench.action.navigateForward"
     },
     {
-        "key": "alt+cmd+j",
-        "command": "editor.action.moveLinesDownAction",
-        "when": "editorTextFocus && !editorReadonly"
-    },
-    {
         "key": "alt+down",
         "command": "-editor.action.moveLinesDownAction",
-        "when": "editorTextFocus && !editorReadonly"
-    },
-    {
-        "key": "alt+cmd+k",
-        "command": "editor.action.moveLinesUpAction",
         "when": "editorTextFocus && !editorReadonly"
     },
     {
@@ -210,14 +200,26 @@
         "key": "ctrl+cmd+,",
         "command": "workbench.action.openWorkspaceSettings"
     },
+
     {
         "key": "ctrl+j",
         "command": "editor.action.marker.next",
-        "when": "editorTextFocus && neovim.mode == normal"
+        "when": "editorTextFocus"
     },
     {
         "key": "ctrl+k",
         "command": "editor.action.marker.prev",
-        "when": "editorTextFocus && neovim.mode == normal"
+        "when": "editorTextFocus"
+    },
+
+    {
+        "key": "ctrl+cmd+k",
+        "command": "editor.action.moveLinesUpAction",
+        "when": "editorTextFocus && !editorReadonly"
+    },
+    {
+        "key": "ctrl+cmd+j",
+        "command": "editor.action.moveLinesDownAction",
+        "when": "editorTextFocus && !editorReadonly"
     }
 ]

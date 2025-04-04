@@ -480,6 +480,7 @@
 
     // { "before": ["g", "]"], "commands": ["workbench.action.showAllSymbols"] },
     { "before": ["g", "]"], "commands": ["editor.action.peekDefinition"] },
+    { "before": ["g", "s"], "commands": ["editor.action.inPlaceReplace.down"] },
     {
       "before": ["K"],
       "commands": ["editor.action.showDefinitionPreviewHover"]

@@ -74,6 +74,7 @@ brandbook
 Brewfile
 britive
 broadcasted
+broadcasthost
 bufferline
 buildkit
 buildpack
@@ -201,6 +202,7 @@ enumerize
 env
 envrc
 envsh
+envsubst
 erb
 errexit
 erubi

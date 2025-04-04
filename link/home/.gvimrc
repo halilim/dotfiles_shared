@@ -8,9 +8,6 @@ set guioptions+=T
 
 " https://superuser.com/a/249483/59919
 if has("gui_macvim")
-  " For Fira Code, JetBrains Mono, Hasklig etc.
-  set macligatures
-
   " Cmd + n, new buffer
   macmenu File.New\ Window key=<D-N>
   nnoremap <D-n> :enew<CR>
@@ -27,20 +24,8 @@ if has("gui_macvim")
   " Cmd + p, files
   macmenu File.Print key=<nop>
   nnoremap <D-p> :call MyFZF()<CR>
-  nnoremap <D-P> :
-  " This is Cmd + Alt + p, entered via Ctrl + v :) https://vi.stackexchange.com/a/18080/6891
-  " To use <D-M-p>, nomacmeta needs to be set, which would disable certain Alt-characters.
-  nnoremap <D-π> :call MyFZF('<C-R><C-W>')<CR>
-
-  " Move line up/down - Why no <D-M-j> / <D-M-k>? See the note above about nomacmeta
-  nmap <D-j> <M-j>
-  nmap <D-∆> <M-j>
-  " D-¨ (Cmd+Opt+k) doesn't work
-  nmap <D-k> <M-k>
-  vmap <D-j> <M-j>
-  vmap <D-∆> <M-j>
-  " D-¨ (Cmd+Opt+k) doesn't work
-  vmap <D-k> <M-k>
+  vnoremap <D-p> :call MyFZF('<C-R><C-W>')<CR>
+  noremap <D-P> :
 
   macmenu Edit.Find.Use\ Selection\ for\ Find key=<nop>
   nnoremap <D-e> <C-w><C-w>
@@ -55,7 +40,7 @@ if has("gui_macvim")
 
     redraw!
 
-    AirlineRefresh
+    silent! AirlineRefresh
   endfun
   au OSAppearanceChanged * call ChangeBackground()
 endif

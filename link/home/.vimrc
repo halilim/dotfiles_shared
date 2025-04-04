@@ -1,3 +1,5 @@
+let g:is_root = $USER == 'root'
+
 set nocompatible        " We're running Vim, not Vi!
 set clipboard=unnamed   " Use system clipboard as default clipboard
 set cursorline          " highlight current line
@@ -165,6 +167,7 @@ nnoremap <leader>cps :call CopyAndEcho('s ' . GitPathLine())<CR>
 
 " Why did I need this (vs. plain bd)?
 " nnoremap <leader>dd :bp\|bd#<CR>
+nnoremap q :bd<CR>
 nnoremap <leader>d :bd<CR>
 nnoremap <leader>dd :bd<CR>
 " See .gvimrc for <D-w> alias
@@ -173,12 +176,17 @@ nnoremap <leader>da :%bd<CR>
 nnoremap <leader>de :%bd\|e#<CR>
 
 fun! MyFZF(query = '')
+  let dir = getcwd()
+  if dir == $HOME
+    let dir = $DOTFILES
+  endif
+
   if empty(a:query)
     let l:fzf_options = []
   else
     let l:fzf_options = ['-q' . a:query]
   endif
-  call fzf#vim#files('', fzf#vim#with_preview({'options': l:fzf_options}, 'right:50%:hidden', 'ctrl-space'))
+  call fzf#vim#files(dir, fzf#vim#with_preview({'options': l:fzf_options}, 'right:50%:hidden', 'ctrl-space'))
 endfun
 " Disabled in favor of coc-format-selected
 " <D-p> alias is in .gvimrc
@@ -237,13 +245,16 @@ nmap <silent> <C-j> <Plug>(ale_next_wrap)
 " Save with sudo when vim started without sudo
 cmap w!! w !sudo tee > /dev/null %
 
-" https://github.com/amix/vimrc/blob/master/vimrcs/basic.vim
-" Move a line of text using ALT+[jk] or Command+[jk] on mac
-nmap <M-j> mz:m+<CR>`z
-nmap <M-k> mz:m-2<CR>`z
-" cSpell:ignore mzgv
-vmap <M-j> :m'>+<CR>`<my`>mzgv`yo`z
-vmap <M-k> :m'<-2<CR>`>my`<mzgv`yo`z
+nmap <D-C-j> :m +1<CR>
+nmap <D-C-k> :m -2<CR>
+
+fun! SelectionHeight()
+  return line("'>") - line("'<") + 1
+endfun
+
+vmap <expr> <D-C-j> ':m +' . SelectionHeight() . '<CR>gv'
+vmap <expr> <D-C-k> ':m -' . SelectionHeight() . '<CR>gv'
+
 " See .gvimrc for mac keys
 
 " " https://neovim.io/doc/user/nvim.html#nvim-from-vim
@@ -298,10 +309,11 @@ silent! call custom#begin()
 " call plug#begin('~/.config/nvim/plugged')
 call plug#begin()
 
-if exists('g:custom_ai_plugin')
+if !is_root && exists('g:custom_ai_plugin')
   " cSpell:ignore Exafunction madox2
   if g:custom_ai_plugin == 'codeium'
-    Plug 'Exafunction/codeium.vim' " See also: AirlineAddCustomSections
+    " See also: AirlineAddCustomSections
+    Plug 'Exafunction/codeium.vim'
   elseif g:custom_ai_plugin == 'copilot'
     Plug 'github/copilot.vim' , { 'do': ':Copilot setup' }
   elseif g:custom_ai_plugin == 'openai'
@@ -311,13 +323,16 @@ if exists('g:custom_ai_plugin')
   endif
 endif
 
-" cSpell:ignore junegunn airblade chaoren chrisbra darfink inkarkat jiangmiao kshenoy luochen1990
+" cSpell:ignore junegunn airblade AndrewRadev chaoren chrisbra darfink inkarkat jiangmiao kshenoy luochen1990
 
 " https://github.com/junegunn/fzf.vim#using-vim-plug
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
-Plug 'airblade/vim-gitgutter'
+if !is_root
+  Plug 'airblade/vim-gitgutter'
+endif
+
 Plug 'airblade/vim-rooter'
 Plug 'AndrewRadev/switch.vim'
 " Extend words to camel case etc.
@@ -359,7 +374,7 @@ Plug 'mhinz/vim-startify'
 Plug 'nathanaelkane/vim-indent-guides'
 " Plug 'Yggdroot/indentLine' " Alternative with lines instead of bg color
 
-if executable('node')
+if !is_root && executable('node')
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
 endif
 
@@ -435,9 +450,6 @@ let g:rooter_patterns = [
       \ '.bzr/',
       \ '.svn/'
       \ ]
-
-" ===== Plugin settings for AndrewRadev/switch.vimn =====
-let g:switch_mapping = '.'
 
 " ===== Plugin settings for chaoren/vim-wordmotion =====
 let g:wordmotion_prefix = mapleader
@@ -593,7 +605,7 @@ if executable('pylsp')
     \ })
 endif
 
-function! s:on_lsp_buffer_enabled() abort
+fun! s:on_lsp_buffer_enabled() abort
   setlocal omnifunc=lsp#complete
   setlocal signcolumn=yes
   if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
@@ -614,7 +626,7 @@ function! s:on_lsp_buffer_enabled() abort
   autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
 
   " refer to doc to add more commands
-endfunction
+endfun
 
 augroup lsp_install
   au!
@@ -687,7 +699,7 @@ fun! AirlineAddCustomSections(...)
       call AirlinePrependSectionY('{…} Codeium:%3{codeium#GetStatusString()}')
     endif
 
-    if $USER == 'root'
+    if g:is_root
       call airline#parts#define_function('root', 'ShowRoot')
       call AirlinePrependSectionY(airline#section#create_right(['root']))
       fun! ShowRoot()

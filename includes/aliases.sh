@@ -55,7 +55,7 @@ alias hhnv='http --headers --verify=no'
 alias hnv='http --verify=no'
 
 # sudo inside VSCode only accepts password and not Touch ID
-alias hostconf='SUDO=1 vim_open /etc/hosts'
+alias hostconf='open_with_editor /etc/hosts'
 
 alias ic="imgcat"
 alias k9='kill -9'
