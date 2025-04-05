@@ -97,7 +97,7 @@ brew 'neovim'
 cask 'macvim'
 
 tap 'universal-ctags/universal-ctags'
-brew 'universal-ctags', args: ['HEAD']
+brew 'universal-ctags'
 
 # End: Casks
 
