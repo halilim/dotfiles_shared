@@ -283,6 +283,8 @@
   "php.suggest.basic": false,
   "php.validate.enable": false,
 
+  "prettier.singleQuote": true,
+
   "python.analysis.autoFormatStrings": true,
   "python.analysis.autoImportCompletions": true,
   "python.analysis.completeFunctionParens": true,
@@ -598,6 +600,10 @@
   "yard.tags.paramNameBeforeType": true,
 
   // cSpell:ignore esbenp
+
+  "[astro]": {
+    "editor.defaultFormatter": "astro-build.astro-vscode"
+  },
 
   "[css]": {
     "editor.defaultFormatter": "vscode.css-language-features"
