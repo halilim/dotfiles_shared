@@ -13,7 +13,7 @@ export LAUNCH_DARKLY_KEYS_CMD=(bin/rails runner 'puts ld_client.all_features.key
 export LAUNCH_DARKLY_URL='https://app.launchdarkly.com/projects/default/flags/%s/targeting?env=production&env=development&selected-env=development'
 export RUBY_CMD_PREFIX='bin/'
 
-DOTFILES_INCLUDE_LIBS+=(example_lib gpg rbenv)
-OMZ_PLUGINS+=("$JS_PM" rbenv)
+DOTFILES_INCLUDE_LIBS+=(example_lib gpg)
+OMZ_PLUGINS+=(bun mise npm)
 UPDATE_BACKUP_CMDS=(pre_update_cmd "${UPDATE_BACKUP_CMDS[@]}") # Prepend
 UPDATE_BACKUP_CMDS+=(gpg_check_key update_foo backup_bar) # Append

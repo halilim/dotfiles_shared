@@ -421,7 +421,6 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'vim-ruby/vim-ruby', { 'for': '*ruby' }
 " Plug 'tpope/vim-bundler', { 'for': '*ruby' } - autocommand errors
 Plug 'tpope/vim-rails', { 'for': '*ruby' }
-Plug 'tpope/vim-rbenv', { 'for': '*ruby' }
 " Plug 'tpope/vim-rake', { 'for': '*ruby' } - errors
 
 " cSpell:ignore vitalk wsdjeg endel lifepillar liuchengxu rakr

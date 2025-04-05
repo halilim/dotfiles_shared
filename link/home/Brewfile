@@ -3,7 +3,6 @@
 tap 'beeftornado/rmtree'
 
 brew 'coreutils' # gdate, gnumfmt, realpath, ghead, gtail
-brew 'moreutils' # ?
 brew 'findutils' # gfind
 brew 'gnu-sed' # gsed
 
@@ -12,7 +11,7 @@ brew 'bash' # macOS one is ancient
 brew 'bashdb' # Bash debugger
 brew 'bat' # cat alternative in Rust (regular use + vim fzf preview)
 
-brew 'colima' # Docker alternative
+brew 'colima' # Docker Desktop alternative
 brew 'docker' # Required for Docker runtime
 brew 'docker-buildx'
 brew 'docker-compose'
@@ -39,16 +38,13 @@ brew 'lazygit'
 
 brew 'media-info'
 brew 'miller' # Data tools for CSV, TSV, and tabular JSON
-
 brew 'ncdu'
 
-brew 'nginx' # For adminer
-brew 'php' # For adminer
-
-brew 'node' # coc.nvim & probably others
+# For adminer
+brew 'nginx'
+brew 'php'
 
 brew 'patchutils'
-
 brew 'ripgrep'
 brew 'rsync' # MacOS one is ancient
 
@@ -72,7 +68,6 @@ brew 'speedtest'
 brew 'terminal-notifier'
 brew 'tldr'
 brew 'tree'
-# brew 'wget'
 brew 'yq'
 
 # In case macOS falls behind here too
