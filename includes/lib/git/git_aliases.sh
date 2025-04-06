@@ -31,7 +31,6 @@ alias gdm='git diff $(git_main_branch)'
 alias gdma='git_matching diff'
 alias gdnc='git diff --no-color'
 alias gdtc='git difftool --tool=code'
-alias gdtk='git difftool --tool=kdiff3'
 
 # cSpell:ignore gmmnc gmtk
 alias glg='git log --graph --stat'
@@ -40,7 +39,6 @@ alias gmm='git merge --no-edit $(git_main_branch)'
 alias gmmnc='git merge --no-edit $(git_main_branch) --no-commit'
 alias gmn='git merge --no-edit'
 alias gmt='git mergetool'
-alias gmtk='git mergetool --tool=kdiff3'
 
 # cSpell:ignore gpft gpla gplb gplp grgu grpo
 

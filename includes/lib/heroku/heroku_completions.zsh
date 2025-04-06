@@ -42,7 +42,6 @@ function _heroku_apps() {
 # }
 # compdef '_heroku_apps 2' heroku_2
 
-compdef _heroku_apps adminer_heroku
 compdef _heroku_apps heroku_db_url
 compdef _heroku_apps heroku_deploy_dash
 compdef _heroku_apps heroku_psql

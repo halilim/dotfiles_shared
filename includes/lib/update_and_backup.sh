@@ -21,8 +21,7 @@ function update_notify_chrome() {
 $chrome_backup_dir is copied to clipboard. In Chrome:
 1. Bookmark Manager (⌥⌘B) > ⋮ > Export bookmarks > Go to dir (⇧⌘G) > ⌘V
 2. Dark Reader > More > All settings > Advanced > Export Settings
-3. uBlock Origin > Backup up to file
-4. User JavaScript and CSS > Settings > Download JSON & chrome_user_js_css_prettier
+3. User JavaScript and CSS > Settings > Download JSON & chrome_user_js_css_prettier
 SH
 )"
 }

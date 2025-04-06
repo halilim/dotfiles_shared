@@ -361,8 +361,10 @@ Plug 'luochen1990/rainbow'
 Plug 'mechatroner/rainbow_csv'
 Plug 'michaeljsmith/vim-indent-object' " ai/ii/aI
 
-Plug 'ludovicchabant/vim-gutentags'
-Plug 'skywind3000/gutentags_plus'
+if executable('ctags')
+  Plug 'ludovicchabant/vim-gutentags'
+  Plug 'skywind3000/gutentags_plus'
+endif
 
 " Plug 'majutsushi/tagbar', { 'on': 'TagbarOpenAutoClose' }
 " Plug 'mattn/emmet-vim', { 'for': ['*html', '*css', '*jsx', 'php', 'erb'] }
@@ -729,13 +731,15 @@ let g:indent_guides_exclude_filetypes = ['help', 'nerdtree', 'startify']
 " ===== Plugin settings for Yggdroot/indentLine =====
 " let g:indentLine_char = '⎸'
 
-" ===== Plugin settings for skywind3000/gutentags_plus =====
-" https://github.com/skywind3000/gutentags_plus#configuration
-" let g:gutentags_modules = ['ctags', 'gtags_cscope']
-" Cache dir causes project files to have absolute paths. Also why hide them?
-" let g:gutentags_cache_dir = expand('~/.cache/tags')
-let g:gutentags_plus_switch = 1
-let g:gutentags_project_root = ['.project_root']
+if executable('ctags')
+  " ===== Plugin settings for skywind3000/gutentags_plus =====
+  " https://github.com/skywind3000/gutentags_plus#configuration
+  " let g:gutentags_modules = ['ctags', 'gtags_cscope']
+  " Cache dir causes project files to have absolute paths. Also why hide them?
+  " let g:gutentags_cache_dir = expand('~/.cache/tags')
+  let g:gutentags_plus_switch = 1
+  let g:gutentags_project_root = ['.project_root']
+endif
 
 " ===== Plugin settings for SirVer/ultisnips =====
 let g:UltiSnipsExpandTrigger='<C-space>'

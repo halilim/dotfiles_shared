@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-set -euo pipefail
-IFS=$'\n\t'
-
-trap 'nginx -s quit' SIGTERM SIGINT
-
-nginx -g 'daemon off;' &
-
-tail -f -n0 "$HOMEBREW_PREFIX"/var/log/nginx/*.log

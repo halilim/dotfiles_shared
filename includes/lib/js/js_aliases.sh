@@ -1,4 +1,4 @@
-alias libna='$EDITOR "$DOTFILES_INCLUDES"/lib/node/node_aliases.sh' # cSpell:ignore libna
+alias libjsa='$EDITOR "$DOTFILES_INCLUDES"/lib/js/js_aliases.sh' # cSpell:ignore libjsa
 
 # cSpell:ignore buad burm
 alias bua='bun add'

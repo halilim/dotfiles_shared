@@ -22,10 +22,6 @@ export EZA_ICONS_AUTO=true
 export EZA_ICON_SPACING=2
 export TIME_STYLE=long-iso
 
-# Ports in use: 80: Docker, 8080: nginx.conf, 8081-8084: reserve for apps
-# Run install_nginx_config after changing
-export HOST_NGINX_PORT=8085
-
 # Allow overriding stuff defined later anywhere
 export POST_INIT_HOOKS=()
 
@@ -35,8 +31,8 @@ export DOTFILES_INCLUDE_LIBS=(
   editing
   functions
   git
+  js
   net
-  node
   ruby_rails
   update_and_backup
 )
@@ -79,7 +75,7 @@ export OMZ_PLUGINS=(
 # shellcheck disable=SC2016
 export UPDATE_BACKUP_CMDS=(
   '$ZSH/tools/upgrade.sh -v silent' # https://github.com/ohmyzsh/ohmyzsh/wiki/FAQ#how-do-i-update-oh-my-zsh
-  'omz_update_custom'
+  omz_update_custom
   update_bat_syntaxes
 )
 
@@ -99,7 +95,7 @@ unset num_procs
 
 # Global troubleshooting reminder: Some apps treat PATH as case-insensitive, causing problems when
 # a variable named lowercase `path` used in scripts or functions.
-PATH="$PATH:$HOME/bin"
+PATH="$HOME/.bun/bin:$PATH:$HOME/bin"
 
 # https://ruby.github.io/rdoc/RI_rdoc.html
 export RI="--format ansi"

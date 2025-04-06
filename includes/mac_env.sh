@@ -21,10 +21,8 @@ if [[ -z ${ZSH_VERSION:-} && $- == *i* ]]; then
 fi
 
 DOTFILES_INCLUDE_LIBS+=(
-  adminer
   brew
   elasticsearch
-  nginx_php
   redis
 )
 

@@ -40,10 +40,6 @@ brew 'media-info'
 brew 'miller' # Data tools for CSV, TSV, and tabular JSON
 brew 'ncdu'
 
-# For adminer
-brew 'nginx'
-brew 'php'
-
 brew 'patchutils'
 brew 'ripgrep'
 brew 'rsync' # MacOS one is ancient
@@ -76,6 +72,7 @@ at_exit { system '~/bin/switch_to_homebrew_zsh' }
 
 # Start: Casks
 
+cask 'dbeaver-community'
 cask 'font-sauce-code-pro-nerd-font' # Also works for Powerlevel10k
 
 cask 'qlcolorcode' # Source code files with syntax highlighting
@@ -83,8 +80,7 @@ cask 'qlstephen' # README, Makefile etc.
 cask 'qlvideo' # Finder thumbnails & Quick Look previews and thumbnails
 cask 'quicklook-json'
 
-cask 'kdiff3' # For Sourcetree
-cask 'sourcetree'
+cask 'sourcetree' # Easier to search history
 
 # Vim
 brew 'editorconfig' # Used by vim plugin
