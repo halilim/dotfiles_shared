@@ -391,8 +391,10 @@ Plug 'preservim/vim-markdown'
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeFind'] }
 
-Plug 'SirVer/ultisnips' " Snippet manager
-Plug 'honza/vim-snippets' " Actual snippets - both snipMate & UltiSnips formats exist
+if has('python3')
+  Plug 'SirVer/ultisnips' " Snippet manager
+  Plug 'honza/vim-snippets' " Actual snippets - both snipMate & UltiSnips formats exist
+endif
 
 " cSpell:ignore tpope tommcdo valloric
 
