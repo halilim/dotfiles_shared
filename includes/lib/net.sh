@@ -78,7 +78,7 @@ function port_check() {
 }
 
 function router_ip() {
-  netstat -nr | rg --multiline 'Internet:\nDestination\s+Gateway.*\ndefault\s+(\S+).*' --replace '$1'
+  traceroute -n -m 1 192.168.255.255 2> /dev/null | tr -s ' ' | cut -d ' ' -f 3
 }
 
 function router_ping() {
