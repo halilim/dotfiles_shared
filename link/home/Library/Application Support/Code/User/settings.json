@@ -199,6 +199,8 @@
 
   "html.format.extraLiners": "body",
 
+  "jest.runMode": "on-demand",
+
   "jqPlayground.binaryPath": "/opt/homebrew/bin/jq",
 
   "js/ts.implicitProjectConfig.checkJs": true,

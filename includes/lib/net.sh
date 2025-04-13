@@ -78,7 +78,7 @@ function port_check() {
 }
 
 function router_ip() {
-  traceroute -n -m 1 192.168.255.255 2> /dev/null | tr -s ' ' | cut -d ' ' -f 3
+  traceroute -n -m 1 192.168.255.255 2>&1 | sed '1d' | tr -s ' ' | cut -d ' ' -f 3
 }
 
 function router_ping() {
