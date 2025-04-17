@@ -121,6 +121,13 @@
 		],
 	},
 
+	"echo >&2": {
+		"prefix": "e2",
+		"body": [
+			"echo >&2 $0"
+		],
+	},
+
 	// https://stackoverflow.com/a/12451419/25475271
 	"echo and capture": {
 		"prefix": "ec",
@@ -397,6 +404,13 @@
 	"printf": {
 		"prefix": "p",
 		"body": "printf $0",
+	},
+
+	"printf >&2": {
+		"prefix": "p2",
+		"body": [
+			"printf >&2 $0"
+		],
 	},
 
 	// https://stackoverflow.com/a/32931403/372654

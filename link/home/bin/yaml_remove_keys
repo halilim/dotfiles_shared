@@ -34,8 +34,9 @@ key_suffixes=${key_suffixes%|}
 has_errors=''
 
 for file in "${FILES[@]}"; do
+  printf >&2 '%s: ' "$file"
   if [[ $(git diff "$file") ]]; then
-    echo >&2 "$file has unstaged changes. Please stage/stash/revert them."
+    echo >&2 '❌ has unstaged changes, please stage/stash/revert them'
     has_errors=true
     continue
   fi
@@ -48,6 +49,8 @@ for file in "${FILES[@]}"; do
       grepdiff -E "($key_suffixes)" --only-match=removals --output-matching=hunk)
   git restore "$file"
   git apply --unidiff-zero <<< "$diff"
+
+  echo >&2 '✅'
 done
 
 if [[ $has_errors ]]; then
