@@ -40,7 +40,7 @@ alias gmmnc='git merge --no-edit $(git_main_branch) --no-commit'
 alias gmn='git merge --no-edit'
 alias gmt='git mergetool'
 
-# cSpell:ignore gpft gpla gplb gplp grgu grpo
+# cSpell:ignore gpft gpla gplb gpnv gplp grgu grpo
 
 # push with annotated & reachable tags, remove dry-run after confirming
 alias gpft='git push --follow-tags --dry-run'
@@ -49,6 +49,7 @@ alias gpl='git pull'
 alias {gla,gpla}="for_each_dir 'git checkout "'$(git_main_branch)'" && git pull --prune'" # Pull all
 # shellcheck disable=SC2016
 alias gplb='git pull origin $(git rev-parse --abbrev-ref HEAD)'
+alias gpnv='git push --no-verify'
 # shellcheck disable=SC2139
 alias {gplp,glp,gpp}='git pull --prune'
 alias gps='git push --set-upstream origin'

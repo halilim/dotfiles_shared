@@ -1,6 +1,6 @@
 # See also: OMZ/brew plugin
-
-# cSpell:ignore brbc brun brbf brsv brsvi brsvl brsvs brsvst brup brupd
+:
+# cSpell:ignore brbc brun brbf brsv brsvi brsl brsvl brsvs brsvst brup brupd
 # shellcheck disable=SC2139
 alias {bru,brun}='brew uninstall'
 alias brb='brew bundle'
@@ -14,7 +14,8 @@ alias brl='brew list'
 alias brs='brew search'
 alias brsv='brew services'
 alias brsvi='brew services info'
-alias brsvl='brew services list'
+# shellcheck disable=SC2139
+alias {brsl,brsvl}='brew services list'
 alias brsvs='brew services start'
 alias brsvst='brew services stop'
 alias brup='brew upgrade'
