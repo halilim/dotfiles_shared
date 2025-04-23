@@ -23,6 +23,11 @@ let mapleader=","
 set commentary
 set surround
 
+" https://plugins.jetbrains.com/plugin/25899-vim-switch
+set switch
+let g:switch_definitions = 'group:basic,group:javascript,group:rspec,group:ruby,group:markdown'
+nnoremap - :Switch<CR>
+
 set ideajoin
 
 " For <Action>s: Cmd+Shift+P > IdeaVim: Track Action IDs

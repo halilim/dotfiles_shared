@@ -454,6 +454,9 @@ let g:rooter_patterns = [
       \ '.svn/'
       \ ]
 
+" ===== Plugin settings for AndrewRadev/switch.vim =====
+let g:switch_mapping = '-'
+
 " ===== Plugin settings for chaoren/vim-wordmotion =====
 let g:wordmotion_prefix = mapleader
 " This affects nnoremap <leader>v... (:verbose ...)

@@ -111,6 +111,7 @@ CNAME
 coc
 codeclimate
 codeium
+codeowners
 coderay
 Codeship
 colima
@@ -244,6 +245,7 @@ fuubar
 fzf
 gantt
 gdate
+GEDCOM
 Geekbot
 Gemfile
 gemfiles

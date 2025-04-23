@@ -6,27 +6,35 @@ repos:
     hooks:
       - id: check-added-large-files
         exclude: |
-            (?x)^(
-                com\.googlecode\.iterm2\.plist|
-                .*/test_data/.*
-            )$
+          (?x)^(
+              com\.googlecode\.iterm2\.plist|
+              .*/test_data/.*
+          )$
+
       - id: check-case-conflict
       - id: check-merge-conflict
       - id: check-yaml
+
       - id: end-of-file-fixer
         # https://pre-commit.com/#regular-expressions
         exclude: |
-            (?x)^(
-                .+/Code/User/.+\.json|
-                .+\.code-workspace|
-                \.docker\/config\.json|
-                backup/.+\.json|
-                backup/.+uBlock\.txt|
-                .+/lazyvim\.json
-            )$
+          (?x)^(
+              .+/Code/User/.+\.json|
+              .+\.code-workspace|
+              \.docker\/config\.json|
+              backup/.+\.json|
+              backup/.+uBlock\.txt|
+              .+/lazyvim\.json
+          )$
+
       - id: fix-byte-order-marker
       - id: mixed-line-ending
         args: [--fix=no]
+
       - id: no-commit-to-branch
       - id: trailing-whitespace
         args: [--markdown-linebreak-ext=md]
+        exclude: |
+          (?x)^(
+              .+\.ged
+          )$
