@@ -2,8 +2,107 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-ifconfig_output=$(ifconfig)
-routed_interface=$(route get 1.1.1.1 | rg -oU 'interface:\s*(\S+)' -r '$1')
+# shellcheck disable=SC1091
+. "$HOME"/.dotfiles_bootstrap.sh
+# shellcheck disable=SC1091
+. "$DOTFILES_INCLUDES"/bash_shared.sh
+
+# https://www.nerdfonts.com/cheat-sheet
+readonly BRIDGE_ICON=󰘘
+readonly ETHERNET_ICON=󰈀
+readonly ETHERNET_IP_ICON=󱂇
+readonly WIFI_ICON=
+readonly WIFI_IP_ICON=󰑩
+readonly ROUTER_ICON=󱇢
+readonly EXTERNAL_ICON=
+readonly ARROW_ICON=
+
+export ROUTED_DEVICE
+ROUTED_DEVICE=$(route get 1.1.1.1 | rg -oU 'interface:\s*(\S+)' -r '$1')
+
+function get_external_ip() {
+  local ip=$1
+  # TODO: might cache proxies, see my_external_ip
+  dig @ns1.google.com TXT o-o.myaddr.l.google.com +short -b "$ip" | tr -d '"'
+}
+
+function get_info() {
+  local info=$1 label=$2 value
+  value=$(echo "$info" | rg --multiline --only-matching "^$label: (\S+)" -r '$1')
+  if [[ $value == 'none' ]]; then
+    echo ''
+  else
+    echo "$value"
+  fi
+}
+
+function print_header() {
+  local icon=$1 name=$2 device=$3 header_color
+
+  if [[ $device == "$ROUTED_DEVICE" ]]; then
+    header_color='green-bold'
+  else
+    header_color='white-bold'
+  fi
+
+  color $header_color "$icon  $name ($device)"
+}
+
+function print_icon() {
+  local icon=$1
+  color white-bold "$icon"
+}
+
+function print_ip() {
+  local icon=$1 ip=$2
+  if [[ ! $ip ]]; then
+    return 0
+  fi
+
+  printf ' %s  %s %s' "$ARROW_ICON" "$(print_icon "$icon")" "$ip"
+}
+
+function print_ip_line() {
+  local ip_icon=$1 ip=$2 info=$3 router_label=$4
+  if [[ ! $ip ]]; then
+    return 0
+  fi
+
+  printf '%s %s' "$(print_icon "$ip_icon")" "$ip"
+
+  local router_ip external_ip
+  router_ip=$(get_info "$info" "$router_label")
+  if [[ $router_ip ]]; then
+    print_ip "$ROUTER_ICON" "$router_ip"
+    external_ip=$(get_external_ip "$ip")
+    print_ip "$EXTERNAL_ICON" "$external_ip"
+  fi
+
+  printf '\n'
+}
+
+function print_network() {
+  local device=$1 name=$2 info ipv4 ipv6
+  info=$(networksetup -getinfo "$name")
+  ipv4=$(get_info "$info" "IP address")
+  ipv6=$(get_info "$info" "IPv6 IP address")
+
+  if [[ ! $ipv4 && ! $ipv6 ]]; then
+    return 0
+  fi
+
+  local icon ip_icon
+
+  case $name in
+    *Bridge*) icon=$BRIDGE_ICON ip_icon=$ETHERNET_IP_ICON ;;
+    *\ LAN | *\ ethernet) icon=$ETHERNET_ICON ip_icon=$ETHERNET_IP_ICON ;;
+    *Wi-Fi*) icon=$WIFI_ICON ip_icon=$WIFI_IP_ICON ;;
+  esac
+
+  print_header $icon "$name" "$device"
+  print_ip_line $ip_icon "$ipv4" "$info" 'Router'
+  print_ip_line $ip_icon "$ipv6" "$info" 'IPv6 Router'
+}
 
 # From network_switcher
 networks=$(networksetup -listnetworkserviceorder | tail -n +2)
@@ -21,28 +120,5 @@ while [ "$networks" != '' ]; do
 
   [[ $number == '*' || ! $device ]] && continue
 
-  ifconfig_section=$(echo "$ifconfig_output" |
-    rg --multiline --multiline-dotall --only-matching "$device:\s(.*?)\n(\S+|\z)" -r '$1')
-  [[ ! $ifconfig_section ]] && continue
-
-  [[ $name == *Wi-Fi* ]] && name="$name$(networksetup -getairportnetwork "$device" | cut -d : -f 2)"
-
-  #  `	inet 192.168.0.0 netmask ...`
-  ipv4=$(echo "$ifconfig_section" | rg --only-matching '^\s+inet\s+(\S+)' -r '$1')
-
-  #  `	inet6 fe80::849:b297:d27a:6369%en0 prefixlen ...`
-  ipv6=$(echo "$ifconfig_section" | rg --only-matching '^\s+inet6\s+(\S+)' -r '$1')
-  ipv6="${ipv6%%%*}" # Remove %en0
-
-  # https://www.nerdfonts.com/cheat-sheet
-  case $name in
-    *\ LAN | *\ ethernet) icon=󰈀 router_icon=󱂇 ;;
-    *Wi-Fi*) icon= router_icon=󰑩 ;;
-  esac
-
-  echo "$icon $device $name$([[ $device == "$routed_interface" ]] && echo " (routed)")"
-  echo "$router_icon $ipv4 / $ipv6"
-  # TODO: might cache proxies, see my_external_ip
-  echo " $(dig @ns1.google.com TXT o-o.myaddr.l.google.com +short -b "$ipv4" | tr -d '"')"
-  printf '\n'
+  print_network "$device" "$name"
 done

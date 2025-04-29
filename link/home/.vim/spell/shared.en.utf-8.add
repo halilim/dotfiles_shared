@@ -677,6 +677,7 @@ shellcheckrc
 shellenv
 shellformat
 shellspec
+SHELLSPEC_INFILE
 shellwords
 shfmt
 shoulda

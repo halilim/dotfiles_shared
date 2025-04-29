@@ -35,6 +35,7 @@ export DOTFILES_INCLUDE_LIBS=(
   net
   ruby_rails
   update_and_backup
+  which
 )
 
 # Disabled:

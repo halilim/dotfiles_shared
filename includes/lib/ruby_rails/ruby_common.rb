@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
+require 'irb/color'
 require 'io/console'
+require 'stringio'
 
 # RubyMine debugger doesn't load .irbrc/.pryrc. Add live template `lrc`:
 # (live templates are available in the interactive console)

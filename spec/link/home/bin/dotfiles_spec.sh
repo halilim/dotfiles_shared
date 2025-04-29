@@ -126,7 +126,7 @@ Describe "$script"
     End
   End
 
-  Example 'vim_mk_spell'
+  Example 'vim_setup'
     vim_spell_dir=$mock_home/.vim/spell
     vim_spell_file_1=$vim_spell_dir/test1.en.utf-8.add
     vim_spell_file_2=$vim_spell_dir/test2.en.utf-8.add
@@ -137,7 +137,7 @@ Describe "$script"
     touch "$vim_spell_file_2"
     %preserve expected_vim_arg
 
-    When run script "$copied_script" vim_mk_spell
+    When run script "$copied_script" vim_setup
     The stdout should not include "error" # To satisfy shellspec expectation requirement
     The stderr should include "vim +'$expected_vim_arg'"
   End

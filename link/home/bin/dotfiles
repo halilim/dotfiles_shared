@@ -59,7 +59,7 @@ function dotfiles::sync() {
     dotfiles::_setup_custom_links
   fi
 
-  dotfiles::vim_mk_spell false "$plug_installed"
+  dotfiles::vim_setup false "$plug_installed"
 }
 
 function dotfiles::import() {
@@ -172,7 +172,7 @@ function dotfiles::_import_path() {
     esac
 
     if [[ $item_path == $VIM_SPELL/* ]]; then
-      dotfiles::vim_mk_spell
+      dotfiles::vim_setup
     fi
   fi
 
@@ -379,30 +379,32 @@ function dotfiles::_echo_eval_with_sudo() {
   echo_eval "${cmd[@]}"
 }
 
-function dotfiles::vim_mk_spell() {
+function dotfiles::vim_setup() {
   if ! command -v "$VIM_CMD" &> /dev/null || [[ ${NO_VIM:-} || ! -d "$VIM_SPELL" ]]; then
     return 0
   fi
 
-  # TODO: Replace plug_installed and vim_cmd_pre with vim_cmds
-  # TODO: Is this the correct process, or should multiple files for a locale be merged? Check Vim
-  local force=${1:-false} plug_installed=${2:-true} file files=()
+  local force=${1:-false} plug_installed=${2:-true} vim_cmds=()
+
+  if [[ $plug_installed == false ]]; then
+    vim_cmds+=('PlugInstall')
+  fi
+
+  local file files=()
   for file in "$VIM_SPELL"/*.add; do
     if [[ $force == true || ! $(find "$VIM_SPELL" -name "$(basename "$file")*.spl" -print -quit) ]]; then
+      vim_cmds+=("mkspell! %q")
       files+=("$file")
     fi
   done
 
-  local num_files=${#files[@]}
-  if [[ $num_files -eq 0 ]]; then
+  if [[ ${#vim_cmds[@]} -eq 0 ]]; then
+    echo >&2 'No Vim commands to run'
     return 0
   fi
 
-  local vim_cmd_pre=''
-  if [[ $plug_installed == false ]]; then
-    vim_cmd_pre='PlugInstall | '
-  fi
-  echo_eval "vim +'$vim_cmd_pre$(printf 'mkspell! %%q | %.0s' $(seq 1 "$num_files"))q'" "${files[@]}"
+  vim_cmds+=('q')
+  echo_eval "vim +'$(join_array ' | ' "${vim_cmds[@]}")'" "${files[@]}"
 }
 
 function dotfiles::_log_error {
@@ -429,9 +431,6 @@ export DOTFILES_SHARED=$DOTFILES/shared
 export DOTFILES_INCLUDES=$DOTFILES_SHARED/includes
 export DOTFILES_CUSTOM=$DOTFILES/custom
 
-# TODO: Change with minimal dependencies
-# shellcheck disable=SC1091
-# . "$DOTFILES_INCLUDES"/bash_shared.sh
 # shellcheck disable=SC1091
 . "$DOTFILES_INCLUDES"/lib/functions.sh
 # shellcheck disable=SC1091
@@ -446,6 +445,6 @@ case "${1:-''}" in
   import) dotfiles::import "${@:2}" ;;
   revert_import) dotfiles::revert_import "${@:2}" ;;
   revert_import_and_remove) dotfiles::revert_import_and_remove "${@:2}" ;;
-  vim_mk_spell) dotfiles::vim_mk_spell true ;;
-  *) dotfiles::_log_error "$USAGE_BASE <setup|sync|import|revert_import|revert_import_and_remove|vim_mk_spell> ..." 1 ;;
+  vim_setup) dotfiles::vim_setup true ;;
+  *) dotfiles::_log_error "$USAGE_BASE <setup|sync|import|revert_import|revert_import_and_remove|vim_setup> ..." 1 ;;
 esac
