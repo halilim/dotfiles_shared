@@ -1,15 +1,36 @@
 alias libd='$EDITOR "$DOTFILES_INCLUDES"/lib/docker.sh' # cSpell:ignore libd
 
+function act_t() {
+  # https://github.com/abiosoft/colima/issues/997#issuecomment-2266030827
+  COLIMA_PROFILE=act MOUNT_TYPE=sshfs colima_start
+
+  # https://nektosact.com/missing_functionality/docker_context.html
+  # shellcheck disable=SC2016
+  echo_eval 'export DOCKER_HOST=$(docker context inspect --format "{{.Endpoints.docker.Host}}")'
+
+  echo_eval "act $*"
+}
+alias actt='act_t' # cSpell:ignore actt
+
 function colima_start() {
-  local args=''
-  if [[ $OSTYPE == darwin* ]]; then
-    args='--vm-type=vz --vz-rosetta --mount-type=virtiofs --cpu 4'
+  local common_args="--profile ${COLIMA_PROFILE:-default}"
+  # shellcheck disable=SC2086
+  if FAKE_STATUS=1 echo_eval "colima $common_args status > /dev/null 2>&1"; then
+    echo >&2 'Colima is already running'
+    return 0
   fi
-  echo_eval "colima status > /dev/null 2>&1 || colima start $args"
+
+  local args=$common_args
+  if [[ $OSTYPE == darwin* ]]; then
+    args+=" --vm-type=vz --vz-rosetta --mount-type=${MOUNT_TYPE:-virtiofs} --cpu 4"
+  fi
+
+  echo_eval "colima start $args"
 }
 alias cos='colima_start'
 alias cost='colima stop'
-alias costa='colima status'
+alias costa='colima stop --profile act'
+alias costt='colima status' # cSpell:ignore costt
 
 # Internal utils to pass Docker containers as hosts and vice versa
 function docker_host_to_container() {

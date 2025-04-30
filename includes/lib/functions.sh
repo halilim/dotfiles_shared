@@ -109,6 +109,7 @@ function echo_eval() {
     echo >&2 'Dry running...'
     if [[ ${FAKE_RETURN:-} ]]; then
       echo "$FAKE_RETURN"
+      return "${FAKE_STATUS:-0}"
     fi
   else
     eval "$cmd"

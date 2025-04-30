@@ -383,6 +383,17 @@
 		],
 	},
 
+	"if Bash": {
+		"prefix": "ifb",
+		"body": [
+			"if [ -n \"\\${BASH_VERSION:-}\" ]; then",
+				"\t$1",
+			"else",
+				"\t$2",
+			"fi"
+		],
+	},
+
 	"if ZSH": {
 		"prefix": "ifz",
 		"body": [

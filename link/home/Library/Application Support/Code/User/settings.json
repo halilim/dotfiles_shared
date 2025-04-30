@@ -157,7 +157,7 @@
     "{.gvimrc,.ideavimrc}": "viml",
     "{.inputrc,.shellspec,*.ctags,**/.husky/*,/etc/defaults/**/*.conf,/etc/periodic/**/*.conf}": "shellscript",
     "{.ruby-version,.tool-versions,**/.config/bat/config,default-gems}": "properties",
-    "{*.gitconfig*,**/.aws/credentials,**/*ghostty/config,**/php*/**/*.conf,pybritive.config}": "ini",
+    "{*.gitconfig*,**/.aws/credentials,**/*ghostty/config,**/btop.conf,**/php*/**/*.conf,pybritive.config}": "ini",
     "{*.jbuilder,aprc,Brewfile*}": "ruby",
     "{*.sublime-settings,*.tgn,**/chrome/exts/uBlock.txt}": "json",
     "{*.yml.*,**/.bundle/config}": "yaml",

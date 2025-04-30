@@ -2,6 +2,8 @@
 set -euo pipefail
 IFS=$'\n\t'
 
+shopt -s globstar
+
 both_specs=(spec/includes/lib/*_spec.sh)
 
 bash_specs=(
@@ -11,8 +13,8 @@ bash_specs=(
 )
 bash_specs+=("${both_specs[@]}")
 
-zsh_specs=()
+zsh_specs=(spec/**/*_spec.zsh)
 zsh_specs+=("${both_specs[@]}")
 
 shellspec --shell bash "${bash_specs[@]}"
-shellspec --shell zsh "${zsh_specs[@]}"
+shellspec --pattern '*_spec.*sh' --shell zsh "${zsh_specs[@]}"

@@ -40,7 +40,17 @@ jobs:
       - name: Install ShellSpec
         run: curl -fsSL https://git.io/shellspec | sh -s latest.tar.gz --bin /usr/local/bin --yes
       - name: Install Zsh
-        run: sudo apt-get update && sudo apt-get install --no-install-recommends -y zsh
+        run: |
+          # https://github.com/actions/runner-images/issues/10977#issuecomment-2810713336
+          # Skip installing package docs (makes the man-db trigger much faster)
+          sudo tee /etc/dpkg/dpkg.cfg.d/01_nodoc > /dev/null << 'EOF'
+          path-exclude /usr/share/doc/*
+          path-exclude /usr/share/man/*
+          path-exclude /usr/share/info/*
+          EOF
+
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y zsh
       - name: Display ShellSpec version
         run: shellspec --version
       - name: Display Bash version
@@ -50,6 +60,6 @@ jobs:
       # NOTE: If the test suite starts taking long enough, switch to the matrix strategy
       - name: Set environment variables
         run: |
-         echo "TMPDIR=$RUNNER_TEMP" >> "$GITHUB_ENV"
+          echo "TMPDIR=$RUNNER_TEMP" >> "$GITHUB_ENV"
       - name: Run ShellSpec
         run: bin/run_shellspec

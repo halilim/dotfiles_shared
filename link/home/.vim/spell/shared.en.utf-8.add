@@ -76,6 +76,7 @@ Brewfile
 britive
 broadcasted
 broadcasthost
+btop
 bufferline
 buildkit
 buildpack
@@ -263,6 +264,10 @@ getpass
 gfind
 ghead
 ghostty
+gibibit
+gibibits
+gibibyte
+gibibytes
 giscus
 gitconfig
 gitdir
@@ -386,6 +391,10 @@ Keymap
 keymaps
 keyout
 keyserver
+kibibit
+kibibits
+kibibyte
+kibibytes
 killall
 klaviyo
 konsole
@@ -434,6 +443,10 @@ markdownlintrc
 matchit
 matchparen
 maxdepth
+mebibit
+mebibits
+mebibyte
+mebibytes
 mediainfo
 Memcached
 memoizer
@@ -540,6 +553,8 @@ pbcopy
 pbpaste
 pcre
 PDP
+pebibyte
+pebibytes
 Percona
 pgdg
 pgdump
@@ -706,6 +721,7 @@ spellfile
 SQLite
 srand
 srcfolder
+sshfs
 stackable
 stackoverflow
 stackprof
@@ -728,6 +744,10 @@ tablename
 tablify
 tabnine
 teamookla
+tebibit
+tebibits
+tebibyte
+tebibytes
 Termux
 textconv
 textobjects

@@ -1,6 +1,6 @@
 {
   "**/*.sh": {
-    "alternate": "spec/{dirname}/{basename}_spec.sh"
+    "alternate": ["spec/{dirname}/{basename}_spec.sh", "spec/{dirname}/{basename}_spec.zsh"]
   },
   "**/bin/*": {
     "alternate": "spec/{dirname}/bin/{basename}_spec.sh"
