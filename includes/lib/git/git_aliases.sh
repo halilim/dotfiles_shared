@@ -32,8 +32,10 @@ alias gdma='git_matching diff'
 alias gdnc='git diff --no-color'
 alias gdtc='git difftool --tool=code'
 
-# cSpell:ignore gmmnc gmtk
+alias gg="git log -G '\Wregex\W' -- old_or_current_path"
 alias glg='git log --graph --stat'
+
+# cSpell:ignore gmmnc gmtk
 alias gmd='git merge --no-edit $(git_develop_branch)'
 alias gmm='git merge --no-edit $(git_main_branch)'
 alias gmmnc='git merge --no-edit $(git_main_branch) --no-commit'
