@@ -63,6 +63,11 @@ function color() {
 
   local color=$1 text=$2
 
+  if ! test -t 1; then
+    echo "$text"
+    return
+  fi
+
   local code
   case "$color" in
     black*) code='30' ;;

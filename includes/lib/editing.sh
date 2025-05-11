@@ -1,23 +1,26 @@
 alias libe='$EDITOR "$DOTFILES_INCLUDES"/lib/editing.sh' # cSpell:ignore libe
 
 function open_with_editor() {
-  local abs_path_line_col=$* silent=1 cmd
+  local arg_arr=("$@") silent=1 cmd
 
   if [[ ${VERBOSE:-} ]]; then
     silent=''
   fi
 
   if [[ $EDITOR == "$VIM_CMD" ]]; then
-    cmd='vim_open %q'
-  elif [[ $EDITOR = code || $EDITOR = code-insiders ]]; then
+    cmd='vim_open'
+  elif [[ $EDITOR == code || $EDITOR == */code || $EDITOR == code-insiders || $EDITOR == */code-insiders ]]; then
     # https://code.visualstudio.com/docs/editor/command-line#_core-cli-options
     # https://github.com/microsoft/vscode/issues/176343 No multiple -g :(
-    cmd="/usr/local/bin/$EDITOR -g %q"
+    cmd="$EDITOR -g"
   else
-    cmd='open %q'
+    cmd='open'
   fi
 
-  SILENT=$silent echo_eval "$cmd" "$abs_path_line_col"
+  local arg_ct=${#arg_arr[@]} pct_qs
+  pct_qs=$(printf ' %%q%.0s' $(seq 1 "$arg_ct"))
+
+  SILENT=$silent echo_eval "$cmd$pct_qs" "${arg_arr[@]}"
 }
 
 function vim_open() {

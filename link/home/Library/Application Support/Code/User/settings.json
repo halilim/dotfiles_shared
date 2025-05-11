@@ -420,86 +420,47 @@
   },
 
   "vim.normalModeKeyBindings": [
-    {
-      "before": ["leader", "leader", "k"],
-      "commands": ["workbench.action.openGlobalKeybindingsFile"]
-    },
-    {
-      "before": ["leader", "leader", "j"],
-      "commands": ["workbench.action.openSettingsJson"]
-    },
-    {
-      "before": ["leader", "leader", "j", "w"],
-      "commands": ["workbench.action.openWorkspaceSettingsFile"]
-    },
-
-    { "before": ["leader", "%"], "commands": ["editor.emmet.action.matchTag"] },
-    { "before": ["leader", "a"], "commands": ["alternate.alternateFile"] },
-    // TODO: Copy relative to git
-    // { "before": ["leader", "c", "p"], "commands": ["copyRelativeFilePath"] },
-    {
-      "before": ["leader", "c", "p" /*, "l"*/],
-      "commands": ["copy-relative-path-and-line-numbers.both"]
-    },
-    // { "before": ["leader", "c", "p", "p"], "commands": ["problems.action.copy"] },
-    {
-      "before": ["leader", "c", "space"],
-      "commands": ["editor.action.commentLine"]
-    },
-    {
-      "before": ["leader", "d", "a"],
-      "commands": ["workbench.action.closeAllEditors"]
-    },
-    {
-      "before": ["leader", "d", "e"],
-      "commands": ["workbench.action.closeOtherEditors"]
-    },
-    { "before": ["leader", "f"], "commands": ["workbench.action.quickOpen"] },
-    { "before": ["leader", "r", "n"], "commands": ["editor.action.rename"] },
-    // { "before": ["leader", "s", "r"], "commands": [{
-    //     "command": "workbench.action.files.openFileFolder",
-    //     "args": { "fileUri": "~/Desktop/test\\ code/test.rb" }
-    // }]},
-    { "before": ["leader", "t"], "commands": ["workbench.action.gotoSymbol"] },
-    {
-      "before": ["leader", "T"],
-      "commands": ["workbench.action.showAllSymbols"]
-    },
-
+    { "before": ["-"], "commands": ["editor.action.inPlaceReplace.down"] },
     { "before": ["[", "m"], "commands": ["gotoNextPreviousMember.nextMember"] },
-    {
-      "before": ["]", "m"],
-      "commands": ["gotoNextPreviousMember.previousMember"]
-    },
-
+    { "before": ["]", "m"], "commands": ["gotoNextPreviousMember.previousMember"] },
     { "before": ["C-j"], "commands": ["editor.action.marker.next"] },
     { "before": ["C-k"], "commands": ["editor.action.marker.prev"] },
-    // { "before": ["C-o"], "commands": ["extension.vim_ctrl+o"] },
     { "before": ["C-r"], "commands": ["redo"] },
-
-    // { "before": ["D-π"], "commands": [{ "command": "workbench.action.quickOpen", "args": "<C-R><C-W>" }] },
-
-    // D-j, M-j or D-M-j do not work. Modified the regular shortcuts. D-k is due to Cmd+K being special (D=Cmd, M=Alt)
-    // { "before": ["D-j"], "commands": ["editor.action.moveLinesDownAction"] },
-    // { "before": ["D-k"], "commands": ["editor.action.moveLinesUpAction"] },
-
-    // { "before": ["g", "]"], "commands": ["workbench.action.showAllSymbols"] },
     { "before": ["g", "]"], "commands": ["editor.action.peekDefinition"] },
-    { "before": ["-"], "commands": ["editor.action.inPlaceReplace.down"] },
-    {
-      "before": ["K"],
-      "commands": ["editor.action.showDefinitionPreviewHover"]
-    },
-    // Workaround for https://github.com/VSCodeVim/Vim/issues/1490
-    { "before": ["u"], "commands": ["undo"] },
+    { "before": ["K"], "commands": ["editor.action.showDefinitionPreviewHover"] },
+    { "before": ["leader", "%"], "commands": ["editor.emmet.action.matchTag"] },
+
+    { "before": ["leader", "1"], "commands": ["workbench.action.openEditorAtIndex1"] },
+    { "before": ["leader", "2"], "commands": ["workbench.action.openEditorAtIndex2"] },
+    { "before": ["leader", "3"], "commands": ["workbench.action.openEditorAtIndex3"] },
+    { "before": ["leader", "4"], "commands": ["workbench.action.openEditorAtIndex4"] },
+    { "before": ["leader", "5"], "commands": ["workbench.action.openEditorAtIndex5"] },
+    { "before": ["leader", "6"], "commands": ["workbench.action.openEditorAtIndex6"] },
+    { "before": ["leader", "7"], "commands": ["workbench.action.openEditorAtIndex7"] },
+    { "before": ["leader", "8"], "commands": ["workbench.action.openEditorAtIndex8"] },
+    { "before": ["leader", "9"], "commands": ["workbench.action.openEditorAtIndex9"] },
+
+    { "before": ["leader", "a"], "commands": ["alternate.alternateFile"] },
+    { "before": ["leader", "c", "p" /*, "l"*/], "commands": ["copy-relative-path-and-line-numbers.both"] },
+    { "before": ["leader", "c", "space"], "commands": ["editor.action.commentLine"] },
+    { "before": ["leader", "d", "a"], "commands": ["workbench.action.closeAllEditors"] },
+    { "before": ["leader", "d", "e"], "commands": ["workbench.action.closeOtherEditors"] },
+    { "before": ["leader", "d"], "commands": ["workbench.action.closeActiveEditor"] },
+    { "before": ["leader", "f"], "commands": ["workbench.action.quickOpen"] },
+
+    { "before": ["leader", "leader", "j", "w"], "commands": ["workbench.action.openWorkspaceSettingsFile"] },
+    { "before": ["leader", "leader", "j"], "commands": ["workbench.action.openSettingsJson"] },
+    { "before": ["leader", "leader", "k"], "commands": ["workbench.action.openGlobalKeybindingsFile"] },
+    { "before": ["leader", "r", "n"], "commands": ["editor.action.rename"] },
+    { "before": ["leader", "t"], "commands": ["workbench.action.gotoSymbol"] },
+    { "before": ["leader", "T"], "commands": ["workbench.action.showAllSymbols"] },
+    { "before": ["leader", "w"], "commands": ["workbench.action.closeActiveEditor"] },
+    { "before": ["u"], "commands": ["undo"] }, // Workaround for https://github.com/VSCodeVim/Vim/issues/1490
     { "before": ["z", "g"], "commands": ["cSpell.addWordToDictionary"] }
   ],
 
   "vim.visualModeKeyBindings": [
-    {
-      "before": ["leader", "c", "space"],
-      "commands": ["editor.action.commentLine"]
-    }
+    { "before": ["leader", "c", "space"], "commands": ["editor.action.commentLine"] }
   ],
 
   "vscode-yaml-sort.emptyLinesUntilLevel": 1,

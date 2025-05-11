@@ -28,6 +28,13 @@
 		],
 	},
 
+	"array count": {
+		"prefix": "ac",
+		"body": [
+			"\\${#${1:ARR_NAME}[@]}" // Bash fails without [@]
+		],
+	},
+
 	// bash: 0-indexed; zsh: 1-indexed - https://stackoverflow.com/q/50427449/372654
 	"array element access": {
 		"prefix": "ae",
@@ -448,6 +455,27 @@
 			"IFS=\\$'\\n' read -rA -d '' $1 < <( ${0:command} && printf '\\0' )"
  		],
  	},
+
+	"repeat": {
+		"prefix": "rep",
+		"body": [
+			"printf '${1:thing to repeat}%0.s' {1..${2:count}}"
+		],
+	},
+
+	"repeat dash": {
+		"prefix": "repdash", // cSpell:ignore repdash
+		"body": [
+			"printf -- '-%0.s' {1..${1:count}}"
+		],
+	},
+
+	"repeat with sequence (variable count)": {
+		"prefix": "repseq", // cSpell:ignore repseq
+		"body": [
+			"printf '${1:thing to repeat}%.0s' $(seq 1 \\$${2:count})"
+		],
+	},
 
 	"safe bash options": {
 		"prefix": "safe",

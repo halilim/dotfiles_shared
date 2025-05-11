@@ -100,7 +100,7 @@ alias pg_fg='postgres -D "$(brew --prefix)"/var/postgres'
 # Make high-resolution screenshots etc. more shareable
 alias png2jpg50="convert ./*.png -resize '50%' -set filename:base '%[basename]' '%[filename:base].jpg'"
 
-# cSpell:ignore psgw rgfh rghi rgchi rgsw rgwc rgws sshc sshconf
+# cSpell:ignore psgw rgfh rghi rgchi rgnt rgsw rgwc rgws sshc sshconf
 
 alias psf='ps aux | fzf'
 alias psg='ps aux | grep -v " grep " | grep -i'
@@ -121,6 +121,7 @@ alias rgh='rg -.' # Include dotfiles
 alias rgfh='rg -.F'
 alias rghi='rg -. --no-ignore'
 alias rgchi='rg -.s --no-ignore'
+alias rgnt="rg -g '!features/' -g '!spec/' -g '!test/' -g '!__tests__/' -g '!*.test.*'"
 alias rgw='rg -w' # Word
 # shellcheck disable=SC2139
 alias {rgsw,rgwc,rgws}='rg -sw' # Word and case sensitive

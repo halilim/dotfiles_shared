@@ -1,17 +1,26 @@
 Include includes/lib/functions.sh
 
+Describe 'color'
+  It 'does not print in color when not tty'
+    When call color red 'bar'
+    The stdout should eq 'bar'
+    The stderr should eq ''
+    The status should eq 0
+  End
+End
+
 Describe "echo_eval"
   It "prints, evaluates a string"
     When call echo_eval 'echo "foo"'
     The stdout should eq "foo"
-    The stderr should include '-> echo "foo"'
+    The stderr should eq '-> echo "foo"'
   End
 
   It "returns status"
     When call echo_eval 'false'
     The status should eq 1
     The stdout should eq ''
-    The stderr should include '-> false'
+    The stderr should eq '-> false'
   End
 
   It "escapes with %q"
@@ -21,7 +30,7 @@ Describe "echo_eval"
     # shellcheck disable=SC2016
     The stdout should eq 'foo "$bar'
     # shellcheck disable=SC2016
-    The stderr should include '-> echo foo\ \"\$bar'
+    The stderr should eq '-> echo foo\ \"\$bar'
   End
 End
 

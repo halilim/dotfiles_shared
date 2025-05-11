@@ -685,6 +685,7 @@ let g:airline#extensions#tabline#tab_nr_type = 2
 let g:airline#extensions#tabline#buffer_idx_mode = 1
 for s:buf_idx in [1, 2, 3, 4, 5, 6, 7, 8, 9]
   exe 'nmap <D-' . s:buf_idx . '> <Plug>AirlineSelectTab' . s:buf_idx . '<CR>'
+  exe 'nmap <leader>' . s:buf_idx . ' <Plug>AirlineSelectTab' . s:buf_idx . '<CR>'
   exe 'imap <D-' . s:buf_idx . '> <ESC><D-' . s:buf_idx . '>'
 endfor
 let g:airline#extensions#tabline#fnamemod = ':~:.'

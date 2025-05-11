@@ -44,7 +44,8 @@ Describe 'which_detailed'
 
   It 'prints command'
     When call which_detailed 'cat'
-    The stdout should include 'cat is /bin/cat'
+    The stdout should include 'cat is'
+    The stdout should include 'bin/cat'
     The stderr should eq ''
     The status should eq 0
   End

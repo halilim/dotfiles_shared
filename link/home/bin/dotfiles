@@ -6,15 +6,15 @@ IFS=$'\n\t'
 # Doesn't handle deletions
 
 function dotfiles::setup() {
-  local candidate
+  local candidate cmd_path
   for candidate in code-insiders code vim; do
-    if command -v $candidate > /dev/null 2>&1; then
+    if cmd_path=$(command -v $candidate); then
       break
     fi
   done
 
-  export EDITOR=$candidate
-  export BUNDLER_EDITOR=$candidate
+  export EDITOR=$cmd_path
+  export BUNDLER_EDITOR=$cmd_path
   export VISUAL='vim' # Needed for `crontab -e` (`code --wait` doesn't work)
 
   local vars=(

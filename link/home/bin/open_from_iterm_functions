@@ -27,9 +27,9 @@ function debug_vars() {
 function get_editor_titles() {
   if [[ $EDITOR = mvim* ]]; then
     window_names 'MacVim'
-  elif [[ $EDITOR = code ]]; then
+  elif [[ $EDITOR == code || $EDITOR == */code ]]; then
     window_names 'Visual Studio Code.app' 'Code'
-  elif [[ $EDITOR = code-insiders ]]; then
+  elif [[ $EDITOR == code-insiders || $EDITOR == */code-insiders  ]]; then
     window_names 'Visual Studio Code - Insiders.app' 'Code - Insiders'
   fi
 }
