@@ -13,7 +13,7 @@ function act_t() {
 alias actt='act_t' # cSpell:ignore actt
 
 function colima_start() {
-  local common_args="--profile ${COLIMA_PROFILE:-default}"
+  local common_args="--profile ${COLIMA_PROFILE:-default} --ssh-port 5022"
   # shellcheck disable=SC2086
   if FAKE_STATUS=1 echo_eval "colima $common_args status > /dev/null 2>&1"; then
     echo >&2 'Colima is already running'

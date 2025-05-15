@@ -66,14 +66,25 @@ function myip_whois() {
 alias whois_myip='myip_whois'
 
 function port_check() {
-  local port=$1 \
+  local ports=$1 \
     out
 
-  out=$(lsof -nP +c0 -iTCP:"$port" -sTCP:LISTEN)
+  if [[ ! $ports =~ ^[0-9,]+$ ]]; then
+    echo >&2 "Usage: ${funcstack[1]:-${FUNCNAME[0]}} <port>[,<port 2>]"
+    return 1
+  fi
+
+  out=$(FAKE_RETURN='COMMAND\tPID\nfoo\t1\nbar\t2' echo_eval 'lsof -nP +c0 -iTCP:%q -sTCP:LISTEN' "$ports")
   echo "$out"
 
   if [[ $out =~ docker ]]; then
-    docker container ls --format "table {{.ID}}\t{{.Names}}\t{{.Ports}}" -a | rg -n -w "$port"
+    docker container ls --format "table {{.ID}}\t{{.Names}}\t{{.Ports}}" -a | rg -n -w "$ports"
+  else
+    local body pids
+    body=$(echo "$out" | tail -n +2)
+    pids=$(echo "$body" | awk '{print $2}')
+    pids=$(printf %s "$pids" | tr '\n' ',')
+    echo_eval 'ps u -p %q' "$pids"
   fi
 }
 

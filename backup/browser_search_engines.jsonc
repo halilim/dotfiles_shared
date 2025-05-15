@@ -74,26 +74,56 @@
   },
 
   {
+    "name": "Jira search",
+    "shortcut": "j",
+    "url": "https://example.atlassian.net/issues/?jql=text%20~%20%22%s%22%20ORDER%20BY%20created%20DESC"
+  },
+
+  {
+    "name": "Jira search titles",
+    "shortcut": "jt",
+    "url": "https://example.atlassian.net/issues/?jql=summary%20~%20%22%s%22%20ORDER%20BY%20created%20DESC"
+  },
+
+  {
+    "name": "Jira search bugs",
+    "shortcut": "jb",
+    "url": "https://example.atlassian.net/issues/?jql=text%20~%20%22%s%22%20AND%20type%20%3D%20Bug%20ORDER%20BY%20created%20DESC"
+  },
+
+  {
+    "name": "Jira search bug titles",
+    "shortcut": "jbt",
+    "url": "https://example.atlassian.net/issues/?jql=summary%20~%20%22%s%22%20AND%20type%20%3D%20Bug%20ORDER%20BY%20created%20DESC"
+  },
+
+  {
+    "name": "Jira item",
+    "shortcut": "ji",
+    "url": "https://example.atlassian.net/browse/%s"
+  },
+
+  {
     "name": "Jira: TEAM issues",
-    "shortcut": "teams or js",
+    "shortcut": "teams",
     "url": "https://example.atlassian.net/issues/?jql=project%20%3D%20TEAM%20AND%20text%20~%20%22%s%22%20ORDER%20BY%20created%20DESC"
   },
 
   {
     "name": "Jira: TEAM bugs",
-    "shortcut": "teamb or jb", // cSpell:ignore teamb
+    "shortcut": "teamb", // cSpell:ignore teamb
     "url": "https://example.atlassian.net/issues/?jql=project%20%3D%20TEAM%20AND%20text%20~%20%22%s%22%20AND%20type%20%3D%20Bug%20ORDER%20BY%20created%20DESC"
   },
 
   {
     "name": "Jira: TEAM issues by title (summary)",
-    "shortcut": "teamt or jt", // cSpell:ignore teamt
+    "shortcut": "teamt", // cSpell:ignore teamt
     "url": "https://example.atlassian.net/issues/?jql=project%20%3D%20TEAM%20AND%20summary%20~%20%22%s%22%20ORDER%20BY%20created%20DESC"
   },
 
   {
     "name": "Jira: TEAM-",
-    "shortcut": "team or ji",
+    "shortcut": "team",
     "url": "https://example.atlassian.net/browse/TEAM-%s"
   },
 

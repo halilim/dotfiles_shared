@@ -367,7 +367,6 @@
   "terminal.integrated.tabs.enabled": true,
 
   "todo-tree.general.tags": [
-    "BUG",
     "HACK",
     "FIXME",
     "NOTE",
