@@ -695,6 +695,7 @@ shellspec
 SHELLSPEC_INFILE
 shellwords
 shfmt
+shiki
 shoulda
 showcmd
 Sidekiq

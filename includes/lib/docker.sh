@@ -13,14 +13,14 @@ function act_t() {
 alias actt='act_t' # cSpell:ignore actt
 
 function colima_start() {
-  local common_args="--profile ${COLIMA_PROFILE:-default} --ssh-port 5022"
+  local common_args="--profile ${COLIMA_PROFILE:-default}"
   # shellcheck disable=SC2086
   if FAKE_STATUS=1 echo_eval "colima $common_args status > /dev/null 2>&1"; then
     echo >&2 'Colima is already running'
     return 0
   fi
 
-  local args=$common_args
+  local args="$common_args --ssh-port 5022"
   if [[ $OSTYPE == darwin* ]]; then
     args+=" --vm-type=vz --vz-rosetta --mount-type=${MOUNT_TYPE:-virtiofs} --cpu 4"
   fi

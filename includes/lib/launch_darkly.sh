@@ -11,4 +11,4 @@ function launch_darkly_flag() {
 }
 alias ldf='launch_darkly_flag'
 # shellcheck disable=SC2139
-alias {ldff,ld,,ldfg}='FED=1 launch_darkly_flag' # cSpell:ignore ldff ldfg
+alias {ldff,ldfg,ldg}='FED=1 launch_darkly_flag' # cSpell:ignore ldff ldfg
