@@ -19,7 +19,7 @@ function heroku_config_get() {
 
 function heroku_db_url() {
   local app=$1
-  FAKE_RETURN='postgres://user:pass@host:123/db' heroku_config_get DATABASE_URL "$app"
+  FAKE_ECHO='postgres://user:pass@host:123/db' heroku_config_get DATABASE_URL "$app"
 }
 
 function heroku_deploy_dash() {
@@ -66,7 +66,7 @@ function heroku_remotes() {
 
 function heroku_redco() {
   local app=${1:?Heroku app name is required} redis_url
-  redis_url=$(FAKE_RETURN='rediss://user:pass@host:6379' heroku_config_get REDIS_TLS_URL "$app")
+  redis_url=$(FAKE_ECHO='rediss://user:pass@host:6379' heroku_config_get REDIS_TLS_URL "$app")
   REDCO_LABEL=$app redco_uri "$redis_url"
 }
 alias heroku_redco_w='REDCO_WRITABLE=1 heroku_redco'

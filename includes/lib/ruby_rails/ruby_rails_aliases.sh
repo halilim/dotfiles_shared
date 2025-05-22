@@ -40,7 +40,7 @@ alias {mc,mailcatch}='mailcatcher -f'
 
 # Ripgrep
 # cSpell:ignore rgr rgrr rgrw
-alias rgr="rg -g '!config/locales/' -g '!features/' -g '!spec/' -g '!test/' -g  '!__tests__/'"
+alias rgr="rg -g '!config/locales/' -g '!features/' -g '!spec/' -g '!test/' -g '!__tests__/'"
 alias rgrr="rg -g '*.rb' -g '!features/' -g '!spec/' -g '!test/'"
 alias rgrw="rgr -w"
 

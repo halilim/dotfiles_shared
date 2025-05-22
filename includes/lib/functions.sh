@@ -97,7 +97,7 @@ function color_arrow() {
   color "$1" "-> $2"
 }
 
-# Usage: DRY_RUN=1 FAKE_RETURN=foo echo_eval 'bar %q' "$baz"
+# Usage: DRY_RUN=1 FAKE_ECHO=foo echo_eval 'bar %q' "$baz"
 function echo_eval() {
   local cmd dry_run=${DRY_RUN:-}
   # shellcheck disable=SC2059
@@ -109,11 +109,15 @@ function echo_eval() {
   fi
 
   # NOTE: Dry-run output is not always accurate, since some intermediate conditionals depend on a
-  # previous step actually running
+  #       previous step actually running.FAKE_ECHO & FAKE_STATUS are used to simulate the
+  #       output and return status of the command.
   if [[ $dry_run ]]; then
     echo >&2 'Dry running...'
-    if [[ ${FAKE_RETURN:-} ]]; then
-      echo "$FAKE_RETURN"
+    if [[ ${FAKE_ECHO:-} ]]; then
+      echo "$FAKE_ECHO"
+    fi
+
+    if [[ ${FAKE_STATUS:-} ]]; then
       return "${FAKE_STATUS:-0}"
     fi
   else

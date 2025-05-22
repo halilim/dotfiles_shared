@@ -74,7 +74,7 @@ function port_check() {
     return 1
   fi
 
-  out=$(FAKE_RETURN='COMMAND\tPID\nfoo\t1\nbar\t2' echo_eval 'lsof -nP +c0 -iTCP:%q -sTCP:LISTEN' "$ports")
+  out=$(FAKE_ECHO='COMMAND\tPID\nfoo\t1\nbar\t2' echo_eval 'lsof -nP +c0 -iTCP:%q -sTCP:LISTEN' "$ports")
   echo "$out"
 
   if [[ $out =~ docker ]]; then

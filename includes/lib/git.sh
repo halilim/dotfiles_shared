@@ -122,7 +122,7 @@ alias gff='git_find_file'
 
 function _git_commits_with_message() {
   local search=$1 log_output
-  log_output=$(FAKE_RETURN="123abc Foo bar\ndef456 Baz qux" echo_eval \
+  log_output=$(FAKE_ECHO="123abc Foo bar\ndef456 Baz qux" echo_eval \
     'git log --no-color --oneline --all --grep %q' "$search")
   echo >&2 "$log_output"
   echo "$log_output" | cut -d ' ' -f 1

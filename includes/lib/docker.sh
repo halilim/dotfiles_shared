@@ -76,7 +76,7 @@ function docker_hosts() {
 
   local docker_output
   if [[ ${VERBOSE:-} ]]; then
-    docker_output=$(FAKE_RETURN="foo\nbar\nbaz" echo_eval "${cmd[*]}")
+    docker_output=$(FAKE_ECHO="foo\nbar\nbaz" echo_eval "${cmd[*]}")
   else
     docker_output=$("${cmd[@]}")
   fi

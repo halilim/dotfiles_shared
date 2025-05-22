@@ -16,7 +16,7 @@ alias gemib='gem_install_bundler_gemfile'
 
 function gem_uri_open() {
   local name=$1 version=$2 uri_field=$3 home_uri_field=homepage_uri
-  json=$(FAKE_RETURN="{\"$uri_field\": \"https://example.com\", \"$home_uri_field\": \"\"}" echo_eval \
+  json=$(FAKE_ECHO="{\"$uri_field\": \"https://example.com\", \"$home_uri_field\": \"\"}" echo_eval \
     'curl -Ls %q' "https://rubygems.org/api/v2/rubygems/$name/versions/$version.json")
   uri=$(jq -r ".$uri_field // .$home_uri_field" <<< "$json")
 
