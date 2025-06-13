@@ -218,13 +218,14 @@
 	"for i": {
 		"prefix": "fori", // cSpell:ignore fori
 		"body": [
-			"local $0",
-			"for ((${0:i} = 0; ${0:i} < ${1:10}; ${0:i}++)); do",
-				"\techo \"$${0:i}\"",
+			"local ${1:i}",
+			"for (($1 = 0; $1 < ${2:10}; $1++)); do",
+				"\techo \"$$1\"",
 			"done"
 			],
 		"description": "An index-based iteration for loop."
 	},
+
 	"for in": {
 		"prefix": "forin", // cSpell:ignore forin
 		"body": [
@@ -242,6 +243,16 @@
 			"local $0",
 			"for ${0:VAR} in \"${${1:LIST}[@]}\"; do",
 				"\techo \"$${0:VAR}\"",
+			"done"
+		]
+	},
+
+	"for in array with index": {
+		"prefix": ["forii", "forinai"], // cSpell:ignore forii forinai
+		"body": [
+			"local ${1:i} ${2:array_len}=${#${3:array}[*]}",
+			"for (($1 = 0; $1 < $2; $1++)); do",
+				"\techo \"${$3[*]:$$1:1}\"",
 			"done"
 		]
 	},

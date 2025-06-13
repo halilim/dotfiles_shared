@@ -63,7 +63,7 @@ function color() {
 
   local color=$1 text=$2
 
-  if ! test -t 1; then
+  if ! test -t 1 && [[ ! ${FORCE_COLOR:-} ]]; then
     echo "$text"
     return
   fi
