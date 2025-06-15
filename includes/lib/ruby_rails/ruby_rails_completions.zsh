@@ -27,9 +27,9 @@ _rails_build_request() {
         $RAILS_CMD routes --expanded > "$file"
       fi
 
-      # shellcheck disable=SC2034
-      IFS=$'\n' read -rA -d '' pairs < <(rg --multiline --only-matching --replace '$1 $2' \
-        'Verb\s*\|\s*(\S+)\s*\nURI\s*\|\s*(\S+)' "$file" && printf '\0')
+      # shellcheck disable=SC2034,SC2296,SC2116
+      pairs=("${(f)$(rg --multiline --only-matching --replace '$1 $2' \
+        'Verb\s*\|\s*(\S+)\s*\nURI\s*\|\s*(\S+)' "$file")}")
 
       compadd -a pairs
       ;;

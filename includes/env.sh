@@ -80,10 +80,18 @@ export UPDATE_BACKUP_CMDS=(
   update_bat_syntaxes
 )
 
+BAT_CMD=bat
 if [[ $OSTYPE == darwin* ]]; then
   source_with_custom mac_env.sh
 elif [[ $OSTYPE == linux* ]]; then
   source_with_custom linux_env.sh
+fi
+export BAT_CMD
+
+if [ -n "${BASH_VERSION:-}" ]; then
+  source_with_custom bash_env.sh
+elif [ -n "${ZSH_VERSION:-}" ]; then
+  source_with_custom zsh_env.zsh
 fi
 
 num_procs=$(getconf _NPROCESSORS_ONLN) # cSpell:ignore NPROCESSORS ONLN
@@ -94,9 +102,12 @@ export BUNDLE_JOBS=$num_procs
 export MAKEFLAGS="-j$num_procs"
 unset num_procs
 
-# Global troubleshooting reminder: Some apps treat PATH as case-insensitive, causing problems when
-# a variable named lowercase `path` used in scripts or functions.
-PATH="$HOME/.bun/bin:$PATH:$HOME/bin"
+if [[ ! ${PATH_MODIFIED:-} ]]; then
+  # Global troubleshooting reminder: Some apps treat PATH as case-insensitive, causing problems when
+  # a variable named lowercase `path` used in scripts or functions.
+  PATH="$HOME/.bun/bin:$PATH:$HOME/bin"
+  export PATH_MODIFIED=1
+fi
 
 # https://ruby.github.io/rdoc/RI_rdoc.html
 export RI="--format ansi"

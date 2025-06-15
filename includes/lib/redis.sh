@@ -29,8 +29,26 @@ function redco() {
 alias redco_w='REDCO_WRITABLE=1 redco'
 
 function redco_uri() {
-  local uri=$1 uri_arr
-  IFS=$'\n' "${READ_ARRAY[@]}" -d '' uri_arr < <( redis_url_to_redco "$uri" && printf '\0' )
-  redco "${uri_arr[1]}" "${uri_arr[2]}" "${uri_arr[3]}" "${uri_arr[4]}"
+  local uri=$1
+
+  local uri_arr=() output
+  output=$(redis_url_to_redco "$uri")
+  if [ -n "${ZSH_VERSION:-}" ]; then
+    # shellcheck disable=SC2296,SC2116
+    uri_arr=("${(f)$(echo "$output")}")
+  else
+    mapfile -t uri_arr < <( echo "$output" )
+  fi
+
+  # shellcheck disable=SC2124
+  local scheme="${uri_arr[@]:0:1}"
+  # shellcheck disable=SC2124
+  local host="${uri_arr[@]:1:1}"
+  # shellcheck disable=SC2124
+  local port="${uri_arr[@]:2:1}"
+  # shellcheck disable=SC2124
+  local password="${uri_arr[@]:3:1}"
+
+  redco "$scheme" "$host" "$port" "$password"
 }
 alias redco_uri_w='REDCO_WRITABLE=1 redco_uri'

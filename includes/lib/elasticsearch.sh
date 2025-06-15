@@ -6,17 +6,21 @@ function es_get_uri() {
 
 # Set a default "0 replicas" template for all new indices so that they are green (local dev)
 function es_no_replicas_tpl() {
-  local es_uri \
-        version \
-        version_arr \
-        major_version data \
-        settings='{ "number_of_replicas": 0 }'
-
+  local es_uri settings='{ "number_of_replicas": 0 }'
   es_uri=$(es_get_uri "$1")
 
+  local version_arr=() version
   version=$(curl -fLs "$es_uri" | jq -r '.version.number')
-  IFS='.' "${READ_ARRAY[@]}" version_arr <<< "$version"
-  major_version=${version_arr[*]:0:1}
+  if command -v mapfile > /dev/null 2>&1; then
+    mapfile -t version_arr < <( echo "$version" )
+  elif [ -n "${ZSH_VERSION:-}" ]; then
+    # shellcheck disable=SC2296,SC2116
+    version_arr=("${(f)$(echo "$version")}")
+  fi
+
+  # shellcheck disable=SC2124
+  local major_version=${version_arr[@]:0:1}
+  local data
 
   if [[ $major_version -le 5 ]]; then
     read -r -d '' data <<JSON

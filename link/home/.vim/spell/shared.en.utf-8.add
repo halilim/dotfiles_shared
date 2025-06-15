@@ -436,6 +436,7 @@ mailchimp
 mailname
 mailutils
 MAKEFLAGS
+mapfile
 mapfs
 mapleader
 markdownlint
@@ -733,6 +734,7 @@ stdinpass
 stdpath
 Stecker
 strftime
+strs
 Struct
 stty
 stylesheet

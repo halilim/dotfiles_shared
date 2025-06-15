@@ -4,6 +4,7 @@ export CLIP='xclip -sel clip'
 
 export GNU_DATE=date
 export GNU_FIND=find
+export GNU_HEAD=head
 export GNU_NUMFMT=numfmt
 export GNU_REALPATH=realpath
 export GNU_SED=sed
@@ -13,13 +14,15 @@ export GNU_XARGS=xargs
 
 if [[ -v TERMUX_VERSION ]]; then
   export VIM_NO_SERVER=1 # --remote-silent is not supported
-  BAT_CMD=bat
   UPDATE_BACKUP_CMDS+=(
     'pkg update'
     'pkg upgrade -y'
   )
 else
-  BAT_CMD=batcat # Because of a name clash, see: apt-cache show bat
+  if [[ -e /etc/debian_version ]]; then
+    # shellcheck disable=SC2034
+    BAT_CMD=batcat # Because of a name clash, see: apt-cache show bat
+  fi
 
   if [[ -r /etc/lsb-release ]]; then
     # shellcheck disable=SC1091
@@ -35,4 +38,3 @@ else
     fi
   fi
 fi
-export BAT_CMD

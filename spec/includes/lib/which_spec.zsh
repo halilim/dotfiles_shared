@@ -15,7 +15,6 @@ Describe 'which_detailed'
     export BAT_CMD=my_cat
     export GNU_SED=${GNU_SED:-sed}
 
-
     It 'prints alias and function details'
       baz() { echo 'qux'; }
       alias baz_alias='baz'

@@ -39,7 +39,8 @@
 	"array element access": {
 		"prefix": "ae",
 		"body": [
-			"\"${${1:ARR_NAME}[*]:${2:offset}:${3:length}}\"",
+			"# shellcheck disable=SC2124",
+			"\"${${1:ARR_NAME}[@]:${2:offset}:${3:length}}\"",
 		],
 	},
 
@@ -250,9 +251,10 @@
 	"for in array with index": {
 		"prefix": ["forii", "forinai"], // cSpell:ignore forii forinai
 		"body": [
-			"local ${1:i} ${2:array_len}=${#${3:array}[*]}",
+			"local ${1:i} ${2:array_len}=${#${3:array}[@]}",
 			"for (($1 = 0; $1 < $2; $1++)); do",
-				"\techo \"${$3[*]:$$1:1}\"",
+				"\t# shellcheck disable=SC2124",
+				"\techo \"${$3[@]:$$1:1}\"",
 			"done"
 		]
 	},
@@ -333,7 +335,7 @@
 	"if command exists": {
 		"prefix": "ifco", // cSpell:ignore ifco
 		"body": [
-			"if command -v ${1:cmd}; then",
+			"if command -v ${1:cmd} > /dev/null 2>&1; then",
 				"\t$0",
 			"fi"
 		],
@@ -442,28 +444,34 @@
 		],
 	},
 
-	// https://stackoverflow.com/a/32931403/372654
 	"read into array": {
 		"prefix": "ra",
 		"body": [
-			"local ${1:array}=()",
-			"IFS=\\$'\\n' \"\\${READ_ARRAY[@]}\" -d '' $1 < <( ${0:command} && printf '\\0' )"
+			"local ${1:array_name}=() ${2:output}",
+			"$2=$(${3:command})",
+			"if command -v mapfile > /dev/null 2>&1; then",
+				"\tmapfile -t $1 < <( echo \"$$2\" )",
+			"elif [ -n \"\\${ZSH_VERSION:-}\" ]; then",
+				"\t# shellcheck disable=SC2296,SC2116",
+				"\t$1=(\"${(f)$(echo \"$$2\")}\")",
+			"fi",
 		],
 	},
 
 	"read into array Bash": {
 		"prefix": "rab",
 		"body": [
-			"${1:array}=()",
-			"IFS=\\$'\\n' read -ra -d '' $1 < <( ${0:command} && printf '\\0' )"
+			"local ${1:array_name}=()",
+			"mapfile -t $1 < <( ${0:command} )"
 		],
 	},
 
 	"read into array Zsh": {
 		"prefix": "raz",
  		"body": [
- 			"${1:array}=()",
-			"IFS=\\$'\\n' read -rA -d '' $1 < <( ${0:command} && printf '\\0' )"
+ 			"local ${1:array_name}=()",
+			"# shellcheck disable=SC2296,SC2116",
+			"$1=(\"${(f)$(${0:command})}\")"
  		],
  	},
 

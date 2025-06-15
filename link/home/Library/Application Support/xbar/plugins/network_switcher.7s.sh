@@ -44,12 +44,14 @@ function init_config() {
 
   local i=0
   for (( ; i < ${#var_names[@]}; i++)); do
-    name=${var_names[*]:$i:1}
+    # shellcheck disable=SC2124
+    name=${var_names[@]:$i:1}
 
     if [[ $config ]] && line=$(grep "$name" <<< "$config"); then
       value=$(echo "$line" | cut -d' ' -f2 | tr -d '",')
     else
-      value=${defaults[*]:$i:1}
+      # shellcheck disable=SC2124
+      value=${defaults[@]:$i:1}
     fi
 
     export "$name"="$value"

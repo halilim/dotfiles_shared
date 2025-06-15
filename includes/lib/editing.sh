@@ -11,7 +11,7 @@ function open_with_editor() {
     cmd='vim_open'
   elif [[ $EDITOR == code || $EDITOR == */code || $EDITOR == code-insiders || $EDITOR == */code-insiders ]]; then
     # https://code.visualstudio.com/docs/editor/command-line#_core-cli-options
-    # https://github.com/microsoft/vscode/issues/176343 No multiple -g :(
+    # https://github.com/microsoft/vscode/issues/176343 No multiple -g's :(
     cmd="$EDITOR -g"
   else
     cmd='open'

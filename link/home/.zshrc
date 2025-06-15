@@ -14,10 +14,6 @@ if [[ ! ${ZPROFILE_LOADED:-} ]]; then
 fi
 unset ZPROFILE_LOADED
 
-export BUILTIN_URL='https://zsh.sourceforge.io/Doc/Release/Shell-Builtin-Commands.html'
-export ARRAY_START=1
-export READ_ARRAY=(read -rA)
-
 alias zshrc='$EDITOR ~/.zshrc'
 
 # Enable aliases to be sudo'ed

@@ -1,10 +1,10 @@
 export VIM_CMD=mvim
 export OPEN_CMD='open'
-export BAT_CMD=bat
 export CLIP='pbcopy'
 
 export GNU_DATE=gdate
 export GNU_FIND=gfind
+export GNU_HEAD=ghead
 export GNU_NUMFMT=gnumfmt
 export GNU_REALPATH=grealpath
 export GNU_SED=gsed

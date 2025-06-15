@@ -5,6 +5,18 @@ IFS=$'\n\t'
 # Tries to be as idempotent as possible
 # Doesn't handle deletions
 
+function dotfiles::edit() {
+  local workspace_file
+  workspace_file=$(find "$DOTFILES" -name '*.code-workspace' -maxdepth 1 -print -quit)
+  # shellcheck disable=SC1091
+  . "$DOTFILES_INCLUDES"/lib/editing.sh
+  if [[ $workspace_file ]]; then
+    open_with_editor "$workspace_file"
+  else
+    open_with_editor "$DOTFILES"
+  fi
+}
+
 function dotfiles::setup() {
   local candidate cmd_path
   for candidate in code-insiders code vim; do
@@ -440,6 +452,7 @@ USAGE_BASE="Usage: $(color green "$DOTFILES_CMD")"
 
 # TODO: Add rm command: removes both the file and the symlink
 case "${1:-''}" in
+  edit) dotfiles::edit ;;
   setup) dotfiles::setup ;;
   sync) dotfiles::sync "${2:-}" ;;
   import) dotfiles::import "${@:2}" ;;

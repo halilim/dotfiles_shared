@@ -6,11 +6,11 @@ Describe 'which_detailed'
   }
 
   # Mainly to prevent passing bat arguments to cat
-  function my_cat() {
+  function my_bat() {
     cat
   }
 
-  export BAT_CMD=my_cat
+  export BAT_CMD=my_bat
   export GNU_SED=${GNU_SED:-sed}
 
   It 'prints variable details and value'

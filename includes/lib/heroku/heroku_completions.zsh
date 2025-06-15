@@ -28,7 +28,8 @@ function _heroku_apps() {
       printf '%s' "$heroku_app_list" > "$heroku_cache"
     fi
 
-    IFS=$'\n' "${READ_ARRAY[@]}" -d '' HEROKU_APPS <<< "$heroku_app_list"
+    # shellcheck disable=SC2296,SC2116
+    HEROKU_APPS=("${(f)$(echo "$heroku_app_list")}")
   fi
 
   case $state in
