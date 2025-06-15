@@ -7,6 +7,9 @@ alias bashrc='$EDITOR ~/.bashrc'
 # shellcheck disable=SC1091
 . "$DOTFILES_INCLUDES"/env_interactive.sh
 
+# shellcheck source=/dev/null
+. "$HOMEBREW_PREFIX"/etc/bash_completion.d/git-prompt.sh
+
 alias DR='DRY_RUN=1'
 
 # don't put duplicate lines or lines starting with space in the history.

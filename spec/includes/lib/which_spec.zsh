@@ -8,11 +8,10 @@ Describe 'which_detailed'
     }
 
     # Mainly to prevent passing bat arguments to cat
-    function my_cat() {
+    function bat() { # Mock
       cat
     }
 
-    export BAT_CMD=my_cat
     export GNU_SED=${GNU_SED:-sed}
 
     It 'prints alias and function details'

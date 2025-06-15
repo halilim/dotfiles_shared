@@ -46,7 +46,7 @@ function which_() {
     echo "$file_path"
   fi
 }
-alias wb='which_ "$BAT_CMD"'
+alias wb='which_ bat'
 alias wl='which_ less'
 
 # Why not in ~/bin? Because this needs the whole environment to be able to detect all types of
@@ -114,7 +114,7 @@ function which_detailed() {
     echo "$type_str"
 
     if [[ $type_str == *'function'* ]]; then
-      local bat_cmd_and_args=("$BAT_CMD" --language=sh --paging=never)
+      local bat_cmd_and_args=(bat --language=sh --paging=never)
 
       local location
       location=$(locate_function "$input" "$type_str")

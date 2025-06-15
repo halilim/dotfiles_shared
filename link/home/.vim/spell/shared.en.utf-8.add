@@ -417,6 +417,7 @@ libyaml
 lifecycle
 linebreak
 linkita
+linuxbrew
 Liskov
 listnetworkserviceorder
 ljust
@@ -504,6 +505,7 @@ nohup
 noice
 Nokogiri
 noout
+NOPASSWD
 notags
 notifempty
 nounset
@@ -723,6 +725,7 @@ spellfile
 SQLite
 srand
 srcfolder
+sshdconfig
 sshfs
 stackable
 stackoverflow

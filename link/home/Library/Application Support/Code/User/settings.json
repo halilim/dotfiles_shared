@@ -168,6 +168,8 @@
     "*.tpl.php": "smarty",
     "*.zone.txt": "zonefile",
     "**/.ssh/config": "ssh_config",
+    "**/sshd_config.d/*.conf": "sshdconfig",
+    "**/logrotate.d/*.conf": "plaintext", // Until there is an extension for logrotate format
     "/etc/**/*.conf": "plain",
     "/etc/apache2/**/*.conf": "apacheconf",
     "coc-settings.json": "jsonc",

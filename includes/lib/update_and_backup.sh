@@ -37,5 +37,5 @@ function update_bat_syntaxes() {
 
   git_clone_or_pull https://github.com/fnando/sublime-procfile.git "$bat_syntax_dir/procfile"
 
-  $BAT_CMD cache --build
+  bat cache --build
 }

@@ -19,11 +19,6 @@ if [[ -v TERMUX_VERSION ]]; then
     'pkg upgrade -y'
   )
 else
-  if [[ -e /etc/debian_version ]]; then
-    # shellcheck disable=SC2034
-    BAT_CMD=batcat # Because of a name clash, see: apt-cache show bat
-  fi
-
   if [[ -r /etc/lsb-release ]]; then
     # shellcheck disable=SC1091
     . /etc/lsb-release
@@ -32,8 +27,9 @@ else
       OMZ_PLUGINS+=(ubuntu)
 
       UPDATE_BACKUP_CMDS+=(
-        'apt update'
-        'apt upgrade -y'
+        'sudo apt update'
+        'sudo apt upgrade -y'
+        '[[ -e /var/run/reboot-required ]] && sudo reboot'
       )
     fi
   fi

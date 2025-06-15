@@ -22,10 +22,14 @@ export EZA_ICONS_AUTO=true
 export EZA_ICON_SPACING=2
 export TIME_STYLE=long-iso
 
+export HOMEBREW_NO_AUTO_UPDATE=1 # Covered by update_and_backup ($UPDATE_BACKUP_CMDS)
+export HOMEBREW_NO_ENV_HINTS=1
+
 # Allow overriding stuff defined later anywhere
 export POST_INIT_HOOKS=()
 
 export DOTFILES_INCLUDE_LIBS=(
+  brew
   databases
   docker
   editing
@@ -75,18 +79,18 @@ export OMZ_PLUGINS=(
 
 # shellcheck disable=SC2016
 export UPDATE_BACKUP_CMDS=(
+  'brew update --quiet'
+  'brew upgrade --quiet' # Removed --greedy because apps auto-download in the background anyway
   '$ZSH/tools/upgrade.sh -v silent' # https://github.com/ohmyzsh/ohmyzsh/wiki/FAQ#how-do-i-update-oh-my-zsh
   omz_update_custom
   update_bat_syntaxes
 )
 
-BAT_CMD=bat
 if [[ $OSTYPE == darwin* ]]; then
   source_with_custom mac_env.sh
 elif [[ $OSTYPE == linux* ]]; then
   source_with_custom linux_env.sh
 fi
-export BAT_CMD
 
 if [ -n "${BASH_VERSION:-}" ]; then
   source_with_custom bash_env.sh
