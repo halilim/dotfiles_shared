@@ -8,7 +8,7 @@ alias bashrc='$EDITOR ~/.bashrc'
 . "$DOTFILES_INCLUDES"/env_interactive.sh
 
 # shellcheck source=/dev/null
-. "$HOMEBREW_PREFIX"/etc/bash_completion.d/git-prompt.sh
+. "$HOMEBREW_PREFIX"/etc/bash_completion.d/git-prompt*
 
 alias DR='DRY_RUN=1'
 

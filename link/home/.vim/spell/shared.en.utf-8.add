@@ -12,6 +12,7 @@ activerecord
 activestorage
 activesupport
 adduid
+adduser
 adminer
 Adminer
 alnum
@@ -798,6 +799,7 @@ upserted
 upserts
 urandom
 urlhaus
+usermod
 usr
 utf
 vcard
