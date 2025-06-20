@@ -169,7 +169,8 @@
     "*.zone.txt": "zonefile",
     "**/.ssh/config": "ssh_config",
     "**/sshd_config.d/*.conf": "sshdconfig",
-    "**/logrotate.d/*.conf": "plaintext", // Until there is an extension for logrotate format
+    // Until there is an extension for logrotate format
+    "**/logrotate.d/*.conf": "plaintext",
     "/etc/**/*.conf": "plain",
     "/etc/apache2/**/*.conf": "apacheconf",
     "coc-settings.json": "jsonc",
