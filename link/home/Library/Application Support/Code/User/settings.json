@@ -150,6 +150,7 @@
   "extensions.ignoreRecommendations": true,
 
   // cSpell:ignore apacheconf
+  // logrotate.d/*.conf: There is no logrotate extension yet
   "files.associations": {
     ".markdownlintrc": "jsonc",
     "{.config/git/ignore*,.jshintignore,**/*.ignore,**/.git/**/info/exclude}": "ignore",
@@ -169,7 +170,6 @@
     "*.zone.txt": "zonefile",
     "**/.ssh/config": "ssh_config",
     "**/sshd_config.d/*.conf": "sshdconfig",
-    // Until there is an extension for logrotate format
     "**/logrotate.d/*.conf": "plaintext",
     "/etc/**/*.conf": "plain",
     "/etc/apache2/**/*.conf": "apacheconf",
