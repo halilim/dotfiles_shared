@@ -4,7 +4,7 @@ alias libga='$EDITOR "$DOTFILES_INCLUDES"/lib/git/git_aliases.sh'
 
 alias ga='git add -p'
 alias gam='git_matching add -p'
-alias gan='git add -N'
+alias gan='git add -N .'
 alias gcpn='git cherry-pick --no-commit'
 alias gcae='git commit --amend --edit'
 # shellcheck disable=SC2139

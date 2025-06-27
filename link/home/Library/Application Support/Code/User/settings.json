@@ -553,7 +553,7 @@
     "*.ipynb": "jupyter-notebook",
     "*.plist": "default"
   },
-  "workbench.iconTheme": "ayu",
+  "workbench.iconTheme": "vscode-icons",
   "workbench.startupEditor": "none",
 
   "xml.codeLens.enabled": true,
