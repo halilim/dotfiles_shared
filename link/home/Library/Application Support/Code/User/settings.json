@@ -161,7 +161,7 @@
     "{*.gitconfig*,**/.aws/credentials,**/*ghostty/config,**/btop.conf,**/php*/**/*.conf,pybritive.config}": "ini",
     "{*.jbuilder,aprc,Brewfile*}": "ruby",
     "{*.sublime-settings,*.tgn,**/chrome/exts/uBlock.txt}": "json",
-    "{*.yml.*,**/.bundle/config}": "yaml",
+    "{*.yml.*,**/*.sublime-syntax,**/.bundle/config}": "yaml",
     "{**/nginx*.conf*,**/nginx/**/*.conf*}": "NGINX",
     "*.erb.deface": "erb",
     "*.haml.deface": "haml",

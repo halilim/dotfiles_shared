@@ -1,7 +1,7 @@
 alias libw='$EDITOR "$DOTFILES_INCLUDES"/lib/which.sh' # cSpell:ignore libw
 
 # shellcheck disable=SC2139
-alias {edit_function,ef,fe}='EDIT_FUNCTION=1 wh'
+alias {edit_function,ef,fe,edit_which,ew}='EDIT=1 wh'
 
 function locate_function() {
   local function_name=$1 output=${2:-} file line is_zsh
@@ -95,7 +95,8 @@ function which_detailed() {
     fi
   fi
 
-  local i type_str_ct=${#type_strs[@]} type_str
+  local bat_cmd_and_args=(bat --language=sh --paging=never)
+  local i type_str_ct=${#type_strs[@]} type_str location file_out file
   for ((i = 0; i < type_str_ct; i++)); do
     # shellcheck disable=SC2124
     type_str="${type_strs[@]:$i:1}"
@@ -114,12 +115,9 @@ function which_detailed() {
     echo "$type_str"
 
     if [[ $type_str == *'function'* ]]; then
-      local bat_cmd_and_args=(bat --language=sh --paging=never)
-
-      local location
       location=$(locate_function "$input" "$type_str")
 
-      if [[ ${EDIT_FUNCTION:-} ]]; then
+      if [[ ${EDIT:-} ]]; then
         if [[ $location ]]; then
           open_with_editor "$location"
         else
@@ -159,15 +157,20 @@ function which_detailed() {
 
       ORIG_INPUT=$orig_input which_detailed "$type_str"
 
-    elif [[ $type_str == *'command'* || $type_str == *'file'* ]]; then
-      local file_out
-      file_out=$(type "$input")
-      local file="${file_out#*is }"
+    elif [[ $type_str == *'command'* || $type_str == *'file'* || $type_str == *' is '* ]]; then
+      if [[ $type_str == *' is '* ]]; then
+        file_out=$type_str
+      else
+        file_out=$(type "$input")
+      fi
+      file="${file_out#*is }"
 
       if [[ -L $file ]]; then
-        ls -l "$file"
-      else
-        echo "$file"
+        eza --group-directories-first --long "$file"
+      fi
+
+      if [[ ${EDIT:-} ]]; then
+        open_with_editor "$file"
       fi
     fi
 

@@ -23,5 +23,5 @@ UPDATE_BACKUP_CMDS+=(
   'js_update_globals'
   'update_open_tabs'
   "$OPEN_CMD /Applications # Manually update the non-App Store, infrequently-opened, etc. apps"
-  'update_notify_chrome'
+  'iterm_tab . update_chrome_notes'
 )

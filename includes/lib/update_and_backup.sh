@@ -14,16 +14,11 @@ function update_and_backup() {
   )
 }
 
-function update_notify_chrome() {
-  local chrome_backup_dir=$DOTFILES_CUSTOM/backup/chrome
-  echo "$chrome_backup_dir" | $CLIP
-  osascript_dialog "$(cat <<SH
-$chrome_backup_dir is copied to clipboard. In Chrome:
-1. Bookmark Manager (⌥⌘B) > ⋮ > Export bookmarks > Go to dir (⇧⌘G) > ⌘V
-2. Dark Reader > More > All settings > Advanced > Export Settings
-3. User JavaScript and CSS > Settings > Download JSON & chrome_user_js_css_prettier
-SH
-)"
+function update_chrome_notes() {
+  FORCE_COLOR=1 echo "Chrome backup directory: $(color yellow "$DOTFILES_CUSTOM"/backup/chrome)
+$(color green '1. Bookmark Manager (⌥⌘B) > ⋮ > Export bookmarks > Go to dir (⇧⌘G) > ⌘V')
+$(color green '2. Dark Reader > More > All settings > Advanced > Export Settings')
+$(color green '3. User JavaScript and CSS > Settings > Download JSON & chrome_user_js_css_prettier')"
 }
 
 function update_open_tabs() {
