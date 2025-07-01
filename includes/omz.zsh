@@ -1,4 +1,4 @@
-alias omzrc='$EDITOR "$DOTFILES_INCLUDES"/omz.zsh' # cSpell:ignore libm
+alias omzrc='$EDITOR "$DOTFILES_INCLUDES"/omz.zsh' # cSpell:ignore omzrc
 
 omz_path=~/.oh-my-zsh
 
