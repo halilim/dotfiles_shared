@@ -9,12 +9,17 @@ omz_path=~/.oh-my-zsh
 #   [+] Remove p10k (hm... fzf-tab is probably more important than p10k)
 #   [ ] Replace with simple prompt + REPORTTIME=... instead?
 
-if [[ ! -v TERMUX_VERSION ]]; then
+# https://github.com/ohmyzsh/ohmyzsh/wiki/themes
+export ZSH_THEME
+if [[ -v TERMUX_VERSION ]]; then
+  # powerlevel10k on Termux: gitstatus (gitstatusd) fails to initialize. It would be too heavy anyway
+  ZSH_THEME=simple
+else
   # shellcheck source=/dev/null
   # To customize prompt, run `p10k configure` or edit .p10k*.zsh.
   . "$DOTFILES_INCLUDES"/.p10k.zsh
   alias p10kc='$EDITOR "$DOTFILES_INCLUDES"/.p10k.zsh'
-  export ZSH_THEME=powerlevel10k/powerlevel10k
+  ZSH_THEME=powerlevel10k/powerlevel10k
 fi
 
 export DISABLE_AUTO_UPDATE="true" # Handled by .functions#update_and_backup

@@ -275,6 +275,7 @@ gitdir
 github
 gitmodules
 gitsigns
+gitstatus
 gitstatusd
 Gitter
 Glassdoor

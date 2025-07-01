@@ -7,7 +7,7 @@ function open_with_editor() {
     silent=''
   fi
 
-  if [[ $EDITOR == "$VIM_CMD" ]]; then
+  if [[ $EDITOR == */"$VIM_CMD" ]]; then
     cmd='vim_open'
   elif [[ $EDITOR == code || $EDITOR == */code || $EDITOR == code-insiders || $EDITOR == */code-insiders ]]; then
     # https://code.visualstudio.com/docs/editor/command-line#_core-cli-options
