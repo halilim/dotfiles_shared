@@ -15,7 +15,8 @@ function js_update_globals() {
   local packages=''
 
   if [[ ${JS_UPDATE_GLOBALS_EXCLUDE_PATTERN:-''} ]]; then
-    packages=$($JS_PM -g outdated --parseable --depth=0 |
+    # bun doesn't support --parseable or --depth=0
+    packages=$(npm -g outdated --parseable --depth=0 |
       cut -d: -f2 |
       sed 's/@[0-9.]*$//' |
       grep -Ev "$JS_UPDATE_GLOBALS_EXCLUDE_PATTERN" |
@@ -24,5 +25,5 @@ function js_update_globals() {
     [[ ! $packages ]] && return 0
   fi
 
-  echo_eval "$JS_PM update -g --silent $packages"
+  echo_eval "npm update -g --silent $packages"
 }

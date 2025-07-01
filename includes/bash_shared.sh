@@ -1,5 +1,8 @@
 #!/bin/bash
 
+export BUILTIN_URL='https://www.gnu.org/software/bash/manual/html_node/Bash-Builtins.html'
+export ARRAY_START=0
+
 shopt -s nocaseglob nullglob
 if shopt > /dev/null 2>&1 | grep globstar; then
   shopt -s globstar
