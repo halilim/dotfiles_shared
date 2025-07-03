@@ -38,8 +38,7 @@ Describe 'open_with_editor'
     It 'opens given paths with editor'
       When call open_with_editor foo 'bar baz'
       The stdout should eq ''
-      The stderr should eq '-> vim_open foo bar\ baz
--> vim --remote-silent foo bar\ baz'
+      The stderr should eq '-> vim --remote-silent foo bar\ baz'
       The status should eq 0
     End
   End

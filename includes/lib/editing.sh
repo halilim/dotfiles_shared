@@ -1,15 +1,18 @@
 alias libe='$EDITOR "$DOTFILES_INCLUDES"/lib/editing.sh' # cSpell:ignore libe
 
 function open_with_editor() {
+  if [[ $EDITOR == */"$VIM_CMD" ]]; then
+    vim_open "$@"
+    return
+  fi
+
   local arg_arr=("$@") silent=1 cmd
 
   if [[ ${VERBOSE:-} ]]; then
     silent=''
   fi
 
-  if [[ $EDITOR == */"$VIM_CMD" ]]; then
-    cmd='vim_open'
-  elif [[ $EDITOR == code || $EDITOR == */code || $EDITOR == code-insiders || $EDITOR == */code-insiders ]]; then
+  if [[ $EDITOR == code || $EDITOR == */code || $EDITOR == code-insiders || $EDITOR == */code-insiders ]]; then
     # https://code.visualstudio.com/docs/editor/command-line#_core-cli-options
     # https://github.com/microsoft/vscode/issues/176343 No multiple -g's :(
     cmd="$EDITOR -g"
