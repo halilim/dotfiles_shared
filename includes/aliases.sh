@@ -54,6 +54,8 @@ alias hh='http --headers'
 alias hhnv='http --headers --verify=no'
 alias hnv='http --verify=no'
 
+alias hd='bat --line-range=0:10'
+
 # sudo inside VSCode only accepts password and not Touch ID
 alias hostconf='open_with_editor /etc/hosts'
 

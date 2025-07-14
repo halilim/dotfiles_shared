@@ -160,7 +160,7 @@
     "{.ruby-version,.tool-versions,**/.config/bat/config,default-gems}": "properties",
     "{*.gitconfig*,**/.aws/credentials,**/*ghostty/config,**/btop.conf,**/php*/**/*.conf,pybritive.config}": "ini",
     "{*.jbuilder,aprc,Brewfile*}": "ruby",
-    "{*.sublime-settings,*.tgn,**/chrome/exts/uBlock.txt}": "json",
+    "{*.sublime-settings,*.tgn,**/*.it2snippets,**/chrome/exts/uBlock.txt}": "json",
     "{*.yml.*,**/*.sublime-syntax,**/.bundle/config}": "yaml",
     "{**/nginx*.conf*,**/nginx/**/*.conf*}": "NGINX",
     "*.erb.deface": "erb",
@@ -540,9 +540,9 @@
     }
   },
 
-  "workbench.colorTheme": "Ayu Dark Bordered",
-  "workbench.preferredDarkColorTheme": "Ayu Dark Bordered",
-  "workbench.preferredLightColorTheme": "Ayu Light Bordered",
+  "workbench.colorTheme": "Default Dark+",
+  "workbench.preferredDarkColorTheme": "Default Dark+",
+  "workbench.preferredLightColorTheme": "Default Light+",
 
   "workbench.editor.decorations.colors": true,
   "workbench.editor.enablePreviewFromCodeNavigation": true,
