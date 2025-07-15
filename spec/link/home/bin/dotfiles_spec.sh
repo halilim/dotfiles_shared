@@ -1,17 +1,9 @@
 script='link/home/bin/dotfiles'
 
 Describe "$script"
-  tmp_dir=${TMPDIR%/}/shellspec/$script
-  shared_dir=$tmp_dir/dotfiles/shared
-  custom_dir=$tmp_dir/dotfiles/custom
-  base_dir=$(dirname "$script")
-  name=$(basename "$script")
-  script_dir=$shared_dir/$base_dir
-  copied_script=$script_dir/$name
+  export tmp_dir shared_dir custom_dir script_dir copied_script mock_home mock_root
 
-  orig_home=''
-  mock_home=$tmp_dir/home
-  mock_root=$tmp_dir
+  orig_home_dir=''
 
   create_file_with_content() {
     local file=$1 dir content=$2
@@ -21,6 +13,25 @@ Describe "$script"
   }
 
   setup() {
+    tmp_dir=$(mktemp -d)
+    if [[ ! -d $tmp_dir ]]; then
+      %logger 'Failed to create temp dir'
+      return 1
+    fi
+    tmp_dir=$(readlink -f "$tmp_dir")
+
+    shared_dir=$tmp_dir/dotfiles/shared
+    custom_dir=$tmp_dir/dotfiles/custom
+
+    local base_dir name
+    base_dir=$(dirname "$script")
+    name=$(basename "$script")
+    script_dir=$shared_dir/$base_dir
+    copied_script=$script_dir/$name
+
+    mock_home=$tmp_dir/home
+    mock_root=$tmp_dir
+
     mkdir -p "$script_dir"
     cp "$script" "$script_dir"
     mkdir -p "$custom_dir"
@@ -32,17 +43,23 @@ Describe "$script"
       ln -s "$(realpath includes/$dep)" "$shared_dir"/includes/$dep
     done
 
-    orig_home=$HOME
-    orig_root=${ROOT_DIR:-/}
+    orig_home_dir=${HOME_DIR:-}
+    orig_root=${ROOT_DIR:-}
     mkdir -p "$mock_home"
-    HOME=$mock_home
+    export HOME_DIR=$mock_home
     export ROOT_DIR=$mock_root
   }
 
   cleanup() {
     rm -rf "$tmp_dir"
-    HOME=$orig_home
-    ROOT_DIR=$orig_root
+
+    if [[ $orig_home_dir ]]; then
+      HOME_DIR=$orig_home_dir
+    fi
+
+    if [[ $orig_root ]]; then
+      ROOT_DIR=$orig_root
+    fi
   }
 
   BeforeAll 'setup'
@@ -110,12 +127,11 @@ Describe "$script"
         content=$7
         source_file=$dir_root/$file_path
         create_file_with_content "$source_file" "$content"
+        cd "$dir_root" || exit
 
-        When run script "$copied_script" import "$dotfile_type" "$source_file"
+        When run script "$copied_script" import "$dotfile_type" "$file_path"
         The file "$source_file" should be exist
         The contents of file "$source_file" should equal "$content"
-        The stdout should include 'Importing'
-        The stdout should include "$dotfile_type"
         The stderr should include "$file_path"
         The stderr should include "$imported_path"
 

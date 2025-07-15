@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+set -euo pipefail
+IFS=$'\n\t'
+
+# shellcheck disable=SC1091
+. "$HOME"/.dotfiles_bootstrap.sh
+# shellcheck disable=SC1091
+. "$DOTFILES_INCLUDES"/linux_env.sh
+# shellcheck disable=SC1091
+. "$DOTFILES_INCLUDES"/lib/functions.sh
+# shellcheck disable=SC1091
+. "$DOTFILES_INCLUDES"/lib/editing.sh
+
+open_with_editor "$@"

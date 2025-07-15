@@ -43,9 +43,9 @@ function dotfiles::setup() {
   for var in "${vars[@]}"; do
     bootstrap+="$(declare -p "$var")"$'\n'
   done
-  echo_eval 'printf %q > %q/.dotfiles_bootstrap.sh' "$bootstrap" "$HOME"
+  echo_eval 'printf %q > %q/.dotfiles_bootstrap.sh' "$bootstrap" "$HOME_DIR"
 
-  local plug=$HOME/.vim/autoload/plug.vim plug_installed=true
+  local plug=$HOME_DIR/.vim/autoload/plug.vim plug_installed=true
   if [[ ! -f $plug ]]; then
     echo_eval 'curl -fLo %q --create-dirs \
       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim ' "$plug"
@@ -96,18 +96,8 @@ function dotfiles::_do_import() {
     return
   fi
 
-  local msg_type msg_home
-  msg_type=$(color yellow "$dotfile_type")
-  msg_home=$(color green "$HOME")
-  if [[ ${REMOVE:-''} ]]; then
-    color red 'Removing the file and the symlink'
-  elif [[ ${REVERT_IMPORT:-''} ]]; then
-    echo "Reverting: { $msg_type dotfiles -> $msg_home }"
-  else
-    echo "Importing: { $msg_home -> $msg_type dotfiles }"
-  fi
-
   for item_path in "${@:2}"; do
+    color >&2 white-bold "---> $item_path"
     dotfiles::_import_path "$dotfile_type" "$item_path"
   done
 }
@@ -126,17 +116,16 @@ function dotfiles::_import_path() {
     custom) dotfile_dir=$DOTFILES_CUSTOM ;;
   esac
 
-  local dir_type relative_base
-  if [[ $item_path == $HOME/* ]]; then
-    dir_type=home
-    relative_base=$HOME
-  else
+  local item_relative_to_home dir_type relative_path
+  item_relative_to_home=$(relative_to "$HOME_DIR" "$item_path")
+  if [[ $item_relative_to_home == '../'* ]]; then
     dir_type=root
-    relative_base=$ROOT_DIR
+    relative_path=$(relative_to "$ROOT_DIR" "$item_path")
+  else
+    dir_type=home
+    relative_path=$item_relative_to_home
   fi
 
-  local relative_path
-  relative_path=$(relative_to "$relative_base" "$item_path")
   local path_in_dotfiles=$dotfile_dir/link/$dir_type/${relative_path#/}
 
   # Git doesn't allow sym-linked .gitignore files, so we link .git/info/exclude instead
@@ -238,8 +227,8 @@ function dotfiles::_link_recursive() {
 
   case "$dir_type" in
     home)
-      target_base=$HOME
-      target_base_name=$HOME
+      target_base=$HOME_DIR
+      target_base_name=$HOME_DIR
       ;;
     root)
       target_base=$ROOT_DIR
@@ -285,7 +274,7 @@ function dotfiles::_link_recursive() {
 
 function dotfiles::_mk_dir() {
   local dir=$1
-  if [[ -d "$dir" || $dir == "$ROOT_DIR" || $dir == "$HOME" ]]; then
+  if [[ -d "$dir" || $dir == "$ROOT_DIR" || $dir == "$HOME_DIR" ]]; then
     return 0
   fi
 
@@ -365,7 +354,7 @@ function dotfiles::_validate_type() {
 function dotfiles::_backup() {
   local target=$1 hard_link=${2:-false} source=${3:-}
 
-  if [[ ! -L "$target" && ! -f "$target" && ! -d "$target" || $target == "$ROOT_DIR" || $target == "$HOME" ]]; then
+  if [[ ! -L "$target" && ! -f "$target" && ! -d "$target" || $target == "$ROOT_DIR" || $target == "$HOME_DIR" ]]; then
     return 0
   fi
 
@@ -430,12 +419,13 @@ function dotfiles::_log_error {
 }
 
 # Allow customization and testing
+HOME_DIR=${HOME_DIR:-$HOME}
 ROOT_DIR=${ROOT_DIR:-'/'}
 
 export DOTFILES_CMD
 DOTFILES_CMD=$(basename "$0")
 
-export VIM_SPELL=$HOME/.vim/spell
+export VIM_SPELL=$HOME_DIR/.vim/spell
 
 export DOTFILES
 DOTFILES="$(dirname "$(dirname "$(dirname "$(dirname "$(dirname "$(realpath "$0")")")")")")"
