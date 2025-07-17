@@ -136,6 +136,8 @@ alias {shsd,shsfd}='shellspec -f d'
 alias shsz='shellspec -s zsh'
 alias shsdz='shellspec -f d -s zsh'
 
+alias spt='$SPEEDTEST_CMD'
+
 # shellcheck disable=SC2139
 alias {sshc,ssh_copy_key,copy_ssh_key}='cb < ~/.ssh/id_*.pub'
 alias sshconf='vim_open ~/.ssh/config'

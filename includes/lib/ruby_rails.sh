@@ -15,9 +15,14 @@ function gem_install_bundler_gemfile() {
 alias gemib='gem_install_bundler_gemfile'
 
 function gem_uri_open() {
-  local name=$1 version=$2 uri_field=$3 home_uri_field=homepage_uri
+  local name=$1 version=$2 uri_field=$3
+  local -r home_uri_field='homepage_uri'
+
+  local json
   json=$(FAKE_ECHO="{\"$uri_field\": \"https://example.com\", \"$home_uri_field\": \"\"}" echo_eval \
     'curl -Ls %q' "https://rubygems.org/api/v2/rubygems/$name/versions/$version.json")
+
+  local uri
   uri=$(jq -r ".$uri_field // .$home_uri_field" <<< "$json")
 
   if [[ $uri ]]; then
@@ -124,7 +129,7 @@ function rails_migration_version() {
 }
 
 function rails_update_migration() {
-  local file=$1 current_version dummy_output new_version new_file
+  local file=$1 current_version
 
   current_version=$(rails_migration_version "$file")
 
@@ -133,9 +138,12 @@ function rails_update_migration() {
     return 1
   fi
 
+  local dummy_output
   dummy_output=$("${RAILS_CMD}" generate migration dummy --pretend)
+  local new_version
   new_version=$(rails_migration_version "$dummy_output")
 
+  local new_file
   new_file=$(echo "$file" | "$GNU_SED" -e "s/$current_version/$new_version/")
   echo_eval 'mv %q %q' "$file" "$new_file"
 
@@ -148,30 +156,26 @@ function ruby_cd_pull_migrate() {
   # PRE_PULL_CMD is in cd_checkout_pull
 
   cd_checkout_pull "$dir" "$branch"
-  last_status=$?
+  local -r last_status=$?
   if [[ $last_status != 0 && ! $FORCE ]]; then
     printf '\n'
     return $last_status
   fi
 
-  if [[ $POST_PULL_CMD ]]; then
+  if [[ ${POST_PULL_CMD:-} ]]; then
     echo_eval "$POST_PULL_CMD"
   fi
 
-  if [ -f Gemfile.lock ]; then
-    local bundle_cmd=${BUNDLE_CMD:-'bundle install --quiet'}
-    echo_eval "$bundle_cmd"
+  if [ -e Gemfile.lock ]; then
+    echo_eval "${BUNDLE_CMD:-'bundle install --quiet'}"
   fi
 
   if [[ -f bin/spring ]]; then
     echo_eval 'kill_spring'
   fi
 
-  local should_migrate
-  [[ -d db/migrate && ! $NO_MIG ]] && should_migrate=1
-  if [[ $should_migrate ]]; then
-    local migrate_cmd=${MIGRATE_CMD:-"$RAKE_CMD db:migrate"}
-    echo_eval "$migrate_cmd"
+  if [[ -d db/migrate && ! ${NO_MIG:-} ]]; then
+    echo_eval "${MIGRATE_CMD:-"$RAKE_CMD db:migrate"}"
   fi
 
   if [[ -d log ]]; then

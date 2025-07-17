@@ -28,6 +28,13 @@ somewhere/dotfiles
 └── shared
 ```
 
+### Termux
+
+```sh
+pkg install curl
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/halilim/dotfiles_shared/main/share/termux_setup.sh)”
+```
+
 ## TODO
 
 ### Bash

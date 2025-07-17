@@ -2,3 +2,5 @@
 # TODO: Change stuff when Zsh support is added. Until then, we intentionally treat shebang-less Zsh
 #       code as Bash, so that it gets checked.
 shell=bash
+
+check-extra-masked-returns=true

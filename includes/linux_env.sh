@@ -1,6 +1,6 @@
-export VIM_CMD=vim
-export OPEN_CMD='nohup xdg-open'
 export CLIP='xclip -sel clip'
+export OPEN_CMD='nohup xdg-open'
+export VIM_CMD=vim
 
 export GNU_DATE=date
 export GNU_FIND=find
@@ -13,12 +13,18 @@ export GNU_TOUCH=touch
 export GNU_XARGS=xargs
 
 if [[ -v TERMUX_VERSION ]]; then
+  export SPEEDTEST_CMD='speedtest-go'
   export VIM_NO_SERVER=1 # --remote-silent is not supported
+
+  DOTFILES_INCLUDE_LIBS+=(termux)
+
   UPDATE_BACKUP_CMDS+=(
     'pkg update'
     'pkg upgrade -y'
   )
 else
+  export SPEEDTEST_CMD='speedtest'
+
   if [[ -e /etc/debian_version ]]; then
      # Because of a name clash, see: apt-cache show bat
     function bat() {
