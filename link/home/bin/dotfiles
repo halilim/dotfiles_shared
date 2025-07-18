@@ -393,6 +393,7 @@ function dotfiles::_backup() {
       dotfiles::_echo_eval_with_sudo 'cp -f %q %q' "$target" "$source"
     fi
   else
+    # TODO: Remove older backups
     dotfiles::_echo_eval_with_sudo 'mv %q{,.bak.%q}' "$target" "$(date +'%s')"
   fi
 }

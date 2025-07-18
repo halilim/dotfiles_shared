@@ -1,4 +1,5 @@
 Include includes/lib/functions.sh
+Include includes/env.sh
 
 Describe 'color'
   It 'does not print in color when not tty'
@@ -105,7 +106,7 @@ Describe 'remove_broken_links'
     When call remove_broken_links "$tmp_dir"
     The file "$broken_link" should not be exist
     The file "$another_link" should be exist
-    The stdout should eq "$broken_link"
+    The stdout should eq "Removing: $broken_link"
     The stderr should include "$tmp_dir"
     The status should eq 0
   End

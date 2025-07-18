@@ -163,5 +163,5 @@ alias wu='who -u'
 source_custom aliases.sh
 
 for lib in "${DOTFILES_INCLUDE_LIBS[@]}"; do
-  source_with_custom "lib/$lib/${lib}_aliases.sh"
+  source_with_custom_if_exists "lib/$lib/${lib}_aliases.sh"
 done

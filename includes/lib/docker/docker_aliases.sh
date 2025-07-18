@@ -1,5 +1,7 @@
 alias libda='$EDITOR "$DOTFILES_INCLUDES"/lib/docker/docker_aliases.sh' # cSpell:ignore libda
 
+alias acts='docker run --rm -it catthehacker/ubuntu:act-latest bash' # cSpell:ignore catthehacker
+
 # cSpell:ignore dkcl dkcs dkcst dkei dkeis dkirm dkin dkins dkst dkri dkrm dkrr dkrri
 alias dk='docker'
 alias dkb='docker build'

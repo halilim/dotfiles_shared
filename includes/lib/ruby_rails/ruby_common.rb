@@ -60,7 +60,7 @@ def table(items, *cols) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticCom
     items.map!(&:attributes)
     cols.map!(&:to_s)
   elsif first_item.is_a?(Array)
-    items.map! { |arr| (0..arr.length - 1).zip(arr).to_h }
+    items.map! { |arr| (0..(arr.length - 1)).zip(arr).to_h }
   end
 
   first_item = items[0]

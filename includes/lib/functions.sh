@@ -240,20 +240,25 @@ function relative_to() {
   $GNU_REALPATH -s --relative-to="$1" "$2"
 }
 
-function remove_broken_links()  {
+function remove_broken_links() {
   local folder=${1:-.} recursive=${2:-} find_args=''
 
   if [[ ! $recursive ]]; then
     find_args+=' -maxdepth 1'
   fi
 
-  find_args+=' -xtype l -print'
+  find_args+=" -xtype l"
 
+  local printf_msg
   if [[ ${DRY_RUN:-} ]]; then
     echo >&2 'Dry running...'
+    printf_msg='Will remove'
   else
     find_args+=' -delete'
+    printf_msg='Removing'
   fi
+
+  find_args+=' -printf "'"$printf_msg: %%p"'\\\\n"'
 
   DRY_RUN='' echo_eval "$GNU_FIND %q$find_args" "$folder"
 }

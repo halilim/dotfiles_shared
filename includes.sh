@@ -1,7 +1,7 @@
 alias includes='$EDITOR "$DOTFILES_SHARED"/includes.sh'
 
 for lib in "${DOTFILES_INCLUDE_LIBS[@]}"; do
-  source_with_custom "lib/$lib.sh"
+  source_with_custom_if_exists "lib/$lib.sh"
 done
 
 if [[ $OSTYPE == darwin* ]]; then

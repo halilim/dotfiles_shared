@@ -1,9 +1,23 @@
 alias envsh='$EDITOR "$DOTFILES_INCLUDES"/env.sh'
 
+# Shared: required, Custom: optional
 function source_with_custom() {
   local file="$DOTFILES_INCLUDES"/"$1"
+  # shellcheck disable=SC1090
+  . "$file"
+  source_custom "$1"
+}
+
+# Shared: optional, Custom: optional
+function source_with_custom_if_exists() {
+  local file="$DOTFILES_INCLUDES"/"$1"
+  # shellcheck disable=SC1090
   source_if_exists "$file"
   source_custom "$1"
+}
+
+function source_custom() {
+  source_if_exists "$DOTFILES_CUSTOM"/includes/"$1"
 }
 
 function source_if_exists() {
@@ -11,10 +25,6 @@ function source_if_exists() {
     # shellcheck disable=SC1090
     . "$1"
   fi
-}
-
-function source_custom() {
-  source_if_exists "$DOTFILES_CUSTOM"/includes/"$1"
 }
 
 # eza (ls alternative)
@@ -90,12 +100,6 @@ if [[ $OSTYPE == darwin* ]]; then
   source_with_custom mac_env.sh
 elif [[ $OSTYPE == linux* ]]; then
   source_with_custom linux_env.sh
-fi
-
-if [ -n "${BASH_VERSION:-}" ]; then
-  source_with_custom bash_env.sh
-elif [ -n "${ZSH_VERSION:-}" ]; then
-  source_with_custom zsh_env.zsh
 fi
 
 num_procs=$(getconf _NPROCESSORS_ONLN) # cSpell:ignore NPROCESSORS ONLN

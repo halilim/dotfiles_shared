@@ -46,7 +46,7 @@ setopt NULL_GLOB
 
 # Completions depend on compinit etc. via OMZ
 for lib in "${DOTFILES_INCLUDE_LIBS[@]}"; do
-  source_with_custom "lib/$lib/${lib}_completions.zsh"
+  source_with_custom_if_exists "lib/$lib/${lib}_completions.zsh"
 done
 
 # Ctrl+Backspace/Delete to delete whole words

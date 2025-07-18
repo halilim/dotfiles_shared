@@ -1,3 +1,4 @@
 ---
-BUNDLE_GITHUB__HTTPS: "true"
 BUNDLE_BUILD__NOKOGIRI: "--use-system-libraries"
+BUNDLE_DEFAULT_CLI_COMMAND: "install"
+BUNDLE_GITHUB__HTTPS: "true"
