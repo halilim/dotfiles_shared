@@ -166,16 +166,18 @@ function ruby_cd_pull_migrate() {
     echo_eval "$POST_PULL_CMD"
   fi
 
-  if [ -e Gemfile.lock ]; then
-    echo_eval "${BUNDLE_CMD:-'bundle install --quiet'}"
+  if [[ -e Gemfile.lock ]]; then
+    local bundle_cmd=${BUNDLE_CMD:-'bundle install --quiet'}
+    echo_eval "$bundle_cmd"
   fi
 
-  if [[ -f bin/spring ]]; then
+  if [[ -e bin/spring ]]; then
     echo_eval 'kill_spring'
   fi
 
   if [[ -d db/migrate && ! ${NO_MIG:-} ]]; then
-    echo_eval "${MIGRATE_CMD:-"$RAKE_CMD db:migrate"}"
+    local migrate_cmd=${MIGRATE_CMD:-"$RAKE_CMD db:migrate"}
+    echo_eval "$migrate_cmd"
   fi
 
   if [[ -d log ]]; then

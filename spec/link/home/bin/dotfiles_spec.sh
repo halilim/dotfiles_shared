@@ -91,8 +91,8 @@ Describe "$script"
 
   Describe 'sync'
     Example 'no args'
-      source_file=$custom_dir/link/home/code1/.git.linked/info/exclude
-      create_file_with_content "$source_file" 'ignored1'
+      orig_path_full=$custom_dir/link/home/code1/.git.linked/info/exclude
+      create_file_with_content "$orig_path_full" 'ignored1'
 
       When run script "$copied_script" sync
       The stdout should eq ''
@@ -122,40 +122,59 @@ Describe "$script"
         dotfile_dir=$2
         dir_type=$3
         dir_root=$4
-        file_path=$5
+        orig_path=$5
         imported_path=$6
         content=$7
-        source_file=$dir_root/$file_path
-        create_file_with_content "$source_file" "$content"
+        orig_path_full=$dir_root/$orig_path
+        create_file_with_content "$orig_path_full" "$content"
         cd "$dir_root" || exit
 
-        When run script "$copied_script" import "$dotfile_type" "$file_path"
-        The file "$source_file" should be exist
-        The contents of file "$source_file" should equal "$content"
-        The stderr should include "$file_path"
+        When run script "$copied_script" import "$dotfile_type" "$orig_path"
+        The path "$orig_path_full" should be symlink
+        The contents of file "$orig_path_full" should equal "$content"
+        The stderr should include "$orig_path"
         The stderr should include "$imported_path"
 
-        imported_file="$dotfile_dir/link/$dir_type/$imported_path"
-        The file "$imported_file" should be exist
-        The contents of file "$imported_file" should equal "$content"
+        imported_path_full="$dotfile_dir/link/$dir_type/$imported_path"
+        The file "$imported_path_full" should be file
+        The contents of file "$imported_path_full" should equal "$content"
       End
     End
   End
 
-  Example 'vim_setup'
-    vim_spell_dir=$mock_home/.vim/spell
-    vim_spell_file_1=$vim_spell_dir/test1.en.utf-8.add
-    vim_spell_file_2=$vim_spell_dir/test2.en.utf-8.add
-    expected_vim_arg="mkspell! $vim_spell_file_1 | mkspell! $vim_spell_file_2 | q"
+  Describe 'revert_import'
+    Example 'replaces the link with the original file'
+      content='original content'
+      orig_path=$mock_home/orig
+      dotfile_path=$custom_dir/link/home/orig
+      create_file_with_content "$dotfile_path" "$content"
+      ln -s "$dotfile_path" "$orig_path"
 
-    mkdir -p "$vim_spell_dir"
-    touch "$vim_spell_file_1"
-    touch "$vim_spell_file_2"
-    %preserve expected_vim_arg
+      When run script "$copied_script" revert_import "$orig_path"
+      The path "$dotfile_path" should not be exist
+      The contents of file "$orig_path" should equal "$content"
+      The stdout should eq ''
+      The stderr should include "$orig_path"
+      The status should eq 0
+    End
+  End
 
-    When run script "$copied_script" vim_setup
-    The stdout should not include "error" # To satisfy shellspec expectation requirement
-    The stderr should include "vim +'$expected_vim_arg'"
+  Describe 'vim_setup'
+    Example 'calls mkspell! and quits'
+      vim_spell_dir=$mock_home/.vim/spell
+      vim_spell_file_1=$vim_spell_dir/test1.en.utf-8.add
+      vim_spell_file_2=$vim_spell_dir/test2.en.utf-8.add
+      expected_vim_arg="mkspell! $vim_spell_file_1 | mkspell! $vim_spell_file_2 | q"
+
+      mkdir -p "$vim_spell_dir"
+      touch "$vim_spell_file_1"
+      touch "$vim_spell_file_2"
+      %preserve expected_vim_arg
+
+      When run script "$copied_script" vim_setup
+      The stdout should not include "error" # To satisfy shellspec expectation requirement
+      The stderr should include "vim +'$expected_vim_arg'"
+    End
   End
 
   Example 'no args'

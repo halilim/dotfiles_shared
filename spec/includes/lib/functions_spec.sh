@@ -69,3 +69,44 @@ Describe 'join_array'
     The stderr should eq ''
   End
 End
+
+Describe 'remove_broken_links'
+  setup() {
+    tmp_dir=$(mktemp -d)
+    file="$tmp_dir"/file
+    another_file="$tmp_dir"/another_file
+    broken_link="$tmp_dir"/broken_link
+    another_link="$tmp_dir"/another_link
+    touch "$file" "$another_file"
+    ln -s "$file" "$broken_link"
+    ln -s "$another_file" "$another_link"
+    rm "$file"
+  }
+  BeforeEach 'setup'
+
+  cleanup() {
+    rm -rf "$tmp_dir"
+  }
+  AfterEach 'cleanup'
+
+  Parameters
+    'without' ''
+    # shellcheck disable=SC2288
+    'with (e.g. a script)' $'\n\t'
+  End
+
+  Example "removes broken links $1 custom IFS"
+    if [[ $2 ]]; then
+      IFS=$2
+    fi
+
+    [[ ! -e "$file" && -L "$broken_link" && -f "$another_file" && -L "$another_link" ]]
+
+    When call remove_broken_links "$tmp_dir"
+    The file "$broken_link" should not be exist
+    The file "$another_link" should be exist
+    The stdout should eq "$broken_link"
+    The stderr should include "$tmp_dir"
+    The status should eq 0
+  End
+End

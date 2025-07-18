@@ -86,7 +86,7 @@ cask 'sourcetree' # Easier to search history
 # Vim
 brew 'editorconfig' # Used by vim plugin
 brew 'neovim'
-cask 'macvim'
+cask 'macvim-app'
 
 tap 'universal-ctags/universal-ctags'
 brew 'universal-ctags'

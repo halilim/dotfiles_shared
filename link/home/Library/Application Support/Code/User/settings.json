@@ -612,7 +612,6 @@
   },
 
   "[shellscript]": {
-    // cSpell:ignore foxundermoon
     "editor.defaultFormatter": "mads-hartmann.bash-ide-vscode",
     "editor.tabSize": 2
   },

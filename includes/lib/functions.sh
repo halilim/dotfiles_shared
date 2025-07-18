@@ -169,6 +169,12 @@ function join_array() {
   printf '%s' "$out"
 }
 
+function in_dir() {
+  local a_path=${1:?'path required'} a_dir=${2:?'directory required'} relative_path
+  relative_path=$($GNU_REALPATH -s --relative-to="$a_dir" "$a_path")
+  [[ $relative_path != '../'* ]]
+}
+
 function list_file_names() {
   "$GNU_FIND" "$1" -type f -printf "%f\n" | sort
 }
@@ -207,7 +213,7 @@ function needs_update_and_mark() {
 }
 
 function read_prompt() {
-  local question="$1" is_secure="$2" params=()
+  local question="${1:?}" is_secure="${2:-}" params=()
   [[ $is_secure ]] && params+=(-s)
 
   if [ -n "${ZSH_VERSION:-}" ]; then
@@ -235,19 +241,21 @@ function relative_to() {
 }
 
 function remove_broken_links()  {
-  local folder=${1:-.} recursive=${2:-} find_args=()
+  local folder=${1:-.} recursive=${2:-} find_args=''
 
   if [[ ! $recursive ]]; then
-    find_args+=('-maxdepth 1')
+    find_args+=' -maxdepth 1'
   fi
 
-  find_args+=('-xtype l' '-print')
+  find_args+=' -xtype l -print'
 
-  if [[ ! ${DRY_RUN:-} ]]; then
-    find_args+=('-delete')
+  if [[ ${DRY_RUN:-} ]]; then
+    echo >&2 'Dry running...'
+  else
+    find_args+=' -delete'
   fi
 
-  DRY_RUN='' echo_eval "$GNU_FIND %q ${find_args[*]}" "$folder"
+  DRY_RUN='' echo_eval "$GNU_FIND %q$find_args" "$folder"
 }
 
 function remove_line_including() {

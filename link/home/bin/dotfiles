@@ -54,7 +54,7 @@ function dotfiles::setup() {
 
   dotfiles::sync all $plug_installed
 
-  if [[ $OSTYPE == darwin* && -n "${ZSH_VERSION:-}" ]]; then
+  if [[ $OSTYPE == darwin* && -n ${ZSH_VERSION:-} ]]; then
     echo_eval 'iterm_tab %q omz_install_custom' "$PWD"
   fi
 }
@@ -75,39 +75,50 @@ function dotfiles::sync() {
 }
 
 function dotfiles::import() {
-  dotfiles::_do_import "$@"
+  local dotfile_type=${1:-''}
+  if ! dotfiles::_validate_type "$dotfile_type" || [[ $# -lt 2 ]]; then
+    dotfiles::_log_error "$USAGE_BASE ${FUNCNAME[0]} <shared|custom> <path 1> [<path 2> ...]" 1
+    return 1
+  fi
+
+  shift
+
+  DOTFILE_TYPE=$dotfile_type dotfiles::_process_paths "$@"
 }
 
 function dotfiles::revert_import() {
-  REVERT_IMPORT=1 dotfiles::_do_import "$@"
+  REVERT_IMPORT=1 dotfiles::_process_paths "$@"
 }
 
 function dotfiles::revert_import_and_remove() {
-  REVERT_IMPORT=1 REMOVE=1 dotfiles::_do_import "$@"
+  REVERT_IMPORT=1 REMOVE=1 dotfiles::_process_paths "$@"
 }
 
-function dotfiles::_do_import() {
-  local usage
-  usage="$USAGE_BASE ${FUNCNAME[1]} <shared|custom> <path 1> [<path 2> ...]"
+function dotfiles::_process_paths() {
+  for item_path in "$@"; do
+    if [ $# -gt 1 ]; then
+      color >&2 white-bold "---> $item_path"
+    fi
 
-  local dotfile_type=${1:-''}
-  if ! dotfiles::_validate_type "$dotfile_type" || [[ $# -lt 2 ]]; then
-    dotfiles::_log_error "$usage" 1
-    return
-  fi
-
-  for item_path in "${@:2}"; do
-    color >&2 white-bold "---> $item_path"
-    dotfiles::_import_path "$dotfile_type" "$item_path"
+    if [[ ${REVERT_IMPORT:-} ]]; then
+      dotfiles::_revert_path "$item_path"
+    else
+      dotfiles::_import_path "${DOTFILE_TYPE:-}" "$item_path"
+    fi
   done
 }
 
 function dotfiles::_import_path() {
-  local dotfile_type=$1 item_path=$2 revert_import=${REVERT_IMPORT:-''} remove=${REMOVE:-''}
+  local dotfile_type=${1:?} item_path=${2:?}
 
-  if [[ ! $revert_import && ! -e $item_path ]]; then
+  if [[ ! -e $item_path ]]; then
     dotfiles::_log_error 'Does not exist'
-    return
+    return 1
+  fi
+
+  if [[ -L $item_path ]]; then
+    dotfiles::_log_error 'Is already a symlink'
+    return 1
   fi
 
   local dotfile_dir
@@ -137,44 +148,58 @@ function dotfiles::_import_path() {
     path_in_dotfiles=${path_in_dotfiles//\/.git\//\/.git.linked\/}
   fi
 
-  if [[ $revert_import ]]; then
-    if [[ ! -e $path_in_dotfiles ]]; then
-      dotfiles::_log_error 'Does not exist in dotfiles'
-      return
+  local relative_dir=${relative_path%/*}
+
+  if [[ $is_local_git ]]; then
+    relative_dir=${relative_dir//\/.git\//\/.git.linked\/}
+  fi
+
+  if [[ $relative_dir == "$relative_path" ]]; then
+    relative_dir=''
+  fi
+
+  dotfiles::_mk_dir "$dotfile_dir/link/$dir_type/$relative_dir"
+  dotfiles::_echo_eval_with_sudo 'mv %q %q' "$item_path" "$path_in_dotfiles"
+  dotfiles::_link_file "$path_in_dotfiles" "$(dirname "$item_path")"
+
+  return 0
+}
+
+function dotfiles::_revert_path() {
+  local link=${1:?}
+
+  if [[ ! -L $link ]]; then
+    dotfiles::_log_error 'Is not a symlink'
+    return 1
+  fi
+
+  local target link_dir
+  link_dir=$(dirname "$link")
+
+  if ! target=$(readlink -f "$link"); then
+    dotfiles::_log_error "Target: $target does not exist"
+
+    if prompt "Remove broken links in $link_dir?"; then
+      remove_broken_links "$link_dir"
     fi
 
-    if [[ -e $item_path && ! -L $item_path || $(readlink -f "$item_path") != "$path_in_dotfiles" ]]; then
-      dotfiles::_backup "$item_path"
-    fi
+    return 1
+  fi
 
-    if [[ $remove ]]; then
-      # TODO: Remove empty directories
-      dotfiles::_echo_eval_with_sudo 'rm %q %q' "$path_in_dotfiles" "$item_path"
-    else
-      dotfiles::_echo_eval_with_sudo 'mv %q %q' "$path_in_dotfiles" "$item_path"
-    fi
+  if ! in_dir "$target" "$DOTFILES_SHARED" &&
+    ! in_dir "$target" "$DOTFILES_CUSTOM"; then
+    dotfiles::_log_error "Target: $target is not in dotfiles"
+    return 1
+  fi
+
+  if [[ ${REMOVE:-''} ]]; then
+    dotfiles::_echo_eval_with_sudo 'rm %q %q' "$target" "$link"
   else
-    local relative_dir=${relative_path%/*}
+    dotfiles::_echo_eval_with_sudo 'mv %q %q' "$target" "$link"
+  fi
 
-    if [[ $is_local_git ]]; then
-      relative_dir=${relative_dir//\/.git\//\/.git.linked\/}
-    fi
-
-    if [[ $relative_dir == "$relative_path" ]]; then
-      relative_dir=''
-    fi
-
-    dotfiles::_mk_dir "$dotfile_dir/link/$dir_type/$relative_dir"
-    dotfiles::_echo_eval_with_sudo 'mv %q %q' "$item_path" "$path_in_dotfiles"
-
-    case "$dotfile_type" in
-      shared) dotfiles::_setup_shared_links ;;
-      custom) dotfiles::_setup_custom_links ;;
-    esac
-
-    if [[ $item_path == $VIM_SPELL/* ]]; then
-      dotfiles::vim_setup
-    fi
+  if [ -z "$(ls -A "$link_dir")" ]; then
+    echo_eval 'rmdir %q' "$link_dir"
   fi
 
   return 0
@@ -185,21 +210,21 @@ function dotfiles::_setup_shared_links() {
 }
 
 function dotfiles::_setup_custom_links() {
-  if [[ -d "$DOTFILES_CUSTOM" ]]; then
+  if [[ -d $DOTFILES_CUSTOM ]]; then
     dotfiles::_setup_links "$DOTFILES_CUSTOM"
   fi
 }
 
 function dotfiles::_setup_links() {
-  local dir_type
+  local dotfiles_path=${1:?} dir_type
   for dir_type in home root; do
-    dotfiles::_start_link_recursive "$1"/link/$dir_type $dir_type
+    dotfiles::_start_link_recursive "$dotfiles_path"/link/$dir_type $dir_type
   done
 }
 
 function dotfiles::_start_link_recursive() {
   local dir=$1 dir_type=$2
-  if [[ ! -d "$dir" ]]; then
+  if [[ ! -d $dir ]]; then
     return 0
   fi
   dotfiles::_link_recursive "$dir" "$dir" "$dir_type"
@@ -210,13 +235,13 @@ function dotfiles::_link_recursive() {
   RECURSION_LEVEL=$((RECURSION_LEVEL + 1))
   if [[ $RECURSION_LEVEL -gt 10 ]]; then
     dotfiles::_log_error 'Too many levels of recursion'
-    return
+    return 1
   fi
 
   local current_source_dir=$1 source_base=$2 dir_type=$3 relative_base target_base target_base_name target_dir
   relative_base=$(relative_to "$source_base" "$current_source_dir")
 
-  if [[ -L "$current_source_dir" ]]; then
+  if [[ -L $current_source_dir ]]; then
     current_source_dir=$(readlink -f "$current_source_dir")
   fi
 
@@ -236,7 +261,7 @@ function dotfiles::_link_recursive() {
       ;;
     *)
       dotfiles::_log_error "Unknown link type: $dir_type"
-      return
+      return 1
       ;;
   esac
 
@@ -274,11 +299,11 @@ function dotfiles::_link_recursive() {
 
 function dotfiles::_mk_dir() {
   local dir=$1
-  if [[ -d "$dir" || $dir == "$ROOT_DIR" || $dir == "$HOME_DIR" ]]; then
+  if [[ -d $dir || $dir == "$ROOT_DIR" || $dir == "$HOME_DIR" ]]; then
     return 0
   fi
 
-  if [[ -L "$dir" || -f "$dir" ]]; then
+  if [[ -L $dir || -f $dir ]]; then
     dotfiles::_backup "$dir"
   fi
 
@@ -299,7 +324,6 @@ function dotfiles::_link_file() {
   fi
 
   # TODO: Remove hardlink-ing, it's unreliable. Backup instead
-  # TODO: Move iTerm2 config to default location
   # macOS no longer accepts symlinks to plist files https://github.com/lra/mackup/issues/1924
   # So for now, we use hard links. Note that they are prone to being replaced by actual files.
   local hard_link=false
@@ -348,17 +372,18 @@ function dotfiles::_validate_type() {
       msg+=": $type"
     fi
     dotfiles::_log_error "$msg"
+    return 1
   fi
 }
 
 function dotfiles::_backup() {
   local target=$1 hard_link=${2:-false} source=${3:-}
 
-  if [[ ! -L "$target" && ! -f "$target" && ! -d "$target" || $target == "$ROOT_DIR" || $target == "$HOME_DIR" ]]; then
+  if [[ ! -L $target && ! -f $target && ! -d $target || $target == "$ROOT_DIR" || $target == "$HOME_DIR" ]]; then
     return 0
   fi
 
-  if [[ -L "$target" && ! -e "$target" ]]; then
+  if [[ -L $target && ! -e $target ]]; then
     dotfiles::_echo_eval_with_sudo 'rm %q # Broken link' "$target"
     return
   fi
@@ -381,7 +406,7 @@ function dotfiles::_echo_eval_with_sudo() {
 }
 
 function dotfiles::vim_setup() {
-  if ! command -v "$VIM_CMD" &> /dev/null || [[ ${NO_VIM:-} || ! -d "$VIM_SPELL" ]]; then
+  if ! command -v "$VIM_CMD" &> /dev/null || [[ ${NO_VIM:-} || ! -d $VIM_SPELL ]]; then
     return 0
   fi
 
@@ -415,7 +440,6 @@ function dotfiles::_log_error {
   else
     color red "$msg" >&2
   fi
-  return 1
 }
 
 # Allow customization and testing
@@ -440,7 +464,6 @@ export DOTFILES_CUSTOM=$DOTFILES/custom
 
 USAGE_BASE="Usage: $(color green "$DOTFILES_CMD")"
 
-# TODO: Add rm command: removes both the file and the symlink
 case "${1:-''}" in
   edit) dotfiles::edit ;;
   setup) dotfiles::setup ;;
@@ -449,5 +472,8 @@ case "${1:-''}" in
   revert_import) dotfiles::revert_import "${@:2}" ;;
   revert_import_and_remove) dotfiles::revert_import_and_remove "${@:2}" ;;
   vim_setup) dotfiles::vim_setup true ;;
-  *) dotfiles::_log_error "$USAGE_BASE <setup|sync|import|revert_import|revert_import_and_remove|vim_setup> ..." 1 ;;
+  *)
+    dotfiles::_log_error "$USAGE_BASE <setup|sync|import|revert_import|revert_import_and_remove|vim_setup> ..." 1
+    exit 1
+    ;;
 esac

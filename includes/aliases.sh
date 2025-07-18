@@ -24,7 +24,7 @@ alias cuiv="curl -Iv"
 alias da='direnv allow'
 alias dp='declare -p'
 
-# cSpell:ignore dcdc dcds dric dris
+# cSpell:ignore dcdc dcds drir
 alias dcd='cd $DOTFILES'
 # shellcheck disable=SC2139
 alias {dcdc,cdd}='cd $DOTFILES_CUSTOM'
@@ -34,8 +34,7 @@ alias dic='dotfiles import custom'
 alias dis='dotfiles import shared'
 alias dot='dotfiles edit'
 alias dri='dotfiles revert_import'
-alias dric='dotfiles revert_import custom'
-alias dris='dotfiles revert_import shared'
+alias drir='dotfiles revert_import_and_remove'
 alias ds='dotfiles sync'
 alias dse='dotfiles setup'
 
