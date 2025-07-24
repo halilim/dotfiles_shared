@@ -21,6 +21,8 @@ alias {gcn,gcne,gcno}='git commit --no-edit' # cSpell:ignore gcne gcno
 # shellcheck disable=SC2139
 alias {gcnev,gcnov,gcnn}='git commit --no-edit --no-verify' # cSpell:ignore gcnev gcnov gcnn
 alias gcnv='git commit --no-verify' # cSpell:ignore gcnv
+# shellcheck disable=SC2139
+alias {gcof,git_checkout_file,git_recover_file}='git checkout abc123^ -- path/to/file # Find abc123 with glgn' # cSpell:ignore gcof
 alias gcom='git checkout $(git_main_branch)'
 
 # cSpell:ignore gdhh gdma gdnc gdtc gdtk
@@ -32,8 +34,10 @@ alias gdma='git_matching diff'
 alias gdnc='git diff --no-color'
 alias gdtc='git difftool --tool=code'
 
-alias gg="git log -G '\Wregex\W' -- old_or_current_path"
+# cSpell:ignore glgn
+alias gg="git log -G '\Wchange_regex\W' -- old_or_current_path"
 alias glg='git log --graph --stat'
+alias glgn="git log --all --name-status -- '**/*file*'"
 
 # cSpell:ignore gmmnc gmtk
 alias gmd='git merge --no-edit $(git_develop_branch)'

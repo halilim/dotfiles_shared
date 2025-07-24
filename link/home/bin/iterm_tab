@@ -8,13 +8,10 @@ on run argv
         if count of argv > 0 then
           write text "cd " & quoted form of first item of argv & "; clear; pwd"
 
-          if count of argv > 1 then
-            write text second item of argv
-
-            if count of argv > 2 then
-              write text third item of argv
-            end if
-          end if
+          repeat with i from 2 to length of argv
+            set theCurrentArg to item i of argv
+            write text theCurrentArg
+          end repeat
         end if
       end tell
     end tell

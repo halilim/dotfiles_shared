@@ -84,6 +84,8 @@ alias myip='my_ips'
 alias mysql_dump='mysqldump --no-create-info -uroot -p db_name > db_name.sql'
 alias mysql_restore='mysql -uroot -p db_name < db_name.sql'
 
+alias ngf='nginx_fg'
+
 alias notes='$EDITOR ~/Desktop/notes.md'
 # cSpell:ignore notesv
 alias notesv='vim_open ~/Desktop/notes.md'

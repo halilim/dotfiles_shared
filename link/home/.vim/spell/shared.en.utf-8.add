@@ -633,6 +633,7 @@ RDBMS
 rdkafka
 rdoc
 reactnative
+readbyte
 readline
 readlink
 realpath
