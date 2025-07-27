@@ -4,7 +4,7 @@ alias libw='$EDITOR "$DOTFILES_INCLUDES"/lib/which.sh' # cSpell:ignore libw
 alias {edit_function,ef,fe,edit_which,ew}='EDIT=1 wh'
 
 function locate_function() {
-  local function_name=$1 output=${2:-} file line is_zsh
+  local function_name=$1 output file line is_zsh
 
   if [ -n "${ZSH_VERSION:-}" ]; then
     is_zsh=1
@@ -13,9 +13,7 @@ function locate_function() {
   # Check out if you have (a lot of) time :) https://unix.stackexchange.com/a/85250/4678
 
   if [ $is_zsh ]; then
-    if [[ ! $output ]]; then
-      output=$(whence -v "$function_name")
-    fi
+    output=$(whence -v "$function_name")
     file=${output#*from } # fun is a shell function from /foo/bar.sh
   else
     output=$(declare -F "$function_name") # fun 123 /foo/bar.sh
@@ -72,110 +70,114 @@ function which_detailed() {
     return
   fi
 
-  local type_output
-  type_output=$(type -a "$input" 2>&1)
-  local type_ret=$?
-
-  if [[ $type_ret -ne 0 ]]; then
-    color >&2 red "$type_output"
-    ORIG_INPUT=$orig_input which_variable "$input"
-    local which_variable_ret=$?
-    if [[ $which_variable_ret -ne 0 ]]; then
-      return $which_variable_ret
-    fi
-  fi
-
-  local type_strs=()
-  if [[ $type_output ]]; then
-    if command -v mapfile > /dev/null 2>&1; then
-      mapfile -t type_strs <<< "$type_output"
-    elif [ -n "${ZSH_VERSION:-}" ]; then
-      # shellcheck disable=SC2296,SC2116
-      type_strs=("${(f)$(echo "$type_output")}")
-    fi
+  local types=() output
+  # shellcheck disable=SC2207
+  if [ -n "${ZSH_VERSION:-}" ]; then
+    output=$(whence -aw "$input" | rg "^$input: (.+)$" --only-matching --replace '$1')
+    # shellcheck disable=SC2296,SC2116
+    types=("${(f)$(echo "$output")}")
+  else
+    output=$(type -at "$input" || echo 'none')
+    mapfile -t types < <( echo "$output" )
   fi
 
   local bat_cmd_and_args=(bat --language=sh --paging=never)
-  local i type_str_ct=${#type_strs[@]} type_str location file_out file
-  for ((i = 0; i < type_str_ct; i++)); do
+  local i type_ct=${#types[@]} type location file
+  for ((i = 0; i < type_ct; i++)); do
     # shellcheck disable=SC2124
-    type_str="${type_strs[@]:$i:1}"
+    type="${types[@]:$i:1}"
 
-    if [[ $type_str_ct -gt 1 ]]; then
-      color green-bold "=== $((i + 1)) of $type_str_ct ==="
+    if [[ $type_ct -gt 1 ]]; then
+      color green-bold "=== $((i + 1)) of $type_ct ==="
     fi
 
-    if [[ ! $is_zsh && $type_str == *'function'* ]]; then
-      # Bash includes the function definition in the output of `type -a`
-      type_str=$(echo "$type_str" | head -n 1)
-    fi
+    color_ yellow "$type "
 
-    type_str=${type_str:-'not found'}
+    case "$type" in
+      *'alias')
+        local alias_output alias_value alias_cmd
+        alias_output=$(alias "$input")
+        if [[ $alias_output != 'alias '* ]]; then
+          local prefix='alias'
+          if [[ $type == 'global alias' ]]; then
+            prefix+=' -g'
+          fi
+          alias_output="$prefix $alias_output"
+        fi
+        color magenta "$alias_output"
+        alias_value=$(echo "$alias_output" | rg "^alias $input='?(.+?)'?$" --only-matching --replace '$1')
 
-    echo "$type_str"
+        # Remove prepended variables
+        alias_cmd=$(echo "$alias_value" | $GNU_SED -E 's/^(\w+=(["'\''][^"'\'']*["'\'']|\w+) )*//')
 
-    if [[ $type_str == *'function'* ]]; then
-      location=$(locate_function "$input" "$type_str")
+        # Remove arguments
+        alias_cmd=${alias_cmd%% *}
 
-      if [[ ${EDIT:-} ]]; then
+        # Prevent infinite loops, e.g. `alias ls=ls -etc`
+        if [[ $alias_cmd && $alias_cmd != "$input" ]]; then
+          ORIG_INPUT=$orig_input which_detailed "$alias_cmd"
+        fi
+
+        ;;
+
+      'builtin') ;;
+
+      'command'|'file')
+        file=$(command -vp "$input")
+        if [[ ! $file || $file == "$input" ]]; then
+          if [ -n "${ZSH_VERSION:-}" ]; then
+            file=$(which -p "$input")
+          else
+            file=$(which "$input")
+          fi
+
+          if [[ -L $file ]]; then
+            file+=" -> $(readlink -f "$file")"
+          fi
+        fi
+        color magenta "$file"
+
+        if [[ ${EDIT:-} ]]; then
+          open_with_editor "$file"
+        fi
+        ;;
+
+      'function')
+        location=$(locate_function "$input")
         if [[ $location ]]; then
-          open_with_editor "$location"
-        else
-          echo >&2 'Source file and line not found'
-          return 1
-        fi
-      else
-        [[ $location ]] && color magenta "$location"
-
-        if [[ $is_zsh ]]; then
-          which -x 2 "$input" | "${bat_cmd_and_args[@]}"
-        else
-          declare -f "$input" | "${bat_cmd_and_args[@]}"
+          color magenta "$location"
         fi
 
-        color yellow 'Comments are not shown, and the output can differ from the source'
-      fi
+        if [[ ${EDIT:-} ]]; then
+          if [[ $location ]]; then
+            open_with_editor "$location"
+          else
+            echo >&2 'Source file and line not found'
+            continue
+          fi
+        else
+          if [[ $is_zsh ]]; then
+            which -x 2 "$input" | "${bat_cmd_and_args[@]}"
+          else
+            declare -f "$input" | "${bat_cmd_and_args[@]}"
+          fi
 
-    elif [[ $type_str == *'alias'* ]]; then
-      if [ $is_zsh ]; then
-        type_str=${type_str#*for } # Zsh: "... is (an|a global) alias for ..."
-      else
-        type_str=${type_str#*to \`} # Bash: "... is aliased to `...'"
-        type_str=${type_str%\'*}
-      fi
+          color yellow 'Comments are not shown, and the output can differ from the source'
+        fi
+        ;;
 
-      # Remove prepended variables
-      type_str=$(echo "$type_str" | $GNU_SED -E 's/^(\w+=(["'\''][^"'\'']*["'\'']|\w+) )*//')
+      *)
+        color >&2 red "$type"
+        ORIG_INPUT=$orig_input which_variable "$input"
+        local which_variable_ret=$?
+        if [[ $which_variable_ret -ne 0 && $type_ct -eq 1 ]]; then
+          return $which_variable_ret
+        fi
+        ;;
+    esac
 
-      # Remove arguments
-      type_str=${type_str%% *}
-
-      # Return early for global aliases, and prevent infinite loops, e.g. `alias ls=ls -etc`
-      if [[ ! $type_str || $type_str == "$input" ]]; then
-        return 0
-      fi
-
-      ORIG_INPUT=$orig_input which_detailed "$type_str"
-
-    elif [[ $type_str == *'command'* || $type_str == *'file'* || $type_str == *' is '* ]]; then
-      if [[ $type_str == *' is '* ]]; then
-        file_out=$type_str
-      else
-        file_out=$(type "$input")
-      fi
-      file="${file_out#*is }"
-
-      if [[ -L $file ]]; then
-        eza --group-directories-first --long "$file"
-      fi
-
-      if [[ ${EDIT:-} ]]; then
-        open_with_editor "$file"
-      fi
-    fi
-
-    if [[ $type_str_ct -gt 1 ]]; then
-      echo
+    if [[ $type_ct -gt 1 ]]; then
+      printf '\n'
     fi
   done
 }

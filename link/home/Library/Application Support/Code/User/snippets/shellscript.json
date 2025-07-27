@@ -155,6 +155,14 @@
 		],
 	},
 
+	"echo red error return (functions)": {
+		"prefix": "eerr", // cSpell:ignore eerr
+		"body": [
+			"color >&2 red '${1:error message}'",
+			"return ${2:1}"
+		],
+	},
+
 	"echo error exit (scripts)": {
 		"prefix": "eex",
 		"body": [
@@ -610,7 +618,7 @@
 
 	// https://superuser.com/q/737350/59919
 	"zsh for in associative": {
-		"prefix": "fora",
+		"prefix": ["fora", "forinaa"], // cSpell:ignore forinaa
 		"body": [
 			// This version breaks shellcheck
 			// "local $1",

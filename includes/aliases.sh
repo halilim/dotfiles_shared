@@ -61,8 +61,8 @@ alias hostconf='open_with_editor /etc/hosts'
 alias ic="imgcat"
 alias k9='kill -9'
 
-alias l='eza --group-directories-first --long'
-alias la='eza --all --group-directories-first --long'
+alias l='eza --group-directories-first --long -g'
+alias la='eza --group-directories-first --long -g --all'
 
 alias le="less"
 
@@ -129,13 +129,19 @@ alias rgw='rg -w' # Word
 # shellcheck disable=SC2139
 alias {rgsw,rgwc,rgws}='rg -sw' # Word and case sensitive
 
-# cSpell:ignore shsd shsfd shsz shsdz
 alias shc='shellcheck'
-alias shs='shellspec'
+
+# cSpell:ignore shsd shsfd shsz shsdz
+shellspec_cmd="shellspec --pattern '*_spec.*sh'"
 # shellcheck disable=SC2139
-alias {shsd,shsfd}='shellspec -f d'
-alias shsz='shellspec -s zsh'
-alias shsdz='shellspec -f d -s zsh'
+alias shs="$shellspec_cmd"
+# shellcheck disable=SC2139
+alias {shsd,shsfd}="$shellspec_cmd -f d"
+# shellcheck disable=SC2139
+alias shsz="$shellspec_cmd -s zsh"
+# shellcheck disable=SC2139
+alias shsdz="$shellspec_cmd -f d -s zsh"
+unset shellspec_cmd
 
 alias spt='$SPEEDTEST_CMD'
 

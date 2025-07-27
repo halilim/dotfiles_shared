@@ -7,6 +7,7 @@ shopt -s globstar
 both_specs=(spec/includes/lib/*_spec.sh)
 
 bash_specs=(
+  spec/**/*_spec.bash
   spec/link/home/bin_spec.sh # This should work in both, but not much point in testing for both
   spec/link/home/bin/open_from_iterm_spec.sh
   spec/link/home/bin/dotfiles_spec.sh
@@ -16,5 +17,13 @@ bash_specs+=("${both_specs[@]}")
 zsh_specs=(spec/**/*_spec.zsh)
 zsh_specs+=("${both_specs[@]}")
 
-shellspec --shell bash "${bash_specs[@]}"
-shellspec --pattern '*_spec.*sh' --shell zsh "${zsh_specs[@]}"
+if [[ ${DRY_RUN:-} ]]; then
+  echo 'Bash specs:'
+  printf '%s\n' "${bash_specs[@]}" | sort
+  printf '\nZsh specs:\n'
+  printf '%s\n' "${zsh_specs[@]}" | sort
+else
+  pattern='*_spec.*sh'
+  shellspec --shell bash --pattern "$pattern" "${bash_specs[@]}" "$@"
+  shellspec --shell zsh --pattern "$pattern" "${zsh_specs[@]}" "$@"
+fi

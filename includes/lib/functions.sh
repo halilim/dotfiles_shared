@@ -89,7 +89,15 @@ function color() {
   fi
 
   local prefix='\033['
-  echo -e "$prefix$style;${code}m$text${prefix}0m"
+  local echo_opts=(-e)
+  if [[ ${NO_NL:-} ]]; then
+    echo_opts+=(-n)
+  fi
+  echo "${echo_opts[@]}" "$prefix$style;${code}m$text${prefix}0m"
+}
+
+function color_() {
+  NO_NL=1 color "$@"
 }
 
 function color_arrow() {
@@ -167,6 +175,54 @@ function join_array() {
   done
   out=${out%"$separator"}
   printf '%s' "$out"
+}
+
+function print_array() {
+  local var_name=$1 declare_output
+  declare_output=$(declare -p "$var_name")
+
+  local is_associative
+  if echo "$declare_output" | grep -q '\-a' > /dev/null 2>&1; then
+    color white-bold 'Indexed array'
+  elif echo "$declare_output" | grep -q '\-A' > /dev/null 2>&1; then
+    color white-bold 'Associative array'
+    is_associative=1
+  else
+    color >&2 red 'Not an array'
+    return 1
+  fi
+
+  local key
+  if [ -n "${ZSH_VERSION:-}" ]; then
+    # shellcheck disable=SC1009,SC2296,SC2298
+    if [[ $is_associative ]]; then
+      for key in ${(@k)${(P)var_name}}; do
+        print_array_row "$key" "${${(P)var_name}[$key]}"
+      done
+
+    else
+      # shellcheck disable=SC2124
+      local array_len=${(P)#var_name[@]}
+      for ((key = 1; key <= array_len; key++)); do
+        print_array_row "$key" "${${(@P)var_name}[$key]}"
+      done
+    fi
+
+  else
+    # TODO: If the var name is "__array_ref", this will break
+    declare -n __array_ref=$var_name
+    for key in "${!__array_ref[@]}"; do
+      print_array_row "$key" "${__array_ref[$key]}"
+    done
+  fi
+}
+alias pa='print_array'
+
+function print_array_row() {
+  local key=$1 value=$2
+  value=$(declare -p value | rg '^(declare|typeset)[^=]+=(.*)' --replace '$2' --only-matching)
+  # TODO: Bash: Fix: newlines in value is displayed literally, i.e. "\n"
+  echo -e "$(color yellow "$key") : $(color green "$value")"
 }
 
 function in_dir() {

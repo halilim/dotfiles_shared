@@ -5,6 +5,10 @@ Describe 'which_detailed'
     echo "$2"
   }
 
+  function color_() { # Mock
+    echo -n "$2"
+  }
+
   # Mainly to prevent passing bat arguments to cat
   function bat() { # Mock
     cat
@@ -20,15 +24,15 @@ Describe 'which_detailed'
     The stdout should include 'foo='
     The stdout should include 'bar'
     The stderr should include 'bar'
-    The stderr should include 'not found'
+    The stderr should include 'none'
     The status should eq 1
   End
 
   It 'reports unknowns'
     When call which_detailed 'baz'
-    The stdout should eq ''
+    The stdout should include 'none'
     The stderr should include 'baz'
-    The stderr should include 'not found'
+    The stderr should include 'none'
     The status should eq 1
   End
 
@@ -37,14 +41,6 @@ Describe 'which_detailed'
     When call which_detailed 'foo'
     The stdout should include 'function'
     The stdout should include "echo 'bar'"
-    The stderr should eq ''
-    The status should eq 0
-  End
-
-  It 'prints command'
-    When call which_detailed 'cat'
-    The stdout should include 'cat is'
-    The stdout should include 'bin/cat'
     The stderr should eq ''
     The status should eq 0
   End

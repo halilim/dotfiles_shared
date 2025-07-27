@@ -376,7 +376,7 @@ Plug 'mhinz/vim-startify'
 Plug 'nathanaelkane/vim-indent-guides'
 " Plug 'Yggdroot/indentLine' " Alternative with lines instead of bg color
 
-if !is_root && executable('node')
+if !is_root && (executable('node') || executable('bun'))
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
 endif
 
