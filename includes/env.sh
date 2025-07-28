@@ -32,14 +32,10 @@ export EZA_ICONS_AUTO=true
 export EZA_ICON_SPACING=2
 export TIME_STYLE=long-iso
 
-export HOMEBREW_NO_AUTO_UPDATE=1 # Covered by update_and_backup ($UPDATE_BACKUP_CMDS)
-export HOMEBREW_NO_ENV_HINTS=1
-
 # Allow overriding stuff defined later anywhere
 export POST_INIT_HOOKS=()
 
 export DOTFILES_INCLUDE_LIBS=(
-  brew
   databases
   docker
   editing
@@ -66,7 +62,6 @@ export DOTFILES_INCLUDE_LIBS=(
 export OMZ_PLUGINS=(
   aliases
   bgnotify
-  brew
   bundler
   common-aliases
   docker
@@ -89,8 +84,6 @@ export OMZ_PLUGINS=(
 
 # shellcheck disable=SC2016
 export UPDATE_BACKUP_CMDS=(
-  'brew update --quiet'
-  'brew upgrade --quiet' # Removed --greedy because apps auto-download in the background anyway
   '$ZSH/tools/upgrade.sh -v silent' # https://github.com/ohmyzsh/ohmyzsh/wiki/FAQ#how-do-i-update-oh-my-zsh
   omz_update_custom
   update_bat_syntaxes

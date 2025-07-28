@@ -1,5 +1,19 @@
 # See also: OMZ/brew plugin
 :
+export HOMEBREW_NO_AUTO_UPDATE=1 # Covered by update_and_backup ($UPDATE_BACKUP_CMDS)
+export HOMEBREW_NO_ENV_HINTS=1
+
+# Homebrew must be loaded before Mise, etc.
+OMZ_PLUGINS=(
+  brew
+  "${OMZ_PLUGINS[@]}"
+)
+
+UPDATE_BACKUP_CMDS+=(
+  'brew update --quiet'
+  'brew upgrade --quiet' # Removed --greedy because apps auto-download in the background anyway
+)
+
 # cSpell:ignore brbc brun brbf brsv brsi brsl brsl brsr brsre brss brst brup brupg brupd
 # shellcheck disable=SC2139
 alias {bru,brun}='brew uninstall'

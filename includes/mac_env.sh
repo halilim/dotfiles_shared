@@ -14,6 +14,7 @@ export GNU_TOUCH=gtouch
 export GNU_XARGS=gxargs
 
 DOTFILES_INCLUDE_LIBS+=(
+  brew
   elasticsearch
   redis
 )

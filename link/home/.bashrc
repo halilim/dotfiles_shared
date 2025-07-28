@@ -7,8 +7,10 @@ alias bashrc='$EDITOR ~/.bashrc'
 # shellcheck disable=SC1091
 . "$DOTFILES_INCLUDES"/env_interactive.sh
 
-# shellcheck source=/dev/null
-. "$HOMEBREW_PREFIX"/etc/bash_completion.d/git-prompt*
+if [[ ${HOMEBREW_PREFIX:-} ]]; then
+  # shellcheck source=/dev/null
+  . "$HOMEBREW_PREFIX"/etc/bash_completion.d/git-prompt*
+fi
 
 alias DR='DRY_RUN=1'
 
