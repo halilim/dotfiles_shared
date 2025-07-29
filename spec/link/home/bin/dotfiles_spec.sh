@@ -143,19 +143,48 @@ Describe "$script"
   End
 
   Describe 'revert_import'
-    Example 'replaces the link with the original file'
+    Parameters
+      home "$mock_home" 'false'
+      home "$mock_home" 'true'
+      root "$mock_root" 'false'
+    End
+
+    Example "$1 link, $([[ $3 == 'true' ]] && echo "with" || echo "without") extra content: replaces with the original file, removes empty dirs"
+      dir_type=$1
+      orig_base=$2
+      dir1_has_extra_content=$3
+
+      dir_name=dir1/dir2
+      file_name=orig_file
       content='original content'
-      orig_path=$mock_home/orig
-      dotfile_path=$custom_dir/link/home/orig
+
+      dotfile_path=$custom_dir/link/$dir_type/$dir_name/$file_name
       create_file_with_content "$dotfile_path" "$content"
+
+      if [[ $dir1_has_extra_content == 'true' ]]; then
+        extra_path=$custom_dir/link/$dir_type/dir1/extra
+        touch "$extra_path"
+      fi
+
+      orig_dir=$orig_base/$dir_name
+      mkdir -p "$orig_dir"
+
+      orig_path=$orig_dir/$file_name
       ln -s "$dotfile_path" "$orig_path"
 
       When run script "$copied_script" revert_import "$orig_path"
-      The path "$dotfile_path" should not be exist
+      if [[ $dir1_has_extra_content == 'true' ]]; then
+        The path "$extra_path" should be exist
+      else
+        The path "$custom_dir/link/$dir_type/dir1" should not be exist
+      fi
+      The path "$custom_dir/link/$dir_type" should be exist
       The contents of file "$orig_path" should equal "$content"
       The stdout should eq ''
       The stderr should include "$orig_path"
       The status should eq 0
+
+      rm -f "$orig_path"
     End
   End
 

@@ -166,41 +166,59 @@ function dotfiles::_import_path() {
 }
 
 function dotfiles::_revert_path() {
-  local link=${1:?}
+  local orig_path=${1:?}
 
-  if [[ ! -L $link ]]; then
+  if [[ ! -L $orig_path ]]; then
     dotfiles::_log_error 'Is not a symlink'
     return 1
   fi
 
-  local target link_dir
-  link_dir=$(dirname "$link")
+  local dotfile_path
+  if ! dotfile_path=$(readlink -f "$orig_path"); then
+    dotfiles::_log_error "Target: $dotfile_path does not exist"
 
-  if ! target=$(readlink -f "$link"); then
-    dotfiles::_log_error "Target: $target does not exist"
-
-    if prompt "Remove broken links in $link_dir?"; then
-      remove_broken_links "$link_dir"
+    local orig_dir
+    orig_dir=$(dirname "$orig_path")
+    if prompt "Remove broken links in $orig_dir?"; then
+      remove_broken_links "$orig_dir"
     fi
 
     return 1
   fi
 
-  if ! in_dir "$target" "$DOTFILES_SHARED" &&
-    ! in_dir "$target" "$DOTFILES_CUSTOM"; then
-    dotfiles::_log_error "Target: $target is not in dotfiles"
+  local dotfiles
+  if in_dir "$dotfile_path" "$DOTFILES_SHARED"; then
+    dotfiles=$DOTFILES_SHARED
+  fi
+  if in_dir "$dotfile_path" "$DOTFILES_CUSTOM"; then
+    dotfiles=$DOTFILES_CUSTOM
+  fi
+
+  if [[ ! $dotfiles ]]; then
+    dotfiles::_log_error "Target: $dotfile_path is not in dotfiles"
     return 1
   fi
 
+  local cmd
   if [[ ${REMOVE:-''} ]]; then
-    dotfiles::_echo_eval_with_sudo 'rm %q %q' "$target" "$link"
+    cmd='rm'
   else
-    dotfiles::_echo_eval_with_sudo 'mv %q %q' "$target" "$link"
+    cmd='mv'
   fi
+  dotfiles::_echo_eval_with_sudo "$cmd %q %q" "$dotfile_path" "$orig_path"
 
-  if [ -z "$(ls -A "$link_dir")" ]; then
-    echo_eval 'rmdir %q' "$link_dir"
-  fi
+  # Remove empty directories in the dotfiles folder recursively until the link root
+  local dotfile_dir
+  dotfile_dir=$(dirname "$dotfile_path")
+  local dotfiles_home_dir=$dotfiles/link/home
+  local dotfiles_root_dir=$dotfiles/link/root
+  while [[ $(find "$dotfile_dir") == "$dotfile_dir" ]]; do
+    if [[ $dotfile_dir == "$dotfiles_home_dir" || $dotfile_dir == "$dotfiles_root_dir" ]]; then
+      break
+    fi
+    echo_eval 'rmdir %q' "$dotfile_dir"
+    dotfile_dir=$(dirname "$dotfile_dir")
+  done
 
   return 0
 }
