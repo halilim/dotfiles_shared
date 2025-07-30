@@ -9,8 +9,12 @@ function color_mode() {
   if [[ $OSTYPE == darwin* ]]; then
     [[ $(defaults read -g AppleInterfaceStyle 2>&1) == 'Dark' ]] && echo dark || echo light
   elif [[ $OSTYPE == linux* ]]; then
-    # TODO: Implement
-    :
+    if [[ -v TERMUX_VERSION ]]; then
+      echo 'dark'
+    else
+      # TODO: Implement
+      :
+    fi
   fi
 }
 
