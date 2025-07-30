@@ -61,8 +61,12 @@ alias hostconf='open_with_editor /etc/hosts'
 alias ic="imgcat"
 alias k9='kill -9'
 
-alias l='eza --group-directories-first --long -g'
-alias la='eza --group-directories-first --long -g --all'
+# shellcheck disable=SC2139
+alias {l,la}='eza --all --group-directories-first'
+alias lg='eza --all --group --group-directories-first --long'
+alias ll='eza --all --group-directories-first --long'
+alias lll='TIME_STYLE=long-iso eza --all --group --group-directories-first --long'
+alias lt='TIME_STYLE=long-iso eza --all --group-directories-first --long'
 
 alias le="less"
 

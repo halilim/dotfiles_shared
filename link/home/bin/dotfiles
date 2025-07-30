@@ -6,15 +6,14 @@ IFS=$'\n\t'
 # Doesn't handle deletions
 
 function dotfiles::edit() {
-  local workspace_file
-  workspace_file=$(find "$DOTFILES" -name '*.code-workspace' -maxdepth 1 -print -quit)
+  local target
+  if [[ $EDITOR == */code ]]; then
+    target=$(find "$DOTFILES" -name '*.code-workspace' -maxdepth 1 -print -quit)
+  fi
+
   # shellcheck disable=SC1091
   . "$DOTFILES_INCLUDES"/lib/editing.sh
-  if [[ $workspace_file ]]; then
-    open_with_editor "$workspace_file"
-  else
-    open_with_editor "$DOTFILES"
-  fi
+  open_with_editor "${target:-${DOTFILES:?}}"
 }
 
 function dotfiles::setup() {

@@ -14,17 +14,20 @@ UPDATE_BACKUP_CMDS+=(
   'brew upgrade --quiet' # Removed --greedy because apps auto-download in the background anyway
 )
 
-# cSpell:ignore brbc brun brbf brsv brsi brsl brsl brsr brsre brss brst brup brupg brupd
+# cSpell:ignore brbc brun brbf brri brsv brsi brsl brsl brsr brsre brss brst brup brupg brupd
 # shellcheck disable=SC2139
 alias {bru,brun}='brew uninstall'
 alias brb='brew bundle'
 alias brbc='brew bump-cask-pr --version=ver name'
 alias brbf='brew bump-formula-pr --version=ver name'
+alias bred='brew edit'
 alias brewfile='$EDITOR ~/Brewfile'
 alias bri='brew install'
 alias bric='brew install --cask'
 alias brin='brew info'
 alias brl='brew list'
+# shellcheck disable=SC2139
+alias {brei,brri}='brew reinstall'
 alias brs='brew search'
 alias brsv='brew services'
 alias brsi='brew services info'

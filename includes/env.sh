@@ -30,7 +30,7 @@ function source_if_exists() {
 # eza (ls alternative)
 export EZA_ICONS_AUTO=true
 export EZA_ICON_SPACING=2
-export TIME_STYLE=long-iso
+export TIME_STYLE=relative
 
 # Allow overriding stuff defined later anywhere
 export POST_INIT_HOOKS=()
@@ -50,6 +50,7 @@ export DOTFILES_INCLUDE_LIBS=(
 
 # Disabled:
 #   * direnv: Breaks Powerlevel10k instant prompt, added to .zshrc manually
+#   * docker & docker-compose: Has legacy completion logic, not needed (docker itself has completions)
 #   * fzf-tab-completion: Broken. Outputs pygmentize (pygments) help. Without pygmentize, emits 3
 #     lines of "_normal:6: command not found: pygmentize"
 #   * gpg-agent: GPG_TTY is set in env_interactive.sh, no need to slow down
@@ -64,8 +65,6 @@ export OMZ_PLUGINS=(
   bgnotify
   bundler
   common-aliases
-  docker
-  docker-compose
   git
   git-extras
   globalias

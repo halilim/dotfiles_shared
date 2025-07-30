@@ -82,7 +82,7 @@ function which_detailed() {
   fi
 
   local bat_cmd_and_args=(bat --language=sh --paging=never)
-  local i type_ct=${#types[@]} type location file
+  local i type_ct=${#types[@]} type location file file_output
   for ((i = 0; i < type_ct; i++)); do
     # shellcheck disable=SC2124
     type="${types[@]:$i:1}"
@@ -130,12 +130,13 @@ function which_detailed() {
           else
             file=$(which "$input")
           fi
-
-          if [[ -L $file ]]; then
-            file+=" -> $(readlink -f "$file")"
-          fi
         fi
-        color magenta "$file"
+
+        file_output=$file
+        if [[ -L $file ]]; then
+          file_output+=" -> $(readlink -f "$file")"
+        fi
+        color magenta "$file_output"
 
         if [[ ${EDIT:-} ]]; then
           open_with_editor "$file"
