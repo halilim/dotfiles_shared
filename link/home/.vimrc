@@ -188,10 +188,17 @@ fun! MyFZF(query = '')
   endif
   call fzf#vim#files(dir, fzf#vim#with_preview({'options': l:fzf_options}, 'right:50%:hidden', 'ctrl-space'))
 endfun
+
+if has("gui_macvim")
+  nnoremap <D-p> :call MyFZF()<CR>
+  vnoremap <D-p> :call MyFZF('<C-R><C-W>')<CR>
+else
+  nnoremap <C-p> :call MyFZF()<CR>
+  vnoremap <C-p> :call MyFZF('<C-R><C-W>')<CR>
+endif
+
 " Disabled in favor of coc-format-selected
-" <D-p> alias is in .gvimrc
 " nnoremap <leader>f :call MyFZF()<CR>
-" <D-P> alias is in .gvimrc
 " nnoremap <leader>F :call MyFZF('<C-R><C-W>')<CR>
 
 " https://github.com/junegunn/fzf.vim/issues/800
@@ -209,8 +216,14 @@ endfun
 
 nnoremap <leader>h :History<CR>
 nnoremap <leader>l :ls<CR>
-" See .gvimrc for <D-n> alias
+
 nnoremap <leader>n :enew<CR>
+if has("gui_macvim")
+  nnoremap <D-n> :enew<CR>
+else
+  nnoremap <C-n> :enew<CR>
+endif
+
 " netrw is disabled
 " nnoremap <leader>nr :exe 'Vexplore' getcwd()<CR>
 nnoremap <leader>nf :NERDTreeFind<CR>

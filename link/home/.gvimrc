@@ -10,7 +10,6 @@ set guioptions+=T
 if has("gui_macvim")
   " Cmd + n, new buffer
   macmenu File.New\ Window key=<D-N>
-  nnoremap <D-n> :enew<CR>
 
   " Cmd + Shift + t, reopen last buffer
   " Doesn't work, <C-T> (Ctrl + Shift + t) in .vimrc
@@ -23,8 +22,6 @@ if has("gui_macvim")
 
   " Cmd + p, files
   macmenu File.Print key=<nop>
-  nnoremap <D-p> :call MyFZF()<CR>
-  vnoremap <D-p> :call MyFZF('<C-R><C-W>')<CR>
   noremap <D-P> :
 
   macmenu Edit.Find.Use\ Selection\ for\ Find key=<nop>
