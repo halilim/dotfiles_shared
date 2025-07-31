@@ -81,13 +81,12 @@ alias rkdcl="$RAKE_CMD db:create db:schema:load"
 alias rkdct="$RAKE_CMD db:create RAILS_ENV=test"
 alias rkddt="$RAKE_CMD db:drop RAILS_ENV=test"
 alias rkdm="$RAKE_CMD db:migrate"
-alias rkdmuv="$RAKE_CMD db:migrate:up VERSION=" # Migrate SPECIFIED version
-alias rkdmdv="$RAKE_CMD db:migrate:down VERSION=" # Roll back SPECIFIED version
+alias rkdmuv="$RAKE_CMD db:migrate:up VERSION= # Migrate SPECIFIED version"
+alias rkdmdv="$RAKE_CMD db:migrate:down VERSION= # Roll back SPECIFIED version"
 alias rkdms="$RAKE_CMD db:migrate:status | tail -n 40 | sort -k 2"
 alias rkdmst="$RAKE_CMD db:migrate:status RAILS_ENV=test | tail -n 40 | sort -k 2"
 alias rkdmt="$RAKE_CMD db:migrate RAILS_ENV=test"
-# Migrate up/down UNTIL version (including the version, i.e. it also gets migrated/reverted)
-alias rkdmv="$RAKE_CMD db:migrate VERSION="
+alias rkdmv="$RAKE_CMD db:migrate VERSION= # Migrate up/down to version (inclusive)"
 alias rkdr="$RAKE_CMD db:rollback"
 alias rkdrt="$RAKE_CMD db:rollback RAILS_ENV=test"
 alias rkds="$RAKE_CMD db:seed"
