@@ -1,5 +1,3 @@
-export CLIP='xclip -sel clip'
-export OPEN_CMD='nohup xdg-open'
 export VIM_CMD=vim
 
 export GNU_DATE=date
@@ -13,6 +11,8 @@ export GNU_TOUCH=touch
 export GNU_XARGS=xargs
 
 if [[ -v TERMUX_VERSION ]]; then
+  export CLIP='clipcopy'
+  export OPEN_CMD='termux-open'
   export SPEEDTEST_CMD='speedtest-go'
   export VIM_NO_SERVER=1 # --remote-silent is not supported
 
@@ -21,8 +21,12 @@ if [[ -v TERMUX_VERSION ]]; then
   UPDATE_BACKUP_CMDS+=(
     'pkg update'
     'pkg upgrade -y'
+    termux_install_update_shellcheck
+    termux_update_shellspec
   )
 else
+  export CLIP='xclip -sel clip'
+  export OPEN_CMD='nohup xdg-open'
   export SPEEDTEST_CMD='speedtest'
 
   if [[ -e /etc/debian_version ]]; then

@@ -11,6 +11,7 @@ files=(**/*.*sh **/.*sh)
 files+=(**/.*shrc)
 files+=(**/.bash_profile **/.inputrc **/.zprofile)
 files+=(**/bin/*)
+files+=(**/bin-termux/*)
 files+=(setup)
 
 files_cleaned=()

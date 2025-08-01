@@ -23,6 +23,12 @@ if [[ ${DRY_RUN:-} ]]; then
   printf '\nZsh specs:\n'
   printf '%s\n' "${zsh_specs[@]}" | sort
 else
+  # TODO: Aborted with status code [executor: 126] [reporter: 1] [error handler: 0]
+  if [[ -v TERMUX_VERSION ]]; then
+    echo 'Skipping on Termux...'
+    exit 0
+  fi
+
   pattern='*_spec.*sh'
   shellspec --shell bash --pattern "$pattern" "${bash_specs[@]}" "$@"
   shellspec --shell zsh --pattern "$pattern" "${zsh_specs[@]}" "$@"

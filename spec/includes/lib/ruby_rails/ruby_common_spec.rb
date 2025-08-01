@@ -53,6 +53,7 @@ RSpec.describe '.table' do # rubocop:disable RSpec/DescribeClass
     end
   end
 
+  # NOTE: Long lines are truncated in Termux
   context 'with ActiveRecord-like objects' do
     let(:items) do
       # Yeah, no, we're not going to require ActiveRecord just for this test
@@ -60,21 +61,21 @@ RSpec.describe '.table' do # rubocop:disable RSpec/DescribeClass
       [
         double(
           attributes: {
-            'created_at' => '2021-01-01 00:00:00',
-            'updated_at' => '2021-01-01 00:00:01',
-            'title' => 'Bar baz qux',
+            'created_at' => '2021-01-01',
+            'updated_at' => '2021-01-02',
+            'title' => 'Bar baz',
             'id' => 1,
-            'long_title' => 'yay'
+            'desc' => 'yay'
           }
         ),
 
         double(
           attributes: {
-            'created_at' => '2021-01-02 00:00:00',
-            'updated_at' => '2021-01-02 00:00:01',
+            'created_at' => '2021-01-03',
+            'updated_at' => '2021-01-04',
             'title' => 'Baz',
             'id' => 2,
-            'long_title' => 'nay'
+            'desc' => 'nay'
           }
         )
       ]
@@ -84,25 +85,25 @@ RSpec.describe '.table' do # rubocop:disable RSpec/DescribeClass
     it 'outputs a table, id first, timestamps last' do
       expect_output(
         <<~OUTPUT
-          id│title      │long_title│created_at         │updated_at
-          ──┼───────────┼──────────┼───────────────────┼───────────────────
-          1 │Bar baz qux│yay       │2021-01-01 00:00:00│2021-01-01 00:00:01
-          2 │Baz        │nay       │2021-01-02 00:00:00│2021-01-02 00:00:01
+          id│title  │desc│created_at│updated_at
+          ──┼───────┼────┼──────────┼──────────
+          1 │Bar baz│yay │2021-01-01│2021-01-02
+          2 │Baz    │nay │2021-01-03│2021-01-04
           (2 rows in set)
         OUTPUT
       )
     end
 
     context 'with limited and symbol cols' do
-      let(:cols) { %i[title long_title] }
+      let(:cols) { %i[title desc] }
 
       it 'outputs a table' do
         expect_output(
           <<~OUTPUT
-            title      │long_title
-            ───────────┼──────────
-            Bar baz qux│yay
-            Baz        │nay
+            title  │desc
+            ───────┼────
+            Bar baz│yay
+            Baz    │nay
             (2 rows in set)
           OUTPUT
         )

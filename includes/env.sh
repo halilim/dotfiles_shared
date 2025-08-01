@@ -102,10 +102,14 @@ export BUNDLE_JOBS=$num_procs
 export MAKEFLAGS="-j$num_procs"
 unset num_procs
 
+# Prevent re-sourcing dot files from duplicating paths
 if [[ ! ${PATH_MODIFIED:-} ]]; then
   # Global troubleshooting reminder: Some apps treat PATH as case-insensitive, causing problems when
   # a variable named lowercase `path` used in scripts or functions.
   PATH="$HOME/.bun/bin:$PATH:$HOME/bin"
+  if [[ -v TERMUX_VERSION ]]; then
+    PATH="$HOME/bin-termux:$PATH"
+  fi
   export PATH_MODIFIED=1
 fi
 

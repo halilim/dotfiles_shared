@@ -8,8 +8,10 @@ pkg install \
   fzf \
   git-delta \
   git \
+  jq \
   nodejs-lts \
   python \
+  qemu-user-aarch64 \
   ripgrep \
   speedtest-go \
   traceroute \
@@ -32,3 +34,7 @@ fi
 
 dotfiles/shared/setup
 omz_install_custom
+pip install pre-commit
+
+# https://github.com/shellspec/shellspec?tab=readme-ov-file#automatic-installation-
+curl -fsSL https://git.io/shellspec | sh -s -- --yes

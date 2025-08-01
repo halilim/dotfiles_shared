@@ -345,6 +345,9 @@ function dotfiles::_link_file() {
   # So for now, we use hard links. Note that they are prone to being replaced by actual files.
   local hard_link=false
   if [[ $source == *.plist ]]; then
+    if [[ -v TERMUX_VERSION ]]; then
+      return
+    fi
     hard_link=true
   fi
 
