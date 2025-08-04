@@ -32,6 +32,7 @@
 --map-syntax "*.code-workspace:JSON" # JSON with Comments, but it seems "JSON" covers that too
 --map-syntax "*.ignore:Git Ignore"
 --map-syntax "*.zone.txt:Bind Zone Files"
+--map-syntax "**/.githooks/*:Bourne Again Shell (bash)"
 --map-syntax "**/.husky/*:Bourne Again Shell (bash)"
 --map-syntax "**/.kube/config:YAML"
 --map-syntax "**/*ghostty/config:INI" # Not really but close https://ghostty.org/docs/config#syntax
