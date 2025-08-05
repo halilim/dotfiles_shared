@@ -94,6 +94,13 @@ alias rkro="$RAKE_CMD routes"
 alias rkT="$RAKE_CMD -T"
 alias rrs="gco db/schema.rb && $RAKE_CMD db:drop db:create db:schema:load db:migrate"
 
+# cSpell:ignore rkdpp rkdrs rkdst
+# https://github.com/rails/rails/blob/main/activerecord/lib/active_record/railties/databases.rake
+# All dev+test unless SKIP_TEST_DATABASE=true or DATABASE_URL is specified
+alias rkdpp="$RAKE_CMD db:prepare # DB exists ? migrate + schema:dump : create + schema:load + seed"
+alias rkdrs="$RAKE_CMD db:reset # drop + setup"
+alias rkdst="$RAKE_CMD db:setup # create + schema:load + seed"
+
 # cSpell:ignore rubo beru ruboa berua
 alias {rubo,beru}='bundle exec rubocop'
 alias {rubog,ruboc,beruc,berug,rubocop_changes}='bundle exec rubocop --force-exclusion $(git diff --name-only HEAD | xargs printf -- " %s")'

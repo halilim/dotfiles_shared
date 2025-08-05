@@ -23,17 +23,24 @@
 
 	// https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker#disable-checking
 
-	"spell check disable": {
-		"prefix": "spdl",
-		"body": [
-			"$LINE_COMMENT cSpell:disable-next-line"
-		],
-	},
-
 	"spell check ignore word (for the whole file)": {
 		"prefix": "spi",
 		"body": [
 			"$LINE_COMMENT cSpell:ignore ${0:word}"
+		],
+	},
+
+	"spell check disable line": {
+		"prefix": "spdl", // cSpell:disable-line
+		"body": [
+			"$LINE_COMMENT cSpell:disable-line"
+		],
+	},
+
+	"spell check disable next line": {
+		"prefix": "spdnl", // cSpell:disable-line
+		"body": [
+			"$LINE_COMMENT cSpell:disable-next-line"
 		],
 	},
 

@@ -65,6 +65,8 @@ alias grh~='git reset HEAD~'
 alias grgu='git remote get-url'
 alias grpo='git remote prune origin'
 
+alias gsm='git submodule'
+
 # cSpell:ignore gsta gstdiff gstp gstpb gsts ghprc ghprv grhh
 
 # Original gsta (omz/git.plugin.zsh) sounds like apply :)

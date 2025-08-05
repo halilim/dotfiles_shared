@@ -29,7 +29,7 @@
     "viml": true,
     "Vimscript": true,
     "xml": true,
-    "zonefile": true // cSpell:ignore zonefile
+    "zonefile": true
   },
 
   "cSpell.checkVSCodeSystemFiles": true,
@@ -79,8 +79,7 @@
   "docker.containers.label": "ContainerName",
   "docker.containers.sortBy": "Label",
 
-  // cSpell:ignore Autocloaking
-  "dotenv.enableAutocloaking": false,
+  "dotenv.enableAutocloaking": false, // cSpell:disable-line
 
   "editor.acceptSuggestionOnEnter": "smart",
   "editor.autoClosingQuotes": "always",
@@ -403,8 +402,7 @@
   "vim.camelCaseMotion.enable": true,
   "vim.easymotion": true,
   "vim.enableNeovim": true,
-  // cSpell:ignore highlightedyank
-  "vim.highlightedyank.enable": true,
+  "vim.highlightedyank.enable": true, // cSpell:disable-line
   "vim.hlsearch": true,
   "vim.incsearch": true,
   "vim.leader": ",",
@@ -419,7 +417,7 @@
 
   // To improve performance
   "extensions.experimental.affinity": {
-    "asvetliakov.vscode-neovim": 1, // cSpell:ignore asvetliakov
+    "asvetliakov.vscode-neovim": 1, // cSpell:disable-line
     "vscodevim.vim": 1
   },
 
@@ -466,6 +464,8 @@
   "vim.visualModeKeyBindings": [
     { "before": ["leader", "c", "space"], "commands": ["editor.action.commentLine"] }
   ],
+
+  "vsicons.dontShowNewVersionMessage": true, // cSpell:disable-line
 
   "vscode-yaml-sort.emptyLinesUntilLevel": 1,
   "vscode-yaml-sort.useLeadingDashes": false,
@@ -627,7 +627,7 @@
   },
 
   "[toml]": {
-    "editor.defaultFormatter": "tamasfe.even-better-toml" // cSpell:ignore tamasfe
+    "editor.defaultFormatter": "tamasfe.even-better-toml" // cSpell:disable-line
   },
 
   "[typescript]": {
