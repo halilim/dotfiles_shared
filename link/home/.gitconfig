@@ -37,9 +37,6 @@
 
 	pager = delta
 
-[credential]
-	helper = osxkeychain
-
 ; https://dandavison.github.io/delta/configuration.html
 
 [delta]
@@ -172,3 +169,4 @@
 
 [include]
 	path = ~/.config/git/custom.gitconfig
+	path = ~/.config/git/platform.gitconfig
