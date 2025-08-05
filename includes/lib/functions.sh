@@ -8,6 +8,10 @@ function bak_toggle() {
   fi
 }
 
+function bat_rebuild_syntaxes() {
+  bat cache --build
+}
+
 function builtin_help() {
   local url
   url="$(printf "$BUILTIN_URL#:~:text=%s [" "$1")"

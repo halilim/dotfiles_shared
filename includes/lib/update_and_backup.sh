@@ -27,10 +27,10 @@ function update_open_tabs() {
 }
 
 function update_bat_syntaxes() {
-  local bat_syntax_dir
-  bat_syntax_dir="$(bat --config-dir)/syntaxes"
+  (
+    cd "$DOTFILES_SHARED" || return
+    git submodule foreach --recursive git pull --prune
+  )
 
-  git_clone_or_pull https://github.com/fnando/sublime-procfile.git "$bat_syntax_dir/procfile"
-
-  bat cache --build
+  bat_rebuild_syntaxes
 }
