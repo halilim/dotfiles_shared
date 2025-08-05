@@ -3,6 +3,7 @@
 pkg install \
   bat \
   curl \
+  dnsutils \
   eza \
   fd \
   fzf \

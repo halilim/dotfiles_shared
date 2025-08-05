@@ -1,8 +1,14 @@
 # cSpell:ignore pkin
 alias pki='pkg install'
 alias pkin='pkg info'
+alias pkli='pkg list-installed'
 alias pks='pkg search'
 alias pku='pkg uninstall'
+
+function termux_ssh() {
+  # shellcheck disable=SC1090
+  . ~/../usr/libexec/source-ssh-agent.sh
+}
 
 function termux_update_shellspec() {
   # https://github.com/shellspec/shellspec?tab=readme-ov-file#upgrade-to-the-latest-release-version-
