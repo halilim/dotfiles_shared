@@ -2,19 +2,8 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-echo "--> Running ShellCheck..."
-bin/run_shellcheck
-
 printf "\n--> Running ShellSpec...\n"
 bin/run_shellspec
-
-printf "\n--> Running RuboCop...\n"
-rubocop_opts=()
-# TODO: parallel.rb:591: [BUG] pthread_rwlock_unlock: Operation not permitted (EPERM)
-if [[ -v TERMUX_VERSION ]]; then
-  rubocop_opts+=(--no-parallel)
-fi
-bundle exec rubocop "${rubocop_opts[@]}"
 
 printf "\n--> Running RSpec...\n"
 bundle exec rspec

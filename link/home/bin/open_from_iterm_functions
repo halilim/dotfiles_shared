@@ -82,7 +82,7 @@ function open_with_rubymine() {
   local abs_path=$1 line=$2 column=$3
   # https://www.jetbrains.com/help/ruby/opening-files-from-command-line.html#88f1a126
   # Note: column is only documented in the "Windows" tab. -1: it goes to the next character (bug?)
-  mine --line "$line" --column $((column - 1)) "$abs_path"
+  ~/bin/mine --line "$line" --column $((column - 1)) "$abs_path"
 }
 
 function is_in_editor_titles() {

@@ -1,11 +1,13 @@
-# cSpell:ignore libga gcpn gcae gcane gcano gcanev gcanov gcbu gcem gcmb gcemb gcom
 
-alias libga='$EDITOR "$DOTFILES_INCLUDES"/lib/git/git_aliases.sh'
+alias libga='$EDITOR "$DOTFILES_INCLUDES"/lib/git/git_aliases.sh' # cSpell:ignore libga
 
-alias ga='git add -p'
+alias ga='git add -N . && git add -p'
 alias gam='git_matching add -p'
 alias gan='git add -N .'
-alias gcpn='git cherry-pick --no-commit'
+
+alias gcpn='git cherry-pick --no-commit' # cSpell:ignore gcpn
+
+# cSpell:ignore gcae gcane gcano gcanev gcanov gcbu gcem gcmb gcemb
 alias gcae='git commit --amend --edit'
 # shellcheck disable=SC2139
 alias {gcane,gcano}='git commit --amend --no-edit'
@@ -21,9 +23,12 @@ alias {gcn,gcne,gcno}='git commit --no-edit' # cSpell:ignore gcne gcno
 # shellcheck disable=SC2139
 alias {gcnev,gcnov,gcnn}='git commit --no-edit --no-verify' # cSpell:ignore gcnev gcnov gcnn
 alias gcnv='git commit --no-verify' # cSpell:ignore gcnv
+
+alias gcfg='git config get' # # cSpell:ignore gcfg
+
 # shellcheck disable=SC2139
 alias {gcof,git_checkout_file,git_recover_file}='git checkout abc123^ -- path/to/file # Find abc123 with glgn' # cSpell:ignore gcof
-alias gcom='git checkout $(git_main_branch)'
+alias gcom='git checkout $(git_main_branch)' # cSpell:ignore gcom
 
 # cSpell:ignore gdhh gdma gdnc gdtc gdtk
 alias gdh='git diff HEAD'
@@ -33,6 +38,9 @@ alias gdm='git diff $(git_main_branch)'
 alias gdma='git_matching diff'
 alias gdnc='git diff --no-color'
 alias gdtc='git difftool --tool=code'
+
+# shellcheck disable=SC2139
+alias {gih,install_git_hooks}='git config core.hooksPath .githooks'
 
 # cSpell:ignore glgn
 alias gg="git log -G '\Wchange_regex\W' -- old_or_current_path"
@@ -46,29 +54,32 @@ alias gmmnc='git merge --no-edit $(git_main_branch) --no-commit'
 alias gmn='git merge --no-edit'
 alias gmt='git mergetool'
 
-# cSpell:ignore gpft gpla gplb gpnv gplp grgu grpo
+# cSpell:ignore gpla gplb gplp gppr
 
-# push with annotated & reachable tags, remove dry-run after confirming
-alias gpft='git push --follow-tags --dry-run'
 alias gpl='git pull'
 # shellcheck disable=SC2139
 alias {gla,gpla}="for_each_dir 'git checkout "'$(git_main_branch)'" && git pull --prune'" # Pull all
 # shellcheck disable=SC2016
 alias gplb='git pull origin $(git rev-parse --abbrev-ref HEAD)'
-alias gpnv='git push --no-verify'
 # shellcheck disable=SC2139
 alias {gplp,glp,gpp}='git pull --prune'
+alias gppr='git pull --prune --rebase'
+
+# cSpell:ignore gpft gpnv
+# push with annotated & reachable tags, remove dry-run after confirming
+alias gpft='git push --follow-tags --dry-run'
+alias gpnv='git push --no-verify'
 alias gps='git push --set-upstream origin'
 
 alias grh~='git reset HEAD~'
 
+# cSpell:ignore grgu grpo
 alias grgu='git remote get-url'
 alias grpo='git remote prune origin'
 
 alias gsm='git submodule'
 
-# cSpell:ignore gsta gstdiff gstp gstpb gsts ghprc ghprv grhh
-
+# cSpell:ignore gsta gstdiff gstp gstpb gsts
 # Original gsta (omz/git.plugin.zsh) sounds like apply :)
 alias gsta="git stash apply"
 alias gstdiff='git stash show --patch'
@@ -80,6 +91,7 @@ alias gsv="GIT_SSH_COMMAND='ssh -vvv'"
 alias gt='export NEW_VERSION=1.2.3 && git tag -a v$NEW_VERSION -m "" && git push --tags origin v$NEW_VERSION'
 
 # GitHub CLI
+# cSpell:ignore ghprc ghprv
 alias ghprc='gh pr create --web'
 alias ghprv='gh pr view --web'
 
@@ -91,4 +103,4 @@ alias git_conf_attributes='$EDITOR ~/.config/git/attributes'
 alias gpc='pre-commit install -c $DOTFILES_INCLUDES/lib/git/pre-commit-common.yml'
 
 # Unalias the dangerous `git reset --hard` alias from omz/git.plugin.zsh, easy to mistype grh
-unalias grhh 2>/dev/null || true
+unalias grhh 2>/dev/null || true # cSpell:ignore grhh

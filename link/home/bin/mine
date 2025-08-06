@@ -1,4 +1,4 @@
 #!/bin/sh
 # https://www.jetbrains.com/help/ruby/working-with-the-ide-features-from-command-line.html#standalone
-open -na "RubyMine.app" --args "$@"
+open -na 'RubyMine.app' --args "$@"
 # TODO: Link this file only on Macs

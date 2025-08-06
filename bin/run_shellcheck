@@ -6,9 +6,9 @@ IFS=$'\n\t'
 
 shopt -s globstar
 
-# cSpell:ignore shrc
+files+=(**/.githooks/*)
 files=(**/*.*sh **/.*sh)
-files+=(**/.*shrc)
+files+=(**/.*shrc) # cSpell:ignore shrc
 files+=(**/.bash_profile **/.inputrc **/.zprofile)
 files+=(**/bin/*)
 files+=(**/bin-termux/*)
