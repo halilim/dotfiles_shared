@@ -170,6 +170,7 @@ diskutil
 disqus
 DISTRIB
 divmod
+dnsutils
 dockerd
 dockerhub
 dockerignore

@@ -73,6 +73,12 @@ function dotfiles::sync() {
   dotfiles::vim_setup false "$plug_installed"
 }
 
+function dotfiles::update() {
+  echo_eval 'cd %q || return' "$DOTFILES"
+  for_each_dir 'git pull --prune'
+  dotfiles::sync
+}
+
 function dotfiles::import() {
   local dotfile_type=${1:-''}
   if ! dotfiles::_validate_type "$dotfile_type" || [[ $# -lt 2 ]]; then
@@ -489,6 +495,7 @@ case "${1:-''}" in
   edit) dotfiles::edit ;;
   setup) dotfiles::setup ;;
   sync) dotfiles::sync "${2:-}" ;;
+  update) dotfiles::update ;;
   import) dotfiles::import "${@:2}" ;;
   revert_import) dotfiles::revert_import "${@:2}" ;;
   revert_import_and_remove) dotfiles::revert_import_and_remove "${@:2}" ;;
