@@ -1,11 +1,12 @@
 # cSpell:ignore pkin
 alias pki='pkg install'
 alias pkin='pkg info'
-alias pkli='pkg list-installed'
+alias pkli='pkg list-installed' # cSpell:ignore pkli
 alias pks='pkg search'
 alias pku='pkg uninstall'
 
-function termux_ssh() {
+# For git and ssh commands
+function termux_prepare_ssh() {
   # shellcheck disable=SC1090
   . ~/../usr/libexec/source-ssh-agent.sh
 }
@@ -37,8 +38,8 @@ function termux_install_update_shellcheck() {
 
   if [[ $should_install ]]; then
     # https://github.com/koalaman/shellcheck?tab=readme-ov-file#installing-a-pre-compiled-binary
-    local scversion='stable' # or "v0.4.7", or "latest"
-    curl -fLs "https://github.com/koalaman/shellcheck/releases/download/${scversion?}/shellcheck-${scversion?}.linux.aarch64.tar.xz" | tar -xJv
-    mv "shellcheck-${scversion}/shellcheck" "$target_dir"
+    local version='stable' # or "v0.4.7", or "latest"
+    curl -fLs "https://github.com/koalaman/shellcheck/releases/download/${version?}/shellcheck-${version?}.linux.aarch64.tar.xz" | tar -xJv
+    mv "shellcheck-${version}/shellcheck" "$target_dir"
   fi
 }

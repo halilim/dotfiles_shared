@@ -75,6 +75,9 @@ function dotfiles::sync() {
 
 function dotfiles::update() {
   echo_eval 'cd %q || return' "$DOTFILES"
+  if [[ -v TERMUX_VERSION ]]; then
+    termux_prepare_ssh
+  fi
   for_each_dir 'git pull --prune'
   dotfiles::sync
 }
