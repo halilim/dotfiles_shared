@@ -501,7 +501,7 @@ case "${1:-''}" in
   revert_import_and_remove) dotfiles::revert_import_and_remove "${@:2}" ;;
   vim_setup) dotfiles::vim_setup true ;;
   *)
-    dotfiles::_log_error "$USAGE_BASE <setup|sync|import|revert_import|revert_import_and_remove|vim_setup> ..." 1
+    dotfiles::_log_error "$USAGE_BASE <setup|sync|update|import|revert_import|revert_import_and_remove|vim_setup> ..." 1
     exit 1
     ;;
 esac
