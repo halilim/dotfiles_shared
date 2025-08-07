@@ -37,6 +37,7 @@ alias dri='dotfiles revert_import'
 alias drir='dotfiles revert_import_and_remove'
 alias ds='dotfiles sync'
 alias dse='dotfiles setup'
+alias dup='dotfiles update'
 
 alias e='open_with_editor'
 alias ee="echo_eval"

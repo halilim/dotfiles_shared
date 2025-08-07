@@ -81,7 +81,7 @@ function dotfiles::update() {
     termux_prepare_ssh
   fi
   for_each_dir 'git pull --prune'
-  dotfiles::sync
+  echo_eval 'dotfiles::sync'
 }
 
 function dotfiles::import() {
