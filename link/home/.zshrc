@@ -29,6 +29,7 @@ alias -g G='| rg -n' # Case insensitive by default due to ~/.ripgreprc
 alias -g G3='| rg -n -A 1 -B 1'
 alias -g HL='| grep_hl'
 alias -g RGG="-g '!'"
+alias -g SX='SET_X=1'
 alias -g V='VERBOSE=1'
 alias -g WCL='| wc -l'
 

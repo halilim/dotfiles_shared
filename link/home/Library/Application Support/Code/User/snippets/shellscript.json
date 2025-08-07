@@ -352,7 +352,7 @@
 	"if DRY_RUN": {
 		"prefix": "ifd",
 		"body": [
-			"if [[ \\$DRY_RUN ]]; then",
+			"if [[ \\${DRY_RUN:-} ]]; then",
 				"\t$1",
 			"else",
 				"\t$2",
@@ -508,7 +508,10 @@
 		"prefix": "safe",
 		"body": [
 			"#!/usr/bin/env bash",
-			"set -eu${1|v,x|}o pipefail",
+			"set -euo pipefail",
+			"if [[ \\${SET_X:-} ]]; then",
+				"\tset -x",
+			"fi",
 			"IFS=$'\\n\\t'",
 			"\n"
 		],

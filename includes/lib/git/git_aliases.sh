@@ -71,11 +71,15 @@ alias gpft='git push --follow-tags --dry-run'
 alias gpnv='git push --no-verify'
 alias gps='git push --set-upstream origin'
 
-alias grh~='git reset HEAD~'
-
 # cSpell:ignore grgu grpo
 alias grgu='git remote get-url'
 alias grpo='git remote prune origin'
+
+alias grh~='git reset HEAD~'
+# Unalias the dangerous `git reset --hard` alias from omz/git.plugin.zsh, easy to mistype grh as grhh
+unalias grhh 2>/dev/null || true # cSpell:ignore grhh
+# shellcheck disable=SC2139
+alias {gro,git_reset_to_origin}='git fetch origin && prompt "Hard reset to origin?" && git reset --hard origin/"$(git_main_branch)"'
 
 alias gsm='git submodule'
 
@@ -101,6 +105,3 @@ alias git_conf_ignores='$EDITOR ~/.config/git/ignore'
 alias git_conf_attributes='$EDITOR ~/.config/git/attributes'
 
 alias gpc='pre-commit install -c $DOTFILES_INCLUDES/lib/git/pre-commit-common.yml'
-
-# Unalias the dangerous `git reset --hard` alias from omz/git.plugin.zsh, easy to mistype grh
-unalias grhh 2>/dev/null || true # cSpell:ignore grhh

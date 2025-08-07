@@ -13,6 +13,7 @@ if [[ ${HOMEBREW_PREFIX:-} ]]; then
 fi
 
 alias DR='DRY_RUN=1'
+alias SX='SET_X=1'
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
