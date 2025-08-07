@@ -76,6 +76,8 @@ function dotfiles::sync() {
 function dotfiles::update() {
   echo_eval 'cd %q || return' "$DOTFILES"
   if [[ -v TERMUX_VERSION ]]; then
+    # shellcheck disable=SC1091
+    . "$DOTFILES_INCLUDES"/lib/termux.sh
     termux_prepare_ssh
   fi
   for_each_dir 'git pull --prune'
