@@ -1,17 +1,17 @@
 Include includes/lib/which.sh
 
 Describe 'which_detailed'
+  # Mainly to prevent passing bat arguments to cat
+  function bat() { # Mock
+    cat
+  }
+
   function color() { # Mock
     echo "$2"
   }
 
   function color_() { # Mock
     echo -n "$2"
-  }
-
-  # Mainly to prevent passing bat arguments to cat
-  function bat() { # Mock
-    cat
   }
 
   export GNU_SED=${GNU_SED:-sed}

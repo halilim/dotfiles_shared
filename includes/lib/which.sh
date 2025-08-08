@@ -50,8 +50,7 @@ alias wl='which_ less'
 # Why not in ~/bin? Because this needs the whole environment to be able to detect all types of
 # symbols. And loading all that is a slow process. This way, it's all in the current shell.
 function which_detailed() {
-  local input=${1?} is_zsh orig_input
-  orig_input=${ORIG_INPUT:-$input}
+  local input=${1?} is_zsh
 
   if [ -n "${ZSH_VERSION:-}" ]; then
     is_zsh=1
@@ -61,7 +60,7 @@ function which_detailed() {
   if [[ $input == '$'* ]]; then
     local bare_name
     bare_name="${input#'$'}"
-    ORIG_INPUT=$orig_input which_variable "$bare_name"
+    which_variable "$bare_name"
     return $?
   fi
 
@@ -70,119 +69,150 @@ function which_detailed() {
     return
   fi
 
-  local types=() output
-  # shellcheck disable=SC2207
-  if [ -n "${ZSH_VERSION:-}" ]; then
-    output=$(whence -aw "$input" | rg "^$input: (.+)$" --only-matching --replace '$1')
+  local type_lines=()
+  if [ $is_zsh ]; then
     # shellcheck disable=SC2296,SC2116
-    types=("${(f)$(echo "$output")}")
+    type_lines=("${(f)$(type 2>&1 -a "$input")}")
   else
-    output=$(type -at "$input" || echo 'none')
-    mapfile -t types < <( echo "$output" )
+    mapfile -t type_lines < <( type 2>&1 -af "$input" )
   fi
 
-  local bat_cmd_and_args=(bat --language=sh --paging=never)
-  local i type_ct=${#types[@]} type location file file_output
-  for ((i = 0; i < type_ct; i++)); do
-    # shellcheck disable=SC2124
-    type="${types[@]:$i:1}"
+  local i line_count=${#type_lines[@]} type_line padding \
+        file \
+        type \
+        which_variable_ret
 
-    if [[ $type_ct -gt 1 ]]; then
-      color green-bold "=== $((i + 1)) of $type_ct ==="
+  padding=$(printf "%${#input}s " ' ')
+
+  for ((i = 0; i < line_count; i++)); do
+    # shellcheck disable=SC2124
+    type_line="${type_lines[@]:$i:1}"
+
+    if [[ $i == 0 ]]; then
+      color_ green "$input "
+    else
+      printf '%s' "$padding"
     fi
 
-    color_ yellow "$type "
+    if [[ $line_count -gt 1 ]]; then
+      printf '%d. ' $((i + 1))
+    fi
 
-    case "$type" in
-      *'alias')
-        local alias_output alias_value alias_cmd
-        alias_output=$(alias "$input")
-        if [[ $alias_output != 'alias '* ]]; then
-          local prefix='alias'
-          if [[ $type == 'global alias' ]]; then
-            prefix+=' -g'
-          fi
-          alias_output="$prefix $alias_output"
-        fi
-        color magenta "$alias_output"
-        alias_value=$(echo "$alias_output" | rg "^alias $input='?(.+?)'?$" --only-matching --replace '$1')
-
-        # Remove prepended variables
-        alias_cmd=$(echo "$alias_value" | $GNU_SED -E 's/^(\w+=(["'\''][^"'\'']*["'\'']|\w+) )*//')
-
-        # Remove arguments
-        alias_cmd=${alias_cmd%% *}
-
-        # Prevent infinite loops, e.g. `alias ls=ls -etc`
-        if [[ $alias_cmd && $alias_cmd != "$input" ]]; then
-          ORIG_INPUT=$orig_input which_detailed "$alias_cmd"
-        fi
-
+    case "$type_line" in
+      *'is an alias'*|*'is aliased'*)
+        color_ yellow 'alias '
+        which_print_alias "$input"
         ;;
 
-      'builtin') ;;
+      *'is a global alias'*)
+        color_ yellow 'global alias '
+        which_print_alias "$input" 1
+        ;;
 
-      'command'|'file')
-        file=$(command -vp "$input")
-        if [[ ! $file || $file == "$input" ]]; then
-          if [ -n "${ZSH_VERSION:-}" ]; then
-            file=$(which -p "$input")
-          else
-            file=$(which "$input")
-          fi
-        fi
+      *'is a shell builtin')
+        color_ yellow 'builtin'
+        ;;
 
-        file_output=$file
+      *'is /'*)
+        color_ yellow 'command/file '
+        file=$(echo "$type_line" | rg "^$input is (.+)$" --only-matching --replace '$1')
+
+        color_ magenta "$file"
         if [[ -L $file ]]; then
-          file_output+=" -> $(readlink -f "$file")"
+          printf ' -> '
+          color_ magenta "$(readlink -f "$file")"
         fi
-        color magenta "$file_output"
+        printf '\n'
 
         if [[ ${EDIT:-} ]]; then
           open_with_editor "$file"
         fi
         ;;
 
-      'function')
-        location=$(locate_function "$input")
-        if [[ $location ]]; then
-          color magenta "$location"
-        fi
-
-        if [[ ${EDIT:-} ]]; then
-          if [[ $location ]]; then
-            open_with_editor "$location"
-          else
-            echo >&2 'Source file and line not found'
-            continue
-          fi
-        else
-          if [[ $is_zsh ]]; then
-            which -x 2 "$input" | "${bat_cmd_and_args[@]}"
-          else
-            declare -f "$input" | "${bat_cmd_and_args[@]}"
-          fi
-
-          color yellow 'Comments are not shown, and the output can differ from the source'
-        fi
-        ;;
-
       *)
-        color >&2 red "$type"
-        ORIG_INPUT=$orig_input which_variable "$input"
-        local which_variable_ret=$?
-        if [[ $which_variable_ret -ne 0 && $type_ct -eq 1 ]]; then
-          return $which_variable_ret
+        if [ $is_zsh ]; then
+          type=$(whence -aw "$input" | rg "^$input: (.+)$" --only-matching --replace '$1')
+        else
+          type=$(type -at "$input")
         fi
+
+        if [[ $type == 'function' ]]; then
+          color_ yellow 'function '
+          which_print_function "$input"
+
+        else
+          color >&2 red "$type_line"
+          which_variable "$input"
+          which_variable_ret=$?
+          if [[ $which_variable_ret -ne 0 && $line_count -eq 1 ]]; then
+            return $which_variable_ret
+          fi
+        fi
+
         ;;
     esac
-
-    if [[ $type_ct -gt 1 ]]; then
-      printf '\n'
-    fi
   done
 }
 alias wh="which_detailed"
+
+function which_print_alias() {
+  local input=$1 is_global_alias=$2
+
+  local alias_output
+  alias_output=$(alias "$input")
+  if [[ $alias_output != 'alias '* ]]; then
+    local prefix='alias'
+    if [[ $is_global_alias ]]; then
+      prefix+=' -g'
+    fi
+    alias_output="$prefix $alias_output"
+  fi
+  color magenta "$alias_output"
+
+  local alias_value
+  alias_value=$(echo "$alias_output" | rg "^alias(?: -g)? $input='?(.+?)'?$" --only-matching --replace '$1')
+  # remove "| " prefix
+  alias_value=${alias_value#*| }
+
+  local alias_cmd
+  # Remove prepended variables
+  alias_cmd=$(echo "$alias_value" | $GNU_SED -E 's/^(\w+=(["'\''][^"'\'']*["'\'']|\w+) )*//')
+  # Remove arguments
+  alias_cmd=${alias_cmd%% *}
+
+  # Prevent infinite loops, e.g. `alias ls=ls -etc`
+  if [[ $alias_cmd && $alias_cmd != "$input" ]]; then
+    printf '---\n'
+    which_detailed "$alias_cmd"
+  fi
+}
+
+function which_print_function() {
+  local input=$1 location
+
+  location=$(locate_function "$input")
+  if [[ $location ]]; then
+    color magenta "$location"
+  fi
+
+  if [[ ${EDIT:-} ]]; then
+    if [[ $location ]]; then
+      open_with_editor "$location"
+    else
+      echo >&2 'Source file and line not found'
+      return
+    fi
+  else
+    local bat_cmd_and_args=(bat --language=sh --paging=never)
+    if [ -n "${ZSH_VERSION:-}" ]; then
+      which -x 2 "$input" | "${bat_cmd_and_args[@]}"
+    else
+      declare -f "$input" | "${bat_cmd_and_args[@]}"
+    fi
+
+    color yellow 'Comments are not shown, and the output can differ from the source'
+  fi
+}
 
 function which_variable() {
   local var_name=${1?}
@@ -214,7 +244,7 @@ function which_variable() {
       color >&2 red 'Circular reference detected (variable value = original input)'
       return 1
     else
-      ORIG_INPUT=${ORIG_INPUT:-} which_detailed "$value"
+      which_detailed "$value"
     fi
   else
     return 1

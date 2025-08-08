@@ -1,17 +1,17 @@
 Include includes/lib/which.sh
 
 Describe 'which_detailed'
+  # Mainly to prevent passing bat arguments to cat
+  function bat() { # Mock
+    cat
+  }
+
   function color() { # Mock
     echo "$2"
   }
 
   function color_() { # Mock
     echo -n "$2"
-  }
-
-  # Mainly to prevent passing bat arguments to cat
-  function bat() { # Mock
-    cat
   }
 
   export GNU_SED=${GNU_SED:-sed}
@@ -24,15 +24,14 @@ Describe 'which_detailed'
     The stdout should include 'foo='
     The stdout should include 'bar'
     The stderr should include 'bar'
-    The stderr should include 'none'
+    The stderr should include 'not found'
     The status should eq 1
   End
 
   It 'reports unknowns'
     When call which_detailed 'baz'
-    The stdout should include 'none'
-    The stderr should include 'baz'
-    The stderr should include 'none'
+    The stdout should include 'baz'
+    The stderr should include 'not found'
     The status should eq 1
   End
 
