@@ -6,5 +6,5 @@ endif
 let g:loaded_custom = 1
 
 function! custom#begin()
-  let g:custom_ai_plugin = 'codeium' " codeium | copilot | openai
+  let g:custom_ai_plugin = 'windsurf' " windsurf | copilot | openai
 endfunction

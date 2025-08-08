@@ -324,9 +324,9 @@ call plug#begin()
 
 if !is_root && exists('g:custom_ai_plugin')
   " cSpell:ignore Exafunction madox2
-  if g:custom_ai_plugin == 'codeium'
+  if g:custom_ai_plugin == 'windsurf'
     " See also: AirlineAddCustomSections
-    Plug 'Exafunction/codeium.vim'
+    Plug 'Exafunction/windsurf.vim'
   elseif g:custom_ai_plugin == 'copilot'
     Plug 'github/copilot.vim' , { 'do': ':Copilot setup' }
   elseif g:custom_ai_plugin == 'openai'
@@ -715,8 +715,8 @@ endfun
 
 fun! AirlineAddCustomSections(...)
   if !exists('g:airline_added_custom_sections')
-    if exists('g:custom_ai_plugin') && g:custom_ai_plugin == 'codeium'
-      call AirlinePrependSectionY('{…} Codeium:%3{codeium#GetStatusString()}')
+    if exists('g:custom_ai_plugin') && g:custom_ai_plugin == 'windsurf'
+      call AirlinePrependSectionY('{…} Windsurf:%3{codeium#GetStatusString()}')
     endif
 
     if g:is_root

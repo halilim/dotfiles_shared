@@ -89,7 +89,7 @@ function which_detailed() {
     type_line="${type_lines[@]:$i:1}"
 
     if [[ $i == 0 ]]; then
-      color_ green "$input "
+      color_ 'green' "$input "
     else
       printf '%s' "$padding"
     fi
@@ -100,27 +100,27 @@ function which_detailed() {
 
     case "$type_line" in
       *'is an alias'*|*'is aliased'*)
-        color_ yellow 'alias '
+        color_ 'yellow' 'alias '
         which_print_alias "$input"
         ;;
 
       *'is a global alias'*)
-        color_ yellow 'global alias '
+        color_ 'yellow' 'global alias '
         which_print_alias "$input" 1
         ;;
 
       *'is a shell builtin')
-        color_ yellow 'builtin'
+        color 'yellow' 'builtin'
         ;;
 
       *'is /'*)
-        color_ yellow 'command/file '
+        color_ 'yellow' 'command/file '
         file=$(echo "$type_line" | rg "^$input is (.+)$" --only-matching --replace '$1')
 
-        color_ magenta "$file"
+        color_ 'magenta' "$file"
         if [[ -L $file ]]; then
           printf ' -> '
-          color_ magenta "$(readlink -f "$file")"
+          color_ 'magenta' "$(readlink -f "$file")"
         fi
         printf '\n'
 
@@ -137,11 +137,11 @@ function which_detailed() {
         fi
 
         if [[ $type == 'function' ]]; then
-          color_ yellow 'function '
+          color_ 'yellow' 'function '
           which_print_function "$input"
 
         else
-          color >&2 red "$type_line"
+          color >&2 'red' "$type_line"
           which_variable "$input"
           which_variable_ret=$?
           if [[ $which_variable_ret -ne 0 && $line_count -eq 1 ]]; then
@@ -167,7 +167,7 @@ function which_print_alias() {
     fi
     alias_output="$prefix $alias_output"
   fi
-  color magenta "$alias_output"
+  color 'magenta' "$alias_output"
 
   local alias_value
   alias_value=$(echo "$alias_output" | rg "^alias(?: -g)? $input='?(.+?)'?$" --only-matching --replace '$1')
@@ -192,7 +192,7 @@ function which_print_function() {
 
   location=$(locate_function "$input")
   if [[ $location ]]; then
-    color magenta "$location"
+    color 'magenta' "$location"
   fi
 
   if [[ ${EDIT:-} ]]; then
@@ -210,7 +210,7 @@ function which_print_function() {
       declare -f "$input" | "${bat_cmd_and_args[@]}"
     fi
 
-    color yellow 'Comments are not shown, and the output can differ from the source'
+    color 'yellow' 'Comments are not shown, and the output can differ from the source'
   fi
 }
 
@@ -223,12 +223,12 @@ function which_variable() {
   if [[ $declare_ret -eq 0 ]]; then
     echo "$declare_output"
   else
-    color >&2 red "$declare_output"
+    color >&2 'red' "$declare_output"
     return $declare_ret
   fi
 
   if [[ $declare_output == 'typeset -g'* ]]; then
-    color cyan "-g (global) flag is probably due to the local scope of ${funcstack[1]:-${FUNCNAME[0]}}"
+    color 'cyan' "-g (global) flag is probably due to the local scope of ${funcstack[1]:-${FUNCNAME[0]}}"
   fi
 
   local value
@@ -241,7 +241,7 @@ function which_variable() {
 
   if [[ $value ]]; then
     if [[ $value == "${ORIG_INPUT:-}" ]]; then
-      color >&2 red 'Circular reference detected (variable value = original input)'
+      color >&2 'red' 'Circular reference detected (variable value = original input)'
       return 1
     else
       which_detailed "$value"

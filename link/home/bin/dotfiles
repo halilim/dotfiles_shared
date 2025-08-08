@@ -125,7 +125,7 @@ function dotfiles::revert_import_and_remove() {
 function dotfiles::_process_paths() {
   for item_path in "$@"; do
     if [ $# -gt 1 ]; then
-      color >&2 white-bold "---> $item_path"
+      color >&2 'white-bold' "---> $item_path"
     fi
 
     if [[ ${REVERT_IMPORT:-} ]]; then
@@ -532,7 +532,7 @@ function dotfiles::_log_error {
   if [[ $no_color ]]; then
     echo >&2 "$msg"
   else
-    color red "$msg" >&2
+    color 'red' "$msg" >&2
   fi
 }
 
@@ -556,7 +556,7 @@ export DOTFILES_CUSTOM=$DOTFILES/custom
 # shellcheck disable=SC1091
 . "$DOTFILES_INCLUDES"/env.sh
 
-USAGE_BASE="Usage: $(color green "$DOTFILES_CMD")"
+USAGE_BASE="Usage: $(color 'green' "$DOTFILES_CMD")"
 
 case "${1:-''}" in
   bootstrap) dotfiles::bootstrap ;;
