@@ -25,6 +25,7 @@ alias da='direnv allow'
 alias dp='declare -p'
 
 # cSpell:ignore dcdc dcds drir
+alias db='dotfiles bootstrap'
 alias dcd='cd $DOTFILES'
 # shellcheck disable=SC2139
 alias {dcdc,cdd}='cd $DOTFILES_CUSTOM'

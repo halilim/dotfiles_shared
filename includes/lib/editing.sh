@@ -33,7 +33,7 @@ function vim_open() {
     vim_cmd_+='sudo '
   fi
 
-  vim_cmd_+="$VIM_CMD"
+  vim_cmd_+="$VIM_PATH"
 
   local arg_ct=${#arg_arr[@]} pct_qs
   pct_qs=$(printf ' %%q%.0s' $(seq 1 "$arg_ct"))

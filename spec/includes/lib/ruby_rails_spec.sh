@@ -22,7 +22,7 @@ Describe 'ruby_cd_pull_migrate'
     return $cd_checkout_pull_ret
   }
 
-  function kill_spring() {
+  function kill_spring() { # Mock
     :
   }
 
