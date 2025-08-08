@@ -77,7 +77,7 @@ function dotfiles::sync() {
 }
 
 function dotfiles::update() {
-  echo_eval 'cd %q || return' "$DOTFILES"
+  DRY_RUN='' echo_eval 'cd %q || return' "$DOTFILES"
   if [[ -v TERMUX_VERSION ]]; then
     # shellcheck disable=SC1091
     . "$DOTFILES_INCLUDES"/lib/termux.sh
@@ -131,6 +131,12 @@ function dotfiles::_import_path() {
 
   if [[ -L $item_path ]]; then
     dotfiles::_log_error 'Is already a symlink'
+    return 1
+  fi
+
+  # TODO: Replace with real ignore check
+  if [[ $item_path == *.DS_Store || $item_path == *.swp ]]; then
+    dotfiles::_log_error 'Ignored'
     return 1
   fi
 
@@ -376,10 +382,6 @@ function dotfiles::_find_immediate_children() {
 function dotfiles::_link_file() {
   local source=$1 target_dir=$2 source_base
   source_base=$(basename "$source")
-
-  if [[ $source_base == '.DS_Store' ]]; then
-    return 0
-  fi
 
   local hard_link=false
   if dotfiles::_should_hard_link "$source"; then
