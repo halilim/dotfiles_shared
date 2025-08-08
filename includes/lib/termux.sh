@@ -7,8 +7,10 @@ alias pku='pkg uninstall'
 
 # For git and ssh commands
 function termux_prepare_ssh() {
+  set +e
   # shellcheck disable=SC1090
   . ~/../usr/libexec/source-ssh-agent.sh
+  set -e
 }
 
 function termux_update_shellspec() {

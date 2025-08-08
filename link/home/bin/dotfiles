@@ -134,8 +134,7 @@ function dotfiles::_import_path() {
     return 1
   fi
 
-  # TODO: Replace with real ignore check
-  if [[ $item_path == *.DS_Store || $item_path == *.swp ]]; then
+  if dotfiles::_should_ignore "$item_path"; then
     dotfiles::_log_error 'Ignored'
     return 1
   fi
@@ -171,7 +170,7 @@ function dotfiles::_import_path() {
 
   dotfiles::_mk_dir "$dotfile_dir/link/$dir_type/$relative_dir"
   dotfiles::_echo_eval_with_sudo 'mv %q %q' "$item_path" "$path_in_dotfiles"
-  dotfiles::_link_file "$path_in_dotfiles" "$(dirname "$item_path")"
+  IGNORES_CHECKED=1 dotfiles::_link_file "$path_in_dotfiles" "$(dirname "$item_path")"
 
   return 0
 }
@@ -380,7 +379,13 @@ function dotfiles::_find_immediate_children() {
 }
 
 function dotfiles::_link_file() {
-  local source=$1 target_dir=$2 source_base
+  local source=$1 target_dir=$2
+
+  if [[ ! ${IGNORES_CHECKED:-} ]] && dotfiles::_should_ignore "$source"; then
+    return
+  fi
+
+  local source_base
   source_base=$(basename "$source")
 
   local hard_link=false
@@ -430,6 +435,11 @@ function dotfiles::_need_to_link() {
 # - Some change very often, so you can exclude them
 function dotfiles::_should_hard_link() {
   [[ $1 == *.plist ]]
+}
+
+# TODO: Replace with real ignore check
+function dotfiles::_should_ignore() {
+  [[ $1 == *.DS_Store || $1 == *.swp ]]
 }
 
 function dotfiles::_validate_type() {
