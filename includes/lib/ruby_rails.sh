@@ -1,8 +1,9 @@
 alias libr='$EDITOR "$DOTFILES_INCLUDES"/lib/ruby_rails.sh' # cSpell:ignore libr
 
+# bin/* ones sometimes raise "You have already activated ...", so using bundle exec for now
 # Use the Rails defaults - binstubs, Spring, etc. Change only when needed.
 # Alternative: Oh My Zsh bundler plugin (_run-with-bundler), but it uses an alias which breaks some flows.
-export RUBY_CMD_PREFIX=${RUBY_CMD_PREFIX-'bin/'} # or 'bundle exec '
+export RUBY_CMD_PREFIX=${RUBY_CMD_PREFIX-'bundle exec '} # `bin/` | `bundle exec `
 export RAILS_CMD="${RUBY_CMD_PREFIX}rails"
 export RAKE_CMD="${RUBY_CMD_PREFIX}rake"
 

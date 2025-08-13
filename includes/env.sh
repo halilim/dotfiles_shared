@@ -86,6 +86,7 @@ export UPDATE_BACKUP_CMDS=(
   '$ZSH/tools/upgrade.sh -v silent' # https://github.com/ohmyzsh/ohmyzsh/wiki/FAQ#how-do-i-update-oh-my-zsh
   omz_update_custom
   update_bat_syntaxes
+  update_completions
 )
 
 if [[ $OSTYPE == darwin* ]]; then

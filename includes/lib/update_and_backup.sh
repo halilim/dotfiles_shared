@@ -34,3 +34,8 @@ function update_bat_syntaxes() {
 
   bat_rebuild_syntaxes
 }
+
+function update_completions() {
+  # shellcheck disable=SC2154
+  docker completion zsh > "${fpath[1]}/_docker"
+}

@@ -4,19 +4,8 @@ alias libm='$EDITOR "$DOTFILES_INCLUDES"/mac.sh' # cSpell:ignore libm
 export LANG='en_US.UTF-8'
 export LC_ALL='en_US.UTF-8'
 
-alias ahr='air_buddy_handoff receive'
-alias ahs='air_buddy_handoff send'
-alias chrome='/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome'
-
-alias colima_start_apple_silicon='colima start --vm-type=vz --vz-rosetta --mount-type=virtiofs --cpu 4'
-
 alias fdns='sudo killall -HUP mDNSResponder' # cSpell:ignore fdns
 alias lc="launchctl"
-
-alias sm='smerge .'
-alias smerge_conf='$EDITOR "$HOME/Library/Application Support/Sublime Merge/Packages/User/Preferences.sublime-settings"'
-
-alias xbar_cd='cd ~/Library/Application\ Support/xbar/plugins'
 
 # https://iterm2.com/documentation-scripting-fundamentals.html#setting-user-defined-variables
 function iterm2_print_user_vars() {
@@ -39,10 +28,3 @@ function quick_look() {
   qlmanage -p "$1" > /dev/null 2>&1
 }
 alias ql="quick_look"
-
-function xbar_update_template() {
-  # https://github.com/matryer/xbar-plugins/blob/main/CONTRIBUTING.md#xbar-config
-  jq -n '{autoupdate: true, terminal: {appleScriptTemplate3: $new_val}}' \
-    --arg new_val "$(cat "$DOTFILES_SHARED"/share/xbar.applescript)" \
-    > ~/Library/Application\ Support/xbar/xbar.config.json
-}

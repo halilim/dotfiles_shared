@@ -106,6 +106,7 @@ citizenships
 clawback
 clawbacks
 CLI
+clipcopy
 cloneable
 Cloudflare
 CloudFront
@@ -135,6 +136,7 @@ coreutils
 CORS
 Covid
 CPUTYPE
+createuser
 creds
 CSRF
 csvq
@@ -322,6 +324,7 @@ hashdiff
 hashie
 headshot
 healthcheck
+HEIC
 heroku
 herokuapp
 Herokuish
@@ -575,6 +578,7 @@ pinentry
 pinger
 pipefail
 pipx
+PJPEG
 pkill
 plists
 plowe

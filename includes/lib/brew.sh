@@ -26,6 +26,7 @@ alias bri='brew install'
 alias bric='brew install --cask'
 alias brin='brew info'
 alias brl='brew list'
+alias bro='brew outdated'
 # shellcheck disable=SC2139
 alias {brei,brri}='brew reinstall'
 alias brs='brew search'

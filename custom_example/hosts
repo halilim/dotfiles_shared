@@ -12,8 +12,3 @@
 127.0.0.1	localhost
 255.255.255.255	broadcasthost
 ::1             localhost
-
-# Modify DOCKER_HOST in env.sh accordingly
-# Docker VM - `docker-machine ip`
-# 192.168.99.100 docker # Docker Desktop
-127.0.0.1 docker # Colima

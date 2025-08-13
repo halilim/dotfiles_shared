@@ -11,13 +11,6 @@ brew 'bash' # macOS one is ancient
 brew 'bashdb' # Bash debugger
 brew 'bat' # cat alternative in Rust (regular use + vim fzf preview)
 
-brew 'colima' # Docker Desktop alternative
-brew 'lima-additional-guestagents' # cSpell:ignore guestagents
-brew 'docker' # Required for Docker runtime
-brew 'docker-buildx'
-brew 'docker-compose'
-brew 'docker-credential-helper'
-
 brew 'dust' # du in Rust with percentage bars
 brew 'eza' # ls alternative in Rust
 brew 'fd'

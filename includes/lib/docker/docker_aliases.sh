@@ -2,7 +2,7 @@ alias libda='$EDITOR "$DOTFILES_INCLUDES"/lib/docker/docker_aliases.sh' # cSpell
 
 alias acts='docker run --rm -it catthehacker/ubuntu:act-latest bash' # cSpell:ignore catthehacker
 
-# cSpell:ignore dkcl dkcs dkcst dkee dkenv dkei dkeis dkirm dkin dkins dkst dkri dkrm dkrr dkrri dkps
+# cSpell:ignore dkcl dkcs dkcst dkee dkenv dkei dkeis dkil dkip dkirm dkin dkins dkst dkri dkrm dkrr dkrri dkps
 alias dk='docker'
 alias dkb='docker build'
 alias dkc='docker container'
@@ -15,7 +15,9 @@ alias dke='docker exec'
 alias {dkee,dkenv}='docker exec ... env'
 alias dkei='docker exec -it'
 alias dkeis='docker exec -it ... bash'
-alias dkirm='docker images rm'
+alias dkil='docker image ls'
+alias dkip='docker image pull'
+alias dkirm='docker image rm'
 alias dkin='docker info'
 alias dkins='docker inspect'
 alias dkk='docker kill'
