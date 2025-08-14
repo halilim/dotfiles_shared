@@ -1,0 +1,15 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'rack/utils'
+
+case ARGV[0]
+when 'VScode'
+  separator = ','
+when 'RubyMine'
+  separator = '", "'
+else
+  raise "Usage: #{__FILE__} [VScode|RubyMine]"
+end
+
+puts Rack::Utils::SYMBOL_TO_STATUS_CODE.flat_map { |sym, code| [code, ":#{sym}"] }.join(separator)

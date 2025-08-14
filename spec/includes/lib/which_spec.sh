@@ -21,17 +21,18 @@ Describe 'which_detailed'
     foo=bar
     # shellcheck disable=SC2016
     When call which_detailed '$foo'
+    # shellcheck disable=SC2016
+    The stdout should include '$foo variable '
     The stdout should include 'foo='
     The stdout should include 'bar'
-    The stderr should include 'bar'
-    The stderr should include 'not found'
-    The status should eq 1
+    The stderr should eq ''
+    The status should eq 0
   End
 
   It 'reports unknowns'
     When call which_detailed 'baz'
     The stdout should include 'baz'
-    The stderr should include 'not found'
+    The stderr should include 'none'
     The status should eq 1
   End
 
@@ -42,5 +43,37 @@ Describe 'which_detailed'
     The stdout should include "echo 'bar'"
     The stderr should eq ''
     The status should eq 0
+  End
+
+  Context 'with multiple commands with the same name'
+    dir1=''
+    dir2=''
+
+    function before_each() {
+      dir1=$(mktemp -d)
+      dir2=$(mktemp -d)
+      PATH="$dir1:$dir2:$PATH"
+      touch "$dir1"/foo
+      chmod +x "$dir1"/foo
+      touch "$dir2"/foo
+      chmod +x "$dir2"/foo
+    }
+    BeforeEach 'before_each'
+
+    function after_each() {
+      rm -rf "$dir1" "$dir2"
+    }
+    AfterEach 'after_each'
+
+    It 'prints both commands'
+      When call which_detailed foo
+      The stdout should eq "$(cat <<OUT
+foo 1. command/file $dir1/foo
+    2. command/file $dir2/foo
+OUT
+    )"
+      The stderr should eq ''
+      The status should eq 0
+    End
   End
 End

@@ -189,6 +189,7 @@
 
   "git.blame.editorDecoration.enabled": false,
   "git.branchProtection": ["main", "master"],
+  "git.mergeEditor": true,
   "git.openRepositoryInParentFolders": "never",
 
   "github.copilot.advanced": {},

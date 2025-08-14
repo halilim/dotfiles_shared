@@ -45,7 +45,12 @@ repos:
       # Not using the repo to have parity with Rubocop version in Gemfile
       - id: rubocop
         name: rubocop
-        entry: bundle exec rubocop --force-exclusion --only-recognized-file-types --fail-level refactor --autocorrect
+        entry: |
+          /opt/homebrew/bin/mise exec ruby -- bundle exec rubocop \
+            --autocorrect \
+            --fail-level=refactor \
+            --force-exclusion \
+            --only-recognized-file-types
         language: script
         types: ['ruby']
 

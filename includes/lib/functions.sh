@@ -182,8 +182,8 @@ function join_array() {
 }
 
 function print_array() {
-  local var_name=$1 declare_output
-  declare_output=$(declare -p "$var_name")
+  local var_name=${1?}
+  local declare_output=${2:-"$(declare -p "$var_name")"}
 
   local is_associative
   if echo "$declare_output" | grep -q '\-a' > /dev/null 2>&1; then

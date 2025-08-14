@@ -13,10 +13,10 @@ function locate_function() {
   # Check out if you have (a lot of) time :) https://unix.stackexchange.com/a/85250/4678
 
   if [ $is_zsh ]; then
-    output=$(whence -v "$function_name")
+    output=$(whence -v "$function_name" 2> /dev/null) || return
     file=${output#*from } # fun is a shell function from /foo/bar.sh
   else
-    output=$(declare -F "$function_name") # fun 123 /foo/bar.sh
+    output=$(declare -F "$function_name" 2> /dev/null) || return # fun 123 /foo/bar.sh
     output=${output#*"$function_name "}
     file=${output#* }
   fi
@@ -50,108 +50,98 @@ alias wl='which_ less'
 # Why not in ~/bin? Because this needs the whole environment to be able to detect all types of
 # symbols. And loading all that is a slow process. This way, it's all in the current shell.
 function which_detailed() {
-  local input=${1?} is_zsh
+  local input=${1?}
 
+  local type_arg command_which_arg
   if [ -n "${ZSH_VERSION:-}" ]; then
-    is_zsh=1
-  fi
-
-  # When it's a variable name in 2nd round
-  if [[ $input == '$'* ]]; then
-    local bare_name
-    bare_name="${input#'$'}"
-    which_variable "$bare_name"
-    return $?
-  fi
-
-  # Starting with a non-word char, probably a global alias
-  if [[ $input =~ ^[^[:alnum:]_] ]]; then
-    return
-  fi
-
-  local type_lines=()
-  if [ $is_zsh ]; then
-    # shellcheck disable=SC2296,SC2116
-    type_lines=("${(f)$(type 2>&1 -a "$input")}")
+    type_arg='w'
+    command_which_arg='p' # Without this, Zsh includes aliases in the output of `which -a ...`
   else
-    mapfile -t type_lines < <( type 2>&1 -af "$input" )
+    type_arg='t'
   fi
 
-  local i line_count=${#type_lines[@]} type_line padding \
-        file \
-        type \
-        which_variable_ret
+  local types
+  types=$(type 2>&1 -a$type_arg "$input" | rg "^($input: )?(.*)" --only-matching --replace '$2')
+  local type_count
+  type_count=$(echo "$types" | wc -l)
+
+  local unique_type padding \
+        file_no file \
+        var_name
 
   padding=$(printf "%${#input}s " ' ')
 
-  for ((i = 0; i < line_count; i++)); do
-    # shellcheck disable=SC2124
-    type_line="${type_lines[@]:$i:1}"
-
-    if [[ $i == 0 ]]; then
+  local line_no=1
+  local line
+  while IFS=$'\n' read -r unique_type; do
+    if [[ $line_no == 1 ]]; then
       color_ 'green' "$input "
     else
       printf '%s' "$padding"
     fi
 
-    if [[ $line_count -gt 1 ]]; then
-      printf '%d. ' $((i + 1))
+    if [[ $type_count -gt 1 ]]; then
+      printf '%d. ' $((line_no))
     fi
 
-    case "$type_line" in
-      *'is an alias'*|*'is aliased'*)
+    case "$unique_type" in
+      'alias')
         color_ 'yellow' 'alias '
         which_print_alias "$input"
         ;;
 
-      *'is a global alias'*)
+      'global alias')
         color_ 'yellow' 'global alias '
         which_print_alias "$input" 1
         ;;
 
-      *'is a shell builtin')
+      'builtin')
         color 'yellow' 'builtin'
         ;;
 
-      *'is /'*)
-        color_ 'yellow' 'command/file '
-        file=$(echo "$type_line" | rg "^$input is (.+)$" --only-matching --replace '$1')
+      'file'|'command')
+        file_no=1
 
-        color_ 'magenta' "$file"
-        if [[ -L $file ]]; then
-          printf ' -> '
-          color_ 'magenta' "$(readlink -f "$file")"
-        fi
-        printf '\n'
+        while IFS=$'\n' read -r file; do
+          if [[ $file_no -gt 1 ]]; then
+            printf '%s' "$padding"
+            printf '%d. ' $((line_no))
+          fi
 
-        if [[ ${EDIT:-} ]]; then
-          open_with_editor "$file"
-        fi
+          color_ 'yellow' 'command/file '
+          color_ 'magenta' "$file"
+          if [[ -L $file ]]; then
+            printf ' -> '
+            color_ 'magenta' "$(readlink -f "$file")"
+          fi
+          printf '\n'
+
+          if [[ ${EDIT:-} && $file_no == 1 ]]; then
+            open_with_editor "$file"
+          fi
+
+          file_no=$((file_no + 1))
+          line_no=$((line_no + 1))
+        done < <(which -a$command_which_arg "$input")
+        ;;
+
+      'function')
+        color_ 'yellow' 'function '
+        which_print_function "$input"
         ;;
 
       *)
-        if [ $is_zsh ]; then
-          type=$(whence -aw "$input" | rg "^$input: (.+)$" --only-matching --replace '$1')
-        else
-          type=$(type -at "$input")
-        fi
-
-        if [[ $type == 'function' ]]; then
-          color_ 'yellow' 'function '
-          which_print_function "$input"
-
-        else
-          color >&2 'red' "$type_line"
-          which_variable "$input"
-          which_variable_ret=$?
-          if [[ $which_variable_ret -ne 0 && $line_count -eq 1 ]]; then
-            return $which_variable_ret
+        if ! which_print_variable "$input"; then
+          color >&2 'red' "${unique_type:-'none'}"
+          if [[ $type_count -le 1 ]]; then
+            return 1
           fi
         fi
-
         ;;
     esac
-  done
+
+    line_no=$((line_no + 1))
+  done < <(printf '%s\n' "$types" | uniq)
 }
 alias wh="which_detailed"
 
@@ -191,9 +181,8 @@ function which_print_function() {
   local input=$1 location
 
   location=$(locate_function "$input")
-  if [[ $location ]]; then
-    color 'magenta' "$location"
-  fi
+
+  color 'magenta' "$location"
 
   if [[ ${EDIT:-} ]]; then
     if [[ $location ]]; then
@@ -214,39 +203,27 @@ function which_print_function() {
   fi
 }
 
-function which_variable() {
+function which_print_variable() {
   local var_name=${1?}
 
-  local declare_output declare_ret
-  declare_output=$(declare -p "$var_name" 2>&1)
-  declare_ret=$?
-  if [[ $declare_ret -eq 0 ]]; then
-    echo "$declare_output"
-  else
-    color >&2 'red' "$declare_output"
-    return $declare_ret
+  if [[ $var_name == '$'* ]]; then
+    var_name="${var_name#'$'}"
   fi
+
+  local declare_output
+  declare_output=$(declare -p "$var_name" 2>&1) || return
+
+  color_ 'yellow' 'variable '
+
+  if print_array "$var_name" "$declare_output" 2> /dev/null; then
+    return
+  fi
+
+  color_ 'magenta' "$declare_output"
 
   if [[ $declare_output == 'typeset -g'* ]]; then
-    color 'cyan' "-g (global) flag is probably due to the local scope of ${funcstack[1]:-${FUNCNAME[0]}}"
+    color_ 'gray' " # -g (global) flag is probably due to the local scope of ${funcstack[1]:-${FUNCNAME[0]}}"
   fi
 
-  local value
-  if [ -n "${ZSH_VERSION:-}" ]; then
-    # shellcheck disable=SC2296
-    value=${(P)var_name:-}
-  else
-    value=${!var_name:-}
-  fi
-
-  if [[ $value ]]; then
-    if [[ $value == "${ORIG_INPUT:-}" ]]; then
-      color >&2 'red' 'Circular reference detected (variable value = original input)'
-      return 1
-    else
-      which_detailed "$value"
-    fi
-  else
-    return 1
-  fi
+  printf '\n'
 }
