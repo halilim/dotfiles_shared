@@ -13,7 +13,7 @@ omz_path=~/.oh-my-zsh
 export ZSH_THEME
 if [[ -v TERMUX_VERSION ]]; then
   # powerlevel10k on Termux: gitstatus (gitstatusd) fails to initialize. It would be too heavy anyway
-  ZSH_THEME=simple
+  ZSH_THEME=sunaku
 else
   # shellcheck source=/dev/null
   # To customize prompt, run `p10k configure` or edit .p10k*.zsh.
@@ -22,7 +22,11 @@ else
   ZSH_THEME=powerlevel10k/powerlevel10k
 fi
 
-export DISABLE_AUTO_UPDATE="true" # Handled by .functions#update_and_backup
+# Handled by .functions#update_and_backup
+zstyle ':omz:update' mode disabled
+
+# With eza, ls is used as a scripting tool
+export DISABLE_LS_COLORS='true'
 
 # fzf-tab needs to be the last https://github.com/Aloxaf/fzf-tab#compatibility-with-other-plugins
 OMZ_PLUGINS+=(fzf-tab)
@@ -38,8 +42,9 @@ source "$omz_path"/oh-my-zsh.sh
 
 unset omz_path
 
-unalias 1 # `cd -1` from .oh-my-zsh/lib/directories.zsh messes up with ENV_VAR=1 :)
-unalias ls # With eza, ls is used as more of a scripting tool
+# `cd -1` from .oh-my-zsh/lib/directories.zsh
+# Messes up with typing, e.g., VAR=1 :)
+unalias 1
 
 # Yank to the system clipboard
 # https://github.com/jeffreytse/zsh-vi-mode/issues/19#issuecomment-1009256071
