@@ -38,24 +38,3 @@ repos:
           (?x)^(
               .+\.ged
           )$
-
-  - repo: local
-    hooks:
-      # https://github.com/rubocop/rubocop/blob/master/.pre-commit-hooks.yaml
-      # Not using the repo to have parity with Rubocop version in Gemfile
-      - id: rubocop
-        name: rubocop
-        entry: |
-          /opt/homebrew/bin/mise exec ruby -- bundle exec rubocop \
-            --autocorrect \
-            --fail-level=refactor \
-            --force-exclusion \
-            --only-recognized-file-types
-        language: script
-        types: ['ruby']
-
-  # Not using local because it raises "Executable ... not found"
-  - repo: https://github.com/shellcheck-py/shellcheck-py
-    rev: v0.10.0.1
-    hooks:
-      - id: shellcheck

@@ -275,6 +275,7 @@ gibibytes
 giscus
 gitconfig
 gitdir
+githooks
 github
 gitmodules
 gitsigns
@@ -546,6 +547,7 @@ osascript
 ostruct
 osxfuse
 osxkeychain
+OTel
 Ozgur
 Özgür
 packagecloud
@@ -857,6 +859,7 @@ zdiff
 zeitwerk
 zellij
 zonefile
+zprofile
 Zscript
 zshenv
 zshrc

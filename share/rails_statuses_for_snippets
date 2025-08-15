@@ -16,7 +16,8 @@ when 'VScode'
 when 'RubyMine'
   separator = '", "'
 else
-  raise "Usage: #{__FILE__} [VScode|RubyMine]"
+  puts "Usage: #{__FILE__} [VScode|RubyMine]"
+  exit
 end
 
 puts Rack::Utils::SYMBOL_TO_STATUS_CODE.flat_map { |sym, code| [code, ":#{sym}"] }.join(separator)

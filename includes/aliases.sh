@@ -22,6 +22,8 @@ alias ct="echo_eval 'rm tags && ctags -f tags -R'"
 alias cui="curl -I"
 alias cuiv="curl -Iv"
 alias da='direnv allow'
+# shellcheck disable=SC2139
+alias {dicts,dict_list}='readlink ~/.vim/spell/*.add'
 alias dp='declare -p'
 
 # cSpell:ignore dcdc dcds drir
