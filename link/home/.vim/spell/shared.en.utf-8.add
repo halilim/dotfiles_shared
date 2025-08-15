@@ -705,6 +705,7 @@ shellcheck
 shellcheckrc
 shellenv
 shellformat
+shelljoin
 shellspec
 SHELLSPEC_INFILE
 shellwords
