@@ -24,7 +24,7 @@ _rails_build_request() {
 
       if [[ ! -s $file ]] || last_mod_older_than "$file" '3 day'; then
         printf >&2 "\nRegenerating %s ...\n" "$file"
-        $RAILS_CMD routes --expanded > "$file"
+        echo_eval "$RAILS_CMD routes --expanded > %q" "$file"
       fi
 
       # shellcheck disable=SC2034,SC2296,SC2116
