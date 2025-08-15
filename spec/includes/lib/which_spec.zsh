@@ -18,13 +18,10 @@ Describe 'which_detailed'
 
     export GNU_SED=${GNU_SED:-sed}
 
-    It 'prints alias and function details'
-      baz() { echo 'qux'; }
+    It 'prints alias details'
       alias baz_alias='baz'
       When call eval which_detailed 'baz_alias'
-      The stdout should include 'alias baz_alias=baz'
-      The stdout should include 'function'
-      The stdout should include "echo 'qux'"
+      The stdout should eq 'alias alias baz_alias=baz'
       The stderr should eq ''
       The status should eq 0
     End
@@ -32,29 +29,7 @@ Describe 'which_detailed'
     It 'prints global alias'
       alias -g GLOBAL_ALIAS=' | grep foo'
       When call which_detailed 'GLOBAL_ALIAS'
-      The stdout should include "global alias alias -g GLOBAL_ALIAS=' | grep foo'"
-      The stdout should include 'command/file'
-      The stdout should include 'bin/grep'
-      The stderr should eq ''
-      The status should eq 0
-    End
-
-    It 'prints alias with prefixed variables and parameters'
-      alias test_alias='FOO=bar baz="qux etc" echo "lorem '"'ipsum'"'" | grep "dolor"'
-      When call which_detailed 'test_alias'
-      The stdout should include "alias test_alias='FOO=bar baz="'"qux etc"'' echo "lorem '"'\''"'ipsum'"'\''"'" | grep "dolor"'
-      The stdout should include 'command/file'
-      The stdout should include 'bin/grep'
-      The stderr should eq ''
-      The status should eq 0
-    End
-
-    It 'prints self referencing alias and the command'
-      alias cp='cp -i'
-      When call which_detailed 'cp'
-      The stdout should include "alias cp='cp -i'"
-      The stdout should include 'command/file'
-      The stdout should include 'bin/cp'
+      The stdout should eq "global alias alias -g GLOBAL_ALIAS=' | grep foo'"
       The stderr should eq ''
       The status should eq 0
     End

@@ -22,7 +22,7 @@ Describe 'which_detailed'
     # shellcheck disable=SC2016
     When call which_detailed '$foo'
     # shellcheck disable=SC2016
-    The stdout should include '$foo variable '
+    The stdout should include 'variable '
     The stdout should include 'foo='
     The stdout should include 'bar'
     The stderr should eq ''
@@ -31,8 +31,6 @@ Describe 'which_detailed'
 
   It 'reports unknowns'
     When call which_detailed 'baz'
-    The stdout should include 'baz'
-    The stderr should include 'none'
     The status should eq 1
   End
 
@@ -68,8 +66,8 @@ Describe 'which_detailed'
     It 'prints both commands'
       When call which_detailed foo
       The stdout should eq "$(cat <<OUT
-foo 1. command/file $dir1/foo
-    2. command/file $dir2/foo
+1. command/file $dir1/foo
+2. command/file $dir2/foo
 OUT
     )"
       The stderr should eq ''

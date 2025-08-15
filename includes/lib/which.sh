@@ -61,27 +61,37 @@ function which_detailed() {
   fi
 
   local types
-  types=$(type 2>&1 -a$type_arg "$input" | rg "^($input: )?(.*)" --only-matching --replace '$2')
-  local type_count
-  type_count=$(echo "$types" | wc -l)
+  types=$(type 2>&1 -a$type_arg "$input")
 
-  local unique_type padding \
-        file_no file \
-        var_name
+  if [ -n "${ZSH_VERSION:-}" ]; then
+    # shellcheck disable=SC2001
+    types=$(echo "$types" | sed "s/$input: //")
+    # shellcheck disable=SC2001
+    types=$(echo "$types" | sed "s/none//")
+  fi
 
-  padding=$(printf "%${#input}s " ' ')
-
-  local line_no=1
-  local line
-  while IFS=$'\n' read -r unique_type; do
-    if [[ $line_no == 1 ]]; then
-      color_ 'green' "$input "
-    else
-      printf '%s' "$padding"
+  local var_output
+  if var_output=$(which_print_variable "$input"); then
+    if [[ $types ]]; then
+      types+=$'\n'
     fi
+    types+='variable'
+  fi
 
+  if [[ $types == '' ]]; then
+    return 1
+  fi
+
+  local type_count
+  type_count=$(echo "$types" | wc -l | tr -d '[:space:]')
+
+  local unique_type \
+        line_no=1 \
+        file_no file
+
+  while IFS=$'\n' read -r unique_type; do
     if [[ $type_count -gt 1 ]]; then
-      printf '%d. ' $((line_no))
+      printf '%d. ' $line_no
     fi
 
     case "$unique_type" in
@@ -104,8 +114,7 @@ function which_detailed() {
 
         while IFS=$'\n' read -r file; do
           if [[ $file_no -gt 1 ]]; then
-            printf '%s' "$padding"
-            printf '%d. ' $((line_no))
+            printf '%d. ' $line_no
           fi
 
           color_ 'yellow' 'command/file '
@@ -130,13 +139,8 @@ function which_detailed() {
         which_print_function "$input"
         ;;
 
-      *)
-        if ! which_print_variable "$input"; then
-          color >&2 'red' "${unique_type:-'none'}"
-          if [[ $type_count -le 1 ]]; then
-            return 1
-          fi
-        fi
+      'variable')
+        echo "$var_output"
         ;;
     esac
 
@@ -158,23 +162,6 @@ function which_print_alias() {
     alias_output="$prefix $alias_output"
   fi
   color 'magenta' "$alias_output"
-
-  local alias_value
-  alias_value=$(echo "$alias_output" | rg "^alias(?: -g)? $input='?(.+?)'?$" --only-matching --replace '$1')
-  # remove "| " prefix
-  alias_value=${alias_value#*| }
-
-  local alias_cmd
-  # Remove prepended variables
-  alias_cmd=$(echo "$alias_value" | $GNU_SED -E 's/^(\w+=(["'\''][^"'\'']*["'\'']|\w+) )*//')
-  # Remove arguments
-  alias_cmd=${alias_cmd%% *}
-
-  # Prevent infinite loops, e.g. `alias ls=ls -etc`
-  if [[ $alias_cmd && $alias_cmd != "$input" ]]; then
-    printf '---\n'
-    which_detailed "$alias_cmd"
-  fi
 }
 
 function which_print_function() {
@@ -219,11 +206,5 @@ function which_print_variable() {
     return
   fi
 
-  color_ 'magenta' "$declare_output"
-
-  if [[ $declare_output == 'typeset -g'* ]]; then
-    color_ 'gray' " # -g (global) flag is probably due to the local scope of ${funcstack[1]:-${FUNCNAME[0]}}"
-  fi
-
-  printf '\n'
+  color 'magenta' "$declare_output"
 }
