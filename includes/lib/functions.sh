@@ -2,7 +2,7 @@ alias fn='$EDITOR "$DOTFILES_INCLUDES"/lib/functions.sh'
 
 function bak_toggle() {
   if [[ $1 == *.bak ]]; then
-    echo_eval 'mv %q %q' "$1" "${1%.bak}"
+    echo_eval 'mv %q %q' $1 "${1%.bak}"
   else
     echo_eval 'mv %q %q' "$1" "$1.bak"
   fi
