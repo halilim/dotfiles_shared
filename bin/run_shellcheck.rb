@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+require 'English'
 require 'shellwords'
 
 # cSpell:ignore shrc
@@ -37,4 +38,5 @@ if ENV['DRY_RUN']
   pp files
 else
   system((%w[shellcheck -s bash] + files).shelljoin)
+  exit $CHILD_STATUS.exitstatus
 end
