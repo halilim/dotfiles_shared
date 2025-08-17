@@ -153,7 +153,6 @@
   // cSpell:ignore apacheconf
   // logrotate.d/*.conf: There is no logrotate extension yet
   "files.associations": {
-    ".markdownlintrc": "jsonc",
     "{.config/git/ignore*,.jshintignore,**/*.ignore,**/.git*/**/info/exclude}": "ignore",
     "{.env.*,.env*,**/*.env}": "dotenv",
     "{.gvimrc,.ideavimrc}": "viml",
@@ -273,15 +272,7 @@
   "markdown.validate.enabled": true,
 
   "markdownlint.config": {
-    "default": true,
-
-    "line-length": {
-      "line_length": 100
-    },
-
-    "no-duplicate-heading": {
-      "siblings_only": true
-    }
+    "extends": "~/.markdownlint.jsonc"
   },
 
   "phpcs.lintOnOpen": false,
@@ -595,7 +586,7 @@
   },
 
   "[markdown]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint" // cSpell:disable-line
   },
 
   "[mdx]": {

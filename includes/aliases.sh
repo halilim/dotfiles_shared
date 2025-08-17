@@ -39,6 +39,7 @@ alias dot='dotfiles edit'
 alias dri='dotfiles revert_import'
 alias drir='dotfiles revert_import_and_remove'
 alias ds='dotfiles sync'
+alias dss='dotfiles sync shared'
 alias dse='dotfiles setup'
 alias dup='dotfiles update'
 

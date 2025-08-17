@@ -32,7 +32,10 @@ files.reject! do |file|
     file.include?('url_to_')
 end
 
-files &= ARGV unless ARGV.empty?
+unless ARGV.empty?
+  files &= ARGV
+  exit if files.empty?
+end
 
 if ENV['DRY_RUN']
   pp files
