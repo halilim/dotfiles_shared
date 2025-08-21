@@ -39,3 +39,7 @@ function update_completions() {
   # shellcheck disable=SC2154
   docker completion zsh > "${fpath[1]}/_docker"
 }
+
+function update_vim() {
+  $VIM_PATH +'PlugUpgrade | PlugUpdate'
+}

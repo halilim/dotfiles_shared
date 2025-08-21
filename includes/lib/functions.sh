@@ -115,8 +115,7 @@ function echo_eval() {
   # shellcheck disable=SC2059
   cmd=$(printf "$@")
 
-  # Print only when dry running or verbose
-  if [[ $dry_run || ! ${VERBOSE:-} ]]; then
+  if [[ $dry_run || ${VERBOSE:-'1'} ]]; then
     color_arrow >&2 green "$cmd"
   fi
 
@@ -240,7 +239,10 @@ function list_file_names() {
 }
 
 function diff_file_names() {
-  diff <(list_file_names "$1") <(list_file_names "$2")
+  local dir1=$1 dir2=$2 file_names1 file_names2
+  file_names1=$(list_file_names "$dir1")
+  file_names2=$(list_file_names "$dir2")
+  diff "$file_names1" "$file_names2"
 }
 alias dfn='diff_file_names'
 

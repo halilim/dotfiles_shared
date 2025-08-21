@@ -1,18 +1,24 @@
 script='link/home/bin/open_from_iterm'
 
 Describe "$script"
-  tmp_dir=${TMPDIR%/}/shellspec/$script
+  export tmp_dir
   orig_home=''
 
   before_all() {
-    mkdir -p "$tmp_dir/bin"
+    tmp_dir=$(mktemp -d)
+    mock_bin_dir=$tmp_dir/bin
+    mock_includes_dir=$tmp_dir/dotfiles/shared/includes
+    mock_lib_dir=$mock_includes_dir/lib
+    mkdir -p "$mock_bin_dir"
+    mkdir -p "$mock_lib_dir"
     touch "$tmp_dir"/.dotfiles_bootstrap.sh
-    touch "$tmp_dir"/bash_shared.sh
-    cp 'link/home/bin/open_from_iterm_functions' 'link/home/bin/mine' "$tmp_dir/bin"
+    touch "$mock_includes_dir"/bash_shared.sh
+    cp 'link/home/bin/mine' "$mock_bin_dir"
+    cp 'includes/lib/open_from_iterm.sh' "$mock_lib_dir"
     orig_home=$HOME
     HOME=$tmp_dir
     orig_dotfiles_includes=$DOTFILES_INCLUDES
-    export DOTFILES_INCLUDES=$tmp_dir
+    export DOTFILES_INCLUDES=$mock_includes_dir
   }
   BeforeAll 'before_all'
 

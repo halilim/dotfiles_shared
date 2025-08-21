@@ -1,7 +1,7 @@
 alias libe='$EDITOR "$DOTFILES_INCLUDES"/lib/editing.sh' # cSpell:ignore libe
 
 function open_with_editor() {
-  if [[ $EDITOR == */"$VIM_CMD" ]]; then
+  if [[ $EDITOR == */*vim ]]; then
     vim_open "$@"
     return
   fi
@@ -43,7 +43,7 @@ function vim_open() {
     if [[ -d $1 ]]; then
       vim_cmd_+="$pct_qs +':lcd %%'"
     else
-      if [[ ! ${VIM_NO_SERVER:-} ]]; then
+      if [[ $VIM_PATH != */vim ]]; then
         vim_cmd_+=" --remote-silent"
       fi
       vim_cmd_+="$pct_qs"

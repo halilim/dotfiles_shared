@@ -24,7 +24,6 @@ Describe 'open_with_editor'
 
   Context 'when the editor is Vim'
     export EDITOR=/foo/bar/bin/vim
-    export VIM_CMD=vim
     export VIM_PATH=vim
 
     function vim() {

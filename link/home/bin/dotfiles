@@ -9,13 +9,13 @@ IFS=$'\n\t'
 # Doesn't handle deletions
 
 function dotfiles::bootstrap() {
-  local candidate candidate_path vim_path editor_path=''
-  for candidate in code-insiders code vim; do
+  local candidate candidate_path vim_path='' editor_path=''
+  for candidate in code-insiders code mvim gvim vim; do
     if ! candidate_path=$(command -v $candidate); then
       continue
     fi
 
-    if [[ $candidate == 'vim' ]]; then
+    if [[ ! $vim_path && $candidate == *'vim' ]]; then
       vim_path=$candidate_path
     fi
 
@@ -24,10 +24,20 @@ function dotfiles::bootstrap() {
     fi
   done
 
-  export EDITOR=$editor_path
-  export BUNDLER_EDITOR=$editor_path
-  export VIM_PATH=$vim_path
-  export VISUAL='vim' # Needed for `crontab -e` (`code --wait` doesn't work)
+  if [[ ! $editor_path ]]; then
+    echo >&2 'No editor found'
+    return 1
+  fi
+
+  if [[ ! $vim_path ]]; then
+    echo >&2 'No Vim found'
+    return 1
+  fi
+
+  EDITOR=$editor_path
+  BUNDLER_EDITOR=$editor_path
+  VIM_PATH=$vim_path
+  VISUAL=$VIM_PATH # Needed for `crontab -e` (`code --wait` doesn't work)
 
   local vars=(
     EDITOR
@@ -59,17 +69,17 @@ function dotfiles::edit() {
 }
 
 function dotfiles::setup() {
-  dotfiles::bootstrap
+  dotfiles::bootstrap || return
 
   local plug="$HOME_DIR/.vim/autoload/plug.vim" \
-        plug_installed=true
+        vim_plug_installed=true
   if [[ ! -f $plug ]]; then
     echo_eval 'curl -fLo %q --create-dirs \
       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim ' "$plug"
-    plug_installed=false
+    vim_plug_installed=false
   fi
 
-  dotfiles::sync all $plug_installed
+  dotfiles::sync all $vim_plug_installed
 
   if [[ $OSTYPE == darwin* && -n ${ZSH_VERSION:-} ]]; then
     echo_eval 'iterm_tab %q omz_install_custom' "$PWD"
@@ -78,7 +88,7 @@ function dotfiles::setup() {
 
 # TODO: Add archive feature: unarchive when the app is installed again
 function dotfiles::sync() {
-  local type=${1:-all} plug_installed=${2:-true}
+  local type=${1:-all} vim_plug_installed=${2:-true}
 
   if [[ $type == all || $type == shared ]]; then
     dotfiles::_setup_shared_links
@@ -88,7 +98,7 @@ function dotfiles::sync() {
     dotfiles::_setup_custom_links
   fi
 
-  dotfiles::vim_setup false "$plug_installed"
+  dotfiles::vim_setup false "$vim_plug_installed"
 }
 
 function dotfiles::update() {
@@ -500,13 +510,15 @@ function dotfiles::_echo_eval_with_sudo() {
 }
 
 function dotfiles::vim_setup() {
-  if ! command -v "$VIM_CMD" &> /dev/null || [[ ${NO_VIM:-} || ! -d $VIM_SPELL ]]; then
+  dotfiles::bootstrap || return
+
+  if [[ ! ${VIM_PATH:-} || ${NO_VIM:-} || ! ${VIM_SPELL:-} || ! -d $VIM_SPELL ]]; then
     return 0
   fi
 
-  local force=${1:-false} plug_installed=${2:-true} vim_cmds=()
+  local force=${1:-false} vim_plug_installed=${2:-true} vim_cmds=()
 
-  if [[ $plug_installed == false ]]; then
+  if [[ $vim_plug_installed == false ]]; then
     vim_cmds+=('PlugInstall')
   fi
 
@@ -544,6 +556,11 @@ export DOTFILES_CMD
 DOTFILES_CMD=$(basename "$0")
 
 export VIM_SPELL=$HOME_DIR/.vim/spell
+
+export EDITOR
+export BUNDLER_EDITOR
+export VIM_PATH
+export VISUAL
 
 export DOTFILES
 DOTFILES="$(dirname "$(dirname "$(dirname "$(dirname "$(dirname "$(realpath "$0")")")")")")"

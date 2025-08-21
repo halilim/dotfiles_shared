@@ -1,5 +1,3 @@
-export VIM_CMD=vim
-
 export GNU_DATE=date
 export GNU_FIND=find
 export GNU_HEAD=head
@@ -14,7 +12,6 @@ if [[ -v TERMUX_VERSION ]]; then
   export CLIP='clipcopy'
   export OPEN_CMD='termux-open'
   export SPEEDTEST_CMD='speedtest-go'
-  export VIM_NO_SERVER=1 # --remote-silent is not supported
 
   DOTFILES_INCLUDE_LIBS+=(termux)
 

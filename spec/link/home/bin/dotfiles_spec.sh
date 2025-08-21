@@ -1,7 +1,7 @@
 script='link/home/bin/dotfiles'
 
 Describe "$script"
-  export tmp_dir shared_dir custom_dir script_dir copied_script mock_home mock_root
+  export tmp_dir dotfiles_dir shared_dir custom_dir script_dir copied_script mock_home mock_root
 
   orig_home_dir=''
 
@@ -20,8 +20,9 @@ Describe "$script"
     fi
     tmp_dir=$(readlink -f "$tmp_dir")
 
-    shared_dir=$tmp_dir/dotfiles/shared
-    custom_dir=$tmp_dir/dotfiles/custom
+    dotfiles_dir=$tmp_dir/dotfiles
+    shared_dir=$dotfiles_dir/shared
+    custom_dir=$dotfiles_dir/custom
 
     local base_dir name
     base_dir=$(dirname "$script")
@@ -85,7 +86,21 @@ Describe "$script"
       When run script "$copied_script" setup
       The stdout should eq ''
       The stderr should not include 'No such'
-      The path "$mock_home"/.dotfiles_bootstrap.sh should be exist
+
+      bootstrap_file="$mock_home"/.dotfiles_bootstrap.sh
+
+      # It seems command -v can't be mocked, so the EDITOR values will be different locally
+      The contents of file "$bootstrap_file" should include 'declare -x EDITOR="/'
+      The contents of file "$bootstrap_file" should include 'declare -x BUNDLER_EDITOR="/'
+      The contents of file "$bootstrap_file" should include 'declare -x VIM_PATH="/'
+      The contents of file "$bootstrap_file" should include 'declare -x VISUAL="/'
+
+      The contents of file "$bootstrap_file" should include "declare -x DOTFILES=\"$dotfiles_dir\""
+      The contents of file "$bootstrap_file" should include "declare -x DOTFILES_SHARED=\"$shared_dir\""
+      The contents of file "$bootstrap_file" should include "declare -x DOTFILES_INCLUDES=\"$shared_dir/includes\""
+      The contents of file "$bootstrap_file" should include "declare -x DOTFILES_CUSTOM=\"$custom_dir\""
+
+      The status should eq 0
     End
   End
 
@@ -203,6 +218,7 @@ Describe "$script"
       When run script "$copied_script" vim_setup
       The stdout should not include "error" # To satisfy shellspec expectation requirement
       The stderr should include "vim +'$expected_vim_arg'"
+      The status should eq 0
     End
   End
 

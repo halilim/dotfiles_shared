@@ -17,7 +17,7 @@
 # debug_vars EDITOR OSTYPE CPUTYPE
 # exit
 # shellcheck disable=SC1090,SC1091
-. "$HOME"/bin/open_from_iterm_functions
+. "$DOTFILES_INCLUDES"/lib/open_from_iterm.sh
 
 debug_print '------------------------------'
 
@@ -69,20 +69,13 @@ if [[ $rubymine_titles && ${abs_path##*.} == 'rb' ]]; then
   exit
 fi
 
-is_text=''
 # $line: Coming from grep etc., probably a text file - should be cheaper than `isutf8 "$abs_path"`
 if [[ $line ]]; then
-  is_text=1
+  if [[ $editor_titles ]]; then
+    open_with_editor "$abs_path_line_col"
+  else
+    vim_open "$abs_path_line_col"
+  fi
+else
+  open "$abs_path"
 fi
-
-if [[ $editor_titles && $is_text ]]; then
-  open_with_editor "$abs_path_line_col"
-  exit
-fi
-
-if [[ ! -d $abs_path && $is_text ]]; then
-  vim_open "$abs_path_line_col"
-  exit
-fi
-
-open "$abs_path"

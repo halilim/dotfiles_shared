@@ -1,7 +1,6 @@
 export CLIP='pbcopy'
 export OPEN_CMD='open'
 export SPEEDTEST_CMD='speedtest'
-export VIM_CMD=mvim
 
 export GNU_DATE=gdate
 export GNU_FIND=gfind

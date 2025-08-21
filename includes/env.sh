@@ -108,7 +108,7 @@ if [[ ! ${PATH_MODIFIED:-} ]]; then
   # Global troubleshooting reminder: Some apps treat PATH as case-insensitive, causing problems when
   # a variable named lowercase `path` used in scripts or functions.
   PATH="$HOME/.bun/bin:$PATH:$HOME/bin"
-  if [[ -v TERMUX_VERSION ]]; then
+  if [ -v TERMUX_VERSION ]; then
     PATH="$HOME/bin-termux:$PATH"
   fi
   export PATH_MODIFIED=1
@@ -123,5 +123,5 @@ source_custom env.sh
 
 # Put the manual/external steps at the end
 UPDATE_BACKUP_CMDS+=(
-  "$VIM_CMD +'PlugUpgrade | PlugUpdate'"
+  'update_vim'
 )
