@@ -26,6 +26,7 @@
 #   Example 1: use the C++ syntax for Arduino .ino files
 #   Example 2: Use ".gitignore"-style highlighting for ".ignore" files
 #--map-syntax "*.ino:C++"
+--map-syntax ".ideavimrc:VimL"
 --map-syntax ".irbrc:Ruby"
 --map-syntax ".pryrc:Ruby"
 --map-syntax ".tool-versions:Java Properties"

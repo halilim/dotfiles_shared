@@ -8,7 +8,7 @@ IFS=$'\n\t'
 # Tries to be as idempotent as possible
 # Doesn't handle deletions
 
-function dotfiles::bootstrap() {
+function d_bootstrap() {
   local candidate candidate_path vim_path='' editor_path=''
   for candidate in code-insiders code mvim gvim vim; do
     if ! candidate_path=$(command -v $candidate); then
@@ -57,7 +57,7 @@ function dotfiles::bootstrap() {
   echo_eval 'printf %q > %q/.dotfiles_bootstrap.sh' "$bootstrap" "$HOME_DIR"
 }
 
-function dotfiles::edit() {
+function d_edit() {
   local target
   if [[ $EDITOR == */code ]]; then
     target=$(find "$DOTFILES" -name '*.code-workspace' -maxdepth 1 -print -quit)
@@ -68,9 +68,7 @@ function dotfiles::edit() {
   open_with_editor "${target:-${DOTFILES:?}}"
 }
 
-function dotfiles::setup() {
-  dotfiles::bootstrap || return
-
+function d_setup() {
   local plug="$HOME_DIR/.vim/autoload/plug.vim" \
         vim_plug_installed=true
   if [[ ! -f $plug ]]; then
@@ -79,7 +77,7 @@ function dotfiles::setup() {
     vim_plug_installed=false
   fi
 
-  dotfiles::sync all $vim_plug_installed
+  d_sync all $vim_plug_installed
 
   if [[ $OSTYPE == darwin* && -n ${ZSH_VERSION:-} ]]; then
     echo_eval 'iterm_tab %q omz_install_custom' "$PWD"
@@ -87,21 +85,21 @@ function dotfiles::setup() {
 }
 
 # TODO: Add archive feature: unarchive when the app is installed again
-function dotfiles::sync() {
+function d_sync() {
   local type=${1:-all} vim_plug_installed=${2:-true}
 
   if [[ $type == all || $type == shared ]]; then
-    dotfiles::_setup_shared_links
+    d__setup_shared_links
   fi
 
   if [[ $type == all || $type == custom ]]; then
-    dotfiles::_setup_custom_links
+    d__setup_custom_links
   fi
 
-  dotfiles::vim_setup false "$vim_plug_installed"
+  d_vim_setup false "$vim_plug_installed"
 }
 
-function dotfiles::update() {
+function d_update() {
   DRY_RUN='' echo_eval 'cd %q || return' "$DOTFILES"
   if [[ -v TERMUX_VERSION ]]; then
     # shellcheck disable=SC1091
@@ -109,58 +107,58 @@ function dotfiles::update() {
     echo_eval 'termux_prepare_ssh'
   fi
   for_each_dir 'git pull --prune'
-  echo_eval 'dotfiles::sync'
+  echo_eval 'd_sync'
 }
 
-function dotfiles::import() {
+function d_import() {
   local dotfile_type=${1:-''}
-  if ! dotfiles::_validate_type "$dotfile_type" || [[ $# -lt 2 ]]; then
-    dotfiles::_log_error "$USAGE_BASE ${FUNCNAME[0]} <shared|custom> <path 1> [<path 2> ...]" 1
+  if ! d__validate_type "$dotfile_type" || [[ $# -lt 2 ]]; then
+    d__log_error "$USAGE_BASE ${FUNCNAME[0]} <shared|custom> <path 1> [<path 2> ...]" 1
     return 1
   fi
 
   shift
 
-  DOTFILE_TYPE=$dotfile_type dotfiles::_process_paths "$@"
+  DOTFILE_TYPE=$dotfile_type d__process_paths "$@"
 }
 
-function dotfiles::revert_import() {
-  REVERT_IMPORT=1 dotfiles::_process_paths "$@"
+function d_revert_import() {
+  REVERT_IMPORT=1 d__process_paths "$@"
 }
 
-function dotfiles::revert_import_and_remove() {
-  REVERT_IMPORT=1 REMOVE=1 dotfiles::_process_paths "$@"
+function d_revert_import_and_remove() {
+  REVERT_IMPORT=1 REMOVE=1 d__process_paths "$@"
 }
 
-function dotfiles::_process_paths() {
+function d__process_paths() {
   for item_path in "$@"; do
     if [ $# -gt 1 ]; then
       color >&2 'white-bold' "---> $item_path"
     fi
 
     if [[ ${REVERT_IMPORT:-} ]]; then
-      dotfiles::_revert_path "$item_path" || true
+      d__revert_path "$item_path" || true
     else
-      dotfiles::_import_path "${DOTFILE_TYPE:-}" "$item_path" || true
+      d__import_path "${DOTFILE_TYPE:-}" "$item_path" || true
     fi
   done
 }
 
-function dotfiles::_import_path() {
+function d__import_path() {
   local dotfile_type=${1:?} item_path=${2:?}
 
   if [[ ! -e $item_path ]]; then
-    dotfiles::_log_error 'Does not exist'
+    d__log_error 'Does not exist'
     return 1
   fi
 
   if [[ -L $item_path ]]; then
-    dotfiles::_log_error 'Is already a symlink'
+    d__log_error 'Is already a symlink'
     return 1
   fi
 
-  if dotfiles::_should_ignore "$item_path"; then
-    dotfiles::_log_error 'Ignored'
+  if d__should_ignore "$item_path"; then
+    d__log_error 'Ignored'
     return 1
   fi
 
@@ -171,7 +169,7 @@ function dotfiles::_import_path() {
   esac
 
   local dir_type relative_path
-  dotfiles::_dir_type_and_relative_path "$item_path" dir_type relative_path
+  d__dir_type_and_relative_path "$item_path" dir_type relative_path
   local path_in_dotfiles=$dotfile_dir/link/$dir_type/${relative_path#/}
 
   # Git doesn't allow sym-linked .gitignore files, so we link .git/info/exclude instead
@@ -193,20 +191,20 @@ function dotfiles::_import_path() {
     relative_dir=''
   fi
 
-  dotfiles::_mk_dir "$dotfile_dir/link/$dir_type/$relative_dir"
-  dotfiles::_echo_eval_with_sudo 'mv %q %q' "$item_path" "$path_in_dotfiles"
-  IGNORES_CHECKED=1 dotfiles::_link_file "$path_in_dotfiles" "$(dirname "$item_path")"
+  d__mk_dir "$dotfile_dir/link/$dir_type/$relative_dir"
+  d__echo_eval_with_sudo 'mv %q %q' "$item_path" "$path_in_dotfiles"
+  IGNORES_CHECKED=1 d__link_file "$path_in_dotfiles" "$(dirname "$item_path")"
 
   return 0
 }
 
-function dotfiles::_revert_path() {
+function d__revert_path() {
   local orig_path=${1:?}
 
   if [[ -L $orig_path ]]; then
     local dotfile_path
     if ! dotfile_path=$(readlink -f "$orig_path"); then
-      dotfiles::_log_error "Target: $dotfile_path does not exist"
+      d__log_error "Target: $dotfile_path does not exist"
 
       local orig_dir
       orig_dir=$(dirname "$orig_path")
@@ -226,13 +224,13 @@ function dotfiles::_revert_path() {
     fi
 
     if [[ ! $dotfiles ]]; then
-      dotfiles::_log_error "Target: $dotfile_path is not in dotfiles"
+      d__log_error "Target: $dotfile_path is not in dotfiles"
       return 1
     fi
 
-  elif [[ -e $orig_path ]] && dotfiles::_should_hard_link "$orig_path"; then
+  elif [[ -e $orig_path ]] && d__should_hard_link "$orig_path"; then
     local dir_type relative_path
-    dotfiles::_dir_type_and_relative_path "$orig_path" dir_type relative_path
+    d__dir_type_and_relative_path "$orig_path" dir_type relative_path
 
     local dotfile_path=$DOTFILES_SHARED/link/$dir_type/$relative_path
     dotfiles=$DOTFILES_SHARED
@@ -240,18 +238,18 @@ function dotfiles::_revert_path() {
       dotfile_path=$DOTFILES_CUSTOM/link/$dir_type/$relative_path
       dotfiles=$DOTFILES_CUSTOM
       if [[ ! -e $dotfile_path  ]]; then
-        dotfiles::_log_error 'Does not exist in dotfiles'
+        d__log_error 'Does not exist in dotfiles'
         return 1
       fi
     fi
 
     # Since both are real files, treat the original as the latest
     if [[ ! ${REMOVE:-''} ]]; then
-      dotfiles::_echo_eval_with_sudo 'rm %q' "$dotfile_path"
+      d__echo_eval_with_sudo 'rm %q' "$dotfile_path"
     fi
 
   else
-    dotfiles::_log_error 'Neither a symlink nor a hard link'
+    d__log_error 'Neither a symlink nor a hard link'
     return 1
   fi
 
@@ -261,7 +259,7 @@ function dotfiles::_revert_path() {
   else
     cmd='mv'
   fi
-  dotfiles::_echo_eval_with_sudo "$cmd %q %q" "$dotfile_path" "$orig_path"
+  d__echo_eval_with_sudo "$cmd %q %q" "$dotfile_path" "$orig_path"
 
   # Remove empty directories in the dotfiles folder recursively until the link root
   local dotfile_dir
@@ -279,36 +277,36 @@ function dotfiles::_revert_path() {
   return 0
 }
 
-function dotfiles::_setup_shared_links() {
-  dotfiles::_setup_links "$DOTFILES_SHARED"
+function d__setup_shared_links() {
+  d__setup_links "$DOTFILES_SHARED"
 }
 
-function dotfiles::_setup_custom_links() {
+function d__setup_custom_links() {
   if [[ -d $DOTFILES_CUSTOM ]]; then
-    dotfiles::_setup_links "$DOTFILES_CUSTOM"
+    d__setup_links "$DOTFILES_CUSTOM"
   fi
 }
 
-function dotfiles::_setup_links() {
+function d__setup_links() {
   local dotfiles_path=${1:?} dir_type
   for dir_type in home root; do
-    dotfiles::_start_link_recursive "$dotfiles_path"/link/$dir_type $dir_type
+    d__start_link_recursive "$dotfiles_path"/link/$dir_type $dir_type
   done
 }
 
-function dotfiles::_start_link_recursive() {
+function d__start_link_recursive() {
   local dir=$1 dir_type=$2
   if [[ ! -d $dir ]]; then
     return 0
   fi
-  dotfiles::_link_recursive "$dir" "$dir" "$dir_type"
+  d__link_recursive "$dir" "$dir" "$dir_type"
 }
 
-function dotfiles::_link_recursive() {
+function d__link_recursive() {
   RECURSION_LEVEL=${RECURSION_LEVEL:-0}
   RECURSION_LEVEL=$((RECURSION_LEVEL + 1))
   if [[ $RECURSION_LEVEL -gt 10 ]]; then
-    dotfiles::_log_error 'Too many levels of recursion'
+    d__log_error 'Too many levels of recursion'
     return 1
   fi
 
@@ -334,7 +332,7 @@ function dotfiles::_link_recursive() {
       target_base_name=${ROOT_DIR%/}
       ;;
     *)
-      dotfiles::_log_error "Unknown link type: $dir_type"
+      d__log_error "Unknown link type: $dir_type"
       return 1
       ;;
   esac
@@ -345,33 +343,33 @@ function dotfiles::_link_recursive() {
   fi
 
   if [[ $current_source_dir != "$source_base" ]]; then
-    dotfiles::_mk_dir "$target_dir"
+    d__mk_dir "$target_dir"
   fi
 
   local dir_source
   # shellcheck disable=SC2044
-  for dir_source in $(dotfiles::_find_immediate_children "$current_source_dir" d); do
-    RECURSION_LEVEL=$RECURSION_LEVEL dotfiles::_link_recursive "$dir_source" "$source_base" "$dir_type"
+  for dir_source in $(d__find_immediate_children "$current_source_dir" d); do
+    RECURSION_LEVEL=$RECURSION_LEVEL d__link_recursive "$dir_source" "$source_base" "$dir_type"
   done
 
   local file_source
   # shellcheck disable=SC2044
-  for file_source in $(dotfiles::_find_immediate_children "$current_source_dir" f); do
-    dotfiles::_link_file "$file_source" "$target_dir"
+  for file_source in $(d__find_immediate_children "$current_source_dir" f); do
+    d__link_file "$file_source" "$target_dir"
   done
 
   local link_source
   # shellcheck disable=SC2044
-  for link_source in $(dotfiles::_find_immediate_children "$current_source_dir" l); do
+  for link_source in $(d__find_immediate_children "$current_source_dir" l); do
     if [[ -d $(readlink -f "$link_source") ]]; then
-      RECURSION_LEVEL=$RECURSION_LEVEL dotfiles::_link_recursive "$link_source" "$source_base" "$dir_type"
+      RECURSION_LEVEL=$RECURSION_LEVEL d__link_recursive "$link_source" "$source_base" "$dir_type"
     else
-      dotfiles::_link_file "$link_source" "$target_dir"
+      d__link_file "$link_source" "$target_dir"
     fi
   done
 }
 
-function dotfiles::_dir_type_and_relative_path() {
+function d__dir_type_and_relative_path() {
   local item_path=$1 item_relative_to_home
   local -n dir_type_var=$2 relative_path_var=$3
   item_relative_to_home=$(relative_to "$HOME_DIR" "$item_path")
@@ -385,28 +383,28 @@ function dotfiles::_dir_type_and_relative_path() {
   fi
 }
 
-function dotfiles::_mk_dir() {
+function d__mk_dir() {
   local dir=$1
   if [[ -d $dir || $dir == "$ROOT_DIR" || $dir == "$HOME_DIR" ]]; then
     return 0
   fi
 
   if [[ -L $dir || -f $dir ]]; then
-    dotfiles::_backup "$dir"
+    d__backup "$dir"
   fi
 
-  dotfiles::_echo_eval_with_sudo 'mkdir -p %q' "$dir"
+  d__echo_eval_with_sudo 'mkdir -p %q' "$dir"
 }
 
-function dotfiles::_find_immediate_children() {
+function d__find_immediate_children() {
   local dir=$1 find_type=$2
   find "$dir" -mindepth 1 -maxdepth 1 -type "$find_type"
 }
 
-function dotfiles::_link_file() {
+function d__link_file() {
   local source=$1 target_dir=$2
 
-  if [[ ! ${IGNORES_CHECKED:-} ]] && dotfiles::_should_ignore "$source"; then
+  if [[ ! ${IGNORES_CHECKED:-} ]] && d__should_ignore "$source"; then
     return
   fi
 
@@ -414,7 +412,7 @@ function dotfiles::_link_file() {
   source_base=$(basename "$source")
 
   local hard_link=false
-  if dotfiles::_should_hard_link "$source"; then
+  if d__should_hard_link "$source"; then
     if [[ -v TERMUX_VERSION ]]; then
       return
     fi
@@ -423,11 +421,11 @@ function dotfiles::_link_file() {
 
   local target=$target_dir/$source_base
 
-  if ! dotfiles::_need_to_link "$source" "$target" "$hard_link"; then
+  if ! d__need_to_link "$source" "$target" "$hard_link"; then
     return 0
   fi
 
-  dotfiles::_backup "$target" "$hard_link" "$source"
+  d__backup "$target" "$hard_link" "$source"
 
   local link_arg=' -s' comment=''
   if [[ $hard_link == true ]]; then
@@ -435,10 +433,10 @@ function dotfiles::_link_file() {
     comment=' # Hard link'
   fi
 
-  dotfiles::_echo_eval_with_sudo 'ln%s %q %q%s' "$link_arg" "$source" "$target" "$comment"
+  d__echo_eval_with_sudo 'ln%s %q %q%s' "$link_arg" "$source" "$target" "$comment"
 }
 
-function dotfiles::_need_to_link() {
+function d__need_to_link() {
   local source=$1 target=$2 hard_link=$3
 
   if [[ ! -e $target ]]; then
@@ -458,28 +456,28 @@ function dotfiles::_need_to_link() {
 # So for now, we use hard links. Notes:
 # - They are prone to being replaced by actual files after a system or app upgrade
 # - Some change very often, so you can exclude them
-function dotfiles::_should_hard_link() {
+function d__should_hard_link() {
   [[ $1 == *.plist ]]
 }
 
 # TODO: Replace with real ignore check
-function dotfiles::_should_ignore() {
+function d__should_ignore() {
   [[ $1 == *.DS_Store || $1 == *.swp ]]
 }
 
-function dotfiles::_validate_type() {
+function d__validate_type() {
   local type=$1
   if [[ $type != custom && $type != shared ]]; then
     local msg='Unknown dotfile type'
     if [[ $type ]]; then
       msg+=": $type"
     fi
-    dotfiles::_log_error "$msg"
+    d__log_error "$msg"
     return 1
   fi
 }
 
-function dotfiles::_backup() {
+function d__backup() {
   local target=$1 hard_link=${2:-false} source=${3:-}
 
   if [[ ! -L $target && ! -f $target && ! -d $target || $target == "$ROOT_DIR" || $target == "$HOME_DIR" ]]; then
@@ -487,21 +485,21 @@ function dotfiles::_backup() {
   fi
 
   if [[ -L $target && ! -e $target ]]; then
-    dotfiles::_echo_eval_with_sudo 'rm %q # Broken link' "$target"
+    d__echo_eval_with_sudo 'rm %q # Broken link' "$target"
     return
   fi
 
   if [[ $hard_link == true ]]; then
     if [[ $source ]]; then
-      dotfiles::_echo_eval_with_sudo 'cp -f %q %q' "$target" "$source"
+      d__echo_eval_with_sudo 'cp -f %q %q' "$target" "$source"
     fi
   else
     # TODO: Remove older backups
-    dotfiles::_echo_eval_with_sudo 'mv %q{,.bak.%q}' "$target" "$(date +'%s')"
+    d__echo_eval_with_sudo 'mv %q{,.bak.%q}' "$target" "$(date +'%s')"
   fi
 }
 
-function dotfiles::_echo_eval_with_sudo() {
+function d__echo_eval_with_sudo() {
   local cmd=("$@")
   # TODO: Add sudo when it fails due to permissions
   # NOTE: If this gets migrated to Zsh, change 0 to 1
@@ -509,9 +507,7 @@ function dotfiles::_echo_eval_with_sudo() {
   echo_eval "${cmd[@]}"
 }
 
-function dotfiles::vim_setup() {
-  dotfiles::bootstrap || return
-
+function d_vim_setup() {
   if [[ ! ${VIM_PATH:-} || ${NO_VIM:-} || ! ${VIM_SPELL:-} || ! -d $VIM_SPELL ]]; then
     return 0
   fi
@@ -539,7 +535,7 @@ function dotfiles::vim_setup() {
   echo_eval "vim +'$(join_array ' | ' "${vim_cmds[@]}")'" "${files[@]}"
 }
 
-function dotfiles::_log_error {
+function d__log_error {
   local msg=$1 no_color=${2:-''}
   if [[ $no_color ]]; then
     echo >&2 "$msg"
@@ -576,17 +572,17 @@ export DOTFILES_CUSTOM=$DOTFILES/custom
 USAGE_BASE="Usage: $(color 'green' "$DOTFILES_CMD")"
 
 case "${1:-''}" in
-  bootstrap) dotfiles::bootstrap ;;
-  edit) dotfiles::edit ;;
-  setup) dotfiles::setup ;;
-  sync) dotfiles::sync "${2:-}" ;;
-  update) dotfiles::update ;;
-  import) dotfiles::import "${@:2}" ;;
-  revert_import) dotfiles::revert_import "${@:2}" ;;
-  revert_import_and_remove) dotfiles::revert_import_and_remove "${@:2}" ;;
-  vim_setup) dotfiles::vim_setup true ;;
+  bootstrap) d_bootstrap ;;
+  edit) d_edit ;;
+  setup) d_bootstrap && d_setup ;;
+  sync) d_sync "${2:-}" ;;
+  update) d_update ;;
+  import) d_import "${@:2}" ;;
+  revert_import) d_revert_import "${@:2}" ;;
+  revert_import_and_remove) d_revert_import_and_remove "${@:2}" ;;
+  vim_setup) d_bootstrap && d_vim_setup true ;;
   *)
-    dotfiles::_log_error "$USAGE_BASE <bootstrap|setup|sync|update|import|revert_import|revert_import_and_remove|vim_setup> ..." 1
+    d__log_error "$USAGE_BASE <bootstrap|setup|sync|update|import|revert_import|revert_import_and_remove|vim_setup> ..." 1
     exit 1
     ;;
 esac
