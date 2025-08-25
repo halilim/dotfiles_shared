@@ -35,14 +35,13 @@ pkg install curl
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/halilim/dotfiles_shared/main/share/termux_setup.sh)”
 ```
 
-## TODO
+## Notes
 
-### Bash
-
-- [ ] Replace ZSH-specific stuff like `git_*` functions from Oh My Zsh
+- `.markdownlint.json` (symlink to `link/home/.markdownlint.jsonc`): Required for Vim >
+  [coc-markdownlint](https://github.com/fannheyward/coc-markdownlint/blob/master/src/engine.ts#L24).
 
 ## FAQ
 
-- Q: Why not use dotfile management tools? \
+- Q: Why not use other dotfile management tools? \
   A: Most don't have what I need. Chezmoi is close, but breaks syntax highlighting and linting
   due to the dual syntax within a single file, and features too much indirection.

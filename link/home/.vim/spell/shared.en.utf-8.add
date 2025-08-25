@@ -31,6 +31,7 @@ attributesfile
 auth
 Authable
 auths
+Authy
 autocmd
 autocmds
 autocorrect
@@ -167,11 +168,13 @@ difft
 difftastic
 difftool
 dind
+dir
 direnv
 diskutil
 disqus
 DISTRIB
 divmod
+DMARC
 dnsutils
 dockerd
 dockerhub
@@ -333,6 +336,7 @@ herokuapp
 Herokuish
 herokuishuser
 hexdigest
+Hijri
 Hirb
 hirber
 histappend
@@ -357,6 +361,7 @@ ifconfig
 ifconfigparser
 ignoreboth
 Ignorecase
+IIABDFI
 ilike
 imageinfo
 imap
@@ -863,9 +868,11 @@ zcat
 zdiff
 zeitwerk
 zellij
+Zoho
 zonefile
 zprofile
 Zscript
+Zsh
 zshenv
 zshrc
 ZVM

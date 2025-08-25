@@ -1,6 +1,7 @@
-# cSpell:ignore pkin
+alias cdn='cd "$HOME"/storage/Documents/notes'
+
 alias pki='pkg install'
-alias pkin='pkg info'
+alias pkin='pkg info' # cSpell:ignore pkin
 alias pkli='pkg list-installed' # cSpell:ignore pkli
 alias pks='pkg search'
 alias pku='pkg uninstall'

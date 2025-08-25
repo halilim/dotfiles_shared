@@ -142,7 +142,7 @@ def table(items, *cols) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticCom
   outputs << color(border, border_color)
 
   items.each do |item|
-    outputs << (gen_row.call { |k| item[k] })
+    outputs << gen_row.call { |k| item[k] }
   end
 
   outputs << color("(#{items.length} rows in set)\n", :cyan)

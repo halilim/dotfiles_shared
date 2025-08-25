@@ -71,9 +71,10 @@ alias gpft='git push --follow-tags --dry-run'
 alias gpnv='git push --no-verify'
 alias gps='git push --set-upstream origin'
 
-# cSpell:ignore grgu grpo
+# cSpell:ignore grgu grpo grsu
 alias grgu='git remote get-url'
 alias grpo='git remote prune origin'
+alias grsu='git remote set-url'
 
 alias grh~='git reset HEAD~'
 # Unalias the dangerous `git reset --hard` alias from omz/git.plugin.zsh, easy to mistype grh as grhh
