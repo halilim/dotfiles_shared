@@ -1,4 +1,4 @@
-alias cdn='cd "$HOME"/storage/Documents/notes'
+alias cdn='cd ~/storage/documents/notes'
 
 alias pki='pkg install'
 alias pkin='pkg info' # cSpell:ignore pkin
