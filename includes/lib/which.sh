@@ -33,7 +33,7 @@ function locate_function() {
     line=${output%% *}
   fi
 
-  echo "$(shorten_path "$file"):$line"
+  echo "$file:$line"
 }
 
 # Why not in ~/bin? Because this needs the whole environment to be able to detect all types of
@@ -54,7 +54,7 @@ function which_detailed() {
 
   if [ -n "${ZSH_VERSION:-}" ]; then
     # shellcheck disable=SC2001
-    types=$(echo "$types" | sed "s/$input: //")
+    types=$(echo "$types" | rg -F "$input: " --replace '$1')
     # shellcheck disable=SC2001
     types=$(echo "$types" | sed "s/none//")
   fi
@@ -206,7 +206,7 @@ function which_function() {
 
   location=$(locate_function "$input")
 
-  color 'magenta' "$location"
+  color 'magenta' "$(shorten_path "$location")"
 
   if [[ ${EDIT:-} ]]; then
     if [[ $location ]]; then
