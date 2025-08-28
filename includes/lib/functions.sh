@@ -342,6 +342,11 @@ function same_inode() {
 }
 alias are_hardlinks='same_inode'
 
+function shorten_path() {
+  local given_path=$1
+  echo "$given_path" | rg "^$HOME(.*)" --only-matching --passthru --replace '~$1'
+}
+
 function yaml_lint() {
   # https://mikefarah.gitbook.io/yq/upgrading-from-v3#validate-documents
   # https://mikefarah.gitbook.io/yq/usage/tips-and-tricks#validating-yaml-files

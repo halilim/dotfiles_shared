@@ -33,7 +33,7 @@ function locate_function() {
     line=${output%% *}
   fi
 
-  echo "$file:$line"
+  echo "$(shorten_path "$file"):$line"
 }
 
 # Why not in ~/bin? Because this needs the whole environment to be able to detect all types of
@@ -86,12 +86,12 @@ function which_detailed() {
     case "$unique_type" in
       'alias')
         color_ 'yellow' 'alias '
-        which_print_alias "$input"
+        _which_alias "$input"
         ;;
 
       'global alias')
         color_ 'yellow' 'global alias '
-        which_print_alias "$input" 1
+        _which_alias "$input" 1
         ;;
 
       'builtin')
@@ -107,10 +107,13 @@ function which_detailed() {
           fi
 
           color_ 'yellow' 'command/file '
-          color_ 'magenta' "$file"
+          color_ 'magenta' "$(shorten_path "$file")"
           if [[ -L $file ]]; then
             printf ' -> '
-            color_ 'magenta' "$(readlink -f "$file")"
+            local link_path
+            link_path=$(readlink -f "$file")
+            link_path=$(shorten_path "$link_path")
+            color_ 'magenta' "$link_path"
           fi
           printf '\n'
 
@@ -138,7 +141,7 @@ function which_detailed() {
 }
 alias wh="which_detailed"
 
-function which_print_alias() {
+function _which_alias() {
   local input=$1 is_global_alias=$2
 
   local alias_output prefix='alias'
@@ -185,7 +188,7 @@ function _edit_alias() {
 
   if [[ $location ]]; then
     location=$(echo "$location" | rg '^([^:]+(:\d+)+).*' --only-matching --replace '$1')
-    open_with_editor "${location/:/:}"
+    open_with_editor "$location"
     return
   else
     echo >&2 "Couldn't locate the alias"
