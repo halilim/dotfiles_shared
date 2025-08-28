@@ -20,6 +20,7 @@ pkg install \
   traceroute \
   vim \
   whois \
+  zoxide \
   zsh
 
 chsh -s zsh

@@ -30,7 +30,12 @@ if [[ ${DRY_RUN:-} ]]; then
 else
   # TODO: Aborted with status code [executor: 126] [reporter: 1] [error handler: 0]
   if [ -v TERMUX_VERSION ]; then
-    echo 'Skipping on Termux...'
+    # shellcheck disable=SC1091
+    . "$HOME"/.dotfiles_bootstrap.sh
+    # shellcheck disable=SC1091
+    . "$DOTFILES_INCLUDES"/lib/functions.sh
+
+    color 'yellow' 'Skipping on Termux...'
     exit 0
   fi
 
