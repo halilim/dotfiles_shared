@@ -1,4 +1,5 @@
 Include includes/lib/which.sh
+Include includes/lib/functions.sh
 
 Describe 'which_detailed'
   # Mainly to prevent passing bat arguments to cat
@@ -65,9 +66,10 @@ Describe 'which_detailed'
 
     It 'prints both commands'
       When call which_detailed foo
+      # shorten_path is used because the GitHub runner creates the temporary directories in ~
       The stdout should eq "$(cat <<OUT
-1. command/file $dir1/foo
-2. command/file $dir2/foo
+1. command/file $(shorten_path "$dir1")/foo
+2. command/file $(shorten_path "$dir2")/foo
 OUT
     )"
       The stderr should eq ''

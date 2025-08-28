@@ -1,4 +1,5 @@
 Include includes/lib/which.sh
+Include includes/lib/functions.sh
 
 Describe 'which_detailed'
   # TODO: alias tests only work with Zsh
