@@ -139,11 +139,10 @@
     },
     {
         "key": "cmd+r",
-        "command": "extension.runPrevJest",
-        "when": "resourceExtname == '.test.tsx'"
+        "command": "extension.runPrevJest"
     },
     {
-        "key": "cmd+r",
+        "key": "shift+cmd+r",
         "command": "code-runner.run"
     },
     {

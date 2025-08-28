@@ -1,7 +1,8 @@
 alias libw='$EDITOR "$DOTFILES_INCLUDES"/lib/which.sh' # cSpell:ignore libw
 
 # shellcheck disable=SC2139
-alias {edit_function,ef,fe,edit_which,ew}='EDIT=1 wh'
+alias {edit_file,edit_function,ef,fe,edit_which,ew}='EDIT=1 wh'
+alias ea='EDIT_ALIAS=1 wh'
 
 function locate_function() {
   local function_name=$1 output file line is_zsh
@@ -35,18 +36,6 @@ function locate_function() {
   echo "$file:$line"
 }
 
-function which_() {
-  local cmd=$1 name=$2 file_path
-  file_path=$(which "$name")
-  if [[ -f $file_path ]]; then
-    "$cmd" "$file_path"
-  else
-    echo "$file_path"
-  fi
-}
-alias wb='which_ bat'
-alias wl='which_ less'
-
 # Why not in ~/bin? Because this needs the whole environment to be able to detect all types of
 # symbols. And loading all that is a slow process. This way, it's all in the current shell.
 function which_detailed() {
@@ -71,7 +60,7 @@ function which_detailed() {
   fi
 
   local var_output
-  if var_output=$(which_print_variable "$input"); then
+  if var_output=$(which_variable "$input"); then
     if [[ $types ]]; then
       types+=$'\n'
     fi
@@ -136,7 +125,7 @@ function which_detailed() {
 
       'function')
         color_ 'yellow' 'function '
-        which_print_function "$input"
+        which_function "$input"
         ;;
 
       'variable')
@@ -152,19 +141,64 @@ alias wh="which_detailed"
 function which_print_alias() {
   local input=$1 is_global_alias=$2
 
-  local alias_output
+  local alias_output prefix='alias'
+  if [[ $is_global_alias ]]; then
+    prefix+=' -g'
+  fi
   alias_output=$(alias "$input")
+
   if [[ $alias_output != 'alias '* ]]; then
-    local prefix='alias'
-    if [[ $is_global_alias ]]; then
-      prefix+=' -g'
-    fi
     alias_output="$prefix $alias_output"
   fi
   color 'magenta' "$alias_output"
+
+  if [[ ${EDIT_ALIAS:-} ]]; then
+    _edit_alias "$prefix $input="
+    return
+  fi
+
+  local alias_value
+  alias_value=$(echo "$alias_output" | rg "^alias(?: -g)? $input='?(.+?)'?$" --only-matching --replace '$1')
+  # remove "| " prefix
+  alias_value=${alias_value#*| }
+
+  local alias_cmd
+  # Remove prepended variables
+  alias_cmd=$(echo "$alias_value" | $GNU_SED -E 's/^(\w+=(["'\''][^"'\'']*["'\'']|\w+) )*//')
+  # Remove arguments
+  alias_cmd=${alias_cmd%% *}
+
+  # Prevent infinite loops, e.g. `alias ls=ls -etc`
+  if [[ $alias_cmd && $alias_cmd != "$input" ]]; then
+    echo '->'
+    which_detailed "$alias_cmd"
+  fi
 }
 
-function which_print_function() {
+function _edit_alias() {
+  local search_prefix=$1 location
+
+  location=$(_locate_alias "$search_prefix" "$DOTFILES")
+  if [[ ! $location ]]; then
+    location=$(_locate_alias "$search_prefix" "$HOME"/.oh-my-zsh)
+  fi
+
+  if [[ $location ]]; then
+    location=$(echo "$location" | rg '^([^:]+(:\d+)+).*' --only-matching --replace '$1')
+    open_with_editor "${location/:/:}"
+    return
+  else
+    echo >&2 "Couldn't locate the alias"
+    return 1
+  fi
+}
+
+function _locate_alias() {
+  local prefix=${1:?prefix is required, e.g. 'alias foo='} dir=${2:?directory is required}
+  rg -.Fn --column "$prefix" "$dir"
+}
+
+function which_function() {
   local input=$1 location
 
   location=$(locate_function "$input")
@@ -190,7 +224,7 @@ function which_print_function() {
   fi
 }
 
-function which_print_variable() {
+function which_variable() {
   local var_name=${1?}
 
   if [[ $var_name == '$'* ]]; then
