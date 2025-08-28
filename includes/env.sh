@@ -75,7 +75,6 @@ export OMZ_PLUGINS=(
   rust
   safe-paste
   yarn
-  z
   zsh-autosuggestions
   zsh-syntax-highlighting
   zsh-vi-mode

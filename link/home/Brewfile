@@ -59,6 +59,7 @@ brew 'terminal-notifier'
 brew 'tldr'
 brew 'tree'
 brew 'yq'
+brew 'zoxide'
 
 # In case macOS falls behind here too
 brew 'zsh'

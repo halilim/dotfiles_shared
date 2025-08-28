@@ -44,3 +44,5 @@ source_custom .bashrc
 
 # shellcheck disable=SC1091
 . "$DOTFILES_SHARED"/post_init_hooks.sh
+
+eval "$(zoxide init bash)"

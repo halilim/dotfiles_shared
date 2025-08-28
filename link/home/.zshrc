@@ -67,3 +67,5 @@ source_custom .zshrc
 
 # shellcheck disable=SC1091
 . "$DOTFILES_SHARED"/post_init_hooks.sh
+
+eval "$(zoxide init zsh)"
