@@ -713,6 +713,7 @@ shadowsocks
 shellcheck
 shellcheckrc
 shellenv
+shellescape
 shellformat
 shelljoin
 shellspec
