@@ -26,13 +26,6 @@ else
   export OPEN_CMD='nohup xdg-open'
   export SPEEDTEST_CMD='speedtest'
 
-  if [[ -e /etc/debian_version ]]; then
-     # Because of a name clash, see: apt-cache show bat
-    function bat() {
-      batcat "$@"
-    }
-  fi
-
   if [[ -r /etc/lsb-release ]]; then
     # shellcheck disable=SC1091
     . /etc/lsb-release
