@@ -35,7 +35,7 @@ alias ys='yarn start'
 alias ysb='yarn storybook'
 alias ysv='yarn serve'
 alias ysvs='yarn set version stable' # Update to the latest versions (v3+)
-alias yts='yarn test --silent'
+alias yt='yarn test --silent'
 # OMZ/yarn sets this to `yarn version`, let's keep it compatible with the other *v aliases
 alias yv='yarn --version'
 alias yvv='yarn version'
