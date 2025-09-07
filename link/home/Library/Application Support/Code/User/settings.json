@@ -12,6 +12,7 @@
     "env": true,
     "git-commit": true,
     "gotmpl": true,
+    "helm": true,
     "icalendar": true,
     "ignore": true,
     "markdown": true,
@@ -153,6 +154,7 @@
   // cSpell:ignore apacheconf
   // logrotate.d/*.conf: There is no logrotate extension yet
   "files.associations": {
+    ".env*": "dotenv",
     "{.config/git/ignore*,.jshintignore,**/*.ignore,**/.git*/**/info/exclude}": "ignore",
     "{.env.*,.env*,**/*.env}": "dotenv",
     "{.gvimrc,.ideavimrc}": "viml",
@@ -169,13 +171,12 @@
     "*.tpl.php": "smarty",
     "*.zone.txt": "zonefile",
     "**/.ssh/config*": "ssh_config",
-    "**/sshd_config.d/*.conf": "sshdconfig",
     "**/logrotate.d/*.conf": "plaintext",
+    "**/sshd_config.d/*.conf": "sshdconfig",
     "/etc/**/*.conf": "plain",
     "/etc/apache2/**/*.conf": "apacheconf",
     "coc-settings.json": "jsonc",
-    "Procfile.*": "procfile",
-    ".env*": "dotenv"
+    "Procfile.*": "procfile"
   },
 
   "files.exclude": {
@@ -550,6 +551,7 @@
     "*.plist": "default"
   },
   "workbench.iconTheme": "vscode-icons",
+  "workbench.secondarySideBar.defaultVisibility": "hidden",
   "workbench.startupEditor": "none",
 
   "xml.codeLens.enabled": true,

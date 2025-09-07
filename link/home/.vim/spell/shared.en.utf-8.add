@@ -114,6 +114,7 @@ CloudFront
 CMDS
 CNAME
 coc
+Codeberg
 codeclimate
 codeium
 codeowners
@@ -299,6 +300,7 @@ gotmpl
 govcloud
 gpg
 gpgsign
+grampsweb
 grayscale
 grealpath
 grepdiff
@@ -310,6 +312,7 @@ gtail
 GTM
 gtouch
 guardfile
+Gunicorn
 gvim
 gvimdiff
 gvimrc
@@ -413,6 +416,7 @@ kibibytes
 killall
 klaviyo
 konsole
+KUBECONFIG
 kwargs
 langmap
 laravel
@@ -508,6 +512,7 @@ newkey
 newrelic
 newsyslog
 nextdns
+nindent
 nixpacks
 nmap
 NOBUG
