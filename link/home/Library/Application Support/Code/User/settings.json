@@ -154,9 +154,7 @@
   // cSpell:ignore apacheconf
   // logrotate.d/*.conf: There is no logrotate extension yet
   "files.associations": {
-    ".env*": "dotenv",
     "{.config/git/ignore*,.jshintignore,**/*.ignore,**/.git*/**/info/exclude}": "ignore",
-    "{.env.*,.env*,**/*.env}": "dotenv",
     "{.gvimrc,.ideavimrc}": "viml",
     "{.inputrc,.shellspec,*.ctags,**/.githooks/*,**/.husky/*,/etc/defaults/**/*.conf,/etc/periodic/**/*.conf}": "shellscript",
     "{.ruby-version,.tool-versions,**/.config/bat/config,default-gems}": "properties",
@@ -164,6 +162,7 @@
     "{*.jbuilder,aprc,Brewfile*}": "ruby",
     "{*.sublime-settings,*.tgn,**/*.it2snippets,**/chrome/exts/uBlock.txt}": "json",
     "{*.yml.*,**/*.sublime-syntax,**/.bundle/config}": "yaml",
+    "{**/.env*,**/*.env}": "env",
     "{**/nginx*.conf*,**/nginx/**/*.conf*}": "NGINX",
     "*.erb.deface": "erb",
     "*.haml.deface": "haml",
