@@ -111,21 +111,23 @@ function color_arrow() {
 
 # Usage: DRY_RUN=1 FAKE_ECHO=foo echo_eval 'bar %q' "$baz"
 function echo_eval() {
-  local cmd dry_run=${DRY_RUN:-}
+  local cmd dry_run=${DRY_RUN:-} silent=${EE_SILENT:-}
   # shellcheck disable=SC2059
   cmd=$(printf "$@")
 
-  if [[ $dry_run || ${VERBOSE:-'1'} ]]; then
+  if [[ ! $silent ]]; then
     color_arrow >&2 green "$cmd"
   fi
 
   # NOTE: Dry-run output is not always accurate, since some intermediate conditionals depend on a
   #       previous step actually running.FAKE_ECHO & FAKE_STATUS are used to simulate the
   #       output and return status of the command.
-  if [[ $dry_run ]]; then
-    echo >&2 'Dry running...'
-    if [[ ${FAKE_ECHO:-} ]]; then
-      echo "$FAKE_ECHO"
+  if [[ $dry_run  ]]; then
+    if [[ ! $silent ]]; then
+      echo >&2 'Dry running...'
+      if [[ ${FAKE_ECHO:-} ]]; then
+        echo "$FAKE_ECHO"
+      fi
     fi
 
     if [[ ${FAKE_STATUS:-} ]]; then

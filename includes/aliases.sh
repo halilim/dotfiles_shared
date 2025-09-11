@@ -68,10 +68,9 @@ alias ic="imgcat"
 alias k9='kill -9'
 
 # shellcheck disable=SC2139
-alias {l,la}='eza --all --group-directories-first'
+alias {l,la}='eza --all --group-directories-first --long'
 alias lg='eza --all --group --group-directories-first --long'
-alias ll='eza --all --group-directories-first --long'
-alias lll='TIME_STYLE=long-iso eza --all --group --group-directories-first --long'
+alias ll='TIME_STYLE=long-iso eza --all --group --group-directories-first --long'
 alias lt='TIME_STYLE=long-iso eza --all --group-directories-first --long'
 
 alias le="less"
