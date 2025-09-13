@@ -612,6 +612,10 @@
     "files.trimTrailingWhitespace": false
   },
 
+  "[scss]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
   "[shellscript]": {
     "editor.defaultFormatter": "mads-hartmann.bash-ide-vscode",
     "editor.tabSize": 2
