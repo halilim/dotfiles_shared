@@ -33,6 +33,10 @@
     "zonefile": true
   },
 
+  "containers.containers.description": ["RepositoryNameAndTag", "Status"],
+  "containers.containers.label": "ContainerName",
+  "containers.containers.sortBy": "Label",
+
   "cSpell.checkVSCodeSystemFiles": true,
   "cSpell.customDictionaries": {
     "shared_en": { "path": "~/.vim/spell/shared.en.utf-8.add" },
@@ -46,9 +50,7 @@
   ],
   "cSpell.ignoreRegExpList": ["/[^\\s]{40,}/"],
   "cSpell.language": "en,tr",
-  "cSpell.languageSettings": [
-    { "languageId": "viml", "dictionaries": ["vim"] }
-  ],
+  "cSpell.languageSettings": [{ "languageId": "viml", "dictionaries": ["vim"] }],
   "cSpell.usePnP": true,
 
   "css.format.spaceAroundSelectorSeparator": true,
@@ -75,10 +77,6 @@
   "diffEditor.hideUnchangedRegions.enabled": true,
   "diffEditor.ignoreTrimWhitespace": false,
   "diffEditor.renderSideBySide": false,
-
-  "docker.containers.description": ["RepositoryNameAndTag", "Status"],
-  "docker.containers.label": "ContainerName",
-  "docker.containers.sortBy": "Label",
 
   "dotenv.enableAutocloaking": false, // cSpell:disable-line
 
@@ -199,6 +197,8 @@
     "yaml": true
   },
 
+  "hadolint.cliOptions": ["--ignore", "DL3008"],
+
   "html-css-class-completion.enableEmmetSupport": true,
 
   "html.format.extraLiners": "body",
@@ -265,9 +265,7 @@
 
   "markdown.preview.fontSize": 13,
   // Need to be https or relative - no .. or ~
-  "markdown.styles": [
-    "https://halilim.github.io/vscode-markdown-styles/markdown_styles.css"
-  ],
+  "markdown.styles": ["https://halilim.github.io/vscode-markdown-styles/markdown_styles.css"],
   "markdown.updateLinksOnFileMove.enabled": "always",
   "markdown.validate.enabled": true,
 
@@ -364,15 +362,7 @@
   "terminal.integrated.shellIntegration.enabled": true,
   "terminal.integrated.tabs.enabled": true,
 
-  "todo-tree.general.tags": [
-    "HACK",
-    "FIXME",
-    "NOTE",
-    "TODO",
-    "XXX",
-    "[ ]",
-    "[x]"
-  ],
+  "todo-tree.general.tags": ["HACK", "FIXME", "NOTE", "TODO", "XXX", "[ ]", "[x]"],
   "todo-tree.highlights.customHighlight": {
     "FIXME": {
       "foreground": "#f00"
@@ -437,16 +427,25 @@
     { "before": ["leader", "9"], "commands": ["workbench.action.openEditorAtIndex9"] },
 
     { "before": ["leader", "a"], "commands": ["alternate.alternateFile"] },
-    { "before": ["leader", "c", "p" /*, "l"*/], "commands": ["copy-relative-path-and-line-numbers.both"] },
+    {
+      "before": ["leader", "c", "p" /*, "l"*/],
+      "commands": ["copy-relative-path-and-line-numbers.both"]
+    },
     { "before": ["leader", "c", "space"], "commands": ["editor.action.commentLine"] },
     { "before": ["leader", "d", "a"], "commands": ["workbench.action.closeAllEditors"] },
     { "before": ["leader", "d", "e"], "commands": ["workbench.action.closeOtherEditors"] },
     { "before": ["leader", "d"], "commands": ["workbench.action.closeActiveEditor"] },
     { "before": ["leader", "f"], "commands": ["workbench.action.quickOpen"] },
 
-    { "before": ["leader", "leader", "j", "w"], "commands": ["workbench.action.openWorkspaceSettingsFile"] },
+    {
+      "before": ["leader", "leader", "j", "w"],
+      "commands": ["workbench.action.openWorkspaceSettingsFile"]
+    },
     { "before": ["leader", "leader", "j"], "commands": ["workbench.action.openSettingsJson"] },
-    { "before": ["leader", "leader", "k"], "commands": ["workbench.action.openGlobalKeybindingsFile"] },
+    {
+      "before": ["leader", "leader", "k"],
+      "commands": ["workbench.action.openGlobalKeybindingsFile"]
+    },
     { "before": ["leader", "r", "n"], "commands": ["editor.action.rename"] },
     { "before": ["leader", "t"], "commands": ["workbench.action.gotoSymbol"] },
     { "before": ["leader", "T"], "commands": ["workbench.action.showAllSymbols"] },
