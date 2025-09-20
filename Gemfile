@@ -7,6 +7,10 @@ gem 'fiddle' # irb
 gem 'irb'
 gem 'rdoc' # irb
 
+group :development do
+  gem 'ruby-lsp-rspec', require: false
+end
+
 group :development, :test do
   gem 'rubocop', require: false
   gem 'rubocop-performance', require: false
