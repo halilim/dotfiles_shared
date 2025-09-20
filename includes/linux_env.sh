@@ -36,7 +36,10 @@ else
       UPDATE_BACKUP_CMDS+=(
         'sudo apt update'
         'sudo apt upgrade -y'
-        '[[ -e /var/run/reboot-required ]] && sudo reboot'
+      )
+
+      POST_INIT_HOOKS+=(
+        "UPDATE_BACKUP_CMDS+=('[[ -e /var/run/reboot-required ]] && sudo reboot')"
       )
     fi
   fi
