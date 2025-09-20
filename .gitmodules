@@ -5,4 +5,4 @@
 [submodule "link/home/.config/bat/syntaxes/sublime-procfile"]
 	path = link/home/.config/bat/syntaxes/sublime-procfile
 	url = https://github.com/fnando/sublime-procfile.git
-	branch = master
+	branch = main

@@ -14,6 +14,10 @@ function js_install_globals() {
 function js_update_globals() {
   local packages=''
 
+  if ! command -v npm > /dev/null 2>&1; then
+    return 0
+  fi
+
   if [[ ${JS_UPDATE_GLOBALS_EXCLUDE_PATTERN:-''} ]]; then
     # bun doesn't support --parseable or --depth=0
     packages=$(npm -g outdated --parseable --depth=0 |
