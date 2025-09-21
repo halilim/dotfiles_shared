@@ -6,11 +6,7 @@ function open_with_editor() {
     return
   fi
 
-  local arg_arr=("$@") silent=1 cmd
-
-  if [[ ${VERBOSE:-} ]]; then
-    silent=''
-  fi
+  local arg_arr=("$@") cmd
 
   if [[ $EDITOR == code || $EDITOR == */code || $EDITOR == code-insiders || $EDITOR == */code-insiders ]]; then
     # https://code.visualstudio.com/docs/editor/command-line#_core-cli-options
@@ -23,7 +19,7 @@ function open_with_editor() {
   local arg_ct=${#arg_arr[@]} pct_qs
   pct_qs=$(printf ' %%q%.0s' $(seq 1 "$arg_ct"))
 
-  SILENT=$silent echo_eval "$cmd$pct_qs" "${arg_arr[@]}"
+  echo_eval "$cmd$pct_qs" "${arg_arr[@]}"
 }
 
 function vim_open() {

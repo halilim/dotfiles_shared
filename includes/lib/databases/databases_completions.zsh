@@ -10,7 +10,7 @@ function _db_host() {
   case $state in
     host)
       # shellcheck disable=SC2046
-      compadd $(EE_SILENT=1 db_hosts "$type")
+      compadd $(SILENT=1 db_hosts "$type")
       ;;
   esac
 }
@@ -31,12 +31,12 @@ function _db_host_db() {
   # shellcheck disable=2046
   case $state in
     host)
-      compadd $(EE_SILENT=1 db_hosts "$type")
+      compadd $(SILENT=1 db_hosts "$type")
       ;;
 
     db)
       local host=${words[2]:-}
-      compadd $(EE_SILENT=1 dbs "$type" "$host")
+      compadd $(SILENT=1 dbs "$type" "$host")
       ;;
   esac
 }
@@ -59,15 +59,15 @@ function _db_host_db_table() {
   # shellcheck disable=2046
   case $state in
     host)
-      compadd $(EE_SILENT=1 db_hosts "$type")
+      compadd $(SILENT=1 db_hosts "$type")
       ;;
 
     db)
-      compadd $(EE_SILENT=1 dbs "$type" "$host")
+      compadd $(SILENT=1 dbs "$type" "$host")
       ;;
 
     table)
-      compadd $(EE_SILENT=1 tables "$type" "$host" "$db")
+      compadd $(SILENT=1 tables "$type" "$host" "$db")
       ;;
   esac
 }
@@ -108,7 +108,7 @@ function _db_type_host() {
 
     host)
       local type=${words[2]:-}
-      compadd $(EE_SILENT=1 db_hosts "$type")
+      compadd $(SILENT=1 db_hosts "$type")
       ;;
   esac
 }
@@ -132,11 +132,11 @@ function _db_type_host_db() {
       ;;
 
     host)
-      compadd $(EE_SILENT=1 db_hosts "$type")
+      compadd $(SILENT=1 db_hosts "$type")
       ;;
 
     db)
-      compadd $(EE_SILENT=1 dbs "$type" "$host")
+      compadd $(SILENT=1 dbs "$type" "$host")
       ;;
   esac
 }
@@ -162,15 +162,15 @@ function _db_type_host_db_table() {
       ;;
 
     host)
-      compadd $(EE_SILENT=1 db_hosts "$type")
+      compadd $(SILENT=1 db_hosts "$type")
       ;;
 
     db)
-      compadd $(EE_SILENT=1 dbs "$type" "$host")
+      compadd $(SILENT=1 dbs "$type" "$host")
       ;;
 
     table)
-      compadd $(EE_SILENT=1 tables "$type" "$host" "$db")
+      compadd $(SILENT=1 tables "$type" "$host" "$db")
       ;;
   esac
 }
