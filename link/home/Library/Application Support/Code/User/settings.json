@@ -160,7 +160,7 @@
     "{*.jbuilder,aprc,Brewfile*}": "ruby",
     "{*.sublime-settings,*.tgn,**/*.it2snippets,**/chrome/exts/uBlock.txt}": "json",
     "{*.yml.*,**/*.sublime-syntax,**/.bundle/config}": "yaml",
-    "{**/.env*,**/*.env}": "env",
+    "{**/.env*,**/*.env,**/env.example,**/env.sample}": "env",
     "{**/nginx*.conf*,**/nginx/**/*.conf*}": "NGINX",
     "*.erb.deface": "erb",
     "*.haml.deface": "haml",
