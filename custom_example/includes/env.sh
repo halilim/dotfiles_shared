@@ -1,5 +1,6 @@
 alias envshc='$EDITOR "$DOTFILES_CUSTOM"/includes/env.sh' # cSpell:ignore envshc
 
+export DOCKER_PROVIDER='docker-desktop' # colima | docker-desktop
 export GPG_KEY=123ABC # gpg --list-keys > The hex number below "pub"
 export JS_PM=bun # bun|npm
 export JS_PMX=bunx # bunx|npx

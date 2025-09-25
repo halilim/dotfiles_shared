@@ -72,6 +72,15 @@
 		],
 	},
 
+	"Benchmark.measure": {
+		"prefix": "bmm",
+		"body": [
+			"Benchmark.measure do",
+				"\t$0",
+			"end"
+		],
+	},
+
 	"{ |e| ... }": {
 		"prefix": "b",
 		"body": "{ |${1:e}| $0 }",
