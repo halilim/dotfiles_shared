@@ -48,7 +48,10 @@
   "cSpell.dictionaryDefinitions": [
     { "name": "vim", "path": "~/.config/vs-code/dictionaries/vim.txt" }
   ],
-  "cSpell.ignoreRegExpList": ["/[^\\s]{40,}/"],
+  "cSpell.ignoreRegExpList": [
+    "/[^\\s]{40,}/",
+    "/[CGD][0-9A-Z]{10}/" // Slack channel id
+  ],
   "cSpell.language": "en,tr",
   "cSpell.languageSettings": [{ "languageId": "viml", "dictionaries": ["vim"] }],
   "cSpell.usePnP": true,
@@ -569,6 +572,22 @@
 
   "[css]": {
     "editor.defaultFormatter": "vscode.css-language-features"
+  },
+
+  "[dockercompose]": { // cSpell:disable-line
+    "editor.autoIndent": "advanced",
+    "editor.defaultFormatter": "redhat.vscode-yaml",
+    "editor.insertSpaces": true,
+    "editor.quickSuggestions": {
+      "other": true,
+      "comments": false,
+      "strings": true
+    },
+    "editor.tabSize": 2
+  },
+
+  "[github-actions-workflow]": {
+    "editor.defaultFormatter": "redhat.vscode-yaml"
   },
 
   "[html]": {
