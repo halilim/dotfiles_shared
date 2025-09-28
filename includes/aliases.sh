@@ -83,6 +83,7 @@ alias lzd='lazydocker'
 alias lzg='lazygit'
 
 alias m='mine .' # RubyMine
+alias mdiff='mine diff' # cSpell:disable-line
 alias mi='mediainfo'
 alias mii='mise install'
 alias mil='mise list'
