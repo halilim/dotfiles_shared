@@ -3,9 +3,9 @@ set -euo pipefail
 IFS=$'\n\t'
 
 pkg update
-pkg upgrade
+pkg upgrade -y
 
-pkg install \
+pkg install -y \
   bat \
   curl \
   dnsutils \
@@ -28,32 +28,56 @@ pkg install \
   zsh
 
 mkdir -p ~/.ssh
-touch ~/.ssh/id_ed25519{,.pub}
-chmod 600 ~/.ssh/id_ed25519
-vim ~/.ssh/id_ed25519
+
+for ext in '' '.pub'; do
+  file=~/.ssh/id_ed25519$ext
+  if [[ ! -s $file ]]; then
+    touch $file
+    [[ $ext != '.pub' ]] && chmod 600 $file
+    vim $file
+  fi
+done
+
 # shellcheck disable=SC1090
 set +e && . ~/../usr/libexec/source-ssh-agent.sh && set -e # termux_prepare_ssh
 
 chsh -s zsh
-zsh
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
-mkdir dotfiles
-git clone --recurse-submodules git@github.com:halilim/dotfiles_shared.git dotfiles/shared
+if [[ $SHELL != */zsh ]]; then
+  zsh
+fi
 
-# shellcheck disable=SC2162
-read 'REPLY?Install personal dotfiles? '
-if [[ $REPLY =~ ^[Yy]$ ]]; then
-  git clone --recurse-submodules git@github.com:halilim/dotfiles_personal.git dotfiles/custom
+if [[ ! -d ~/.oh-my-zsh ]]; then
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+fi
+
+dotfiles_dir=~/dotfiles
+mkdir -p $dotfiles_dir
+
+shared_dir=$dotfiles_dir/shared
+if [[ ! -d $shared_dir ]]; then
+  git clone --recurse-submodules git@github.com:halilim/dotfiles_shared.git $shared_dir
+fi
+
+custom_dir=$dotfiles_dir/custom
+if [[ ! -d $custom_dir ]]; then
+  # shellcheck disable=SC2162
+  read 'REPLY?Install personal dotfiles? '
+  if [[ $REPLY =~ ^[Yy]$ ]]; then
+    git clone --recurse-submodules git@github.com:halilim/dotfiles_personal.git $custom_dir
+  fi
 fi
 
 # https://wiki.termux.com/wiki/Termux-setup-storage
 termux-setup-storage
 
-# shellcheck disable=SC2162
-read 'REPLY?Install notes? '
-if [[ $REPLY =~ ^[Yy]$ ]]; then
-  git clone --recurse-submodules git@github.com:halilim/notes.git ~/storage/shared/notes
+notes_dir=~/storage/shared/notes
+if [[ ! -d $notes_dir ]]; then
+  # shellcheck disable=SC2162
+  read 'REPLY?Install notes? '
+  if [[ $REPLY =~ ^[Yy]$ ]]; then
+    git clone --recurse-submodules git@github.com:halilim/notes.git $notes_dir
+  fi
 fi
 
 dotfiles/shared/setup
