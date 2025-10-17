@@ -79,9 +79,21 @@ function d_setup() {
 
   d_sync all $vim_plug_installed
 
-  if [[ $OSTYPE == darwin* && -n ${ZSH_VERSION:-} ]]; then
-    echo_eval 'iterm_tab %q omz_install_custom' "$PWD"
+  d_setup_omz_custom
+  js_install_globals
+}
+
+function d_setup_omz_custom() {
+  if ! command -v omz > /dev/null 2>&1; then
+    return 0
   fi
+
+  local cmd='omz_install_custom' cmd_args=()
+  if [[ $OSTYPE == darwin* ]]; then
+    cmd="iterm_tab %q $cmd"
+    cmd_args+=("$PWD")
+  fi
+  echo_eval "$cmd" "${cmd_args[@]}"
 }
 
 # TODO: Add archive feature: unarchive when the app is installed again
@@ -198,6 +210,27 @@ function _d_import_path() {
   return 0
 }
 
+function _d_link_platform() {
+  local dir=$1 platform_file platformless_link platform_suffix
+  platform_suffix=$(_d_platform_suffix)
+  while IFS= read -r -d '' platform_file; do
+    platformless_link=${platform_file/_"$platform_suffix"/}
+    if _d_need_to_link "$platform_file" "$platformless_link"; then
+      echo_eval 'ln -s %q %q' "$platform_file" "$platformless_link"
+    fi
+  done < <(find "$dir" -name "*$PLATFORM_PREFIX$platform_suffix*" -print0)
+}
+
+function _d_platform_suffix() {
+  if [[ $OSTYPE == darwin* ]]; then
+    echo 'mac'
+  elif [[ -v TERMUX_VERSION ]]; then
+    echo 'termux'
+  elif [[ $OSTYPE == linux* ]]; then
+    echo 'linux'
+  fi
+}
+
 function _d_revert_path() {
   local orig_path=${1:?}
 
@@ -278,11 +311,13 @@ function _d_revert_path() {
 }
 
 function _d_setup_shared_links() {
+  _d_link_platform "$DOTFILES_SHARED"
   _d_setup_links "$DOTFILES_SHARED"
 }
 
 function _d_setup_custom_links() {
   if [[ -d $DOTFILES_CUSTOM ]]; then
+    _d_link_platform "$DOTFILES_CUSTOM"
     _d_setup_links "$DOTFILES_CUSTOM"
   fi
 }
@@ -408,6 +443,10 @@ function _d_link_file() {
     return
   fi
 
+  if [[ $source == *$PLATFORM_PREFIX* ]]; then
+    return
+  fi
+
   local source_base
   source_base=$(basename "$source")
 
@@ -437,7 +476,7 @@ function _d_link_file() {
 }
 
 function _d_need_to_link() {
-  local source=$1 target=$2 hard_link=$3
+  local source=$1 target=$2 hard_link=${3:-false}
 
   if [[ ! -e $target ]]; then
     return 0
@@ -527,7 +566,6 @@ function d_vim_setup() {
   done
 
   if [[ ${#vim_cmds[@]} -eq 0 ]]; then
-    echo >&2 'No Vim commands to run'
     return 0
   fi
 
@@ -547,6 +585,7 @@ function _d_log_error {
 # Allow customization and testing
 HOME_DIR=${HOME_DIR:-$HOME}
 ROOT_DIR=${ROOT_DIR:-'/'}
+PLATFORM_PREFIX='platform_'
 
 export DOTFILES_CMD
 DOTFILES_CMD=$(basename "$0")

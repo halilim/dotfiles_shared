@@ -15,6 +15,8 @@ if [[ -v TERMUX_VERSION ]]; then
 
   DOTFILES_INCLUDE_LIBS+=(termux)
 
+  OMZ_PLUGINS+=(ubuntu) # ubuntu: for apt
+
   UPDATE_BACKUP_CMDS+=(
     'pkg update'
     'pkg upgrade -y'

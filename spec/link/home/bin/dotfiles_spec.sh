@@ -74,6 +74,14 @@ Describe "$script"
     :
   End
 
+  Mock js_install_globals
+    :
+  End
+
+  Mock omz_install_custom
+    :
+  End
+
   Mock vim
     if [[ $1 != +"$expected_vim_arg" ]]; then
       echo >&2 "Unregistered vim mock: $*"
@@ -106,16 +114,34 @@ Describe "$script"
 
   Describe 'sync'
     Example 'no args'
-      orig_path_full=$custom_dir/link/home/code1/.git.linked/info/exclude
-      create_file_with_content "$orig_path_full" 'ignored1'
+      git_exclude_path=$custom_dir/link/home/code1/.git.linked/info/exclude
+      create_file_with_content "$git_exclude_path" 'ignored1'
+
+      platform=''
+      if [[ $OSTYPE == darwin* ]]; then
+        platform='mac'
+      elif [[ -v TERMUX_VERSION ]]; then
+        platform='termux'
+      elif [[ $OSTYPE == linux* ]]; then
+        platform='linux'
+      fi
+      platform_file_path=$custom_dir/link/home/foo/.bar_platform_$platform.baz
+      create_file_with_content "$platform_file_path" 'platform-specific content'
 
       When run script "$copied_script" sync
       The stdout should eq ''
+
       The stderr should include 'code1'
-      synced_file="$mock_home"/code1/.git/info/exclude
-      The file "$synced_file" should be exist
-      The contents of file "$synced_file" should equal 'ignored1'
+      synced_git_exclude="$mock_home"/code1/.git/info/exclude
+      The file "$synced_git_exclude" should be exist
+      The contents of file "$synced_git_exclude" should equal 'ignored1'
       The path "$mock_home"/code1/.git.linked should not be exist
+
+      The stderr should include 'foo'
+      synced_platform_file="$mock_home"/foo/.bar_platform.baz
+      The file "$synced_platform_file" should be exist
+      The contents of file "$synced_platform_file" should equal 'platform-specific content'
+      The file "$mock_home"/foo/.bar_platform_$platform.baz should not be exist
     End
   End
 
@@ -140,13 +166,13 @@ Describe "$script"
         orig_path=$5
         imported_path=$6
         content=$7
-        orig_path_full=$dir_root/$orig_path
-        create_file_with_content "$orig_path_full" "$content"
+        git_exclude_path=$dir_root/$orig_path
+        create_file_with_content "$git_exclude_path" "$content"
         cd "$dir_root" || exit
 
         When run script "$copied_script" import "$dotfile_type" "$orig_path"
-        The path "$orig_path_full" should be symlink
-        The contents of file "$orig_path_full" should equal "$content"
+        The path "$git_exclude_path" should be symlink
+        The contents of file "$git_exclude_path" should equal "$content"
         The stderr should include "$orig_path"
         The stderr should include "$imported_path"
 

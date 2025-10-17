@@ -27,16 +27,17 @@ pkg install -y \
   zoxide \
   zsh
 
-mkdir -p ~/.ssh
+pip install pre-commit
 
-for ext in '' '.pub'; do
-  file=~/.ssh/id_ed25519$ext
-  if [[ ! -s $file ]]; then
-    touch $file
-    [[ $ext != '.pub' ]] && chmod 600 $file
-    vim $file
-  fi
-done
+# https://wiki.termux.com/wiki/Termux-setup-storage
+termux-setup-storage
+
+read -r -p 'SSH key: create new (n) or use existing (e)? ' 'REPLY'
+if [[ $REPLY =~ ^[Ee]$ ]]; then
+  read -r -p 'Press any key to continue after saving the SSH key (public and private)...'
+elif [[ $REPLY =~ ^[Nn]$ ]]; then
+  ssh-keygen -t ed25519 -C 't.halil.im'
+fi
 
 # shellcheck disable=SC1090
 set +e && . ~/../usr/libexec/source-ssh-agent.sh && set -e # termux_prepare_ssh
@@ -68,8 +69,7 @@ if [[ ! -d $custom_dir ]]; then
   fi
 fi
 
-# https://wiki.termux.com/wiki/Termux-setup-storage
-termux-setup-storage
+dotfiles/shared/setup
 
 notes_dir=~/storage/shared/notes
 if [[ ! -d $notes_dir ]]; then
@@ -79,10 +79,6 @@ if [[ ! -d $notes_dir ]]; then
     git clone --recurse-submodules git@github.com:halilim/notes.git $notes_dir
   fi
 fi
-
-dotfiles/shared/setup
-omz_install_custom
-pip install pre-commit
 
 # https://github.com/shellspec/shellspec?tab=readme-ov-file#automatic-installation-
 curl -fsSL https://git.io/shellspec | sh -s -- --yes
