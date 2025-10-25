@@ -206,6 +206,8 @@
 
   "html.format.extraLiners": "body",
 
+  "javascript.updateImportsOnFileMove.enabled": "always",
+
   "jest.runMode": "on-demand",
 
   "jqPlayground.binaryPath": "/opt/homebrew/bin/jq",

@@ -28,7 +28,7 @@ alias dkrm='docker rm'
 alias dkrr='docker run --rm'
 alias dkrri='docker run --rm -it'
 alias dks='docker stats --no-stream'
-alias dkps="docker ps --format 'table {{.ID}}\t{{.Names}}\t{{.Status}}'"
+alias dkps="docker ps --format 'table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Ports}}'"
 
 # cSpell:ignore dceis dclf dcos dcre dcrr
 alias dce='docker compose exec'
@@ -38,7 +38,7 @@ alias dcl='docker compose logs'
 alias dclf='docker compose logs -f'
 alias dco='docker compose' # dc is a system command
 alias dcos='docker compose stats'
-alias dcp="docker compose ps --format 'table {{.Name}}\t{{.Status}}'"
+alias dcp="docker compose ps --format 'table {{.Name}}\t{{.Status}}\t{{.Ports}}'"
 alias dcre='docker compose restart'
 alias dcr='docker compose run'
 alias dcrr='docker compose run --rm'

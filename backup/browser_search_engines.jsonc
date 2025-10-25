@@ -152,6 +152,12 @@
   },
 
   {
+    "name": "Ruby docs (master)",
+    "shortcut": "rb",
+    "url": "https://docs.ruby-lang.org/en/master/?q=%s"
+  },
+
+  {
     "name": "Ruby gems",
     "shortcut": "gem",
     "url": "https://rubygems.org/search?query=%s"
