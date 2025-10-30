@@ -122,7 +122,7 @@ function echo_eval() {
   # NOTE: Dry-run output is not always accurate, since some intermediate conditionals depend on a
   #       previous step actually running.FAKE_ECHO & FAKE_STATUS are used to simulate the
   #       output and return status of the command.
-  if [[ $dry_run  ]]; then
+  if [[ $dry_run ]]; then
     if [[ ! $silent ]]; then
       echo >&2 'Dry running...'
       if [[ ${FAKE_ECHO:-} ]]; then

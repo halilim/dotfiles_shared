@@ -556,6 +556,16 @@
 		],
 	},
 
+	"while separator, for each separator": {
+		"prefix": ["whs", "forins"], // cSpell:ignore forins
+		"body": [
+			"local ${1:part}",
+			"while read -d '${2:separator}' -r $1; do",
+      	"\t\\$$1$0",
+			"done < <(printf '%s$2' \"\\$${3:parts}\")"
+		],
+	},
+
 	// zsh
 
 	"zsh associative array": {

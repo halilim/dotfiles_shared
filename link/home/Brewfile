@@ -85,6 +85,7 @@ cask 'qlvideo' # Finder thumbnails & Quick Look previews and thumbnails
 cask 'quicklook-json'
 
 cask 'sourcetree' # Easier to search history
+cask 'unnaturalscrollwheels' # Separate mouse and trackpad natural scroll # cSpell:disable-line
 
 # Vim
 brew 'editorconfig' # Used by vim plugin
