@@ -67,7 +67,7 @@ function _db_host_db_table() {
       ;;
 
     table)
-      compadd $(SILENT=1 tables "$type" "$host" "$db")
+      compadd $(SILENT=1 db_tables "$type" "$host" "$db")
       ;;
   esac
 }
@@ -141,7 +141,7 @@ function _db_type_host_db() {
   esac
 }
 
-compdef _db_type_host_db tables
+compdef _db_type_host_db db_tables
 
 function _db_type_host_db_table() {
   # shellcheck disable=SC2034
@@ -170,8 +170,8 @@ function _db_type_host_db_table() {
       ;;
 
     table)
-      compadd $(SILENT=1 tables "$type" "$host" "$db")
+      compadd $(SILENT=1 db_tables "$type" "$host" "$db")
       ;;
   esac
 }
-compdef _db_type_host_db_table table
+compdef _db_type_host_db_table db_table

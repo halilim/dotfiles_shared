@@ -153,17 +153,21 @@ function psql_exec() {
   echo_eval "$cmd"
 }
 
-function table() {
+function db_table() {
   local type=${1?Which type? Hit tab} \
     host=${2:?Which host? Hit tab} \
     db=${3:?Which db? Hit tab} \
     table=${4:?Which table? Hit tab}
   eval "${type}_table" "$host" "$db" "$table"
 }
+# shellcheck disable=SC2139
+alias {dbt,table,tbl}='db_table'
 
-function tables() {
+function db_tables() {
   local type=${1?Which type? Hit tab} \
     host=${2:?Which host? Hit tab} \
     db=${3:?Which db? Hit tab}
   eval "${type}_tables" "$host" "$db"
 }
+# shellcheck disable=SC2139
+alias {dbts,tables,tbls}='db_tables' # cSpell:disable-line

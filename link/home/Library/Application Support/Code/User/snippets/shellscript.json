@@ -61,6 +61,14 @@
 		"body": "alias -g ${1:name}='$0'",
 	},
 
+	"alias multiple": {
+		"prefix": "alm",
+		"body": [
+			"# shellcheck disable=SC2139",
+			"alias {${1:name},${2:other}}='$0'"
+		],
+	},
+
 	"convert to lower case": {
 		"prefix": ["case_l", "downcase"],
 		"body": [
