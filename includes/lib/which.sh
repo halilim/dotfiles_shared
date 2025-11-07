@@ -76,7 +76,7 @@ function which_detailed() {
 
   local unique_type \
         line_no=1 \
-        file_no file
+        file_no file real_path link_path
 
   while IFS=$'\n' read -r unique_type; do
     if [[ $type_count -gt 1 ]]; then
@@ -106,19 +106,20 @@ function which_detailed() {
             printf '%d. ' $line_no
           fi
 
+          real_path=$file
           color_ 'yellow' 'command/file '
           color_ 'magenta' "$(shorten_path "$file")"
           if [[ -L $file ]]; then
             printf ' -> '
-            local link_path
             link_path=$(readlink -f "$file")
+            real_path=$link_path
             link_path=$(shorten_path "$link_path")
             color_ 'magenta' "$link_path"
           fi
           printf '\n'
 
           if [[ ${EDIT:-} && $file_no == 1 ]]; then
-            open_with_editor "$file"
+            open_with_editor "$real_path"
           fi
 
           file_no=$((file_no + 1))
