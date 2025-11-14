@@ -7,6 +7,8 @@ export RUBY_CMD_PREFIX=${RUBY_CMD_PREFIX-'bundle exec '} # `bin/` | `bundle exec
 export RAILS_CMD="${RUBY_CMD_PREFIX}rails"
 export RAKE_CMD="${RUBY_CMD_PREFIX}rake"
 
+export RAILS_ROUTE_CACHE=.routes_expanded.txt
+
 function gem_install_bundler_gemfile() {
   local version
   version=$(grep -A 1 "BUNDLED WITH" Gemfile.lock | tail -n 1 | tr -d ' ')
@@ -62,11 +64,14 @@ function kill_spring() {
 }
 
 # More functionality is in *_completions.zsh
-function rails_build_request() {
-  local method_and_uri=$1 method uri tool=${2:-postman} # GET /users
+function rails_request() {
+  local method_and_uri=$1 # E.g., `GET /users/:id(.:format)`
+  local tool=${2:-postman}
 
+  local method
   method=$(echo "$method_and_uri" | cut -d ' ' -f 1)
 
+  local uri
   uri=$(echo "$method_and_uri" | cut -d ' ' -f 2)
   uri=$(echo "$uri" | sed -E 's/\(\.:format\)//')
 
@@ -74,15 +79,47 @@ function rails_build_request() {
     curl)
       echo "curl -X $method $uri"
       ;;
+
     httpie)
       echo "http $method $uri"
       ;;
+
     postman)
       echo "curl -X $method {{baseUrl}}$(echo "$uri" | sed -E 's/:([^\/]+)/{{\1}}/g')"
       ;;
+
+    _edit-action)
+      local controller_and_action controller action file line
+      controller_and_action=$(rg "$uri.*\nController#Action\s*\|\s*(\S+)" \
+        --multiline --only-matching --replace '$1' $RAILS_ROUTE_CACHE)
+      controller=$(echo "$controller_and_action" | cut -d '#' -f 1)
+      action=$(echo "$controller_and_action" | cut -d '#' -f 2)
+      # shellcheck disable=SC2012
+      file=$(\ls -d {,components/*/}app/controllers/**/"${controller}_controller.rb" | head -n 1)
+      line=$(rg --line-number --only-matching "def\s+$action\b" "$file" | head -n 1)
+      line=${line%%:*}
+      open_with_editor "$file:$line"
+      ;;
+
+    _edit-route)
+      local route_source gem_name file_and_line
+      route_source=$(rg "$uri.*\nController#Action.*\nSource Location\s*\|\s*(.+)" \
+        --multiline --only-matching --replace '$1' $RAILS_ROUTE_CACHE)
+      gem_name=$(echo "$route_source" | rg '^(\S+)\s+\([\d.]+\)' --only-matching --replace '$1')
+      if [[ $gem_name ]]; then
+        local gem_path relative_path
+        gem_path=$(bundle info "$name" --path)
+        relative_path=$(echo "$route_source" | rg '^\S+\s+\([\d.]+\)\s+(.+)' --only-matching --replace '$1')
+        file_and_line="$gem_path/$relative_path"
+      else
+        file_and_line="$route_source"
+      fi
+      open_with_editor "$file_and_line"
+      ;;
   esac
 }
-alias rbr='rails_build_request'
+# shellcheck disable=SC2139
+alias {rar,rbr}='rails_request'
 
 # Roll back branch-specific migrations before switching to main
 function rails_reset_to_main() {

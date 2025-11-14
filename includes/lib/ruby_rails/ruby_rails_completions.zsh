@@ -12,7 +12,7 @@ _gem_()  {
 }
 compdef _gem_ gem_
 
-_rails_build_request() {
+_rails_request() {
   local state
 
   _arguments '1: :->method_and_uri' '2: :->tool'
@@ -20,11 +20,11 @@ _rails_build_request() {
   # shellcheck disable=2046
   case $state in
     method_and_uri)
-      local file=.routes_expanded.txt pairs=()
+      local file=$RAILS_ROUTE_CACHE pairs=()
 
       if [[ ! -s $file ]] || last_mod_older_than "$file" '3 day'; then
         printf >&2 "\nRegenerating %s ...\n" "$file"
-        echo_eval "$RAILS_CMD routes --expanded > %q" "$file"
+        echo_eval "$RAILS_CMD routes --expanded | \grep -vE '^(E,|I,|{\"|Active metric|---)' > %q" "$file"
       fi
 
       # shellcheck disable=SC2034,SC2296,SC2116
@@ -34,8 +34,8 @@ _rails_build_request() {
       compadd -a pairs
       ;;
 
-    tool) compadd 'curl' 'httpie' 'postman';;
+    tool) compadd 'curl' 'httpie' 'postman' '_edit-action' '_edit-route';;
   esac
 }
 
-compdef _rails_build_request rails_build_request
+compdef _rails_request rails_request

@@ -22,7 +22,8 @@ alias sudo='nocorrect sudo '
 # Global aliases
 alias -g 21='2>&1'
 alias -g 21n='>/dev/null 2>&1'
-alias -g 2D='2>/dev/null'
+# shellcheck disable=SC2139
+alias -g {2D,2n}='2>/dev/null'
 alias -g DR='DRY_RUN=1'
 alias -g F='| fzf'
 alias -g G='| rg -n' # Case insensitive by default due to ~/.ripgreprc
