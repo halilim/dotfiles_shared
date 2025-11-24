@@ -78,6 +78,3 @@ if [[ ! -d $notes_dir ]]; then
     git clone --recurse-submodules git@github.com:halilim/notes.git $notes_dir
   fi
 fi
-
-# https://github.com/shellspec/shellspec?tab=readme-ov-file#automatic-installation-
-curl -fsSL https://git.io/shellspec | sh -s -- --yes

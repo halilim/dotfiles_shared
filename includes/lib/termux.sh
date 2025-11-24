@@ -13,8 +13,3 @@ function termux_prepare_ssh() {
   . ~/../usr/libexec/source-ssh-agent.sh
   set -e
 }
-
-function termux_update_shellspec() {
-  # https://github.com/shellspec/shellspec?tab=readme-ov-file#upgrade-to-the-latest-release-version-
-  curl -fsSL https://git.io/shellspec | sh -s -- --switch --yes
-}
