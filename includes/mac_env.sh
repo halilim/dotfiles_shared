@@ -21,8 +21,7 @@ DOTFILES_INCLUDE_LIBS+=(
 OMZ_PLUGINS+=(macos)
 
 UPDATE_BACKUP_CMDS+=(
-  'js_update_globals'
-  'update_open_tabs'
+  update_open_tabs
   "$OPEN_CMD /Applications # Manually update the non-App Store, infrequently-opened, etc. apps"
   'iterm_tab . update_chrome_notes'
 )

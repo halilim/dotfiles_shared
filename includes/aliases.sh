@@ -136,6 +136,7 @@ alias rghi='rg -. --no-ignore'
 alias rgchi='rg -.s --no-ignore'
 alias rgnt="rg -g '!features/' -g '!spec/' -g '!test/' -g '!__tests__/' -g '!*.test.*'"
 alias rgw='rg -w' # Word
+alias rgwh='rg -.w' # cSpell:disable-line
 # shellcheck disable=SC2139
 alias {rgsw,rgwc,rgws}='rg -sw' # Word and case sensitive
 

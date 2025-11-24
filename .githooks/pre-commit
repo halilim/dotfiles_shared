@@ -7,7 +7,7 @@ IFS=$'\n\t'
 
 SKIP=no-commit-to-branch pre-commit run --config ~/.pre-commit-config.yml || exit
 
-# TODO: This works an the working copy, check https://stackoverflow.com/a/3068990/372654 and https://pre-commit.com/
+# TODO: This works on the working copy, check https://stackoverflow.com/a/3068990/372654 and https://pre-commit.com/
 mapfile -t files < <(git diff --name-only --cached --diff-filter=ACMR) # cSpell:ignore ACMR
 
 printf 'RuboCop: '

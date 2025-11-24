@@ -18,7 +18,6 @@ pkg install -y \
   nodejs-lts \
   openssh \
   python \
-  qemu-user-aarch64 \
   ripgrep \
   speedtest-go \
   traceroute \

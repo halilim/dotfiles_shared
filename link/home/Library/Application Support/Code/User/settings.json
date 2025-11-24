@@ -81,8 +81,6 @@
   "diffEditor.ignoreTrimWhitespace": true,
   "diffEditor.renderSideBySide": true,
 
-  "dotenv.enableAutocloaking": false, // cSpell:disable-line
-
   "editor.acceptSuggestionOnEnter": "smart",
   "editor.autoClosingQuotes": "always",
   "editor.cursorBlinking": "phase",

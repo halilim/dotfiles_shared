@@ -9,7 +9,7 @@ function bak_toggle() {
 }
 
 function bat_rebuild_syntaxes() {
-  bat cache --build
+  echo_eval 'bat cache --build'
 }
 
 function builtin_help() {

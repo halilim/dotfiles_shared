@@ -71,7 +71,7 @@ function omz_install_custom() {
 
     if [[ ! -v TERMUX_VERSION ]]; then
       cd_or_fail "$zsh_custom"/themes 'Oh My Zsh custom themes directory' || return
-      git clone --depth=1 https://github.com/romkatv/powerlevel10k
+      git clone --depth=1 --quiet https://github.com/romkatv/powerlevel10k
     fi
   )
 }
@@ -80,6 +80,6 @@ function omz_update_custom() {
   (
     cd_or_fail "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}" 'Oh My Zsh custom directory' || return
 
-    for_each_dir 'for_each_dir "git pull --prune"'
+    for_each_dir 'for_each_dir "git pull --prune --quiet"'
   )
 }

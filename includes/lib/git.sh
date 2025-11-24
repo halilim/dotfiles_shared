@@ -135,16 +135,20 @@ function _git_contains_args_with_message() {
 }
 
 function git_maintain_large_repos() {
+  if [[ ! ${GIT_LARGE_REPOS:-} ]]; then
+    return
+  fi
+
   local repo
   while read -d ':' -r repo; do
     (
       # shellcheck disable=SC2106
-      DRY_RUN='' echo_eval 'cd %q || return' "$repo" || continue
+      DRY_RUN='' echo_eval 'cd %q' "$repo" || continue
       echo_eval 'git gc --prune=now'
       echo_eval 'git remote prune origin'
       printf '\n'
     )
-  done < <(printf '%s:' "${GIT_LARGE_REPOS:-}")
+  done < <(printf '%s:' "$GIT_LARGE_REPOS")
 }
 
 function git_search_branches() {

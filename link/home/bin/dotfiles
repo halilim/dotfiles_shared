@@ -112,13 +112,13 @@ function d_sync() {
 }
 
 function d_update() {
-  DRY_RUN='' echo_eval 'cd %q || return' "$DOTFILES"
+  DRY_RUN='' echo_eval 'cd %q' "$DOTFILES" || return
   if [[ -v TERMUX_VERSION ]]; then
     # shellcheck disable=SC1091
     . "$DOTFILES_INCLUDES"/lib/termux.sh
     echo_eval 'termux_prepare_ssh'
   fi
-  for_each_dir 'git pull --prune'
+  for_each_dir 'git pull --prune --quiet'
   echo_eval 'd_sync'
 }
 

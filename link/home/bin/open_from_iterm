@@ -25,9 +25,9 @@ if is_debug_enabled; then
   export VERBOSE=1
 fi
 
-abs_path=$1
-line=$2
-column=$3
+abs_path=${1:?}
+line=${2:-}
+column=${3:-}
 
 [[ ! $abs_path ]] && exit
 

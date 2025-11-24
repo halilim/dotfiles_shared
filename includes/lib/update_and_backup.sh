@@ -39,18 +39,20 @@ function update_bat_syntaxes() {
       submodule_path=$(cut -d '|' -f 1 <<< "$submodule")
       branch=$(cut -d '|' -f 2 <<< "$submodule")
       git submodule set-branch -b "$branch" "$submodule_path"
-      git -C "$submodule_path" checkout "$branch"
+      git -C "$submodule_path" checkout --quiet "$branch"
     done
 
-    git submodule foreach --recursive git pull --prune
+    git submodule foreach --recursive git pull --prune --quiet
   )
 
   bat_rebuild_syntaxes
 }
 
 function update_completions() {
-  # shellcheck disable=SC2154
-  docker completion zsh > "${fpath[1]}/_docker"
+  if command -v docker > /dev/null 2>&1; then
+    # shellcheck disable=SC2154
+    docker completion zsh > "${fpath[1]}/_docker"
+  fi
 }
 
 function update_vim() {

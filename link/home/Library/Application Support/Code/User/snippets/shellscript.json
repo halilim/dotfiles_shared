@@ -201,6 +201,15 @@
 		],
 	},
 
+	"echo_eval with array (variable n of %q's)": {
+		"prefix": "eeq",
+		"body": [
+			"local q_ct=${#${1:arr}[@]} q_seq",
+			"q_seq=$(printf ' %%q%.0s' $(seq 1 \"\\$q_ct\"))",
+			"echo_eval \"${0:cmd} \\$q_seq\" \"${$1[@]}\""
+		],
+	},
+
 	"else": {
 		"prefix": "el",
 		"body": [

@@ -13,5 +13,16 @@ export RUBY_CMD_PREFIX='bin/'
 
 DOTFILES_INCLUDE_LIBS+=(example_lib gpg)
 OMZ_PLUGINS+=(bun mise npm)
-UPDATE_BACKUP_CMDS=(pre_update_cmd "${UPDATE_BACKUP_CMDS[@]}") # Prepend
-UPDATE_BACKUP_CMDS+=(gpg_check_key update_foo backup_bar) # Append
+
+UPDATE_BACKUP_CMDS=(
+  # Prepend
+  'dotfiles update'
+  pre_update_cmd
+
+  "${UPDATE_BACKUP_CMDS[@]}"
+
+  # Append
+  gpg_check_key
+  update_foo
+  'backup bar'
+ )

@@ -8,6 +8,8 @@ export GNU_STAT=stat
 export GNU_TOUCH=touch
 export GNU_XARGS=xargs
 
+UPDATE_BACKUP_CMDS+=('dotfiles update')
+
 if [[ -v TERMUX_VERSION ]]; then
   export CLIP='clipcopy'
   export OPEN_CMD='termux-open'

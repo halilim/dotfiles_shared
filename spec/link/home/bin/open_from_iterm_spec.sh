@@ -80,11 +80,11 @@ Describe "$script"
     fi
   End
 
-  Example 'without args does nothing'
+  Example 'without args raises error'
     When run script "$script"
     The stdout should eq ''
-    The stderr should eq ''
-    The status should eq 0
+    The stderr should include 'not set'
+    The status should eq 1
   End
 
   Example 'with a directory calls open'

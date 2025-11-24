@@ -41,7 +41,7 @@ function locate_function() {
 function which_detailed() {
   local input=${1?}
 
-  local type_arg command_which_arg
+  local type_arg command_which_arg=''
   if [ -n "${ZSH_VERSION:-}" ]; then
     type_arg='w'
     command_which_arg='p' # Without this, Zsh includes aliases in the output of `which -a ...`

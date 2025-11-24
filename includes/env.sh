@@ -122,6 +122,7 @@ source_custom env.sh
 
 # Put the manual/external steps at the end
 UPDATE_BACKUP_CMDS+=(
+  js_update_globals
   git_maintain_large_repos
-  'update_vim'
+  update_vim
 )
