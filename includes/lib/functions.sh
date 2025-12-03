@@ -110,6 +110,7 @@ function color_arrow() {
 }
 
 # Usage: DRY_RUN=1 FAKE_ECHO=foo echo_eval 'bar %q' "$baz"
+# NOTE: printf might fail with "invalid format" when cmd includes unintentional percent signs (%)
 function echo_eval() {
   local cmd dry_run=${DRY_RUN:-} silent=${SILENT:-}
   # shellcheck disable=SC2059

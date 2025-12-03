@@ -434,6 +434,7 @@ lesspipe
 letsencrypt
 libev
 libexec
+libexif
 libxslt
 libyaml
 lifecycle
