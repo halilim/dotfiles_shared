@@ -489,6 +489,7 @@ missingok
 mkdir
 mkpath
 mkspell
+mktime
 mktmpdir
 monospace
 moreutils

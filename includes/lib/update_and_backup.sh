@@ -30,7 +30,7 @@ function update_bat_syntaxes() {
     cd "$DOTFILES_SHARED" || return
 
     local submodules=(
-      'link/home/.config/bat/syntaxes/st2-zonefile|sublime-syntax'
+      'link/home/.config/bat/syntaxes/st2-zonefile|master'
       'link/home/.config/bat/syntaxes/sublime-procfile|main'
     )
 

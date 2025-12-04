@@ -1,7 +1,7 @@
 [submodule "link/home/.config/bat/syntaxes/st2-zonefile"]
 	path = link/home/.config/bat/syntaxes/st2-zonefile
-	url = https://github.com/halilim/st2-zonefile.git
-	branch = sublime-syntax
+	url = https://github.com/sixty4k/st2-zonefile.git
+	branch = master
 [submodule "link/home/.config/bat/syntaxes/sublime-procfile"]
 	path = link/home/.config/bat/syntaxes/sublime-procfile
 	url = https://github.com/fnando/sublime-procfile.git
