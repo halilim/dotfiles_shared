@@ -1,4 +1,4 @@
 ---
 BUNDLE_BUILD__NOKOGIRI: "--use-system-libraries"
-BUNDLE_DEFAULT_CLI_COMMAND: "install"
+BUNDLE_DEFAULT_CLI_COMMAND: "install_or_cli_help"
 BUNDLE_GITHUB__HTTPS: "true"

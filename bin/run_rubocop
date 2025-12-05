@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+set -euo pipefail
+if [[ ${SET_X:-} ]]; then
+  set -x
+fi
+IFS=$'\n\t'
+
+bundle exec rubocop \
+  --autocorrect \
+  --fail-level=refactor \
+  --force-exclusion \
+  --format=quiet \
+  --only-recognized-file-types \
+  "$@"

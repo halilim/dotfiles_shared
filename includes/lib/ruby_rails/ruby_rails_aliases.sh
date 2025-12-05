@@ -21,6 +21,7 @@ alias berk='bundle exec rake'
 # cSpell:ignore besa besf bucq
 alias bes='bundle exec standardrb'
 alias {besa,besf}='bundle exec standardrb --fix'
+alias bua='bundle update --all'
 alias bub='bundle update --bundler'
 alias buc='bundle update --conservative'
 alias bucq='bundle update --conservative --quiet'

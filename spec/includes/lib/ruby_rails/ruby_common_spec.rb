@@ -57,7 +57,6 @@ RSpec.describe '.table' do # rubocop:disable RSpec/DescribeClass
   context 'with ActiveRecord-like objects' do
     let(:items) do
       # Yeah, no, we're not going to require ActiveRecord just for this test
-      # rubocop:disable RSpec/VerifiedDoubles
       [
         double(
           attributes: {
@@ -79,7 +78,6 @@ RSpec.describe '.table' do # rubocop:disable RSpec/DescribeClass
           }
         )
       ]
-      # rubocop:enable RSpec/VerifiedDoubles
     end
 
     it 'outputs a table, id first, timestamps last' do

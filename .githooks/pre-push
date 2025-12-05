@@ -2,6 +2,9 @@
 set -euo pipefail
 IFS=$'\n\t'
 
+printf "\n--> Running Rubocop all...\n"
+bin/run_rubocop
+
 printf "\n--> Running ShellSpec...\n"
 bin/run_shellspec
 

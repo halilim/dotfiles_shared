@@ -11,13 +11,7 @@ SKIP=no-commit-to-branch pre-commit run --config ~/.pre-commit-config.yml || exi
 mapfile -t files < <(git diff --name-only --cached --diff-filter=ACMR) # cSpell:ignore ACMR
 
 printf 'RuboCop: '
-bundle exec rubocop \
-  --autocorrect \
-  --fail-level=refactor \
-  --force-exclusion \
-  --format=quiet \
-  --only-recognized-file-types \
-  "${files[@]}" && echo '✅' || exit
+"$DOTFILES_SHARED"/bin/run_rubocop "${files[@]}" && echo '✅' || exit
 
 printf 'ShellCheck: '
 bin/run_shellcheck.rb "${files[@]}" && echo '✅' || exit
