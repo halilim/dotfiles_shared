@@ -1,0 +1,5 @@
+[gpg "ssh"]
+	allowedSignersFile = ~/.ssh/allowed_signers_github
+
+[user]
+	email = 123+username@users.noreply.github.com

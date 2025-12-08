@@ -1,0 +1,5 @@
+[gpg "ssh"]
+	allowedSignersFile = ~/.ssh/allowed_signers_codeberg
+
+[user]
+	email = username@noreply.codeberg.org

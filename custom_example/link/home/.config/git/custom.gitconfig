@@ -1,6 +1,17 @@
 [user]
 	name = John Doe
-	email = 123+user@users.noreply.github.com
 	signingkey = 123ABC...
 	; Or for SSH signing:
 	; signingkey = ~/.ssh/id_ed25519.pub
+
+[includeIf "hasconfig:remote.*.url:git@github.com:*/**"]
+	path = ~/.config/git/github.gitconfig
+
+[includeIf "hasconfig:remote.*.url:https://github.com/**"]
+	path = ~/.config/git/github.gitconfig
+
+[includeIf "hasconfig:remote.*.url:ssh://git@codeberg.org/**"]
+	path = ~/.config/git/codeberg.gitconfig
+
+[includeIf "hasconfig:remote.*.url:https://codeberg.org/**"]
+	path = ~/.config/git/codeberg.gitconfig
