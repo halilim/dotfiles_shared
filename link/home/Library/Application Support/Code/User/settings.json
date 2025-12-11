@@ -321,6 +321,8 @@
   "scm.diffDecorationsGutterPattern": {
     "added": true
   },
+  "scm.repositories.explorer": true,
+  "scm.repositories.selectionMode": "single",
 
   "scss.lint.compatibleVendorPrefixes": "warning",
   "scss.lint.duplicateProperties": "warning",
