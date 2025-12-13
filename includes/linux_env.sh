@@ -22,8 +22,6 @@ if [[ -v TERMUX_VERSION ]]; then
   UPDATE_BACKUP_CMDS+=(
     'pkg update'
     'pkg upgrade -y'
-    termux_install_update_shellcheck
-    termux_update_shellspec
   )
 else
   export CLIP='xclip -sel clip'
