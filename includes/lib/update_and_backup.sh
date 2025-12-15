@@ -6,11 +6,13 @@ function update_and_backup() {
   (
     cd "$HOME" || return 1
 
-    local cmd
+    local cmd last_ret
     for cmd in "${UPDATE_BACKUP_CMDS[@]}"; do
       echo_eval "$cmd"
+      last_ret=$?
       printf '\n'
     done
+    return $last_ret
   )
 }
 
