@@ -89,8 +89,9 @@ function rails_request() {
       ;;
 
     _edit-action)
-      local controller_and_action controller action file line
-      controller_and_action=$(rg "$uri.*\nController#Action\s*\|\s*(\S+)" \
+      local uri_regex controller_and_action controller action file line
+      uri_regex=$(ruby -e "puts Regexp.new('$uri\W')")
+      controller_and_action=$(rg "$uri_regex.*\nController#Action\s*\|\s*(\S+)" \
         --multiline --only-matching --replace '$1' $RAILS_ROUTE_CACHE)
       controller=$(echo "$controller_and_action" | cut -d '#' -f 1)
       action=$(echo "$controller_and_action" | cut -d '#' -f 2)
@@ -98,7 +99,7 @@ function rails_request() {
       file=$(\ls -d {,components/*/}app/controllers/**/"${controller}_controller.rb" | head -n 1)
       line=$(rg --line-number --only-matching "def\s+$action\b" "$file" | head -n 1)
       line=${line%%:*}
-      open_with_editor "$file:$line"
+      echo_eval 'open_from_iterm %q %q' "$(realpath "$file")" "$line"
       ;;
 
     _edit-route)
