@@ -103,8 +103,9 @@ function rails_request() {
       ;;
 
     _edit-route)
-      local route_source gem_name file_and_line
-      route_source=$(rg "$uri.*\nController#Action.*\nSource Location\s*\|\s*(.+)" \
+      local uri_regex route_source gem_name file_and_line
+      uri_regex=$(ruby -e "puts Regexp.new('$uri\W')")
+      route_source=$(rg "$uri_regex.*\nController#Action.*\nSource Location\s*\|\s*(.+)" \
         --multiline --only-matching --replace '$1' $RAILS_ROUTE_CACHE)
       gem_name=$(echo "$route_source" | rg '^(\S+)\s+\([\d.]+\)' --only-matching --replace '$1')
       if [[ $gem_name ]]; then
@@ -115,7 +116,9 @@ function rails_request() {
       else
         file_and_line="$route_source"
       fi
-      open_with_editor "$file_and_line"
+      local file=${file_and_line%%:*}
+      local line=${file_and_line##*:}
+      echo_eval 'open_from_iterm %q %q' "$(realpath "$file")" "$line"
       ;;
   esac
 }
