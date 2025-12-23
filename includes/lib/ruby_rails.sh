@@ -65,15 +65,15 @@ function kill_spring() {
 
 # More functionality is in *_completions.zsh
 function rails_request() {
-  local method_and_uri=$1 # E.g., `GET /users/:id(.:format)`
+  local method_uri_format=$1 # E.g., `GET /users/:id(.:format)`
   local tool=${2:-postman}
 
   local method
-  method=$(echo "$method_and_uri" | cut -d ' ' -f 1)
+  method=$(echo "$method_uri_format" | cut -d ' ' -f 1)
 
-  local uri
-  uri=$(echo "$method_and_uri" | cut -d ' ' -f 2)
-  uri=$(echo "$uri" | sed -E 's/\(\.:format\)//')
+  local uri_and_format uri
+  uri_and_format=$(echo "$method_uri_format" | cut -d ' ' -f 2)
+  uri=$(echo "$uri_and_format" | sed -E 's/\(\.:format\)//')
 
   case "$tool" in
     curl)
@@ -90,8 +90,8 @@ function rails_request() {
 
     _edit-action)
       local uri_regex controller_and_action controller action file line
-      uri_regex=$(ruby -e "puts Regexp.new('$uri\W')")
-      controller_and_action=$(rg "$uri_regex.*\nController#Action\s*\|\s*(\S+)" \
+      uri_regex=$(ruby -e "puts Regexp.escape('$uri_and_format')")
+      controller_and_action=$(rg "$uri_regex\nController#Action\s*\|\s*(\S+)" \
         --multiline --only-matching --replace '$1' $RAILS_ROUTE_CACHE)
       controller=$(echo "$controller_and_action" | cut -d '#' -f 1)
       action=$(echo "$controller_and_action" | cut -d '#' -f 2)
@@ -104,8 +104,9 @@ function rails_request() {
 
     _edit-route)
       local uri_regex route_source gem_name file_and_line
-      uri_regex=$(ruby -e "puts Regexp.new('$uri\W')")
-      route_source=$(rg "$uri_regex.*\nController#Action.*\nSource Location\s*\|\s*(.+)" \
+      uri_regex=$(ruby -e "puts Regexp.escape('$uri_and_format')")
+      declare -p uri_regex 1>&2
+      route_source=$(rg "$uri_regex\nController#Action.*\nSource Location\s*\|\s*(.+)" \
         --multiline --only-matching --replace '$1' $RAILS_ROUTE_CACHE)
       gem_name=$(echo "$route_source" | rg '^(\S+)\s+\([\d.]+\)' --only-matching --replace '$1')
       if [[ $gem_name ]]; then
