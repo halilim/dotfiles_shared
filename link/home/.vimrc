@@ -1,4 +1,4 @@
-let g:is_root = $USER == 'root'
+let g:is_root = system("whoami") == 'root'
 
 set nocompatible        " We're running Vim, not Vi!
 set clipboard=unnamed   " Use system clipboard as default clipboard
@@ -491,6 +491,7 @@ let g:ale_echo_msg_format = '[%linter%] %code: %%s [%severity%]'
 " ftplugin versions seem to be not working (solargraph is still running)
 " let g:ale_php_phan_use_client = 1
 let g:ale_fixers = {
+  \ 'markdown': ['markdownlint'],
   \ 'ruby': ['rubocop'],
   \ 'zsh': ['shellcheck']
 \ }
