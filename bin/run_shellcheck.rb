@@ -14,7 +14,6 @@ files = Dir.glob(
     **/.inputrc
     **/.zprofile
     **/*.*sh
-    **/bin-termux/*
     **/bin/*
     setup
   ]
