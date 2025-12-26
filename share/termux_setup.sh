@@ -15,7 +15,7 @@ pkg install -y \
   git-delta \
   git \
   jq \
-  mise \
+  nodejs-lts \
   openssh \
   python \
   ripgrep \

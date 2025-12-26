@@ -108,8 +108,7 @@ unset num_procs
 if [[ ! ${PATH_MODIFIED:-} ]]; then
   # Global troubleshooting reminder: Some apps treat PATH as case-insensitive, causing problems when
   # a variable named lowercase `path` used in scripts or functions.
-  # ~/.local/bin: for mise on Linux
-  PATH="$HOME/.bun/bin:$PATH:$HOME/.local/bin:$HOME/bin"
+  PATH="$HOME/.bun/bin:$PATH:$HOME/bin"
   export PATH_MODIFIED=1
 fi
 
