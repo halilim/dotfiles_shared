@@ -18,10 +18,16 @@ DOTFILES_INCLUDE_LIBS+=(
   redis
 )
 
-OMZ_PLUGINS+=(macos)
+OMZ_PLUGINS=(
+  brew # Homebrew must be loaded before Mise, etc.
+  "${OMZ_PLUGINS[@]}"
+  macos
+)
 
 UPDATE_BACKUP_CMDS+=(
   update_open_tabs
   "$OPEN_CMD /Applications # Manually update the non-App Store, infrequently-opened, etc. apps"
   'iterm_tab . update_chrome_notes'
+  'brew update --quiet'
+  'brew upgrade --quiet' # Removed --greedy because apps auto-download in the background anyway
 )

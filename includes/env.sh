@@ -69,6 +69,7 @@ export OMZ_PLUGINS=(
   git-extras
   globalias
   httpie
+  mise
   rails
   rake-fast
   ruby
@@ -86,6 +87,7 @@ export UPDATE_BACKUP_CMDS=(
   omz_update_custom
   update_bat_syntaxes
   update_completions
+  update_mise
 )
 
 if [[ $OSTYPE == darwin* ]]; then

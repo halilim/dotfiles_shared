@@ -12,7 +12,7 @@ export LAUNCH_DARKLY_URL='https://app.launchdarkly.com/projects/default/flags/%s
 export RUBY_CMD_PREFIX='bin/'
 
 DOTFILES_INCLUDE_LIBS+=(example_lib gpg)
-OMZ_PLUGINS+=(bun mise npm)
+OMZ_PLUGINS+=(bun npm)
 
 UPDATE_BACKUP_CMDS=(
   # Prepend

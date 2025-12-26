@@ -113,8 +113,7 @@ alias pg_fg='postgres -D "$(brew --prefix)"/var/postgres'
 # Make high-resolution screenshots etc. more shareable
 alias png2jpg50="convert ./*.png -resize '50%' -set filename:base '%[basename]' '%[filename:base].jpg'"
 
-# cSpell:ignore psgw rgfh rghi rgchi rgnt rgsw rgwc rgws sshc sshconf
-
+# cSpell:ignore psgw
 alias psf='ps aux | fzf'
 alias psg='ps aux | grep -v " grep " | grep -i'
 alias psgw='ps aux | grep -v " grep " | grep -i -w'
@@ -123,20 +122,18 @@ alias psgw='ps aux | grep -v " grep " | grep -i -w'
 alias reset_markdown_todo='"$GNU_SED" -i -E '"'s/^([*-]) \[[^]]?\]/\1 [ ]/'"
 
 # Ripgrep
+# cSpell:ignore rgni rgnic rgnt rgsw rgwc rgws
 alias rg3='rg -C 1' # Show 1 line before and after
 alias rga2='rg -A 2' # Show 2 lines after
 alias rga3='rg -A 3' # Show 3 lines after
 alias rgb2='rg -B 2' # Show 2 lines before
 alias rgb3='rg -B 3' # Show 3 lines before
-alias rgc='rg -s'
+alias rgc='rg --case-sensitive'
 alias rgf="rg -F" # Treat the pattern as a literal string instead of a regular expression
-alias rgh='rg -.' # Include dotfiles
-alias rgfh='rg -.F'
-alias rghi='rg -. --no-ignore'
-alias rgchi='rg -.s --no-ignore'
+alias rgni='rg --no-ignore'
+alias rgnic='rg --no-ignore --case-sensitive'
 alias rgnt="rg -g '!features/' -g '!spec/' -g '!test/' -g '!__tests__/' -g '!*.test.*'"
 alias rgw='rg -w' # Word
-alias rgwh='rg -.w' # cSpell:disable-line
 # shellcheck disable=SC2139
 alias {rgsw,rgwc,rgws}='rg -sw' # Word and case sensitive
 
@@ -158,6 +155,7 @@ unset shellspec_cmd
 
 alias spt='$SPEEDTEST_CMD'
 
+# cSpell:ignore sshc
 # shellcheck disable=SC2139
 alias {sshc,ssh_copy_key,copy_ssh_key}='cb < ~/.ssh/id_*.pub'
 alias sshconf='vim_open ~/.ssh/config'

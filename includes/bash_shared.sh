@@ -19,3 +19,13 @@ fi
 
 # shellcheck source=/dev/null
 . "$DOTFILES_INCLUDES"/aliases.sh
+
+brew_bin=/opt/homebrew/bin/brew
+if [[ -e "$brew_bin" ]]; then
+  eval "$($brew_bin shellenv)"
+fi
+unset brew_bin
+
+if command -v mise > /dev/null 2>&1; then
+  eval "$(mise activate bash)"
+fi

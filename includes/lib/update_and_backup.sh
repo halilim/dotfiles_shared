@@ -22,6 +22,15 @@ $(color green '1. Bookmark Manager (⌥⌘B) > ⋮ > Export bookmarks > Go to di
 $(color green '2. Dark Reader > More > All settings > Advanced > Export Settings')"
 }
 
+function update_mise() {
+  if ! command -v mise > /dev/null 2>&1; then
+    return
+  fi
+
+  mise plugin up --quiet
+  mise up --bump
+}
+
 function update_open_tabs() {
   iterm_tab "$DOTFILES_SHARED" '# git add/commit/push'
   iterm_tab "$DOTFILES_CUSTOM" '# git add/commit/push'

@@ -89,10 +89,8 @@ function rails_request() {
       ;;
 
     _edit-action)
-      local uri_regex controller_and_action controller action file line
-      uri_regex=$(ruby -e "puts Regexp.escape('$uri_and_format')")
-      controller_and_action=$(rg "$uri_regex\nController#Action\s*\|\s*(\S+)" \
-        --multiline --only-matching --replace '$1' $RAILS_ROUTE_CACHE)
+      local controller_and_action controller action file line
+      controller_and_action=$(rails_request_find "$method" "$uri_and_format" '\s*\|\s*(\S+)')
       controller=$(echo "$controller_and_action" | cut -d '#' -f 1)
       action=$(echo "$controller_and_action" | cut -d '#' -f 2)
       # shellcheck disable=SC2012
@@ -103,11 +101,8 @@ function rails_request() {
       ;;
 
     _edit-route)
-      local uri_regex route_source gem_name file_and_line
-      uri_regex=$(ruby -e "puts Regexp.escape('$uri_and_format')")
-      declare -p uri_regex 1>&2
-      route_source=$(rg "$uri_regex\nController#Action.*\nSource Location\s*\|\s*(.+)" \
-        --multiline --only-matching --replace '$1' $RAILS_ROUTE_CACHE)
+      local route_source gem_name file_and_line
+      route_source=$(rails_request_find "$method" "$uri_and_format" '.*\nSource Location\s*\|\s*(.+)')
       gem_name=$(echo "$route_source" | rg '^(\S+)\s+\([\d.]+\)' --only-matching --replace '$1')
       if [[ $gem_name ]]; then
         local gem_path relative_path
@@ -125,6 +120,12 @@ function rails_request() {
 }
 # shellcheck disable=SC2139
 alias {rar,rbr}='rails_request'
+
+function rails_request_find() {
+  local method=${1?} uri_and_format=${2?} regex_suffix=${3?}
+  rg "Verb\s*\|\s*$method\nURI\s*\|\s*$(ruby_escape_regex "$uri_and_format")\nController#Action$regex_suffix" \
+    --multiline --no-line-number --only-matching --replace '$1' $RAILS_ROUTE_CACHE
+}
 
 # Roll back branch-specific migrations before switching to main
 function rails_reset_to_main() {
@@ -231,3 +232,7 @@ function ruby_cd_pull_migrate() {
 }
 # shellcheck disable=SC2139
 alias {pim,pull_install_migrate}=ruby_cd_pull_migrate
+
+function ruby_escape_regex() {
+  ruby -e 'puts Regexp.escape(ARGV[0])' "$1"
+}
