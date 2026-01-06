@@ -190,6 +190,8 @@
   "git.mergeEditor": true,
   "git.openRepositoryInParentFolders": "never",
 
+  "githd.logView.expressMode": true, // cSpell:disable-line
+
   "github.copilot.advanced": {},
   "github.copilot.enable": {
     "*": true,

@@ -48,6 +48,8 @@ export DOTFILES_INCLUDE_LIBS=(
   which
 )
 
+export FORGIT_NO_ALIASES=1
+
 # Disabled:
 #   * direnv: Breaks Powerlevel10k instant prompt, added to .zshrc manually
 #   * docker & docker-compose: Has legacy completion logic, not needed (docker itself has completions)
@@ -65,6 +67,7 @@ export OMZ_PLUGINS=(
   bgnotify
   bundler
   common-aliases
+  forgit
   git
   git-extras
   globalias
