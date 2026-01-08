@@ -12,7 +12,7 @@ fi
 
 # cSpell:ignore biq bebr
 alias bundle_conf='$EDITOR ~/.bundle/config'
-alias b='bundle'
+alias b='bundle install'
 alias {biq,bq}='bundle install --quiet'
 alias bebr='bundle exec brakeman'
 alias bep='bundle exec puma'
