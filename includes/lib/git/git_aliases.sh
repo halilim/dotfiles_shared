@@ -44,6 +44,8 @@ alias {gih,install_git_hooks}='git config core.hooksPath .githooks'
 
 # cSpell:ignore glgn
 alias gg="git log -G '\Wchange_regex\W' -- old_or_current_path"
+# shellcheck disable=SC2139
+alias {glcb,git_last_commit_on_branch}='git rev-parse --verify' # cSpell:disable-line
 alias glg='git log --graph --stat'
 alias glgn="git log --all --name-status -- '**/*file*'"
 

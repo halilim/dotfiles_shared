@@ -87,6 +87,9 @@ alias mdiff='mine diff' # cSpell:disable-line
 alias mi='mediainfo'
 alias mii='mise install'
 alias mil='mise list'
+# shellcheck disable=SC2139
+# tv is from 'bat .tool-versions'
+alias {milc,tv}='mise list --current' # cSpell:disable-line
 alias mit='mise trust'
 alias miu='mise uninstall'
 alias myip='my_ips'
@@ -166,12 +169,11 @@ alias taf="tail -f"
 alias taf50="tail -n50 -f"
 alias taf100="tail -n100 -f"
 
+alias th='tree -a'
+
 alias tr1="traceroute 1.1.1.1"
 alias tr192="traceroute 192.168.1.1"
 alias trg='traceroute google.com'
-
-alias th='tree -a'
-alias tv='bat .tool-versions'
 
 alias v='vim_open'
 alias sv='SUDO=1 vim_open'

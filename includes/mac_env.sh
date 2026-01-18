@@ -27,7 +27,7 @@ OMZ_PLUGINS=(
 UPDATE_BACKUP_CMDS+=(
   update_open_tabs
   "$OPEN_CMD /Applications # Manually update the non-App Store, infrequently-opened, etc. apps"
-  'iterm_tab . update_chrome_notes'
+  'iterm_tab . chrome_backup_notes'
   'brew update --quiet'
   'brew upgrade --quiet' # Removed --greedy because apps auto-download in the background anyway
 )

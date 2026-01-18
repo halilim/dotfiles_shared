@@ -16,7 +16,7 @@ function update_and_backup() {
   )
 }
 
-function update_chrome_notes() {
+function chrome_backup_notes() {
   FORCE_COLOR=1 echo "Chrome backup directory: $(color yellow "$DOTFILES_CUSTOM"/backup/chrome)
 $(color green '1. Bookmark Manager (⌥⌘B) > ⋮ > Export bookmarks > Go to dir (⇧⌘G) > ⌘V')
 $(color green '2. Dark Reader > More > All settings > Advanced > Export Settings')"
@@ -28,7 +28,7 @@ function update_mise() {
   fi
 
   mise plugin up --quiet
-  mise up --bump
+  mise up
 }
 
 function update_open_tabs() {
