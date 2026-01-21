@@ -1,65 +1,67 @@
-" source ~/.vimrc
-
-" START: depends on .vimrc - toggle based on the sourcing status of .vimrc
-
 set clipboard+=unnamed
 
-set showcmd             " show command in the last line
-
-set hlsearch            " highlight matches
-set ignorecase          " case-insensitive search by default
-set smartcase           " except when an upper-case letter used in the search
-set incsearch           " search as characters are entered
-
-" nmap * <Action>(FindWordAtCaret)
-" nmap n <Action>(FindNext)
-" nmap N <Action>(FindPrevious)
-
-" END: depends on .vimrc
-
-let mapleader=","
+set hlsearch " highlight matches
+set ideajoin " IdeaVim: join via IDE
+set ignorecase " case-insensitive search by default
+set incsearch " search as characters are entered
+set showcmd " show command in the last line
+set smartcase " except when an upper-case letter used in the search
 
 " Plugins
 set commentary
 set surround
 
-" https://plugins.jetbrains.com/plugin/25899-vim-switch
-set switch
-let g:switch_definitions = 'group:basic,group:javascript,group:rspec,group:ruby,group:markdown'
-nnoremap - :Switch<CR>
-
-set ideajoin
+let mapleader=","
 
 " For <Action>s: Cmd+Shift+P > IdeaVim: Track Action IDs
+
+map <C-J> <Action>(GotoNextError)
+map <C-K> <Action>(GotoPreviousError)
 
 " Emulate vim-wordmotion
 map <leader>w [w
 map <leader>e ]w
 map <leader>b [b
 
-map <Leader><space> :nohl<CR>
+map <leader><space> :nohl<CR>
 
 " TODO: No direct "ConfigureKeymap" action yet
-map <Leader>,k <Action>(ChangeKeymap)
-map <Leader>,v :e ~/.ideavimrc<CR>
+map <leader><leader>k <Action>(ChangeKeymap)
+map <leader><leader>v :e ~/.ideavimrc<CR>
 
-map <Leader>a <Action>(GotoTest)
-map <C-J> <Action>(GotoNextError)
-map <C-K> <Action>(GotoPreviousError)
-" map <leader>c<space> <Plug>(commentary-gcc)
-map <Leader>c <Action>(CommentByLineComment)
-map <Leader>cp :call CopyGitPathLine()<CR>
-map <Leader>cps :call CopyGitPathLineS()<CR>
-map <Leader>da <Action>(CloseAllEditors)
-map <Leader>de <Action>(CloseAllEditorsButActive)
-map <Leader>% <Action>(EditorCodeBlockEnd)
-map <Leader><Leader>% <Action>(EditorCodeBlockStart)
-map <Leader>rn <Action>(RenameElement)
-map <Leader>t <Action>(ActivateStructureToolWindow)
-map <Leader>T <Action>(SearchEverywhere)
+map <leader>% <Action>(EditorCodeBlockEnd)
+map <leader><leader>% <Action>(EditorCodeBlockStart)
+map <leader>T <Action>(SearchEverywhere)
+map <leader>a <Action>(GotoTest)
+map <leader>c <Action>(CommentByLineComment)
+map <leader>cp :call CopyGitPathLine()<CR>
+map <leader>cps :call CopyGitPathLineS()<CR>
+map <leader>da <Action>(CloseAllEditors)
+map <leader>de <Action>(CloseAllEditorsButActive)
+map <leader>rn <Action>(RenameElement)
+map <leader>t <Action>(ActivateStructureToolWindow)
+
 map [m <Action>(MethodDown)
 map ]m <Action>(MethodUp)
 map g] <Action>(QuickImplementations)
+
+" https://plugins.jetbrains.com/plugin/16166-toggler
+map - <Action>(ToggleAction)
+map + <Action>(ToggleActionReverse)
+
+function! CopyGitPath()
+  exec 'action CopyPathFromRepositoryRootProvider'
+endfunction
+
+function! CopyGitPathLine()
+  call CopyGitPath()
+  let @+ = @+ . ':' . line('.')
+endfunction
+
+function! CopyGitPathLineS()
+  call CopyGitPathLine()
+  let @+ = 's ' . @+
+endfunction
 
 function! s:MapBookmark(char)
   let l:bookmark = toupper(a:char)
@@ -75,17 +77,3 @@ endfor
 for c in "abcdefghijklmnopqrstuvwxyz"
   call s:MapBookmark(c)
 endfor
-
-function! CopyGitPath()
-  exec 'action CopyPathFromRepositoryRootProvider'
-endfunction
-
-function! CopyGitPathLine()
-  call CopyGitPath()
-  let @+ = @+ . ':' . line('.')
-endfunction
-
-function! CopyGitPathLineS()
-  call CopyGitPathLine()
-  let @+ = 's ' . @+
-endfunction
