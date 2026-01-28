@@ -1,10 +1,20 @@
 alias fn='$EDITOR "$DOTFILES_INCLUDES"/lib/functions.sh'
 
 function bak_toggle() {
-  if [[ $1 == *.bak ]]; then
-    echo_eval 'mv %q %q' "$1" "${1%.bak}"
+  local file=$1
+
+  if [[ ! -e $file ]]; then
+    file=$file.bak
+  fi
+
+  if [[ ! -e $file ]]; then
+    return
+  fi
+
+  if [[ $file == *.bak ]]; then
+    echo_eval 'mv %q %q' "$file" "${file%.bak}"
   else
-    echo_eval 'mv %q %q' "$1" "$1.bak"
+    echo_eval 'mv %q %q' "$file" "$file.bak"
   fi
 }
 
@@ -251,6 +261,17 @@ alias dfn='diff_file_names'
 
 function md5_of_str() {
   printf '%s' "$1" | md5
+}
+
+# Interactive Zsh: OMZ > mise plugin, Non-interactive Zsh & all Bash: this helper
+function mise_activate() {
+  if command -v mise > /dev/null 2>&1; then
+    if [ -n "${ZSH_VERSION:-}" ]; then
+      eval "$(mise activate zsh)"
+    else
+      eval "$(mise activate bash)"
+    fi
+  fi
 }
 
 function date_older_than() {

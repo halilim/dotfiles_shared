@@ -604,7 +604,7 @@ fun! s:show_documentation()
 endfun
 
 " Symbol renaming.
-nmap <leader>rn <Plug>(coc-rename)
+nmap <leader>r <Plug>(coc-rename)
 
 " Formatting selected code.
 xmap <leader>f  <Plug>(coc-format-selected)
@@ -638,7 +638,7 @@ fun! s:on_lsp_buffer_enabled() abort
   nmap <buffer> gr <plug>(lsp-references)
   nmap <buffer> gi <plug>(lsp-implementation)
   nmap <buffer> gt <plug>(lsp-type-definition)
-  nmap <buffer> <leader>rn <plug>(lsp-rename)
+  nmap <buffer> <leader>r <plug>(lsp-rename)
   nmap <buffer> [g <plug>(lsp-previous-diagnostic)
   nmap <buffer> ]g <plug>(lsp-next-diagnostic)
   nmap <buffer> K <plug>(lsp-hover)
@@ -657,6 +657,12 @@ augroup lsp_install
   autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
 augroup END
 " End: Plugin settings for prabirshrestha/vim-lsp
+
+" ===== Plugin settings for mattn/vim-lsp-settings =====
+let g:lsp_settings = {
+\  'ruby-lsp': {},
+\}
+" End: Plugin settings for mattn/vim-lsp-settings
 
 " ===== Plugin settings for preservim/vim-markdown =====
 let g:vim_markdown_folding_disabled = 1

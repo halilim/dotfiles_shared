@@ -1,0 +1,12 @@
+// Project tasks configuration. See https://zed.dev/docs/tasks for documentation.
+
+[
+  // https://zed.dev/docs/languages/ruby#running-test
+  {
+    "label": "rspec $ZED_RELATIVE_FILE:$ZED_ROW",
+    "command": "bundle",
+    "args": ["exec", "rspec", "\"$ZED_RELATIVE_FILE:$ZED_ROW\""],
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "tags": ["ruby-rspec"]
+  }
+]

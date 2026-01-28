@@ -30,6 +30,14 @@ alias brst='brew services stop'
 alias {brup,brupg}='brew upgrade'
 alias brupd='brew update'
 
+# Interactive Zsh: OMZ > brew plugin, Non-interactive Zsh & all Bash: this helper
+function brew_activate() {
+  local brew_bin=/opt/homebrew/bin/brew
+  if [[ -e "$brew_bin" ]]; then
+    eval "$($brew_bin shellenv)"
+  fi
+}
+
 # Most functionality is in brew_completions.zsh
 function brew_service_log() {
   local log_path=$1

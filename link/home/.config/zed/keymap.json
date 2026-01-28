@@ -48,22 +48,32 @@
   }},
 
   { "bindings": { "alt-cmd-,": "zed::OpenKeymap" }},
+
   {
     "context": "!ContextEditor > (Editor && mode == full)",
     "bindings": {
       "cmd-e": "pane::RevealInProjectPanel"
     }
   },
-  {
-    "context": "AgentPanel",
-    "bindings": {
-      "cmd-e": "project_panel::ToggleFocus"
-    }
-  },
+
   {
     "context": "Workspace",
     "bindings": {
-      "cmd-e": "project_panel::ToggleFocus"
+      "cmd-e": "project_panel::ToggleFocus",
+      "cmd-shift-r": "debugger::Rerun"
+    }
+  },
+
+  {
+    "context": "(Workspace && !Terminal)",
+    "bindings": {
+      "cmd-r": [ "task::Rerun", { "reevaluate_context": false } ]
+    }
+  },
+  {
+    "context": "((vim_mode == helix_normal || vim_mode == helix_select) && !menu)",
+    "bindings": {
+      ", r n": "editor::Rename"
     }
   }
 ]

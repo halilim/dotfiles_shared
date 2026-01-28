@@ -14,7 +14,7 @@
   "session": { "trust_all_worktrees": true },
   "show_whitespaces": "trailing",
   "tab_size": 2,
-  "tabs": { "close_position": "left", "file_icons": true, "git_status": true },
+  "tabs": { "close_position": "right", "file_icons": true, "git_status": true },
   "telemetry": { "diagnostics": true, "metrics": false },
   "theme": { "mode": "system", "light": "Ayu Light", "dark": "Ayu Dark" },
   "ui_font_size": 16,

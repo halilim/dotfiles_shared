@@ -1,5 +1,19 @@
 alias envsh='$EDITOR "$DOTFILES_INCLUDES"/env.sh'
 
+function append_path() {
+  local path_to_add="$1"
+  if [[ $PATH != *"$path_to_add"* ]]; then
+    PATH="$PATH:$path_to_add"
+  fi
+}
+
+function prepend_path() {
+  local path_to_add="$1"
+  if [[ $PATH != *"$path_to_add"* ]]; then
+    PATH="$path_to_add:$PATH"
+  fi
+}
+
 # Shared: required, Custom: optional
 function source_with_custom() {
   local file="$DOTFILES_INCLUDES"/"$1"
@@ -107,13 +121,8 @@ export BUNDLE_JOBS=$num_procs
 export MAKEFLAGS="-j$num_procs"
 unset num_procs
 
-# Prevent re-sourcing dot files from duplicating paths
-if [[ ! ${PATH_MODIFIED:-} ]]; then
-  # Global troubleshooting reminder: Some apps treat PATH as case-insensitive, causing problems when
-  # a variable named lowercase `path` used in scripts or functions.
-  PATH="$HOME/.bun/bin:$PATH:$HOME/bin"
-  export PATH_MODIFIED=1
-fi
+prepend_path "$HOME"/.bun/bin
+append_path "$HOME"/bin
 
 # https://ruby.github.io/rdoc/RI_rdoc.html
 export RI="--format ansi"

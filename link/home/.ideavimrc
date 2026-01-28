@@ -38,7 +38,7 @@ map <leader>cp :call CopyGitPathLine()<CR>
 map <leader>cps :call CopyGitPathLineS()<CR>
 map <leader>da <Action>(CloseAllEditors)
 map <leader>de <Action>(CloseAllEditorsButActive)
-map <leader>rn <Action>(RenameElement)
+map <leader>r <Action>(RenameElement)
 map <leader>t <Action>(ActivateStructureToolWindow)
 
 map [m <Action>(MethodDown)

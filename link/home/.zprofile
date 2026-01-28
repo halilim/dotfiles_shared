@@ -20,3 +20,9 @@ fi
 
 # shellcheck disable=SC1091
 . "$DOTFILES_SHARED"/includes.sh
+
+# Make Homebrew > mise > LSPs, etc. available to Vim
+if [[ $- != *i* ]]; then
+  brew_activate
+  mise_activate
+fi

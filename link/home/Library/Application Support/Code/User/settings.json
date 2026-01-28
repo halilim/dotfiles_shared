@@ -453,7 +453,7 @@
       "before": ["leader", "leader", "k"],
       "commands": ["workbench.action.openGlobalKeybindingsFile"]
     },
-    { "before": ["leader", "r", "n"], "commands": ["editor.action.rename"] },
+    { "before": ["leader", "r"], "commands": ["editor.action.rename"] },
     { "before": ["leader", "t"], "commands": ["workbench.action.gotoSymbol"] },
     { "before": ["leader", "T"], "commands": ["workbench.action.showAllSymbols"] },
     { "before": ["leader", "w"], "commands": ["workbench.action.closeActiveEditor"] },
