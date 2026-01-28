@@ -31,6 +31,8 @@ function get_editor_titles() {
     window_names 'Visual Studio Code.app' 'Code'
   elif [[ $EDITOR == code-insiders || $EDITOR == */code-insiders  ]]; then
     window_names 'Visual Studio Code - Insiders.app' 'Code - Insiders'
+  elif [[ $EDITOR = */zed ]]; then
+    window_names 'Zed'
   fi
 }
 

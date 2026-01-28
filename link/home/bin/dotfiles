@@ -10,7 +10,7 @@ IFS=$'\n\t'
 
 function d_bootstrap() {
   local candidate candidate_path vim_path='' editor_path=''
-  for candidate in code-insiders code mvim gvim vim; do
+  for candidate in code-insiders code zed mvim gvim vim; do
     if ! candidate_path=$(command -v $candidate); then
       continue
     fi

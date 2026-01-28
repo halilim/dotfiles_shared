@@ -169,11 +169,14 @@ nnoremap <leader>cps :call CopyAndEcho('s ' . GitPathLine())<CR>
 " nnoremap <leader>dd :bp\|bd#<CR>
 nnoremap q :bd<CR>
 nnoremap <leader>d :bd<CR>
-nnoremap <leader>dd :bd<CR>
-" See .gvimrc for <D-w> alias
+nnoremap <leader>d! :bd!<CR>
+
+" Close/Delete All - See .gvimrc for <D-w> alias
 nnoremap <leader>da :%bd<CR>
-" https://stackoverflow.com/a/42071865/372654
+
+" Close/Delete Others/Except current - https://stackoverflow.com/a/42071865/372654
 nnoremap <leader>de :%bd\|e#<CR>
+nnoremap <leader>do :%bd\|e#<CR>
 
 fun! MyFZF(query = '')
   let dir = getcwd()

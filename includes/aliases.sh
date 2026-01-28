@@ -99,9 +99,9 @@ alias mysql_restore='mysql -uroot -p db_name < db_name.sql'
 
 alias ngf='nginx_fg'
 
-alias notes='$EDITOR ~/Desktop/notes.md'
-# cSpell:ignore notesv
-alias notesv='vim_open ~/Desktop/notes.md'
+alias n='bat ~/Desktop/notes.md'
+alias ne='$EDITOR ~/Desktop/notes.md'
+alias nev='vim_open ~/Desktop/notes.md'
 
 alias o='$OPEN_CMD'
 
@@ -158,7 +158,7 @@ unset shellspec_cmd
 
 alias spt='$SPEEDTEST_CMD'
 
-# cSpell:ignore sshc
+# cSpell:ignore sshc sshconf
 # shellcheck disable=SC2139
 alias {sshc,ssh_copy_key,copy_ssh_key}='cb < ~/.ssh/id_*.pub'
 alias sshconf='vim_open ~/.ssh/config'

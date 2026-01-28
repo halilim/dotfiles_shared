@@ -12,6 +12,8 @@ function open_with_editor() {
     # https://code.visualstudio.com/docs/editor/command-line#_core-cli-options
     # https://github.com/microsoft/vscode/issues/176343 No multiple -g's :(
     cmd="$EDITOR -g"
+  elif [[ $EDITOR == */*zed ]]; then
+    cmd="$EDITOR"
   else
     cmd='open'
   fi
