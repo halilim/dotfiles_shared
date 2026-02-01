@@ -7,9 +7,15 @@ export JS_PM=bun # bun|npm
 export JS_PMX=bunx # bunx|npx
 # Replace ld_client with your LaunchDarkly client, or the whole command
 export LAUNCH_DARKLY_KEYS_CMD=(bin/rails runner 'puts ld_client.all_features.keys')
-# %s will be replaced with the flag key
-export LAUNCH_DARKLY_URL='https://app.launchdarkly.com/projects/default/flags/%s/targeting?env=production&env=development&selected-env=production'
 export RUBY_CMD_PREFIX='bin/'
+
+# shellcheck disable=SC2016
+POST_INIT_HOOKS+=(
+  # %s will be replaced with the flag key
+  # LAUNCH_DARKLY_PROJECT can be customized per project (by mise, direnv, etc.),
+  #   but it needs to be set after they are loaded.
+  'export LAUNCH_DARKLY_URL="https://app.launchdarkly.com/projects/${LAUNCH_DARKLY_PROJECT:-default}/flags/%s/targeting?env=production&env=development&selected-env=production"'
+)
 
 DOTFILES_INCLUDE_LIBS+=(example_lib gpg)
 OMZ_PLUGINS+=(bun npm)

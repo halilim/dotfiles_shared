@@ -441,6 +441,8 @@
     { "before": ["leader", "c", "space"], "commands": ["editor.action.commentLine"] },
     { "before": ["leader", "d", "a"], "commands": ["workbench.action.closeAllEditors"] },
     { "before": ["leader", "d", "e"], "commands": ["workbench.action.closeOtherEditors"] },
+    { "before": ["leader", "d", "o"], "commands": ["workbench.action.closeOtherEditors"] },
+    { "before": ["leader", "d", "r"], "commands": ["workbench.action.closeEditorsToTheRight"] },
     { "before": ["leader", "d"], "commands": ["workbench.action.closeActiveEditor"] },
     { "before": ["leader", "f"], "commands": ["workbench.action.quickOpen"] },
 

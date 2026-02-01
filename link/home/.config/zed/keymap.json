@@ -45,6 +45,7 @@
 
     ", d a": [ "pane::CloseAllItems", { "close_pinned": false } ],
     ", d e": [ "pane::CloseOtherItems", { "close_pinned": false } ],
+    ", d r": [ "pane::CloseItemsToTheRight", { "close_pinned": false } ],
   }},
 
   { "bindings": { "alt-cmd-,": "zed::OpenKeymap" }},
