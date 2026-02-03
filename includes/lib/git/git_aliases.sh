@@ -86,10 +86,11 @@ alias {gro,git_reset_to_origin}='git fetch origin && prompt "Hard reset to origi
 
 alias gsm='git submodule'
 
-# cSpell:ignore gsta gstdiff gstp gstpb gsts
+# cSpell:ignore gsta gstdiff gstl gstp gstpb gsts
 # Original gsta (omz/git.plugin.zsh) sounds like apply :)
 alias gsta="git stash apply"
 alias gstdiff='git stash show --patch'
+alias gstl='git stash list --date=iso'
 alias gstp="git stash push --include-untracked -m"
 alias gstpb='git stash push --include-untracked -m"$(git rev-parse --abbrev-ref HEAD)"'
 # alias gsts="git stash save"
