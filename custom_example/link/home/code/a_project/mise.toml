@@ -1,0 +1,5 @@
+[env]
+# The first %s will be replaced with the project key, and the second %s with the flag key
+# Replace environment keys as needed
+LAUNCH_DARKLY_FLAG_URL = "https://app.launchdarkly.com/projects/%s/flags/%s/targeting?env=production&env=development&selected-env=production"
+LAUNCH_DARKLY_PROJECT = 'foo'
