@@ -27,11 +27,11 @@ function launch_darkly_flag_keys() {
   fi
 
   local project=${LAUNCH_DARKLY_PROJECT:-default}
-  local nextLink="https://app.launchdarkly.com/api/v2/flags/$project?limit=100"
+  local nextPath="/api/v2/flags/$project?limit=100"
   local currentJson line
 
-  while [[ $nextLink && $nextLink != 'null' ]]; do
-    if ! currentJson=$(echo_eval 'curl -L --fail-with-body --no-progress-meter %q -H %q' "$nextLink" "Authorization: $token"); then
+  while [[ $nextPath && $nextPath != 'null' ]]; do
+    if ! currentJson=$(echo_eval 'curl -L --fail-with-body --no-progress-meter %q -H %q' "https://app.launchdarkly.com$nextPath" "Authorization: $token"); then
       jq <<< "$(printf %s "$currentJson")"
       return 1
     fi
@@ -39,6 +39,6 @@ function launch_darkly_flag_keys() {
     while IFS= read -r line; do
       echo "$line"
     done <<< "$(printf %s "$currentJson" | jq -r '.items.[].key')"
-    nextLink=$(printf %s "$currentJson" | jq -r '._links.next.href')
+    nextPath=$(printf %s "$currentJson" | jq -r '._links.next.href')
   done
 }
