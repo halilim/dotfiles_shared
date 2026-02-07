@@ -67,5 +67,5 @@ function update_completions() {
 }
 
 function update_vim() {
-  $VIM_PATH +'PlugUpgrade | PlugUpdate'
+  $VIM_PATH +'PlugUpgrade | PlugUpdate | q'
 }
