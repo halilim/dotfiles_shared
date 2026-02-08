@@ -69,12 +69,13 @@ function is_in_rubymine_titles() {
 
   if [[ $git_dir ]]; then
     local rubymine_title
-    for rubymine_title in ${rubymine_titles//,/ }; do
+
+    while read -d ', ' -r rubymine_title; do
       # Format: `<project>( – <file>)?` - not a regular dash
       if [[ $rubymine_title == "$git_dir" || $rubymine_title == "$git_dir – "* ]]; then
         return 0
       fi
-    done
+    done < <(printf '%s, ' "$rubymine_titles")
   fi
 
   return 1
@@ -96,14 +97,14 @@ function is_in_editor_titles() {
   debug_vars parent_path parent_dir project_path project_dir
 
   local editor_title
-  for editor_title in ${editor_titles//,/ }; do
+  while read -d ', ' -r editor_title; do
     if [[ $editor_title &&
-          ($git_dir && $editor_title == *$git_dir)
-          || ($parent_dir && $editor_title == *$parent_dir)
-          || ($project_dir && $editor_title == *$project_dir) ]]; then
+          ($git_dir && $editor_title == *" $git_dir "*)
+          || ($parent_dir && $editor_title == *" $parent_dir "*)
+          || ($project_dir && $editor_title == *" $project_dir "*) ]]; then
       return 0
     fi
-  done
+  done < <(printf '%s, ' "$editor_titles")
 
   return 1
 }

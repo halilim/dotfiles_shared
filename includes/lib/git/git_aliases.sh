@@ -7,6 +7,8 @@ alias gan='git add -N .'
 
 alias gcpn='git cherry-pick --no-commit' # cSpell:ignore gcpn
 
+alias gcl='git clone'
+
 # cSpell:ignore gcae gcane gcano gcanev gcanov gcbu gcem gcmb gcemb
 alias gcae='git commit --amend --edit'
 # shellcheck disable=SC2139
