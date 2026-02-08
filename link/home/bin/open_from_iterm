@@ -1,7 +1,7 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
 # 1. iTerm2 > Profiles > Advanced > Semantic History > Run command...
-#    `~/bin/open_from_iterm \1 \2 \(semanticHistory.columnNumber)`
+#    `zsh ~/bin/open_from_iterm \1 \2 \(semanticHistory.columnNumber)`
 # 2. RubyMine > Cmd+Shift+P > Create Command-line Launcher
 # 3. VS Code > Cmd+Shift+P > Shell Command: Install 'code' command in PATH
 # Note: Limited environment, bare `mine`/`code` doesn't work
@@ -24,6 +24,8 @@ debug_print '------------------------------'
 if is_debug_enabled; then
   export VERBOSE=1
 fi
+
+# debug_vars BASH_VERSION ZSH_VERSION
 
 abs_path=${1:?}
 line=${2:-}

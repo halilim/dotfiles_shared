@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
 function is_debug_enabled() {
   [[ -f ~/bin/open_from_iterm.debug ]]

@@ -16,17 +16,11 @@ bash_specs+=("${both_specs[@]}")
 zsh_specs=(spec/**/*_spec.zsh)
 zsh_specs+=("${both_specs[@]}")
 
-mac_sh_specs=(
-  spec/link/home/bin/open_from_iterm_spec.sh # iTerm2 apparently runs this with sh, which is Bash 3.2
-)
-
 if [[ ${DRY_RUN:-} ]]; then
   echo 'Bash specs:'
   printf '%s\n' "${bash_specs[@]}" | sort
   printf '\nZsh specs:\n'
   printf '%s\n' "${zsh_specs[@]}" | sort
-  printf '\nmacOS sh specs:\n'
-  printf '%s\n' "${mac_sh_specs[@]}" | sort
 else
   # TODO: Aborted with status code [executor: 126] [reporter: 1] [error handler: 0]
   if [ -v TERMUX_VERSION ]; then
@@ -42,8 +36,4 @@ else
   pattern='*_spec.*sh'
   shellspec --shell bash --pattern "$pattern" "${bash_specs[@]}" "$@"
   shellspec --shell zsh --pattern "$pattern" "${zsh_specs[@]}" "$@"
-
-  if [[ $OSTYPE == 'darwin'* ]]; then
-    shellspec --shell sh --pattern "$pattern" "${mac_sh_specs[@]}" "$@"
-  fi
 fi
