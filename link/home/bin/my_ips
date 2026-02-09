@@ -16,19 +16,11 @@ readonly WIFI_IP_ICON=󰑩
 readonly ROUTER_ICON=󱇢
 readonly EXTERNAL_ICON=
 readonly ARROW_ICON=
+readonly TUNNEL_ICON=󱠽
 
-export ROUTED_DEVICE
-ROUTED_DEVICE=$(route get 1.1.1.1 | rg -oU 'interface:\s*(\S+)' -r '$1')
-
-function get_external_ip() {
-  local ip=$1
-  # TODO: might cache proxies, see my_external_ip
-  dig @ns1.google.com TXT o-o.myaddr.l.google.com +short -b "$ip" | tr -d '"'
-}
-
-function get_info() {
-  local info=$1 label=$2 value
-  value=$(echo "$info" | rg --multiline --only-matching "^$label: (\S+)" -r '$1')
+function get_field() {
+  local output=$1 label=$2 value
+  value=$(echo "$output" | rg --multiline --only-matching "^\s*$label:\s*(\S+)" -r '$1' --color=never)
   if [[ $value == 'none' ]]; then
     echo ''
   else
@@ -36,16 +28,35 @@ function get_info() {
   fi
 }
 
+export ROUTED_DEVICE
+route_output=$(route get 1.1.1.1)
+ROUTED_DEVICE=$(get_field "$route_output" 'interface')
+
+export ROUTED_DEVICE_FOUND
+ROUTED_DEVICE_FOUND=''
+
+function get_external_ip() {
+  local ip=$1
+  # TODO: might cache proxies, see my_external_ip
+  dig @ns1.google.com TXT o-o.myaddr.l.google.com +short -b "$ip" | tr -d '"'
+}
+
 function print_header() {
   local icon=$1 name=$2 device=$3 header_color
 
   if [[ $device == "$ROUTED_DEVICE" ]]; then
+    ROUTED_DEVICE_FOUND=1
     header_color='green-bold'
   else
     header_color='white-bold'
   fi
 
-  color $header_color "$icon  $name ($device)"
+  local name_device="$name"
+  if [[ $device != "$name" ]]; then
+    name_device="$name ($device)"
+  fi
+
+  color $header_color "$icon  $name_device"
 }
 
 function print_icon() {
@@ -63,29 +74,34 @@ function print_ip() {
 }
 
 function print_ip_line() {
-  local ip_icon=$1 ip=$2 info=$3 router_label=$4
+  local ip_icon=$1 ip=$2 networksetup_output=$3 router_label=$4
   if [[ ! $ip ]]; then
     return 0
   fi
 
   printf '%s %s' "$(print_icon "$ip_icon")" "$ip"
 
-  local router_ip external_ip
-  router_ip=$(get_info "$info" "$router_label")
-  if [[ $router_ip ]]; then
-    print_ip "$ROUTER_ICON" "$router_ip"
-    external_ip=$(get_external_ip "$ip")
-    print_ip "$EXTERNAL_ICON" "$external_ip"
+  if [[ $networksetup_output ]]; then
+    local router_ip external_ip
+    router_ip=$(get_field "$networksetup_output" "$router_label")
+    if [[ $router_ip ]]; then
+      print_ip "$ROUTER_ICON" "$router_ip"
+      external_ip=$(get_external_ip "$ip")
+      print_ip "$EXTERNAL_ICON" "$external_ip"
+    fi
   fi
 
   printf '\n'
 }
 
 function print_network() {
-  local device=$1 name=$2 info ipv4 ipv6
-  info=$(networksetup -getinfo "$name")
-  ipv4=$(get_info "$info" "IP address")
-  ipv6=$(get_info "$info" "IPv6 IP address")
+  local device=$1 name=$2 networksetup_output='' ipv4=${IPV4:-} ipv6=${IPV6:-}
+
+  if [[ $name != "$device" ]]; then
+    networksetup_output=$(networksetup -getinfo "$name")
+    ipv4=$(get_field "$networksetup_output" "IP address")
+    ipv6=$(get_field "$networksetup_output" "IPv6 IP address")
+  fi
 
   if [[ ! $ipv4 && ! $ipv6 ]]; then
     return 0
@@ -97,11 +113,13 @@ function print_network() {
     *Bridge*) icon=$BRIDGE_ICON ip_icon=$ETHERNET_IP_ICON ;;
     *\ LAN | *\ ethernet) icon=$ETHERNET_ICON ip_icon=$ETHERNET_IP_ICON ;;
     *Wi-Fi*) icon=$WIFI_ICON ip_icon=$WIFI_IP_ICON ;;
+    *utun*) icon=$TUNNEL_ICON ip_icon=$ROUTER_ICON ;;
+    *) icon='?' ip_icon=$ROUTER_ICON ;;
   esac
 
-  print_header $icon "$name" "$device"
-  print_ip_line $ip_icon "$ipv4" "$info" 'Router'
-  print_ip_line $ip_icon "$ipv6" "$info" 'IPv6 Router'
+  print_header "$icon" "$name" "$device"
+  print_ip_line $ip_icon "$ipv4" "$networksetup_output" 'Router'
+  print_ip_line $ip_icon "$ipv6" "$networksetup_output" 'IPv6 Router'
 }
 
 # From network_switcher
@@ -122,3 +140,7 @@ while [ "$networks" != '' ]; do
 
   print_network "$device" "$name"
 done
+
+if [[ ! $ROUTED_DEVICE_FOUND ]]; then
+  IPV4="$(get_field "$route_output" 'gateway')" print_network "$ROUTED_DEVICE" "$ROUTED_DEVICE"
+fi
