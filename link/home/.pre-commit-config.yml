@@ -36,5 +36,6 @@ repos:
         args: [--markdown-linebreak-ext=md]
         exclude: |
           (?x)^(
-              .+\.ged
+              .+\.ged|
+              .+/\.vim/UltiSnips/markdown\.snippets
           )$

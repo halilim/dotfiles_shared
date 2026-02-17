@@ -1,4 +1,4 @@
-let g:is_root = system("whoami") == 'root'
+let g:is_root_user = system("whoami") == 'root'
 
 set nocompatible        " We're running Vim, not Vi!
 set clipboard=unnamed   " Use system clipboard as default clipboard
@@ -325,7 +325,7 @@ silent! call custom#begin()
 " call plug#begin('~/.config/nvim/plugged')
 call plug#begin()
 
-if !is_root && exists('g:custom_ai_plugin')
+if !g:is_root_user && exists('g:custom_ai_plugin')
   " cSpell:ignore Exafunction madox2
   if g:custom_ai_plugin == 'windsurf'
     " See also: AirlineAddCustomSections
@@ -345,7 +345,7 @@ endif
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
-if !is_root
+if !g:is_root_user
   Plug 'airblade/vim-gitgutter'
 endif
 
@@ -392,7 +392,7 @@ Plug 'mhinz/vim-startify'
 Plug 'nathanaelkane/vim-indent-guides'
 " Plug 'Yggdroot/indentLine' " Alternative with lines instead of bg color
 
-if !is_root && (executable('node') || executable('bun'))
+if !g:is_root_user && (executable('node') || executable('bun'))
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
 endif
 
@@ -469,6 +469,8 @@ let g:rooter_patterns = [
       \ '.bzr/',
       \ '.svn/'
       \ ]
+let g:rooter_change_directory_for_non_project_files = 'current'
+let g:rooter_resolve_links = 1
 
 " ===== Plugin settings for AndrewRadev/switch.vim =====
 let g:switch_mapping = '-'
@@ -603,9 +605,6 @@ fun! s:show_documentation()
   endif
 endfun
 
-" Symbol renaming.
-nmap <leader>r <Plug>(coc-rename)
-
 " Formatting selected code.
 xmap <leader>f  <Plug>(coc-format-selected)
 nmap <leader>f  <Plug>(coc-format-selected)
@@ -729,7 +728,7 @@ fun! AirlineAddCustomSections(...)
       call AirlinePrependSectionY('{…} Windsurf:%3{codeium#GetStatusString()}')
     endif
 
-    if g:is_root
+    if g:is_root_user
       call airline#parts#define_function('root', 'ShowRoot')
       call AirlinePrependSectionY(airline#section#create_right(['root']))
       fun! ShowRoot()
@@ -792,7 +791,7 @@ fun! SetupDark()
   " Vim: blue darkblue desert elflord evening habamax industry koehler lunaperche macvim murphy
   "      pablo quiet retrobox ron slate sorbet torte wildcharm zaibatsu
   " Custom: one seoul256 solarized8 solarized8_flat solarized8_high solarized8_low
-  colorscheme wildcharm
+  colorscheme retrobox
 
   " ALEWarning uses this too
   highlight SpellCap guisp=Yellow

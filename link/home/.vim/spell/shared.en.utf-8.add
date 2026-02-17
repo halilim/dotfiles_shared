@@ -80,6 +80,7 @@ broadcasted
 broadcasthost
 btop
 bufferline
+BugSnag
 buildkit
 buildpack
 buildpacks
@@ -696,6 +697,7 @@ ripgreprc
 rmtree
 rnd
 roadmap
+RoadMap
 Rollbar
 rspec
 Rspec

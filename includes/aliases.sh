@@ -119,7 +119,7 @@ alias png2jpg50="convert ./*.png -resize '50%' -set filename:base '%[basename]' 
 # cSpell:ignore psgw
 alias psf='ps aux | fzf'
 alias psg='ps aux | grep -v " grep " | grep -i'
-alias psgw='ps aux | grep -v " grep " | grep -i -w'
+alias psgw='ps aux | grep -v " grep " | grep -iw'
 
 # - [...] foo -> - [ ] foo
 alias reset_markdown_todo='"$GNU_SED" -i -E '"'s/^([*-]) \[[^]]?\]/\1 [ ]/'"
