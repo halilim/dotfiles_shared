@@ -59,13 +59,12 @@ function update_bat_syntaxes() {
   bat_rebuild_syntaxes
 }
 
-function update_completions() {
-  if command -v docker > /dev/null 2>&1; then
-    # shellcheck disable=SC2154
-    docker completion zsh > "${fpath[1]}/_docker"
-  fi
-}
-
 function update_vim() {
   $VIM_PATH +'PlugUpgrade | PlugUpdate | q'
+}
+
+function update_zsh_completions() {
+  if command -v docker > /dev/null 2>&1; then
+    docker_completion_use_self
+  fi
 }

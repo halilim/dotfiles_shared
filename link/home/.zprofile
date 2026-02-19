@@ -18,6 +18,13 @@ fi
 # shellcheck disable=SC1091
 . "$DOTFILES_INCLUDES"/env.sh
 
+# shellcheck disable=SC2016
+UPDATE_BACKUP_CMDS+=(
+  '$ZSH/tools/upgrade.sh -v silent' # https://github.com/ohmyzsh/ohmyzsh/wiki/FAQ#how-do-i-update-oh-my-zsh
+  omz_update_custom
+  update_zsh_completions
+)
+
 # shellcheck disable=SC1091
 . "$DOTFILES_SHARED"/includes.sh
 
