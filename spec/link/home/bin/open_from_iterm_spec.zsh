@@ -12,7 +12,7 @@ Describe "$script"
     mkdir -p "$mock_bin_dir"
     mkdir -p "$mock_lib_dir"
     touch "$tmp_dir"/.dotfiles_bootstrap.sh
-    touch "$mock_includes_dir"/bash_shared.sh
+    touch "$tmp_dir"/.zprofile
     cp 'link/home/bin/mine' "$mock_bin_dir"
     cp 'includes/lib/open_from_iterm.sh' "$mock_lib_dir"
     orig_home=$HOME

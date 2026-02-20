@@ -172,26 +172,53 @@ function rails_migration_version() {
   echo "$base_name" | cut -d '/' -f 3
 }
 
-function rails_update_migration() {
+function rails_migration_bump_version() {
   local file=$1 current_version
 
   current_version=$(rails_migration_version "$file")
 
-  if rake db:migrate:status | rg -q "up\s+$current_version"; then
-    echo >&2 "$current_version is up, roll it back before renaming it"
+  if ! [[ $current_version =~ ^[0-9]+$ ]]; then
+    echo >&2 "Invalid current version: $current_version"
     return 1
   fi
 
-  local dummy_output
-  dummy_output=$("${RAILS_CMD}" generate migration dummy --pretend)
-  local new_version
-  new_version=$(rails_migration_version "$dummy_output")
+  local migration_status=${MIGRATION_STATUS:-}
+  if [[ ! $migration_status ]]; then
+    migration_status=$(DRY_RUN='' echo_eval "$RAKE_CMD db:migrate:status 2>/dev/null")
+  fi
+  if echo "$migration_status" | rg -q "up\s+$current_version"; then
+    echo >&2 "$current_version is up, roll it back before renaming it:"
+    echo >&2 "VERSION=$current_version $RAKE_CMD db:migrate:down"
+    return 1
+  fi
 
-  local new_file
-  new_file=$(echo "$file" | "$GNU_SED" -e "s/$current_version/$new_version/")
-  echo_eval 'mv %q %q' "$file" "$new_file"
+  local new_version=${NEW_VERSION:-}
+  if [[ ! $new_version ]]; then
+    local dummy_output
+    dummy_output=$(DRY_RUN='' echo_eval "$RAILS_CMD generate migration dummy --pretend 2>/dev/null")
+    new_version=$(rails_migration_version "$dummy_output")
+  fi
 
-  echo_eval "$RAKE_CMD db:migrate"
+  if ! [[ $new_version =~ ^[0-9]+$ ]]; then
+    echo >&2 "Invalid new version: $new_version"
+    return 1
+  fi
+
+  local replace_part
+  replace_part="{$current_version,$new_version}"
+  local replaced
+  replaced=$(echo "$file" | rg "(db/migrate/)($current_version)(.*)" --replace "\$1$replace_part\$3")
+
+  local replace_part_color
+  replace_part_color="{$(color gray "$current_version")$(color green ',')$(color white "$new_version")$(color_start green)}"
+  local replaced_color
+  replaced_color=$(echo "$file" | rg "(db/migrate/)($current_version)(.*)" --replace "\$1$replace_part_color\$3")
+
+  CMD_TO_SHOW="mv $replaced_color" echo_eval "mv $replaced"
+
+  if [[ ! ${NO_MIG:-} ]]; then
+    echo_eval "$RAKE_CMD db:migrate 2>/dev/null"
+  fi
 }
 
 function ruby_cd_pull_migrate() {

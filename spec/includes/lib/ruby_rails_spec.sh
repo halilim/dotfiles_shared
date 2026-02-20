@@ -1,5 +1,6 @@
 Include includes/lib/ruby_rails.sh
-Include includes/lib/functions.sh # For echo_eval
+Include includes/lib/colors.sh
+Include includes/lib/functions.sh
 
 Describe 'ruby_cd_pull_migrate'
   export RAKE_CMD=rake

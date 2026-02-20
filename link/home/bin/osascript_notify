@@ -3,6 +3,12 @@
 on run argv
   if count of argv > 0 then
     set theText to the first item of argv
-    display notification theText
+
+    set theTitle to ""
+    if count of argv > 1 then
+      set theTitle to the second item of argv
+    end if
+
+    display notification theText with title theTitle
   end if
 end run

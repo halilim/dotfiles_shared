@@ -13,7 +13,7 @@
 # shellcheck disable=SC1091
 . "$HOME"/.dotfiles_bootstrap.sh
 # shellcheck disable=SC1091
-. "$DOTFILES_INCLUDES"/bash_shared.sh
+. "$HOME"/.zprofile
 # debug_vars EDITOR OSTYPE CPUTYPE
 # exit
 # shellcheck disable=SC1090,SC1091
@@ -79,5 +79,8 @@ if [[ $line ]]; then
     vim_open "$abs_path_line_col"
   fi
 else
-  open "$abs_path"
+  if ! output=$(open "$abs_path" 2>&1); then
+    >&2 print_to_log "$output"
+    osascript_notify "$output" 'open_from_iterm error'
+  fi
 fi

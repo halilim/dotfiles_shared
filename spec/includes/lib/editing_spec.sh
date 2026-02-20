@@ -1,5 +1,6 @@
 Include includes/lib/editing.sh
-Include includes/lib/functions.sh # For echo_eval
+Include includes/lib/colors.sh
+Include includes/lib/functions.sh
 
 Describe 'open_with_editor'
   Context 'when the editor is VS Code'

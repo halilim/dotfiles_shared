@@ -50,6 +50,7 @@ export TIME_STYLE=relative
 export POST_INIT_HOOKS=()
 
 export DOTFILES_INCLUDE_LIBS=(
+  colors
   databases
   docker
   editing

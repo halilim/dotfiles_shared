@@ -40,7 +40,7 @@ Describe "$script"
     # Dependencies
     mkdir -p "$shared_dir"/includes/lib
     local dep
-    for dep in env.sh linux_env.sh mac_env.sh lib/functions.sh; do
+    for dep in env.sh linux_env.sh mac_env.sh lib/colors.sh lib/functions.sh; do
       ln -s "$(realpath includes/$dep)" "$shared_dir"/includes/$dep
     done
 

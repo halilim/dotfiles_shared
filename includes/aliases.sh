@@ -85,6 +85,7 @@ alias lzg='lazygit'
 alias m='mine .' # RubyMine
 alias mdiff='mine diff' # cSpell:disable-line
 alias mi='mediainfo'
+
 alias mii='mise install'
 alias mil='mise list'
 # shellcheck disable=SC2139
@@ -92,7 +93,9 @@ alias mil='mise list'
 alias {milc,tv}='mise list --current' # cSpell:disable-line
 alias mit='mise trust'
 alias miu='mise uninstall'
-alias myip='my_ips'
+
+# shellcheck disable=SC2139
+alias {myip,myips}='my_ips' # cSpell:disable-line
 
 alias mysql_dump='mysqldump --no-create-info -uroot -p db_name > db_name.sql'
 alias mysql_restore='mysql -uroot -p db_name < db_name.sql'

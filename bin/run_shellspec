@@ -17,10 +17,15 @@ zsh_specs=(spec/**/*_spec.zsh)
 zsh_specs+=("${both_specs[@]}")
 
 if [[ ${DRY_RUN:-} ]]; then
-  echo 'Bash specs:'
-  printf '%s\n' "${bash_specs[@]}" | sort
-  printf '\nZsh specs:\n'
-  printf '%s\n' "${zsh_specs[@]}" | sort
+  if [[ ! ${ZSH_ONLY:-} ]]; then
+    echo 'Bash specs:'
+    printf '%s\n' "${bash_specs[@]}" "$@" | sort
+  fi
+
+  if [[ ! ${BASH_ONLY:-} ]]; then
+    printf '\nZsh specs:\n'
+    printf '%s\n' "${zsh_specs[@]}" "$@" | sort
+  fi
 else
   # TODO: Aborted with status code [executor: 126] [reporter: 1] [error handler: 0]
   if [ -v TERMUX_VERSION ]; then
@@ -34,6 +39,12 @@ else
   fi
 
   pattern='*_spec.*sh'
-  shellspec --shell bash --pattern "$pattern" "${bash_specs[@]}" "$@"
-  shellspec --shell zsh --pattern "$pattern" "${zsh_specs[@]}" "$@"
+
+  if [[ ! ${ZSH_ONLY:-} ]]; then
+    shellspec --shell bash --pattern "$pattern" "${bash_specs[@]}" "$@"
+  fi
+
+  if [[ ! ${BASH_ONLY:-} ]]; then
+    shellspec --shell zsh --pattern "$pattern" "${zsh_specs[@]}" "$@"
+  fi
 fi

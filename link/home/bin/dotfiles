@@ -604,6 +604,8 @@ export DOTFILES_INCLUDES=$DOTFILES_SHARED/includes
 export DOTFILES_CUSTOM=$DOTFILES/custom
 
 # shellcheck disable=SC1091
+. "$DOTFILES_INCLUDES"/lib/colors.sh
+# shellcheck disable=SC1091
 . "$DOTFILES_INCLUDES"/lib/functions.sh
 # shellcheck disable=SC1091
 . "$DOTFILES_INCLUDES"/env.sh

@@ -1,5 +1,28 @@
 alias fn='$EDITOR "$DOTFILES_INCLUDES"/lib/functions.sh'
 
+# ===== ACTIVATE =====
+# Can't put these into optional libraries
+
+# Interactive Zsh: OMZ > brew plugin, Non-interactive Zsh & all Bash: this helper
+function brew_activate() {
+  local brew_bin=/opt/homebrew/bin/brew
+  if [[ -e "$brew_bin" ]]; then
+    eval "$($brew_bin shellenv)"
+  fi
+}
+
+# Interactive Zsh: OMZ > mise plugin, Non-interactive Zsh & all Bash: this helper
+function mise_activate() {
+  if command -v mise > /dev/null 2>&1; then
+    if [ -n "${ZSH_VERSION:-}" ]; then
+      eval "$(mise activate zsh)"
+    else
+      eval "$(mise activate bash)"
+    fi
+  fi
+}
+# ===== END: ACTIVATE =====
+
 function bak_toggle() {
   local file=$1
 
@@ -65,60 +88,6 @@ function cd_with_header() {
   cd "$dir" || return
 }
 
-function color() {
-  if [[ $# -lt 2 ]]; then
-    local func_name=${funcstack[1]:-${FUNCNAME[0]}}
-
-    echo 'Usage examples:'
-    echo "$($func_name green "$func_name") white $($func_name yellow "'some text'")"
-    echo "$($func_name green "$func_name") red-bold $($func_name yellow "'some text'")"
-    return 1
-  fi
-
-  local color=$1 text=$2
-
-  if [[ ${NO_COLOR:-} ]]; then
-    echo "$text"
-    return
-  fi
-
-  local code
-  case "$color" in
-    black*) code='30' ;;
-    red*) code='31' ;;
-    green*) code='32' ;;
-    yellow*) code='33' ;;
-    blue*) code='34' ;;
-    magenta*) code='35' ;;
-    cyan*) code='36' ;;
-    white*) code='37' ;;
-    gray*) code='90' ;;
-  esac
-
-  local style
-  if [[ $color == *'-bold' ]]; then
-    style='1'
-  else
-    style='0'
-  fi
-
-  local prefix='\033['
-  local echo_opts=(-e)
-  if [[ ${NO_NL:-} ]]; then
-    echo_opts+=(-n)
-  fi
-  echo "${echo_opts[@]}" "$prefix$style;${code}m$text${prefix}0m"
-}
-
-function color_() {
-  NO_NL=1 color "$@"
-}
-
-function color_arrow() {
-  # Usage: color_arrow green "text"
-  color "$1" "-> $2"
-}
-
 # Usage: DRY_RUN=1 FAKE_ECHO=foo echo_eval 'bar %q' "$baz"
 # NOTE: printf might fail with "invalid format" when cmd includes unintentional percent signs (%)
 function echo_eval() {
@@ -126,8 +95,9 @@ function echo_eval() {
   # shellcheck disable=SC2059
   cmd=$(printf "$@")
 
+  local cmd_to_show=${CMD_TO_SHOW:-$cmd}
   if [[ ! $silent ]]; then
-    color_arrow >&2 green "$cmd"
+    color_arrow >&2 green "$cmd_to_show"
   fi
 
   # NOTE: Dry-run output is not always accurate, since some intermediate conditionals depend on a
@@ -261,17 +231,6 @@ alias dfn='diff_file_names'
 
 function md5_of_str() {
   printf '%s' "$1" | md5
-}
-
-# Interactive Zsh: OMZ > mise plugin, Non-interactive Zsh & all Bash: this helper
-function mise_activate() {
-  if command -v mise > /dev/null 2>&1; then
-    if [ -n "${ZSH_VERSION:-}" ]; then
-      eval "$(mise activate zsh)"
-    else
-      eval "$(mise activate bash)"
-    fi
-  fi
 }
 
 function date_older_than() {

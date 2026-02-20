@@ -1,3 +1,4 @@
+Include includes/lib/colors.sh
 Include includes/lib/functions.sh
 Include includes/env.sh
 
