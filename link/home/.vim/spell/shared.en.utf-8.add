@@ -429,6 +429,7 @@ KUBECONFIG
 kwargs
 langmap
 laravel
+LaunchDarkly
 launchdarkly
 lazydev
 lazydocker
@@ -555,6 +556,7 @@ OBJC
 occams
 Octicon
 oklch
+Okta
 omz
 onboarding
 OOS
