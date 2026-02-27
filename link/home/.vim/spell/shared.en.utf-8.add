@@ -429,8 +429,8 @@ KUBECONFIG
 kwargs
 langmap
 laravel
-LaunchDarkly
 launchdarkly
+LaunchDarkly
 lazydev
 lazydocker
 lazygit
@@ -539,6 +539,7 @@ noice
 Nokogiri
 noout
 NOPASSWD
+nosplash
 notags
 notifempty
 nounset

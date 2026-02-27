@@ -7,7 +7,10 @@
     ]
   },
   "**/bin/*": {
-    "alternate": "spec/{dirname}/bin/{basename}_spec.sh"
+    "alternate": [
+      "spec/{dirname}/bin/{basename}_spec.sh",
+      "spec/{dirname}/bin/{basename}_spec.zsh"
+    ]
   },
   "**/*.rb": {
     "alternate": "spec/{dirname}/{basename}_spec.rb"

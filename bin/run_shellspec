@@ -2,6 +2,11 @@
 set -euo pipefail
 IFS=$'\n\t'
 
+# shellcheck disable=SC1091
+. includes/lib/colors.sh
+# shellcheck disable=SC1091
+. includes/lib/functions.sh
+
 shopt -s globstar
 
 both_specs=(spec/includes/lib/*_spec.sh)
@@ -16,15 +21,39 @@ bash_specs+=("${both_specs[@]}")
 zsh_specs=(spec/**/*_spec.zsh)
 zsh_specs+=("${both_specs[@]}")
 
+wanted_bash_specs=()
+wanted_zsh_specs=()
+for arg in "$@"; do
+  if in_array "$arg" "${bash_specs[@]}"; then
+    wanted_bash_specs+=("$arg")
+  fi
+  if in_array "$arg" "${zsh_specs[@]}"; then
+    wanted_zsh_specs+=("$arg")
+  fi
+  shift
+done
+
+if [[ ${#wanted_bash_specs[@]} -gt 0 ]]; then
+  bash_specs_to_run=("${wanted_bash_specs[@]}")
+else
+  bash_specs_to_run=("${bash_specs[@]}")
+fi
+
+if [[ ${#wanted_zsh_specs[@]} -gt 0 ]]; then
+  zsh_specs_to_run=("${wanted_zsh_specs[@]}")
+else
+  zsh_specs_to_run=("${zsh_specs[@]}")
+fi
+
 if [[ ${DRY_RUN:-} ]]; then
   if [[ ! ${ZSH_ONLY:-} ]]; then
     echo 'Bash specs:'
-    printf '%s\n' "${bash_specs[@]}" "$@" | sort
+    printf '%s\n' "${bash_specs_to_run[@]}" "$@" | sort
   fi
 
   if [[ ! ${BASH_ONLY:-} ]]; then
     printf '\nZsh specs:\n'
-    printf '%s\n' "${zsh_specs[@]}" "$@" | sort
+    printf '%s\n' "${zsh_specs_to_run[@]}" "$@" | sort
   fi
 else
   # TODO: Aborted with status code [executor: 126] [reporter: 1] [error handler: 0]
@@ -41,10 +70,10 @@ else
   pattern='*_spec.*sh'
 
   if [[ ! ${ZSH_ONLY:-} ]]; then
-    shellspec --shell bash --pattern "$pattern" "${bash_specs[@]}" "$@"
+    shellspec --shell bash --pattern "$pattern" "${bash_specs_to_run[@]}" "$@"
   fi
 
   if [[ ! ${BASH_ONLY:-} ]]; then
-    shellspec --shell zsh --pattern "$pattern" "${zsh_specs[@]}" "$@"
+    shellspec --shell zsh --pattern "$pattern" "${zsh_specs_to_run[@]}" "$@"
   fi
 fi

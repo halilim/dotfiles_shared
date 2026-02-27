@@ -44,8 +44,6 @@ alias dss='dotfiles sync shared'
 alias dse='dotfiles setup'
 alias dup='dotfiles update'
 
-alias e='open_with_editor'
-alias ee="echo_eval"
 alias ek="echo"
 
 alias f='fd -t f'
@@ -62,7 +60,7 @@ alias hnv='http --verify=no'
 alias hd='bat --line-range=0:10'
 
 # sudo inside VSCode only accepts password and not Touch ID
-alias hostconf='open_with_editor /etc/hosts'
+alias hostconf='sudo vim /etc/hosts'
 
 alias ic="imgcat"
 alias k9='kill -9'
@@ -107,8 +105,7 @@ alias ne='$EDITOR ~/Desktop/notes.md'
 alias nev='vim_open ~/Desktop/notes.md'
 
 alias o='$OPEN_CMD'
-
-alias omzp='open_with_editor ~/.oh-my-zsh/plugins/'
+alias omzp='edit ~/.oh-my-zsh/plugins/'
 
 alias pg='ping google.com'
 alias p1='ping 1.1.1.1'
@@ -177,6 +174,8 @@ alias th='tree -a'
 alias tr1="traceroute 1.1.1.1"
 alias tr192="traceroute 192.168.1.1"
 alias trg='traceroute google.com'
+
+alias tru='truncate -s 0'
 
 alias v='vim_open'
 alias sv='SUDO=1 vim_open'

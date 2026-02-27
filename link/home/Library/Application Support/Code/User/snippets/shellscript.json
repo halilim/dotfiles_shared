@@ -264,7 +264,7 @@
 	},
 
 	"for in array": {
-		"prefix": "forina", // cSpell:ignore forina
+		"prefix": ["fora", "forina"], // cSpell:disable-line
 		"body": [
 			"local $0",
 			"for ${0:VAR} in \"${${1:LIST}[@]}\"; do",
@@ -648,7 +648,7 @@
 
 	// https://superuser.com/q/737350/59919
 	"zsh for in associative": {
-		"prefix": ["fora", "forinaa"], // cSpell:ignore forinaa
+		"prefix": ["foraa", "forinaa"], // cSpell:disable-line
 		"body": [
 			// This version breaks shellcheck
 			// "local $1",

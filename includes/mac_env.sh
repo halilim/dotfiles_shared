@@ -12,6 +12,9 @@ export GNU_STAT=gstat
 export GNU_TOUCH=gtouch
 export GNU_XARGS=gxargs
 
+export OPEN_FROM_ITERM_DEBUG=${TMPDIR}open_from_iterm_debug
+export OPEN_FROM_ITERM_DEBUG_LOG=$HOME/Library/Logs/open_from_iterm_debug.log
+
 DOTFILES_INCLUDE_LIBS+=(
   brew
   elasticsearch

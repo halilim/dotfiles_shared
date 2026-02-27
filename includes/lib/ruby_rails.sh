@@ -97,7 +97,7 @@ function rails_request() {
       file=$(\ls -d {,components/*/}app/controllers/**/"${controller}_controller.rb" | head -n 1)
       line=$(rg --line-number --only-matching "def\s+$action\b" "$file" | head -n 1)
       line=${line%%:*}
-      echo_eval 'open_from_iterm %q %q' "$(realpath "$file")" "$line"
+      echo_eval 'edit %q' "$(realpath "$file")" "$line"
       ;;
 
     _edit-route)
@@ -114,7 +114,7 @@ function rails_request() {
       fi
       local file=${file_and_line%%:*}
       local line=${file_and_line##*:}
-      echo_eval 'open_from_iterm %q %q' "$(realpath "$file")" "$line"
+      echo_eval 'edit %q %q' "$(realpath "$file")" "$line"
       ;;
   esac
 }

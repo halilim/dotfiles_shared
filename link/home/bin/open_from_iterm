@@ -1,86 +1,34 @@
 #!/usr/bin/env zsh
+# Without `env zsh`, it defaults to something like /bin/bash, which is version 3.*
 
+# Setup:
 # 1. iTerm2 > Profiles > Advanced > Semantic History > Run command...
-#    `zsh ~/bin/open_from_iterm \1 \2 \(semanticHistory.columnNumber)`
+#    `~/bin/open_from_iterm \1 \2 \(semanticHistory.columnNumber)`
 # 2. RubyMine > Cmd+Shift+P > Create Command-line Launcher
 # 3. VS Code > Cmd+Shift+P > Shell Command: Install 'code' command in PATH
-# Note: Limited environment, bare `mine`/`code` doesn't work
+
 # To debug: call open_from_iterm_debug
 
-: # TODO: Remove after https://github.com/koalaman/shellcheck/issues/1877 here and everywhere else
-  #       Without it, it disables for the whole file
+:
+# TODO: Remove after https://github.com/koalaman/shellcheck/issues/1877 here and everywhere else
+#         Without it, it disables for the whole file
 
 # shellcheck disable=SC1091
 . "$HOME"/.dotfiles_bootstrap.sh
 # shellcheck disable=SC1091
-. "$HOME"/.zprofile
-# debug_vars EDITOR OSTYPE CPUTYPE
-# exit
-# shellcheck disable=SC1090,SC1091
-. "$DOTFILES_INCLUDES"/lib/open_from_iterm.sh
+. "$DOTFILES_INCLUDES"/mac_env.sh
+# shellcheck disable=SC1091
+. "$DOTFILES_INCLUDES"/mac.sh
+# shellcheck disable=SC1091
+. "$DOTFILES_INCLUDES"/lib/colors.sh
+# shellcheck disable=SC1091
+. "$DOTFILES_INCLUDES"/lib/editing.sh
+# shellcheck disable=SC1091
+. "$DOTFILES_INCLUDES"/lib/functions.sh
 
-debug_print '------------------------------'
-
-if is_debug_enabled; then
+if [[ -f $OPEN_FROM_ITERM_DEBUG ]]; then
   export VERBOSE=1
+  exec &>> "$OPEN_FROM_ITERM_DEBUG_LOG"
 fi
 
-# debug_vars BASH_VERSION ZSH_VERSION
-
-abs_path=${1:?}
-line=${2:-}
-column=${3:-}
-
-[[ ! $abs_path ]] && exit
-
-[[ -d $abs_path ]] && open "$abs_path" && exit
-
-abs_path_line_col=$abs_path
-[[ $line ]] && abs_path_line_col="$abs_path_line_col:$line"
-[[ $column ]] && abs_path_line_col="$abs_path_line_col:$column"
-# debug_vars abs_path line column abs_path_line_col
-
-dir=$(dirname "$abs_path")
-cd "$dir" || ( >&2 print_to_log "Couldn't cd into $dir" && exit 1 )
-
-git_path=$(git rev-parse --show-toplevel 2> /dev/null)
-git_dir=''
-if [[ $git_path ]]; then
-  git_dir=$(basename "$git_path")
-fi
-debug_vars dir git_path git_dir
-
-rubymine_titles=$(window_names RubyMine)
-debug_vars rubymine_titles
-
-if is_in_rubymine_titles "$rubymine_titles" "$git_dir"; then
-  open_with_rubymine "$abs_path" "$line" "$column"
-  exit
-fi
-
-editor_titles=$(get_editor_titles)
-debug_vars editor_titles
-
-if is_in_editor_titles "$git_dir" "$git_path" "$editor_titles"; then
-  open_with_editor "$abs_path_line_col"
-  exit
-fi
-
-if [[ $rubymine_titles && ${abs_path##*.} == 'rb' ]]; then
-  open_with_rubymine "$abs_path" "$line" "$column"
-  exit
-fi
-
-# $line: Coming from grep etc., probably a text file - should be cheaper than `isutf8 "$abs_path"`
-if [[ $line ]]; then
-  if [[ $editor_titles ]]; then
-    open_with_editor "$abs_path_line_col"
-  else
-    vim_open "$abs_path_line_col"
-  fi
-else
-  if ! output=$(open "$abs_path" 2>&1); then
-    >&2 print_to_log "$output"
-    osascript_notify "$output" 'open_from_iterm error'
-  fi
-fi
+edit "$@"

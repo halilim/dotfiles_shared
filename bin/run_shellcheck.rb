@@ -7,13 +7,14 @@ require 'shellwords'
 # cSpell:ignore shrc
 files = Dir.glob(
   %w[
-    **/.*sh
     **/.*shrc
     **/.bash_profile
     **/.githooks/*
     **/.inputrc
     **/.zprofile
-    **/*.*sh
+    **/*.bash
+    **/*.sh
+    **/*.zsh
     **/bin/*
     setup
   ]

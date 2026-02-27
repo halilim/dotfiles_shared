@@ -118,6 +118,7 @@ function echo_eval() {
     eval "$cmd"
   fi
 }
+alias ee='echo_eval'
 
 function for_each_dir() {
   local dir
