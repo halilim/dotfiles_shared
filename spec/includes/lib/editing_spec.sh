@@ -5,6 +5,7 @@ Include includes/lib/functions.sh
 Describe 'edit'
   OPEN_CMD=open_cmd_test
 
+  # Mocks
   function open_cmd_test() {
     local arg_ct=$#
     local expected_arg_ct=${#expected_open_args[@]}
@@ -23,6 +24,11 @@ Describe 'edit'
       fi
     done
   }
+
+  function realpath() {
+    echo "$1"
+  }
+  # End: Mocks
 
   Context 'without args'
     It 'raises error'

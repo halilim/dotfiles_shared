@@ -11,6 +11,8 @@ alias libe='$EDITOR "$DOTFILES_INCLUDES"/lib/editing.sh' # cSpell:ignore libe
 function edit() {
   local abs_path=${1:?} line=${2:-} column=${3:-}
 
+  abs_path=$(realpath "$abs_path")
+
   if [[ -d $abs_path ]]; then
     echo_eval "$OPEN_CMD %q" "$abs_path"
     return
