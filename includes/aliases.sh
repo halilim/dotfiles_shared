@@ -1,12 +1,15 @@
+# cSpell:disable
+
 alias al='$EDITOR "$DOTFILES_INCLUDES"/aliases.sh'
 alias real='source "$DOTFILES_INCLUDES"/aliases.sh'
 alias alc='$EDITOR "$DOTFILES_CUSTOM"/includes/aliases.sh'
 
 alias c='code'
-alias cb='$CLIP'
 # alias c='code-insiders'
 alias ci='code-insiders'
-alias cdiff='code --diff' # cSpell:ignore cdiff
+alias cdiff='code --diff'
+
+alias cb='$CLIP'
 
 # `chrome` is an OS-specific alias defined in lib/linux and lib/mac
 alias chrome_incognito='chrome --incognito'
@@ -15,18 +18,16 @@ alias chrome_incognito='chrome --incognito'
 alias chrome_with_logging='chrome --enable-logging=stderr --v=1'
 
 alias crone='crontab -e'
-alias cronl='crontab -l | bat --language=crontab' # cSpell:ignore cronl
+alias cronl='crontab -l | bat --language=crontab'
 
-# cSpell:ignore cuiv
 alias ct="echo_eval 'rm tags && ctags -f tags -R'"
-alias cui="curl -I"
-alias cuiv="curl -Iv"
+alias cui='curl -I'
+alias cuiv='curl -Iv'
 alias da='direnv allow'
 # shellcheck disable=SC2139
 alias {dicts,dict_list}='readlink ~/.vim/spell/*.add'
 alias dp='declare -p'
 
-# cSpell:ignore dcdc dcds drir
 alias db='dotfiles bootstrap'
 alias dcd='cd $DOTFILES'
 # shellcheck disable=SC2139
@@ -44,13 +45,11 @@ alias dss='dotfiles sync shared'
 alias dse='dotfiles setup'
 alias dup='dotfiles update'
 
-alias ek="echo"
+alias ek='echo'
 
 alias f='fd -t f'
 alias fh='fd -t f --hidden'
 alias ft="fd --no-ignore -t f '^tags$'"
-
-# cSpell:ignore hhnv hostconf myip uroot omzp
 
 alias h='http'
 alias hh='http --headers'
@@ -59,10 +58,7 @@ alias hnv='http --verify=no'
 
 alias hd='bat --line-range=0:10'
 
-# sudo inside VSCode only accepts password and not Touch ID
-alias hostconf='sudo vim /etc/hosts'
-
-alias ic="imgcat"
+alias ic='imgcat'
 alias k9='kill -9'
 
 # shellcheck disable=SC2139
@@ -71,7 +67,7 @@ alias lg='eza --all --group --group-directories-first --long'
 alias ll='TIME_STYLE=long-iso eza --all --group --group-directories-first --long'
 alias lt='TIME_STYLE=long-iso eza --all --group-directories-first --long'
 
-alias le="less"
+alias le='less'
 
 # shellcheck disable=SC2139
 alias {lp,path}='echo "$PATH" | tr ":" "\n"'
@@ -81,28 +77,28 @@ alias lzd='lazydocker'
 alias lzg='lazygit'
 
 alias m='mine .' # RubyMine
-alias mdiff='mine diff' # cSpell:disable-line
+alias mdiff='mine diff'
+
 alias mi='mediainfo'
 
 alias mii='mise install'
 alias mil='mise list'
 # shellcheck disable=SC2139
 # tv is from 'bat .tool-versions'
-alias {milc,tv}='mise list --current' # cSpell:disable-line
+alias {milc,tv}='mise list --current'
 alias mit='mise trust'
 alias miu='mise uninstall'
 
 # shellcheck disable=SC2139
-alias {myip,myips}='my_ips' # cSpell:disable-line
+alias {myip,myips}='my_ips'
 
-alias mysql_dump='mysqldump --no-create-info -uroot -p db_name > db_name.sql'
-alias mysql_restore='mysql -uroot -p db_name < db_name.sql'
+alias mysql_dump='mysqldump --no-create-info -u root -p db_name > db_name.sql'
+alias mysql_restore='mysql -u root -p db_name < db_name.sql'
 
 alias ngf='nginx_fg'
 
-alias n='bat ~/Desktop/notes.md'
+alias n='vim_open ~/Desktop/notes.md'
 alias ne='$EDITOR ~/Desktop/notes.md'
-alias nev='vim_open ~/Desktop/notes.md'
 
 alias o='$OPEN_CMD'
 alias omzp='edit ~/.oh-my-zsh/plugins/'
@@ -116,7 +112,6 @@ alias pg_fg='postgres -D "$(brew --prefix)"/var/postgres'
 # Make high-resolution screenshots etc. more shareable
 alias png2jpg50="convert ./*.png -resize '50%' -set filename:base '%[basename]' '%[filename:base].jpg'"
 
-# cSpell:ignore psgw
 alias psf='ps aux | fzf'
 alias psg='ps aux | grep -v " grep " | grep -i'
 alias psgw='ps aux | grep -v " grep " | grep -iw'
@@ -125,14 +120,13 @@ alias psgw='ps aux | grep -v " grep " | grep -iw'
 alias reset_markdown_todo='"$GNU_SED" -i -E '"'s/^([*-]) \[[^]]?\]/\1 [ ]/'"
 
 # Ripgrep
-# cSpell:ignore rgni rgnic rgnt rgsw rgwc rgws
 alias rg3='rg -C 1' # Show 1 line before and after
 alias rga2='rg -A 2' # Show 2 lines after
 alias rga3='rg -A 3' # Show 3 lines after
 alias rgb2='rg -B 2' # Show 2 lines before
 alias rgb3='rg -B 3' # Show 3 lines before
 alias rgc='rg --case-sensitive'
-alias rgf="rg -F" # Treat the pattern as a literal string instead of a regular expression
+alias rgf='rg -F' # Treat the pattern as a literal string instead of a regular expression
 alias rgni='rg --no-ignore'
 alias rgnic='rg --no-ignore --case-sensitive'
 alias rgnt="rg -g '!features/' -g '!spec/' -g '!test/' -g '!__tests__/' -g '!*.test.*'"
@@ -142,14 +136,13 @@ alias {rgsw,rgwc,rgws}='rg -sw' # Word and case sensitive
 
 alias shc='shellcheck'
 
-# cSpell:ignore shsd shsfd shsz shsdz
 shellspec_cmd="shellspec --pattern '*_spec.*sh'"
 # shellcheck disable=SC2139
 alias shs="$shellspec_cmd"
 # shellcheck disable=SC2139
 alias {shsd,shsfd}="$shellspec_cmd -f d"
 # shellcheck disable=SC2139
-alias shss="$shellspec_cmd -s sh" # cSpell:ignore shss
+alias shss="$shellspec_cmd -s sh"
 # shellcheck disable=SC2139
 alias shsz="$shellspec_cmd -s zsh"
 # shellcheck disable=SC2139
@@ -158,28 +151,26 @@ unset shellspec_cmd
 
 alias spt='$SPEEDTEST_CMD'
 
-# cSpell:ignore sshc sshconf
 # shellcheck disable=SC2139
 alias {sshc,ssh_copy_key,copy_ssh_key}='cb < ~/.ssh/id_*.pub'
 alias sshconf='vim_open ~/.ssh/config'
 
-alias str='stree .' # cSpell:ignore stree
-
-alias taf="tail -f"
-alias taf50="tail -n50 -f"
-alias taf100="tail -n100 -f"
+alias str='stree .'
+alias taf='tail -f'
+alias taf50='tail -n50 -f'
+alias taf100='tail -n100 -f'
 
 alias th='tree -a'
 
-alias tr1="traceroute 1.1.1.1"
-alias tr192="traceroute 192.168.1.1"
+alias tr1='traceroute 1.1.1.1'
+alias tr192='traceroute 192.168.1.1'
 alias trg='traceroute google.com'
 
 alias tru='truncate -s 0'
 
 alias v='vim_open'
 alias sv='SUDO=1 vim_open'
-alias vimrc='$EDITOR ~/.vimrc'
+alias vimrc='vim_open ~/.vimrc'
 
 alias wu='who -u'
 

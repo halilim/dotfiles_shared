@@ -59,7 +59,7 @@ function omz_install_custom() {
   (
     local zsh_custom=${ZSH_CUSTOM:-~/.oh-my-zsh/custom}
 
-    cd_or_fail "$zsh_custom"/plugins 'Oh My Zsh custom plugins directory' || return
+    cd "$zsh_custom"/plugins 'Oh My Zsh custom plugins directory' || return
 
     git clone https://github.com/Aloxaf/fzf-tab
     git clone https://github.com/jeffreytse/zsh-vi-mode
@@ -71,7 +71,7 @@ function omz_install_custom() {
     git clone https://github.com/zsh-users/zsh-syntax-highlighting
 
     if [[ ! -v TERMUX_VERSION ]]; then
-      cd_or_fail "$zsh_custom"/themes 'Oh My Zsh custom themes directory' || return
+      cd "$zsh_custom"/themes 'Oh My Zsh custom themes directory' || return
       git clone --depth=1 --quiet https://github.com/romkatv/powerlevel10k
     fi
   )
@@ -79,7 +79,7 @@ function omz_install_custom() {
 
 function omz_update_custom() {
   (
-    cd_or_fail "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}" 'Oh My Zsh custom directory' || return
+    cd "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}" 'Oh My Zsh custom directory' || return
 
     for_each_dir 'for_each_dir "git pull --prune --quiet"'
   )

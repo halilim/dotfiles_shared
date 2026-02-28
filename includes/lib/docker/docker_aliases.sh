@@ -1,8 +1,9 @@
-alias libda='$EDITOR "$DOTFILES_INCLUDES"/lib/docker/docker_aliases.sh' # cSpell:ignore libda
+# cSpell:disable
 
-alias acts='docker run --rm -it catthehacker/ubuntu:act-latest bash' # cSpell:ignore catthehacker
+alias libda='$EDITOR "$DOTFILES_INCLUDES"/lib/docker/docker_aliases.sh'
 
-# cSpell:ignore dkcl dkcs dkcst dkee dkenv dkei dkeis dkil dkip dkirm dkin dkins dkst dkri dkrm dkrr dkrri dkps
+alias acts='docker run --rm -it catthehacker/ubuntu:act-latest bash'
+
 alias dk='docker'
 alias dkb='docker build'
 alias dkc='docker container'
@@ -30,7 +31,6 @@ alias dkrri='docker run --rm -it'
 alias dks='docker stats --no-stream'
 alias dkps="docker ps --format 'table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Ports}}'"
 
-# cSpell:ignore dceis dclf dcos dcre dcrr
 alias dce='docker compose exec'
 # shellcheck disable=SC2139
 alias {dceis,dcs}='docker compose exec -it ... sh'

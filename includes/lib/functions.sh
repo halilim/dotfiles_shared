@@ -69,19 +69,6 @@ function cb_tmp() {
   fi
 }
 
-function cd_or_fail() {
-  local dir=${1:?dir is required} name=${2:-Directory}
-  if [[ ! -d "$dir" ]]; then
-    echo >&2 "$name does not exist: $dir"
-    return 1
-  fi
-
-  if ! cd "$dir"; then
-    echo >&2 "Could not change directory to $dir"
-    return 1
-  fi
-}
-
 function cd_with_header() {
   local dir=$1
   color >&2 white-bold "---> $dir"
@@ -119,6 +106,19 @@ function echo_eval() {
   fi
 }
 alias ee='echo_eval'
+
+function edit_hosts() {
+  local custom_hosts="$DOTFILES_CUSTOM/hosts" system_hosts='/etc/hosts'
+  if [[ -e "$custom_hosts" ]] && same_inode "$custom_hosts" "$system_hosts"; then
+    edit "$custom_hosts"
+  else
+    # sudo inside VSCode only accepts password and not Touch ID
+    sudo vim "$system_hosts"
+  fi
+}
+# shellcheck disable=SC2139
+alias {hostconf,hosts}='edit_hosts' # cSpell:disable-line
+
 
 function for_each_dir() {
   local dir

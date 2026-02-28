@@ -80,6 +80,7 @@ export FORGIT_NO_ALIASES=1
 export OMZ_PLUGINS=(
   aliases
   bgnotify
+  bun
   bundler
   common-aliases
   forgit
@@ -88,6 +89,7 @@ export OMZ_PLUGINS=(
   globalias
   httpie
   mise
+  npm
   rails
   rake-fast
   ruby

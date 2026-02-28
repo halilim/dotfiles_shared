@@ -37,6 +37,7 @@
 --map-syntax "**/.husky/*:Bourne Again Shell (bash)"
 --map-syntax "**/.kube/config:YAML"
 --map-syntax "**/*ghostty/config:INI" # Not really but close https://ghostty.org/docs/config#syntax
+--map-syntax "**/completions/**/_*:Bourne Again Shell (bash)"
 --map-syntax "**/sshd_config.d/*.conf:SSH Config"
 --map-syntax "Procfile.*:Bash (Procfile)"
 

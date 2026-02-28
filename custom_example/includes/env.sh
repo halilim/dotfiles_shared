@@ -22,7 +22,7 @@ DOTFILES_INCLUDE_LIBS+=(
 )
 
 OMZ_PLUGINS+=(
-  "$JS_PM"
+  foo
 )
 
 UPDATE_BACKUP_CMDS=(

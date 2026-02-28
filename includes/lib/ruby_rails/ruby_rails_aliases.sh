@@ -2,6 +2,8 @@
 # Intentionally disabled for the whole file, mostly for RUBY_CMD_PREFIX/RAILS_CMD/RAKE_CMD
 # TODO: Replace with block level disables if it gets implemented
 
+# cSpell:disable
+
 alias libra='$EDITOR "$DOTFILES_INCLUDES"/lib/ruby_rails/ruby_rails_aliases.sh'
 
 if [ -n "${ZSH_VERSION:-}" ]; then
@@ -10,7 +12,6 @@ if [ -n "${ZSH_VERSION:-}" ]; then
   alias -g RW0='RUBYOPT="-W0"'
 fi
 
-# cSpell:ignore biq bebr
 alias bundle_conf='$EDITOR ~/.bundle/config'
 alias b='bundle install'
 alias {biq,bq}='bundle install --quiet'
@@ -18,7 +19,6 @@ alias bebr='bundle exec brakeman'
 alias bep='bundle exec puma'
 alias berk='bundle exec rake'
 
-# cSpell:ignore besa besf bucq
 alias bes='bundle exec standardrb'
 alias {besa,besf}='bundle exec standardrb --fix'
 alias bua='bundle update --all'
@@ -31,25 +31,20 @@ alias fr="fd -E 'config/locales/' -E 'features/' -E 'spec/' -E 'test/' -E '__tes
 
 alias fs='foreman start'
 
-# cSpell:ignore hrr hrrc hrrr
-alias hrr="heroku run rails"
-alias hrrc="heroku run rails console"
+alias hrr='heroku run rails'
+alias hrrc='heroku run rails console'
 alias hrrr='heroku run rails runner ""'
 
-# cSpell:ignore mailcatch
 alias {mc,mailcatch}='mailcatcher -f'
 
 # Ripgrep
-# cSpell:ignore rgr rgrr rgrw
 alias rgr="rg -g '!config/locales/' -g '!features/' -g '!spec/' -g '!test/' -g '!__tests__/'"
 alias rgrr="rg -g '*.rb' -g '!features/' -g '!spec/' -g '!test/'"
-alias rgrw="rgr -w"
+alias rgrw='rgr -w'
 
-# cSpell:ignore  rpry ramazing
 alias rp='ruby -rpry -ramazing_print'
 alias rv='ruby -v'
 
-# cSpell:ignore raa rav rcac rgg rgm rgmp rgmo rkan rrz rro rrow rrowe rsl rvv
 alias raa="$RAILS_CMD about"
 alias rav="$RAILS_CMD -v"
 alias rc="$RAILS_CMD console"
@@ -75,7 +70,6 @@ alias rs="$RAILS_CMD server"
 alias rsl='rails_serve_lan' # Allow access from LAN (must be in the same network/Wi-Fi etc.)
 alias rvv="ruby -v && $RAILS_CMD -v"
 
-# cSpell:ignore rkdc rkdcl rkdct rkdd rkddt rkdm rkdmuv rkdmdv rkdms rkdmst rkdmt rkdmv rkdr rkdrt rkds rkro rrs gco
 alias rk="$RAKE_CMD"
 alias rkdc="$RAKE_CMD db:create"
 alias rkdcl="$RAKE_CMD db:create db:schema:load"
@@ -85,8 +79,8 @@ alias rkddt="$RAKE_CMD db:drop RAILS_ENV=test"
 alias rkdm="$RAKE_CMD db:migrate"
 alias rkdmuv="$RAKE_CMD db:migrate:up VERSION= # Migrate SPECIFIED version"
 alias rkdmdv="$RAKE_CMD db:migrate:down VERSION= # Roll back SPECIFIED version"
-alias rkdms="$RAKE_CMD db:migrate:status | tail -n 40 | sort -k 2"
-alias rkdmst="$RAKE_CMD db:migrate:status RAILS_ENV=test | tail -n 40 | sort -k 2"
+alias rkdms="$RAKE_CMD db:migrate:status | sort -k 2 -r | less"
+alias rkdmst="$RAKE_CMD db:migrate:status RAILS_ENV=test | sort -k 2 -r | less"
 alias rkdmt="$RAKE_CMD db:migrate RAILS_ENV=test"
 alias rkdmv="$RAKE_CMD db:migrate VERSION= # Migrate up/down to version (inclusive)"
 alias rkdr="$RAKE_CMD db:rollback"
@@ -96,14 +90,12 @@ alias rkro="$RAKE_CMD routes"
 alias rkT="$RAKE_CMD -T"
 alias rrs="gco db/schema.rb && $RAKE_CMD db:drop db:create db:schema:load db:migrate"
 
-# cSpell:ignore rkdpp rkdrs rkdst
 # https://github.com/rails/rails/blob/main/activerecord/lib/active_record/railties/databases.rake
 # All dev+test unless SKIP_TEST_DATABASE=true or DATABASE_URL is specified
 alias rkdpp="$RAKE_CMD db:prepare # DB exists ? migrate + schema:dump : create + schema:load + seed"
 alias rkdrs="$RAKE_CMD db:reset # drop + setup"
 alias rkdst="$RAKE_CMD db:setup # create + schema:load + seed"
 
-# cSpell:ignore rubo beru ruboa berua
 alias {rubo,beru}='bundle exec rubocop'
 alias {rubog,ruboc,beruc,berug,rubocop_changes}='bundle exec rubocop --force-exclusion $(git diff --name-only HEAD | xargs printf -- " %s")'
 alias {ruboa,berua}='bundle exec rubocop -a'
@@ -112,10 +104,9 @@ rspec_cmd="${RUBY_CMD_PREFIX}rspec --format progress"
 alias s="$rspec_cmd"
 alias ss="$rspec_cmd --seed"
 alias {rsb,rst,sb,st}="$rspec_cmd --backtrace" # Replaces `rails server --bind` from oh-my-zsh Rails plugin
-alias {rfd,sfd}="${RUBY_CMD_PREFIX}rspec --format documentation" # cSpell:ignore sfd
+alias {rfd,sfd}="${RUBY_CMD_PREFIX}rspec --format documentation"
 unset rspec_cmd
 
-# cSpell:ignore nosp spk spst spp spps spsr
 # Not using `spring stop/status` etc., because they miss zombie processes and are slow
 alias {nosp,spd}='DISABLE_SPRING=1'
 alias {ksp,spk,spst}='kill_spring'
@@ -124,5 +115,4 @@ alias spsr="${RUBY_CMD_PREFIX}spring server"
 
 alias sq="${RUBY_CMD_PREFIX}sidekiq"
 
-# cSpell:ignore testrb
 alias testrb='$EDITOR ~/Desktop/test\ code/test.rb'

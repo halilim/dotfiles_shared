@@ -30,6 +30,13 @@
 		],
 	},
 
+	"spell check disable": {
+		"prefix": "spd",
+		"body": [
+			"$LINE_COMMENT cSpell:disable"
+		],
+	},
+
 	"spell check disable line": {
 		"prefix": "spdl", // cSpell:disable-line
 		"body": [
@@ -41,6 +48,13 @@
 		"prefix": "spdnl", // cSpell:disable-line
 		"body": [
 			"$LINE_COMMENT cSpell:disable-next-line"
+		],
+	},
+
+	"spell check enable": {
+		"prefix": "spe",
+		"body": [
+			"$LINE_COMMENT cSpell:enable"
 		],
 	},
 
