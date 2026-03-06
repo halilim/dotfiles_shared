@@ -92,7 +92,10 @@ let mapleader=","     " Leader is comma
 " Only disable the plugin, but not the whole netrw. It's needed for e.g. vim-fugitive's :Gbrowse
 " https://github.com/tpope/vim-fugitive/issues/1010
 " let g:loaded_netrw = 1 " Disable netrw
-let g:loaded_netrwPlugin = 1 " Disable netrw
+
+" gx on an URL causes `Unknown function: netrw#BrowseX`
+" let g:loaded_netrwPlugin = 1 " Disable netrw plugin
+
 let g:netrw_liststyle = 3
 let g:netrw_banner = 0
 let g:netrw_browse_split = 2

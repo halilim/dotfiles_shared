@@ -84,7 +84,10 @@ function git_matching() {
 function git_diff_save() {
   git add -N .
   git diff --no-color > "$1"
-  git reset
+  local ret=$?
+  if git reset; then # If git diff or > (e.g., read-only file) fails, don't return success
+    return $ret
+  fi
 }
 
 function git_find_file() {

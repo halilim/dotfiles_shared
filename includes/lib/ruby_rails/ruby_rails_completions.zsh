@@ -1,17 +1,3 @@
-_gem_()  {
-  local state
-
-  _arguments '1: :->cmd' '2: :->gem'
-
-  # shellcheck disable=SC2046
-  case $state in
-    cmd) compadd 'cd' 'doc' 'src' ;;
-    gem) compadd $(bundle exec gem list |
-      rg --multiline --only-matching --replace '$1/$4/$3' '^([^( ]+)\s*\(((default):\s*)?([^) ]+)\)') ;;
-  esac
-}
-compdef _gem_ gem_
-
 _rails_request() {
   local state
 

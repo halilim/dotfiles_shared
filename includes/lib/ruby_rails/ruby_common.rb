@@ -4,6 +4,12 @@ require 'irb/color'
 require 'io/console'
 require 'stringio'
 
+custom_dotfiles = ENV.fetch('DOTFILES_CUSTOM', nil)
+if custom_dotfiles
+  custom_file = File.join(custom_dotfiles, 'includes', 'lib', 'ruby_rails', 'ruby_custom.rb')
+  load(custom_file) if File.exist?(custom_file)
+end
+
 # RubyMine debugger doesn't load .irbrc/.pryrc. Add live template `lrc`:
 # (live templates are available in the interactive console)
 # load File.join(ENV['DOTFILES_INCLUDES'], 'lib', 'ruby_rails', 'ruby_common.rb')

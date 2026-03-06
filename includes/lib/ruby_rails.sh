@@ -9,56 +9,6 @@ export RAKE_CMD="${RUBY_CMD_PREFIX}rake"
 
 export RAILS_ROUTE_CACHE=.routes_expanded.txt
 
-function gem_install_bundler_gemfile() {
-  local version
-  version=$(grep -A 1 "BUNDLED WITH" Gemfile.lock | tail -n 1 | tr -d ' ')
-  gem install bundler:"$version"
-}
-# cSpell:ignore gemib
-alias gemib='gem_install_bundler_gemfile'
-
-function gem_uri_open() {
-  local name=$1 version=$2 uri_field=$3
-  local -r home_uri_field='homepage_uri'
-
-  local json
-  json=$(FAKE_ECHO="{\"$uri_field\": \"https://example.com\", \"$home_uri_field\": \"\"}" echo_eval \
-    'curl -Ls %q' "https://rubygems.org/api/v2/rubygems/$name/versions/$version.json")
-
-  local uri
-  uri=$(jq -r ".$uri_field // .$home_uri_field" <<< "$json")
-
-  if [[ $uri ]]; then
-    echo_eval "$OPEN_CMD %q" "$uri"
-  else
-    echo >&2 "No $uri_field or $home_uri_field"
-    echo >&2 "$json" | jq
-    return 1
-  fi
-}
-
-function gem_() {
-  local cmd=$1 selected name version
-  selected=$2 # foo/1.0/ or bar/2.0/default
-  name=$(echo "$selected" | cut -d '/' -f 1)
-  version=$(echo "$selected" | cut -d '/' -f 2)
-  # declare -p cmd name version 1>&2
-
-  case "$cmd" in
-    cd) cd "$(bundle info "$name" --path)" || return ;;
-    doc) gem_uri_open "$name" "$version" 'documentation_uri' ;;
-    src) gem_uri_open "$name" "$version" 'source_code_uri' ;;
-  esac
-}
-
-# cSpell:ignore gemcd gemdoc gemsrc
-# shellcheck disable=SC2139
-alias {gem_cd,gemcd}='gem_ cd'
-# shellcheck disable=SC2139
-alias {gem_doc,gemdoc}='gem_ doc'
-# shellcheck disable=SC2139
-alias {gem_src,gemsrc}='gem_ src'
-
 function kill_spring() {
   pgrep 'spring (app|server)' | xargs kill -9
 }
@@ -75,21 +25,25 @@ function rails_request() {
   uri_and_format=$(echo "$method_uri_format" | cut -d ' ' -f 2)
   uri=$(echo "$uri_and_format" | sed -E 's/\(\.:format\)//')
 
+  local file line
   case "$tool" in
     curl)
       echo "curl -X $method $uri"
+      return
       ;;
 
     httpie)
       echo "http $method $uri"
+      return
       ;;
 
     postman)
       echo "curl -X $method {{baseUrl}}$(echo "$uri" | sed -E 's/:([^\/]+)/{{\1}}/g')"
+      return
       ;;
 
     _edit-action)
-      local controller_and_action controller action file line
+      local controller_and_action controller action
       controller_and_action=$(rails_request_find "$method" "$uri_and_format" '\s*\|\s*(\S+)')
       controller=$(echo "$controller_and_action" | cut -d '#' -f 1)
       action=$(echo "$controller_and_action" | cut -d '#' -f 2)
@@ -97,7 +51,6 @@ function rails_request() {
       file=$(\ls -d {,components/*/}app/controllers/**/"${controller}_controller.rb" | head -n 1)
       line=$(rg --line-number --only-matching "def\s+$action\b" "$file" | head -n 1)
       line=${line%%:*}
-      echo_eval 'edit %q' "$(realpath "$file")" "$line"
       ;;
 
     _edit-route)
@@ -112,11 +65,14 @@ function rails_request() {
       else
         file_and_line="$route_source"
       fi
-      local file=${file_and_line%%:*}
-      local line=${file_and_line##*:}
-      echo_eval 'edit %q %q' "$(realpath "$file")" "$line"
+      file=${file_and_line%%:*}
+      line=${file_and_line##*:}
       ;;
   esac
+
+  if [[ $file ]]; then
+    edit "$(realpath "$file")" "$line"
+  fi
 }
 # shellcheck disable=SC2139
 alias {rar,rbr}='rails_request'

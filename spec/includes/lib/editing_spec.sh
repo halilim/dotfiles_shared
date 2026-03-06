@@ -39,17 +39,6 @@ Describe 'edit'
     End
   End
 
-  Context 'when given a directory'
-    It "opens it with $OPEN_CMD"
-      dir=$HOME
-      expected_open_args=("$dir")
-      When call edit "$dir"
-      The stdout should eq ''
-      The stderr should eq "-> $OPEN_CMD $dir"
-      The status should eq 0
-    End
-  End
-
   Context 'file'
     file_name=a_file
     dir=/project_a

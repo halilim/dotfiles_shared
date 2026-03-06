@@ -11,7 +11,7 @@
 
 :
 # TODO: Remove after https://github.com/koalaman/shellcheck/issues/1877 here and everywhere else
-#         Without it, it disables for the whole file
+#       Without it, it disables for the whole file
 
 # shellcheck disable=SC1091
 . "$HOME"/.dotfiles_bootstrap.sh
@@ -29,6 +29,11 @@
 if [[ -f $OPEN_FROM_ITERM_DEBUG ]]; then
   export VERBOSE=1
   exec &>> "$OPEN_FROM_ITERM_DEBUG_LOG"
+fi
+
+if [[ -d $1 ]]; then
+  echo_eval "$OPEN_CMD %q" "$1"
+  return
 fi
 
 edit "$@"

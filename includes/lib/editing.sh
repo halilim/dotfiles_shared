@@ -14,7 +14,7 @@ function edit() {
   abs_path=$(realpath "$abs_path")
 
   if [[ -d $abs_path ]]; then
-    echo_eval "$OPEN_CMD %q" "$abs_path"
+    open_with_editor "$abs_path"
     return
   fi
 

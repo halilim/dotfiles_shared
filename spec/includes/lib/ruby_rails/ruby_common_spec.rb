@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require 'irb'
+
+ENV.delete('DOTFILES_CUSTOM')
 require_relative '../../../../includes/lib/ruby_rails/ruby_common'
 
 RSpec.describe '.table' do # rubocop:disable RSpec/DescribeClass

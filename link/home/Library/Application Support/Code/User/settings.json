@@ -206,15 +206,24 @@
 
   "html.format.extraLiners": "body",
 
-  "javascript.updateImportsOnFileMove.enabled": "always",
-
   "jest.runMode": "on-demand",
 
   "jqPlayground.binaryPath": "/opt/homebrew/bin/jq",
 
   "js/ts.implicitProjectConfig.checkJs": true,
+  "js/ts.updateImportsOnFileMove.enabled": "always",
 
   "json.maxItemsComputed": 10000,
+  "json.schemaDownload.trustedDomains": {
+    "https://schemastore.azurewebsites.net/": true,
+    "https://raw.githubusercontent.com/microsoft/vscode/": true,
+    "https://raw.githubusercontent.com/devcontainers/spec/": true,
+    "https://www.schemastore.org/": true,
+    "https://json.schemastore.org/": true,
+    "https://json-schema.org/": true,
+    "https://developer.microsoft.com/json-schemas/": true,
+    "https://raw.githubusercontent.com/DavidAnson/markdownlint/v0.40.0/schema/markdownlint-config-schema.json": true
+  },
 
   "launch": {
     "configurations": [
@@ -383,8 +392,6 @@
   },
   "todo-tree.tree.scanMode": "current file",
 
-  "typescript.updateImportsOnFileMove.enabled": "always",
-
   // Implemented via regular keyboard shortcuts
   // "vim.handleKeys": {
   //     "<C-o>": true
@@ -445,6 +452,7 @@
     { "before": ["leader", "d", "r"], "commands": ["workbench.action.closeEditorsToTheRight"] },
     { "before": ["leader", "d"], "commands": ["workbench.action.closeActiveEditor"] },
     { "before": ["leader", "f"], "commands": ["workbench.action.quickOpen"] },
+    { "before": ["leader", "g"], "commands": ["editor.action.openLink"] },
 
     {
       "before": ["leader", "leader", "j", "w"],
@@ -617,7 +625,7 @@
   },
 
   "[markdown]": {
-    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint" // cSpell:disable-line
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
 
   "[mdx]": {
