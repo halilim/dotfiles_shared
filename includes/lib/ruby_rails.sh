@@ -4,8 +4,11 @@ alias libr='$EDITOR "$DOTFILES_INCLUDES"/lib/ruby_rails.sh' # cSpell:ignore libr
 # Use the Rails defaults - binstubs, Spring, etc. Change only when needed.
 # Alternative: Oh My Zsh bundler plugin (_run-with-bundler), but it uses an alias which breaks some flows.
 export RUBY_CMD_PREFIX=${RUBY_CMD_PREFIX-'bundle exec '} # `bin/` | `bundle exec `
-export RAILS_CMD="${RUBY_CMD_PREFIX}rails"
-export RAKE_CMD="${RUBY_CMD_PREFIX}rake"
+
+# These are used with echo_eval, which escapes aliases, so bare `rails` and `rake` are really bare
+# The _*_command functions are from Oh My Zsh's Rails plugin
+export RAILS_CMD="${RUBY_CMD_PREFIX}_rails_command"
+export RAKE_CMD="${RUBY_CMD_PREFIX}_rake_command"
 
 export RAILS_ROUTE_CACHE=.routes_expanded.txt
 
@@ -102,7 +105,7 @@ function rails_reset_to_main() {
 
     version=$(echo "$file" | grep -Eoz '^\d+')
 
-    echo_eval "$RAKE_CMD db:migrate:down VERSION=%q # %q" "$version" "$name"
+    echo_eval "$RAKE_CMD" db:migrate:down VERSION="$version" "# $name"
   done <<< "$new_migrations"
 
   # # Approach 2: Rollback by the number of new migrations
@@ -110,16 +113,16 @@ function rails_reset_to_main() {
   # local count
   # count=$(echo "$new_migrations" | wc -l)
   # count=${count//[[:blank:]]/}
-  # echo_eval "$RAKE_CMD db:rollback STEP=%q" "$count"
+  # echo_eval "$RAKE_CMD" db:rollback STEP="$count"
 
   # # Approach 3: Figure out the latest version before $new_migrations
   # # Cons: Unreliable if the order of migrations is not chronological (e.g. after merging a branch)
   # all_migrations=$($RAKE_CMD db:migrate:status)
   # all_migrations=$(echo "$all_migrations" | awk '{print $2}' | awk -F '_' '{print $1}' | sort -u | sort -r)
 
-  echo_eval 'git checkout db/schema.rb'
+  echo_eval git checkout db/schema.rb
   # shellcheck disable=SC2016
-  echo_eval 'git checkout "$(git_main_branch)"'
+  echo_eval git checkout "$(git_main_branch)"
 }
 
 function rails_migration_version() {
@@ -140,7 +143,7 @@ function rails_migration_bump_version() {
 
   local migration_status=${MIGRATION_STATUS:-}
   if [[ ! $migration_status ]]; then
-    migration_status=$(DRY_RUN='' echo_eval "$RAKE_CMD db:migrate:status 2>/dev/null")
+    migration_status=$(DRY_RUN='' echo_eval "$RAKE_CMD" db:migrate:status '2> /dev/null')
   fi
   if echo "$migration_status" | rg -q "up\s+$current_version"; then
     echo >&2 "$current_version is up, roll it back before renaming it:"
@@ -151,7 +154,7 @@ function rails_migration_bump_version() {
   local new_version=${NEW_VERSION:-}
   if [[ ! $new_version ]]; then
     local dummy_output
-    dummy_output=$(DRY_RUN='' echo_eval "$RAILS_CMD generate migration dummy --pretend 2>/dev/null")
+    dummy_output=$(DRY_RUN='' echo_eval "$RAILS_CMD" generate migration dummy --pretend '2> /dev/null')
     new_version=$(rails_migration_version "$dummy_output")
   fi
 
@@ -170,10 +173,10 @@ function rails_migration_bump_version() {
   local replaced_color
   replaced_color=$(echo "$file" | rg "(db/migrate/)($current_version)(.*)" --replace "\$1$replace_part_color\$3")
 
-  CMD_TO_SHOW="mv $replaced_color" echo_eval "mv $replaced"
+  CMD_TO_SHOW="mv $replaced_color" echo_eval mv "$replaced"
 
   if [[ ! ${NO_MIG:-} ]]; then
-    echo_eval "$RAKE_CMD db:migrate 2>/dev/null"
+    echo_eval "$RAKE_CMD" db:migrate '2> /dev/null'
   fi
 }
 
@@ -194,21 +197,32 @@ function ruby_cd_pull_migrate() {
   fi
 
   if [[ -e Gemfile.lock ]]; then
-    local bundle_cmd=${BUNDLE_CMD:-'bundle install --quiet'}
-    echo_eval "$bundle_cmd"
+    local bundle_cmd
+    if [[ ${BUNDLE_CMD:-} ]]; then
+      bundle_cmd=("${BUNDLE_CMD[@]}")
+    else
+      bundle_cmd=(bundle install --quiet)
+    fi
+
+    echo_eval "${bundle_cmd[@]}"
   fi
 
   if [[ -e bin/spring ]]; then
-    echo_eval 'kill_spring'
+    echo_eval kill_spring
   fi
 
   if [[ -d db/migrate && ! ${NO_MIG:-} ]]; then
-    local migrate_cmd=${MIGRATE_CMD:-"$RAKE_CMD db:migrate"}
-    echo_eval "$migrate_cmd"
+    local migrate_cmd
+    if [[ ${MIGRATE_CMD:-} ]]; then
+      migrate_cmd=("${MIGRATE_CMD[@]}")
+    else
+      migrate_cmd=("$RAKE_CMD" db:migrate)
+    fi
+    echo_eval "${migrate_cmd[@]}"
   fi
 
   if [[ -d log ]]; then
-    echo_eval "$RAKE_CMD log:clear LOGS=all"
+    echo_eval "$RAKE_CMD" log:clear LOGS=all
   fi
 
   printf '\n'

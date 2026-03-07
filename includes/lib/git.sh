@@ -18,10 +18,10 @@ function cd_checkout_pull() {
   # Must be after cd since the git branch depends on the folder
   [[ -z $branch ]] && branch=$(git_main_branch)
 
-  echo_eval 'git checkout --quiet %q' "$branch"
+  echo_eval git checkout --quiet "$branch"
 
   local git_pull_result
-  git_pull_result=$(echo_eval 'git pull --prune --quiet')
+  git_pull_result=$(echo_eval git pull --prune --quiet)
   [[ $git_pull_result ]] && echo "$git_pull_result"
   if [[ $git_pull_result == *'up to date'* ]]; then
     return "$GIT_ALREADY_UP_TO_DATE"
@@ -47,7 +47,7 @@ function git_cp_remoteless() {
     git remote | xargs -n1 git remote remove
   )
   iterm_tab "$dest"
-  echo_eval "$OPEN_CMD %q" "$dest"
+  echo_eval "$OPEN_CMD" "$dest"
 }
 
 function git_current_commit() {
@@ -62,23 +62,23 @@ function git_matching() {
 
   local argc=$#
   local pattern=${*:$argc:1}
-  local git_args="${*:1:$argc-1}"
+  local git_args=("${@:1:$argc-1}")
 
   # git diff -G<regex> doesn't support case-insensitive regexes (or I couldn't find it)
-  local file matching_files=''
+  local file matching_files=()
   while IFS= read -r file; do
     if git diff --unified=0 --no-color "$file" |
          grep -v "$file" |
          grep -i "$pattern" > /dev/null 2>&1; then
-      matching_files+=$(printf ' %q' "$file")
+      matching_files+=("$file")
     fi
   done < <(git diff --name-only)
 
-  if [[ ! $matching_files ]]; then
+  if [[ ${#matching_files[@]} -le 0 ]]; then
     return 1
   fi
 
-  echo_eval "git $git_args$matching_files"
+  echo_eval git "${git_args[@]}" "${matching_files[@]}"
 }
 
 function git_diff_save() {
@@ -126,7 +126,7 @@ alias gff='git_find_file'
 function _git_commits_with_message() {
   local search=$1 log_output
   log_output=$(FAKE_ECHO="123abc Foo bar\ndef456 Baz qux" echo_eval \
-    'git log --no-color --oneline --all --grep %q' "$search")
+    git log --no-color --oneline --all --grep "$search")
   echo >&2 "$log_output"
   echo "$log_output" | cut -d ' ' -f 1
 }
@@ -146,20 +146,20 @@ function git_maintain_large_repos() {
   while read -d ':' -r repo; do
     (
       # shellcheck disable=SC2106
-      DRY_RUN='' echo_eval 'cd %q' "$repo" || continue
-      echo_eval 'git gc --prune=now'
-      echo_eval 'git remote prune origin'
+      DRY_RUN='' echo_eval cd "$repo" '|| continue'
+      echo_eval git gc --prune=now
+      echo_eval git remote prune origin
       printf '\n'
     )
   done < <(printf '%s:' "$GIT_LARGE_REPOS")
 }
 
 function git_search_branches() {
-  echo_eval "git branch -r $(_git_contains_args_with_message "$1")"
+  echo_eval git branch -r "$(_git_contains_args_with_message "$1")"
 }
 
 function git_search_tags() {
-  echo_eval "git tag --sort=-v:refname $(_git_contains_args_with_message "$1") | head -n 5"
+  echo_eval git tag --sort=-v:refname "$(_git_contains_args_with_message "$1")" '|' head -n 5
 }
 
 # https://stackoverflow.com/a/1260982/372654
@@ -170,7 +170,7 @@ function git_submodule_rm() {
   fi
 
   local submodule_path=$1
-  echo_eval 'git rm %q' "$submodule_path"
-  echo_eval 'rm -rf .git/modules/%q' "$submodule_path"
-  echo_eval 'git config remove-section submodule.%q' "$submodule_path"
+  echo_eval git rm "$submodule_path"
+  echo_eval rm -rf .git/modules/"$submodule_path"
+  echo_eval git config remove-section submodule."$submodule_path"
 }

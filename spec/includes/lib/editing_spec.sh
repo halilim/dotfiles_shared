@@ -165,7 +165,7 @@ Describe 'edit'
             file=a_file.rb
 
             It 'calls it'
-              expected_mine_args=(--line "\\$line" --column "\\$((column - 1))" "$file")
+              expected_mine_args=(--line "$line" --column "$((column - 1))" "$file")
               When call edit "$file" "$line" "$column"
               The stdout should eq ''
               The stderr should eq ''
@@ -178,7 +178,7 @@ Describe 'edit'
           git_output=$dir
 
           It 'calls it'
-            expected_mine_args=(--line "\\$line" --column "\\$((column - 1))" "$file")
+            expected_mine_args=(--line "$line" --column "$((column - 1))" "$file")
             When call edit "$file" "$line" "$column"
             The stdout should eq ''
             The stderr should eq ''

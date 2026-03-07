@@ -243,7 +243,7 @@ Describe "$script"
 
       When run script "$copied_script" vim_setup
       The stdout should not include "error" # To satisfy shellspec expectation requirement
-      The stderr should include "vim +'$expected_vim_arg'"
+      The stderr should include 'vim +mkspell'
       The status should eq 0
     End
   End

@@ -1,9 +1,9 @@
 {
   "**/*.sh": {
     "alternate": [
-      "spec/{dirname}/{basename}_spec.bash",
       "spec/{dirname}/{basename}_spec.sh",
-      "spec/{dirname}/{basename}_spec.zsh"
+      "spec/{dirname}/{basename}_spec.zsh",
+      "spec/{dirname}/{basename}_spec.bash"
     ]
   },
   "**/bin/*": {

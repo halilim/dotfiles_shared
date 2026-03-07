@@ -1,29 +1,46 @@
 # https://github.com/joeferner/redis-commander
-# Usage: redco <scheme> <host> <port> <password>
+# Usage: redco <host> <port> <password>
 # WARNING: Not recommended for large instances since it scans all keys
 function redco() {
   (
     cd ~ || return
 
-    local scheme=$1 host=$2 port=$3 password=$4 read_only_param='--read-only' tls_param=''
+    local host=${1:-} port=${2:-} password=${3:-} args=()
 
-    if [[ $host == localhost ]]; then
-      host='127.0.0.1'
+    if [[ ${REDCO_LABEL:-} || $host ]]; then
+      args+=(--redis-label "${REDCO_LABEL:-$host}")
     fi
 
-    if [[ $REDCO_WRITABLE ]]; then
-      read_only_param=''
+    if [[ $host ]]; then
+      if [[ $host == localhost ]]; then
+        host='127.0.0.1'
+      fi
+      args+=(--redis-host "$host")
     fi
 
-    if [[ $scheme == 'rediss' ]]; then
-      tls_param='--redis-tls'
+    if [[ $port ]]; then
+      args+=(--redis-port "$port")
     fi
 
-    # cSpell:ignore noload nosave
-    echo_eval "NODE_TLS_REJECT_UNAUTHORIZED=0 redis-commander --redis-label %q \
-      --redis-host %q --redis-port %q --redis-password %q \
-      --noload --nosave --open $tls_param $read_only_param" \
-      "${REDCO_LABEL:-$host}" "$host" "$port" "$password"
+    if [[ $password ]]; then
+      args+=(--redis-password "$password")
+    fi
+
+    if [[ ${TLS:-} ]]; then
+      args+=(--redis-tls)
+    fi
+
+    if [[ ! ${REDCO_WRITABLE:-} ]]; then
+      args+=(--read-only)
+    fi
+
+    args+=(
+      --noload # cSpell:disable-line
+      --nosave # cSpell:disable-line
+      --open
+    )
+
+    echo_eval NODE_TLS_REJECT_UNAUTHORIZED=0 redis-commander "${args[@]}"
   )
 }
 alias redco_w='REDCO_WRITABLE=1 redco'

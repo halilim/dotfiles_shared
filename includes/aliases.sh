@@ -20,7 +20,7 @@ alias chrome_with_logging='chrome --enable-logging=stderr --v=1'
 alias crone='crontab -e'
 alias cronl='crontab -l | bat --language=crontab'
 
-alias ct="echo_eval 'rm tags && ctags -f tags -R'"
+alias ct="echo_eval rm tags '&&' ctags -f tags -R"
 alias cui='curl -I'
 alias cuiv='curl -Iv'
 alias da='direnv allow'
@@ -44,6 +44,8 @@ alias dsc='dotfiles sync custom'
 alias dss='dotfiles sync shared'
 alias dse='dotfiles setup'
 alias dup='dotfiles update'
+
+alias dr='DRY_RUN=1'
 
 alias ek='echo'
 

@@ -35,20 +35,20 @@ function bak_toggle() {
   fi
 
   if [[ $file == *.bak ]]; then
-    echo_eval 'mv %q %q' "$file" "${file%.bak}"
+    echo_eval mv "$file" "${file%.bak}"
   else
-    echo_eval 'mv %q %q' "$file" "$file.bak"
+    echo_eval mv "$file" "$file.bak"
   fi
 }
 
 function bat_rebuild_syntaxes() {
-  echo_eval 'bat cache --build'
+  echo_eval bat cache --build
 }
 
 function builtin_help() {
   local url
   url="$(printf "$BUILTIN_URL#:~:text=%s [" "$1")"
-  echo_eval "$OPEN_CMD %q" "$url"
+  echo_eval "$OPEN_CMD" "$url"
 }
 alias bh='builtin_help'
 
@@ -75,21 +75,34 @@ function cd_with_header() {
   cd "$dir" || return
 }
 
-# Usage: DRY_RUN=1 FAKE_ECHO=foo echo_eval 'bar %q' "$baz"
-# NOTE: printf might fail with "invalid format" when cmd includes unintentional percent signs (%)
+# Usage: DRY_RUN=1 FAKE_ECHO=foo echo_eval cmd "$bar"
 function echo_eval() {
-  local cmd dry_run=${DRY_RUN:-} silent=${SILENT:-}
-  # shellcheck disable=SC2059
-  cmd=$(printf "$@")
+  local dry_run=${DRY_RUN:-} silent=${SILENT:-} args=() args_to_show=() arg escaped_arg escaped_arg_to_show aliased
 
-  local cmd_to_show=${CMD_TO_SHOW:-$cmd}
+  for arg in "$@"; do
+    if [[ $arg = '&'* || $arg = '|'* || $arg =~ ^[[:digit:]]?'>' || $arg = '#'* ]]; then
+      escaped_arg=$arg
+    else
+      escaped_arg=$(printf %q "$arg")
+    fi
+    escaped_arg_to_show=$escaped_arg
+
+    if aliased=$(alias -- "$escaped_arg" 2> /dev/null) && [[ $aliased ]]; then
+      escaped_arg="\\$escaped_arg"
+      escaped_arg_to_show="\\\\$escaped_arg_to_show"
+    fi
+    args+=("$escaped_arg")
+    args_to_show+=("$escaped_arg_to_show")
+  done
+
+  local cmd_to_show=${CMD_TO_SHOW:-${args_to_show[*]}}
   if [[ ! $silent ]]; then
     color_arrow >&2 green "$cmd_to_show"
   fi
 
   # NOTE: Dry-run output is not always accurate, since some intermediate conditionals depend on a
-  #       previous step actually running.FAKE_ECHO & FAKE_STATUS are used to simulate the
-  #       output and return status of the command.
+  #       previous step actually running. FAKE_ECHO and FAKE_STATUS are used to simulate the output
+  #       and return the status of the command.
   if [[ $dry_run ]]; then
     if [[ ! $silent ]]; then
       echo >&2 'Dry running...'
@@ -102,23 +115,26 @@ function echo_eval() {
       return "${FAKE_STATUS:-0}"
     fi
   else
-    eval "$cmd"
+    eval "${args[*]}"
   fi
 }
 alias ee='echo_eval'
 
-function edit_hosts() {
-  local custom_hosts="$DOTFILES_CUSTOM/hosts" system_hosts='/etc/hosts'
-  if [[ -e "$custom_hosts" ]] && same_inode "$custom_hosts" "$system_hosts"; then
-    edit "$custom_hosts"
-  else
-    # sudo inside VSCode only accepts password and not Touch ID
-    sudo vim "$system_hosts"
-  fi
+function hosts_edit() {
+  # sudo inside VSCode only accepts password and not Touch ID
+  # mvim has it's own problems
+  # Doesn't work: edit "$custom_hosts" ($DOTFILES_CUSTOM/hosts)
+  echo_eval sudo vim /etc/hosts
 }
 # shellcheck disable=SC2139
-alias {hostconf,hosts}='edit_hosts' # cSpell:disable-line
+alias {hostconf,hosts,edit_hosts}='hosts_edit' # cSpell:disable-line
 
+function hosts_link() {
+  local custom_hosts="$DOTFILES_CUSTOM/hosts" system_hosts='/etc/hosts'
+  if [[ ! -e "$custom_hosts" ]]; then
+    echo_eval ln "$system_hosts" "$custom_hosts"
+  fi
+}
 
 function for_each_dir() {
   local dir
@@ -251,7 +267,7 @@ function needs_update_and_mark() {
   local last_updated_file=${1:-./.last_updated_at} days=${2:-7}
 
   if [[ ! -f $last_updated_file ]] || last_mod_older_than "$last_updated_file" "$days days"; then
-    echo_eval 'touch %q' "$last_updated_file"
+    echo_eval touch "$last_updated_file"
     return 0
   else
     return 1
@@ -287,26 +303,26 @@ function relative_to() {
 }
 
 function remove_broken_links() {
-  local folder=${1:-.} recursive=${2:-} find_args=''
+  local folder=${1:-.} recursive=${2:-} find_args=()
 
   if [[ ! $recursive ]]; then
-    find_args+=' -maxdepth 1'
+    find_args+=(-maxdepth 1)
   fi
 
-  find_args+=" -xtype l"
+  find_args+=(-xtype l)
 
   local printf_msg
   if [[ ${DRY_RUN:-} ]]; then
     echo >&2 'Dry running...'
     printf_msg='Will remove'
   else
-    find_args+=' -delete'
+    find_args+=(-delete)
     printf_msg='Removing'
   fi
 
-  find_args+=' -printf "'"$printf_msg: %%p"'\\\\n"'
+  find_args+=(-printf "$printf_msg: %p\n")
 
-  DRY_RUN='' echo_eval "$GNU_FIND %q$find_args" "$folder"
+  DRY_RUN='' IFS=' ' echo_eval "$GNU_FIND" "$folder" "${find_args[@]}"
 }
 
 function remove_line_including() {

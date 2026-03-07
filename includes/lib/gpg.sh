@@ -51,7 +51,7 @@ function gpg_send_key() {
   for server in keys.openpgp.org \
                 keyserver.ubuntu.com \
                 pgp.mit.edu; do
-    echo_eval 'gpg --keyserver %q --send-keys %q' "$server" "$GPG_KEY"
+    echo_eval gpg --keyserver "$server" --send-keys "$GPG_KEY"
   done
 }
 alias gpg_push_key='gpg_send_key'

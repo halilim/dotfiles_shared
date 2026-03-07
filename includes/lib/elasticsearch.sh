@@ -53,8 +53,9 @@ JSON
 
   fi
 
-  echo_eval 'curl -fLs -XPUT %q/_template/no_replica -H ''Content-Type: application/json'' -d %q' \
-    "$es_uri" "$data"
+  echo_eval curl -fLs -XPUT "$es_uri"/_template/no_replica \
+    -H 'Content-Type: application/json' \
+    -d "$data"
 }
 
 # Set number_of_replicas to 0 for an existing index so that it's green
@@ -64,7 +65,8 @@ function es_no_replicas_index() {
 
   es_uri=$(es_get_uri "$1")
 
-  echo_eval 'curl -XPUT "%q/%q/_settings -d ''{ "index": { "number_of_replicas": 0 } }''' "$es_uri" "$index"
+  echo_eval curl -fLs -XPUT "$es_uri"/"$index"/_settings \
+    -d '{ "index": { "number_of_replicas": 0 } }'
 }
 
 function es_no_replicas_index_all() {

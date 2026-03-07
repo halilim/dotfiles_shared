@@ -1,3 +1,5 @@
+Include includes/lib/colors.sh
+Include includes/lib/functions.sh
 Include includes/lib/docker.sh
 
 Describe "docker_hosts"
@@ -35,12 +37,13 @@ Describe "docker_hosts"
     The stdout should eq 'foo.docker
 bar.docker
 baz.docker'
+    The stderr should include '-> docker ps --format \{\{.Names\}\}'
   End
 
   Parameters
     'qux' 'bar.docker'
     'baz' ''
-    'qux baz' 'bar.docker'
+    'qux baz' 'bar.docker' '--filter name=qux --filter name=baz'
   End
 
   Example "when filtered by $1"
@@ -48,5 +51,6 @@ baz.docker'
     docker_hosts_args=($(echo $1))
     When call docker_hosts "${docker_hosts_args[@]}"
     The stdout should eq "$2"
+    The stderr should include "-> docker ps --format \{\{.Names\}\} ${3:-"--filter name=$1"}"
   End
 End

@@ -26,9 +26,7 @@ function mac_set_screenshot_format() {
 
 # https://www.jetbrains.com/help/ruby/working-with-the-ide-features-from-command-line.html#standalone
 function mine() {
-  local q_ct=${#@} q_seq
-  q_seq=$(printf ' %%q%.0s' $(seq 1 "$q_ct"))
-  echo_eval "open -na 'RubyMine.app' --args nosplash$q_seq" "$@"
+  echo_eval open -na 'RubyMine.app' --args nosplash "$@"
 }
 
 function quick_look() {

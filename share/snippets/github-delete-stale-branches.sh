@@ -70,11 +70,10 @@ while IFS= read -r branch; do
   branch_index=$((branch_index + 1))
   printf >&2 "[%d/%d] " "$branch_index" "$branch_count"
   if output=$(
-    echo_eval 'PAGER='' gh api --silent --method DELETE \
-    -H "Accept: application/vnd.github+json" \
-    -H "X-GitHub-Api-Version: 2022-11-28" \
-    repos/%q/git/refs/heads/%q' \
-      "$repo" "$branch"
+    echo_eval PAGER='' gh api --silent --method DELETE \
+      -H "Accept: application/vnd.github+json" \
+      -H "X-GitHub-Api-Version: 2022-11-28" \
+      repos/"$repo"/git/refs/heads/"$branch"
   ); then
     echo "$output"
   else

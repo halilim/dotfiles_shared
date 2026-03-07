@@ -1,9 +1,9 @@
 alias libnet='$EDITOR "$DOTFILES_INCLUDES"/lib/net.sh' # cSpell:ignore libnet
 
 function content_length() {
-  curl -ILs "$1" |
-    http_header_value Content-Length |
-    "$GNU_NUMFMT" --to=si --suffix=B
+  curl -ILs "$1" \
+    | http_header_value Content-Length \
+    | "$GNU_NUMFMT" --to=si --suffix=B
 }
 # cSpell:ignore cuil
 alias cuil="content_length"
@@ -45,10 +45,10 @@ function http_header_value() {
     header=$2
   fi
 
-  echo "$headers" |
-      grep -i "^$header:" |
-      cut -d ' ' -f 2 |
-      tr -d '\r'
+  echo "$headers" \
+    | grep -i "^$header:" \
+    | cut -d ' ' -f 2 \
+    | tr -d '\r'
 }
 
 function my_external_ip() {
@@ -61,7 +61,7 @@ function my_external_ip() {
 function myip_whois() {
   local ip
   ip=$(echo_eval my_external_ip)
-  echo_eval 'whois %q' "$ip"
+  echo_eval whois "$ip"
 }
 alias whois_myip='myip_whois'
 
@@ -85,7 +85,10 @@ function port_check() {
     return 1
   fi
 
-  out=$(FAKE_ECHO='COMMAND\tPID\nfoo\t1\nbar\t2' echo_eval 'lsof -nP +c0 -iTCP:%q -sTCP:LISTEN' "$ports")
+  out=$(
+    FAKE_ECHO='COMMAND\tPID\nfoo\t1\nbar\t2' echo_eval \
+      lsof -nP +c0 -iTCP:"$ports" -sTCP:LISTEN
+  )
   echo "$out"
 
   if [[ ! $out ]]; then
@@ -99,7 +102,7 @@ function port_check() {
     body=$(echo "$out" | tail -n +2)
     pids=$(echo "$body" | awk '{print $2}')
     pids=$(printf %s "$pids" | tr '\n' ',')
-    echo_eval 'ps u -p %q' "$pids"
+    echo_eval ps u -p "$pids"
   fi
 }
 
@@ -115,24 +118,35 @@ alias {pgg,pingr,ping_router}='router_ping' # cSpell:ignore pingr
 
 function ssl_check() {
   local domain=$1
-  printf Q | openssl s_client -servername "$domain" -connect "$domain":443 | openssl x509 -noout -dates
+  printf Q \
+    | openssl s_client -servername "$domain" -connect "$domain":443 \
+    | openssl x509 -noout -dates
 }
 alias tls_check='ssl_check'
 
-# cSpell:ignore whoip
-function whoip() {
-  local ip
-  ip=$(dig +short "$1" | head -n1)
-  local cmd="whois $ip"
-  echo >&2 "$cmd"
-  printf "=%.0s" $(seq 1 ${#cmd})
+function whoip() { # cSpell:disable-line
+  local short=${SHORT:-} host=$1 ip
+  ip=$(FAKE_ECHO=127.0.0.1 echo_eval dig +short "$host" | head -n1)
+  local cmd=(whois "$ip")
+
+  export FAKE_ECHO='% IANA WHOIS server
+% for more information on IANA, visit http://www.iana.org
+% This query returned 1 object
+
+refer:        whois.arin.net
+...
+
+OrgName:        Acme Corporation
+OrgId:          FOO123
+...'
 
   # Yeah, the long version by default, since whois outputs are so inconsistent...
-  if [[ $2 == '-s' ]]; then
-    printf '\n'
-    eval "$cmd" | noglob grep -i orgname | sed -e 's/OrgName:[[:space:]]*//' | sed -e 's/[[:space:]]*$//'
-    printf '\n'
+  if [[ $short ]]; then
+    echo_eval "${cmd[@]}" \
+      | noglob grep -i orgname \
+      | sed -e 's/OrgName:[[:space:]]*//' \
+      | sed -e 's/[[:space:]]*$//'
   else
-    eval "$cmd" | more
+    echo_eval "${cmd[@]}" | less -p OrgName
   fi
 }

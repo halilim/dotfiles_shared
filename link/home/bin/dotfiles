@@ -3,7 +3,6 @@ set -euo pipefail
 if [[ ${SET_X:-} ]]; then
   set -x
 fi
-IFS=$'\n\t'
 
 # Tries to be as idempotent as possible
 # Doesn't handle deletions
@@ -54,7 +53,7 @@ function d_bootstrap() {
   for var in "${vars[@]}"; do
     bootstrap+="$(declare -p "$var")"$'\n'
   done
-  echo_eval 'printf %q > %q/.dotfiles_bootstrap.sh' "$bootstrap" "$HOME_DIR"
+  echo_eval printf %s "$bootstrap" '>' "$HOME_DIR"/.dotfiles_bootstrap.sh
 }
 
 function d_edit() {
@@ -70,10 +69,10 @@ function d_edit() {
 
 function d_setup() {
   local plug="$HOME_DIR/.vim/autoload/plug.vim" \
-        vim_plug_installed=true
+    vim_plug_installed=true
   if [[ ! -f $plug ]]; then
-    echo_eval 'curl -fLo %q --create-dirs \
-      https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim ' "$plug"
+    echo_eval curl -fLo "$plug" --create-dirs \
+      https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     vim_plug_installed=false
   fi
 
@@ -88,12 +87,14 @@ function d_setup_omz_custom() {
     return 0
   fi
 
-  local cmd='omz_install_custom' cmd_args=()
-  if [[ $OSTYPE == darwin* ]]; then
-    cmd="iterm_tab %q $cmd"
-    cmd_args+=("$PWD")
+  local cmd='omz_install_custom' args=()
+  if [[ $OSTYPE == 'darwin'* ]]; then
+    args=(iterm_tab "$cmd" "$PWD")
+  else
+    args=("$cmd")
   fi
-  echo_eval "$cmd" "${cmd_args[@]}"
+
+  echo_eval "${args[@]}"
 }
 
 # TODO: Add archive feature: unarchive when the app is installed again
@@ -112,14 +113,14 @@ function d_sync() {
 }
 
 function d_update() {
-  DRY_RUN='' echo_eval 'cd %q' "$DOTFILES" || return
+  DRY_RUN='' echo_eval cd "$DOTFILES" '|| return'
   if [[ -v TERMUX_VERSION ]]; then
     # shellcheck disable=SC1091
     . "$DOTFILES_INCLUDES"/lib/termux.sh
-    echo_eval 'termux_prepare_ssh'
+    echo_eval termux_prepare_ssh
   fi
   for_each_dir 'git pull --prune --quiet'
-  echo_eval 'd_sync'
+  echo_eval d_sync
 }
 
 function d_import() {
@@ -204,7 +205,7 @@ function _d_import_path() {
   fi
 
   _d_mk_dir "$dotfile_dir/link/$dir_type/$relative_dir"
-  _d_echo_eval_with_sudo 'mv %q %q' "$item_path" "$path_in_dotfiles"
+  _d_echo_eval_with_sudo mv "$item_path" "$path_in_dotfiles"
   IGNORES_CHECKED=1 _d_link_file "$path_in_dotfiles" "$(dirname "$item_path")"
 
   return 0
@@ -216,7 +217,7 @@ function _d_link_platform() {
   while IFS= read -r -d '' platform_file; do
     platformless_link=${platform_file/_"$platform_suffix"/}
     if _d_need_to_link "$platform_file" "$platformless_link"; then
-      echo_eval 'ln -s %q %q' "$platform_file" "$platformless_link"
+      echo_eval ln -s "$platform_file" "$platformless_link"
     fi
   done < <(find "$dir" -name "*$PLATFORM_PREFIX$platform_suffix*" -print0)
 }
@@ -270,7 +271,7 @@ function _d_revert_path() {
     if [[ ! -e $dotfile_path ]]; then
       dotfile_path=$DOTFILES_CUSTOM/link/$dir_type/$relative_path
       dotfiles=$DOTFILES_CUSTOM
-      if [[ ! -e $dotfile_path  ]]; then
+      if [[ ! -e $dotfile_path ]]; then
         _d_log_error 'Does not exist in dotfiles'
         return 1
       fi
@@ -278,7 +279,7 @@ function _d_revert_path() {
 
     # Since both are real files, treat the original as the latest
     if [[ ! ${REMOVE:-''} ]]; then
-      _d_echo_eval_with_sudo 'rm %q' "$dotfile_path"
+      _d_echo_eval_with_sudo rm "$dotfile_path"
     fi
 
   else
@@ -292,7 +293,7 @@ function _d_revert_path() {
   else
     cmd='mv'
   fi
-  _d_echo_eval_with_sudo "$cmd %q %q" "$dotfile_path" "$orig_path"
+  _d_echo_eval_with_sudo $cmd "$dotfile_path" "$orig_path"
 
   # Remove empty directories in the dotfiles folder recursively until the link root
   local dotfile_dir
@@ -303,7 +304,7 @@ function _d_revert_path() {
     if [[ $dotfile_dir == "$dotfiles_home_dir" || $dotfile_dir == "$dotfiles_root_dir" ]]; then
       break
     fi
-    echo_eval 'rmdir %q' "$dotfile_dir"
+    echo_eval rmdir "$dotfile_dir"
     dotfile_dir=$(dirname "$dotfile_dir")
   done
 
@@ -334,7 +335,7 @@ function _d_start_link_recursive() {
   if [[ ! -d $dir ]]; then
     return 0
   fi
-  _d_link_recursive "$dir" "$dir" "$dir_type"
+  IFS=$'\n\t' _d_link_recursive "$dir" "$dir" "$dir_type"
 }
 
 function _d_link_recursive() {
@@ -428,7 +429,7 @@ function _d_mk_dir() {
     _d_backup "$dir"
   fi
 
-  _d_echo_eval_with_sudo 'mkdir -p %q' "$dir"
+  _d_echo_eval_with_sudo mkdir -p "$dir"
 }
 
 function _d_find_immediate_children() {
@@ -466,13 +467,21 @@ function _d_link_file() {
 
   _d_backup "$target" "$hard_link" "$source"
 
-  local link_arg=' -s' comment=''
+  local args=(ln)
+
   if [[ $hard_link == true ]]; then
-    link_arg=' -f'
-    comment=' # Hard link'
+    args+=(-f)
+  else
+    args+=(-s)
   fi
 
-  _d_echo_eval_with_sudo 'ln%s %q %q%s' "$link_arg" "$source" "$target" "$comment"
+  args+=("$source" "$target")
+
+  if [[ $hard_link == true ]]; then
+    args+=('# Hard link')
+  fi
+
+  _d_echo_eval_with_sudo "${args[@]}"
 }
 
 function _d_need_to_link() {
@@ -524,17 +533,17 @@ function _d_backup() {
   fi
 
   if [[ -L $target && ! -e $target ]]; then
-    _d_echo_eval_with_sudo 'rm %q # Broken link' "$target"
+    _d_echo_eval_with_sudo rm "$target" '# Broken link'
     return
   fi
 
   if [[ $hard_link == true ]]; then
     if [[ $source ]]; then
-      _d_echo_eval_with_sudo 'cp -f %q %q' "$target" "$source"
+      _d_echo_eval_with_sudo cp -f "$target" "$source"
     fi
   else
     # TODO: Remove older backups
-    _d_echo_eval_with_sudo 'mv %q{,.bak.%q}' "$target" "$(date +'%s')"
+    _d_echo_eval_with_sudo mv "$target"{,.bak."$(date +'%s')"}
   fi
 }
 
@@ -543,7 +552,7 @@ function _d_echo_eval_with_sudo() {
   # TODO: Add sudo when it fails due to permissions
   # NOTE: If this gets migrated to Zsh, change 0 to 1
   # if fails with "...": cmd[0]="sudo ${cmd[0]}" & echo_eval ...
-  echo_eval "${cmd[@]}"
+  IFS=' ' echo_eval "${cmd[@]}"
 }
 
 function d_vim_setup() {
@@ -554,14 +563,13 @@ function d_vim_setup() {
   local force=${1:-false} vim_plug_installed=${2:-true} vim_cmds=()
 
   if [[ $vim_plug_installed == false ]]; then
-    vim_cmds+=('PlugInstall')
+    vim_cmds+=(PlugInstall)
   fi
 
-  local file files=()
+  local file
   for file in "$VIM_SPELL"/*.add; do
     if [[ $force == true || ! $(find "$VIM_SPELL" -name "$(basename "$file")*.spl" -print -quit) ]]; then
-      vim_cmds+=("mkspell! %q")
-      files+=("$file")
+      vim_cmds+=("mkspell! $file")
     fi
   done
 
@@ -569,8 +577,10 @@ function d_vim_setup() {
     return 0
   fi
 
-  vim_cmds+=('q')
-  echo_eval "vim +'$(join_array ' | ' "${vim_cmds[@]}")'" "${files[@]}"
+  vim_cmds+=(q)
+  local vim_cmd
+  vim_cmd=$(join_array ' | ' "${vim_cmds[@]}")
+  echo_eval vim +"$vim_cmd"
 }
 
 function _d_log_error {

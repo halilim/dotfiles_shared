@@ -181,32 +181,23 @@
 
 	"echo_eval": {
 		"prefix": "ee",
-		"body": "echo_eval '${1:foo %q}' \"$${2:bar}\"",
+		"body": "echo_eval",
 	},
 
 	"echo_eval with heredoc": {
 		"prefix": "eeh",
 		"body": [
 			"echo_eval \"$(cat <<SH",
-				"\t${1:foo %q}",
+				"\t${1:cmd}",
 			"SH",
-			")\" \"$${2:bar}\""
+			")\" \"$${2:var}\""
 		],
 	},
 
 	"echo_eval no dry-run": {
 		"prefix": "eend", // cSpell:ignore eend
 		"body": [
-			"DRY_RUN='' echo_eval '${1:foo %q}' \"$${2:bar}\""
-		],
-	},
-
-	"echo_eval with array (variable n of %q's)": {
-		"prefix": ["eeq", "pqs"],
-		"body": [
-			"local q_ct=${#${1:arr}[@]} q_seq",
-			"q_seq=$(printf ' %%q%.0s' $(seq 1 \"\\$q_ct\"))",
-			"echo_eval \"${0:cmd} \\$q_seq\" \"${$1[@]}\""
+			"DRY_RUN='' echo_eval"
 		],
 	},
 
@@ -322,6 +313,15 @@
 		"prefix": "if",
 		"body": [
 			"if [[ $1 ]]; then",
+				"\t$0",
+			"fi"
+		],
+	},
+
+	"if alias": {
+		"prefix": "ifa",
+		"body": [
+			"if alias -- '$1' > /dev/null 2>&1; then",
 				"\t$0",
 			"fi"
 		],
@@ -529,7 +529,6 @@
 			"if [[ \\${SET_X:-} ]]; then",
 				"\tset -x",
 			"fi",
-			"IFS=$'\\n\\t'",
 			"\n"
 		],
 	},

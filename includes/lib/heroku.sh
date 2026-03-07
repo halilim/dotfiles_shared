@@ -14,7 +14,7 @@ alias hv="heroku --version"
 
 function heroku_config_get() {
   local key=$1 app=$2
-  echo_eval 'heroku config:get %q -a %q' "$key" "$app"
+  echo_eval heroku config:get "$key" -a "$app"
 }
 
 function heroku_db_url() {
@@ -24,7 +24,7 @@ function heroku_db_url() {
 
 function heroku_deploy_dash() {
   local app=${1:?Heroku app name is required}
-  echo_eval "$OPEN_CMD %q" "https://dashboard.heroku.com/apps/$app/deploy/github"
+  echo_eval "$OPEN_CMD" "https://dashboard.heroku.com/apps/$app/deploy/github"
 }
 
 function heroku_deploy_git_branch() {

@@ -12,7 +12,7 @@ function launch_darkly_flag() {
     url=${url/.com\//.us\/}
   fi
 
-  SILENT=1 echo_eval "$OPEN_CMD %q" "$url"
+  SILENT=1 echo_eval "$OPEN_CMD" "$url"
 }
 alias ldf='launch_darkly_flag'
 # shellcheck disable=SC2139
@@ -20,7 +20,13 @@ alias {ldff,ldfg,ldg}='FED=1 launch_darkly_flag' # cSpell:ignore ldff ldfg
 
 function launch_darkly_flag_keys() {
   # https://launchdarkly.com/docs/guides/api/rest-api#required-headers
-  local token=${LAUNCH_DARKLY_ACCESS_TOKEN:-}
+  local token
+  if [[ ${DRY_RUN:-} ]]; then
+    token='fake-token'
+  else
+    token=${LAUNCH_DARKLY_ACCESS_TOKEN:-}
+  fi
+
   if [[ ! $token ]]; then
     echo >&2 'LAUNCH_DARKLY_REST_API_ACCESS_TOKEN is not set'
     return 1
@@ -31,7 +37,13 @@ function launch_darkly_flag_keys() {
   local currentJson line
 
   while [[ $nextPath && $nextPath != 'null' ]]; do
-    if ! currentJson=$(echo_eval 'curl -L --fail-with-body --no-progress-meter %q -H %q' "https://app.launchdarkly.com$nextPath" "Authorization: $token"); then
+    # https://launchdarkly.com/docs/api/feature-flags/get-feature-flags
+    if ! currentJson=$(
+      FAKE_ECHO='{"items": [{"key": "foo"}, {"key": "bar"}]}' \
+      echo_eval curl -L --fail-with-body --no-progress-meter \
+        "https://app.launchdarkly.com$nextPath" \
+        -H "Authorization: $token"
+    ); then
       jq <<< "$(printf %s "$currentJson")"
       return 1
     fi

@@ -14,17 +14,7 @@
 #       Without it, it disables for the whole file
 
 # shellcheck disable=SC1091
-. "$HOME"/.dotfiles_bootstrap.sh
-# shellcheck disable=SC1091
-. "$DOTFILES_INCLUDES"/mac_env.sh
-# shellcheck disable=SC1091
-. "$DOTFILES_INCLUDES"/mac.sh
-# shellcheck disable=SC1091
-. "$DOTFILES_INCLUDES"/lib/colors.sh
-# shellcheck disable=SC1091
-. "$DOTFILES_INCLUDES"/lib/editing.sh
-# shellcheck disable=SC1091
-. "$DOTFILES_INCLUDES"/lib/functions.sh
+. "$HOME"/.zprofile
 
 if [[ -f $OPEN_FROM_ITERM_DEBUG ]]; then
   export VERBOSE=1
@@ -32,7 +22,7 @@ if [[ -f $OPEN_FROM_ITERM_DEBUG ]]; then
 fi
 
 if [[ -d $1 ]]; then
-  echo_eval "$OPEN_CMD %q" "$1"
+  echo_eval "$OPEN_CMD" "$1"
   return
 fi
 

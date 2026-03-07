@@ -10,7 +10,9 @@ _rails_request() {
 
       if [[ ! -s $file ]] || last_mod_older_than "$file" '3 day'; then
         printf >&2 "\nRegenerating %s ...\n" "$file"
-        echo_eval "$RAILS_CMD routes --expanded | \grep -vE '^(E,|I,|{\"|Active metric|---)' > %q" "$file"
+        echo_eval "$RAILS_CMD" routes --expanded "|" \
+          grep -vE '^(E,|I,|{\"|Active metric|---)' '>' \
+          "$file"
       fi
 
       # shellcheck disable=SC2034,SC2296,SC2116

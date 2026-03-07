@@ -9,8 +9,8 @@ function _launch_darkly_flag() {
       local file=.launch_darkly_flags.txt
 
       if [[ ! -s $file ]] || last_mod_older_than "$file" '3 day'; then
-        printf >&2 '\nRegenerating the flag list...\n'
-        echo_eval 'launch_darkly_flag_keys | sort > %q' "$file"
+        printf >&2 "\nRegenerating %s ...\n" "$file"
+        echo_eval launch_darkly_flag_keys '| sort >' "$file"
       fi
 
       compadd $(cat "$file")

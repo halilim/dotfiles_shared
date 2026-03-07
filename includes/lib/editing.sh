@@ -68,7 +68,7 @@ function edit() {
       vim_open "$abs_path_line_col"
     fi
   else
-    echo_eval "$OPEN_CMD %q" "$abs_path"
+    echo_eval "$OPEN_CMD" "$abs_path"
   fi
 }
 alias e='edit'
@@ -143,12 +143,12 @@ function open_with_rubymine() {
   # https://www.jetbrains.com/help/ruby/opening-files-from-command-line.html#88f1a126
   # Note: column is only documented in the "Windows" tab. -1: it goes to the next character (bug?)
 
-  # \\'s are for escaping special values like 21, which are also global aliases
   if [[ $line ]]; then
-    args+=(--line "\\$line")
+    args+=(--line "$line")
   fi
+
   if [[ $column ]]; then
-    args+=(--column "\\$((column - 1))")
+    args+=(--column "$((column - 1))")
   fi
 
   args+=("$abs_path")
@@ -162,47 +162,42 @@ function open_with_editor() {
     return
   fi
 
-  local arg_arr=("$@") cmd
+  local cmd_args=()
 
   if [[ $EDITOR == code || $EDITOR == */code || $EDITOR == code-insiders || $EDITOR == */code-insiders ]]; then
     # https://code.visualstudio.com/docs/editor/command-line#_core-cli-options
     # https://github.com/microsoft/vscode/issues/176343 No multiple -g's :(
-    cmd="$EDITOR -g"
+    cmd_args=("$EDITOR" -g)
   elif [[ $EDITOR == */*zed ]]; then
-    cmd="$EDITOR"
+    cmd_args=("$EDITOR")
   else
-    cmd='open'
+    cmd_args=("$OPEN_CMD")
   fi
 
-  local arg_ct=${#arg_arr[@]} pct_qs
-  pct_qs=$(printf ' %%q%.0s' $(seq 1 "$arg_ct"))
-
-  echo_eval "$cmd$pct_qs" "${arg_arr[@]}"
+  echo_eval "${cmd_args[@]}" "$@"
 }
 
 function vim_open() {
-  local arg_arr=("$@") vim_cmd_=''
+  local args=()
 
   if [[ ${SUDO:-} ]]; then
-    vim_cmd_+='sudo '
+    args+=('sudo')
   fi
 
-  vim_cmd_+="$VIM_PATH"
-
-  local arg_ct=${#arg_arr[@]} pct_qs
-  pct_qs=$(printf ' %%q%.0s' $(seq 1 "$arg_ct"))
+  args+=("$VIM_PATH")
 
   # https://stackoverflow.com/a/5945322/372654
   if [[ "$#" -gt 0 ]]; then
     if [[ -d $1 ]]; then
-      vim_cmd_+="$pct_qs +':lcd %%'"
+      args+=(+':lcd %')
     else
       if [[ $VIM_PATH != */vim ]]; then
-        vim_cmd_+=" --remote-silent"
+        args+=('--remote-silent')
       fi
-      vim_cmd_+="$pct_qs"
     fi
   fi
 
-  echo_eval "$vim_cmd_" "${arg_arr[@]}"
+  args+=("$@")
+
+  echo_eval "${args[@]}"
 }

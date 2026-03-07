@@ -24,6 +24,7 @@ alias -g 21='2>&1'
 alias -g 21n='>/dev/null 2>&1'
 # shellcheck disable=SC2139
 alias -g {2D,2n}='2>/dev/null'
+alias -g D='DEBUG=1'
 alias -g DR='DRY_RUN=1'
 alias -g F='| fzf'
 alias -g G='| rg -n' # Case insensitive by default due to ~/.ripgreprc

@@ -13,10 +13,10 @@ End
 
 Describe 'echo_eval'
   It 'prints, evaluates a string'
-    When call echo_eval 'echo "foo"'
+    When call echo_eval echo foo
     The status should eq 0
     The stdout should eq 'foo'
-    The stderr should eq '-> echo "foo"'
+    The stderr should eq '-> echo foo'
   End
 
   It 'returns status'
@@ -26,10 +26,10 @@ Describe 'echo_eval'
     The stderr should eq '-> false'
   End
 
-  It 'escapes with %q'
+  It 'escapes arguments'
     # shellcheck disable=SC2016
     var='foo "$bar'
-    When call echo_eval 'echo %q' "$var"
+    When call echo_eval echo "$var"
     The status should eq 0
     # shellcheck disable=SC2016
     The stdout should eq 'foo "$bar'
@@ -42,7 +42,7 @@ Describe 'echo_eval'
     var='foo "$bar'
     export DRY_RUN=1
     export FAKE_ECHO=baz
-    When call echo_eval 'echo %q' "$var"
+    When call echo_eval echo "$var"
     The status should eq 0
     The stdout should eq 'baz'
     # shellcheck disable=SC2016
@@ -54,7 +54,7 @@ Describe 'echo_eval'
     var='foo "$bar'
     export DRY_RUN=1
     export FAKE_STATUS=3
-    When call echo_eval 'echo %q' "$var"
+    When call echo_eval echo "$var"
     The status should eq 3
     The stdout should eq ''
     # shellcheck disable=SC2016

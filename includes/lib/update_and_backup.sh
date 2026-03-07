@@ -19,7 +19,9 @@ function update_and_backup() {
 function chrome_backup_notes() {
   FORCE_COLOR=1 echo "Chrome backup directory: $(color yellow "$DOTFILES_CUSTOM"/backup/chrome)
 $(color green '1. Bookmark Manager (⌥⌘B) > ⋮ > Export bookmarks > Go to dir (⇧⌘G) > ⌘V')
-$(color green '2. Dark Reader > More > All settings > Advanced > Export Settings')"
+$(color green '2. Dark Reader > More > All settings > Advanced > Export Settings')
+$(color green '3. User JavaScript and CSS > ⬢ > Download JSON')
+$(color green '4. $ chrome_user_js_css_prettier')"
 }
 
 function update_mise() {

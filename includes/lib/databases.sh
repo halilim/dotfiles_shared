@@ -41,53 +41,53 @@ function mariadb_exec() {
 # https://mariadb.com/docs/server/clients-and-utilities/mariadb-client/mariadb-command-line-client
 # https://dev.mysql.com/doc/refman/en/mysql-command-options.html
 function mysql_exec() {
-  local host=${1:-127.0.0.1} database=${2:-} cmd=''
+  local host=${1:-127.0.0.1} database=${2:-} args=()
 
   local container
   container=$(docker_host_to_container "$host")
   if [[ $container ]]; then
-    cmd+="docker exec $container"
+    args+=(docker exec "$container")
   fi
 
   if [[ ${TYPE:-} && $TYPE = 'mariadb' ]]; then
-    cmd+=" mariadb"
+    args+=(mariadb)
   else
-    cmd+=" mysql"
+    args+=(mysql)
   fi
 
   if [[ ! $container ]]; then
-    cmd+=" -h$host"
+    args+=(-h"$host")
     local port=${host#*:}
     if [[ $port ]]; then
-      cmd+=" -P $port"
+      args+=(-P "$port")
     fi
   fi
 
   local user=${DB_USER:-root}
   if [[ $user ]]; then
-    cmd+=" -u $user"
+    args+=(-u "$user")
   fi
 
   local password=${DB_PASSWD:-root}
   if [[ $password ]]; then
-    cmd+=" -p$password"
+    args+=(-p"$password")
   fi
 
-  cmd+=" --skip-column-names"
+  args+=(--skip-column-names)
 
   if [[ $database ]]; then
-    cmd+=" $database"
+    args+=("$database")
   fi
 
   if [[ ${QUERY:-} ]]; then
-    cmd+=$(printf ' -e %q' "$QUERY")
+    args+=(-e "$QUERY")
   fi
 
   # FIXME: Find another way, because this also silences real errors
   # # `2>`: mysql: [Warning] Using a password on the command line interface can be insecure.
-  # cmd+=' 2> /dev/null'
+  # args+=('2> /dev/null')
 
-  echo_eval "$cmd"
+  echo_eval "${args[@]}"
 }
 
 function postgres_databases() {
@@ -114,43 +114,43 @@ alias pgt='postgres_table'
 
 # https://www.postgresql.org/docs/current/app-psql.html
 function psql_exec() {
-  local host=${1:-127.0.0.1} database=${2:-} query=${3:-} cmd=''
+  local host=${1:-127.0.0.1} database=${2:-} query=${3:-} args=()
 
   local password=${DB_PASSWD:-}
   if [[ $password ]]; then
-    cmd+="PGPASSWORD=${password} "
+    args+=(PGPASSWORD="$password")
   fi
 
   local container
   container=$(docker_host_to_container "$host")
   if [[ $container ]]; then
-    cmd+="docker exec $container "
+    args+=(docker exec "$container")
   fi
 
-  cmd+='psql'
+  args+=(psql)
 
   if [[ ! $container ]]; then
-    cmd+=" -h $host"
+    args+=(-h "$host")
     local port=${host#*:}
     if [[ $port && $port != "$host" ]]; then
-      cmd+=" -p $port"
+      args+=(-p "$port")
     fi
   fi
 
   local user=${DB_USER:-postgres}
-  cmd+=" -U $user"
+  args+=(-U "$user")
 
   if [[ $database ]]; then
-    cmd+=" -d $database"
+    args+=(-d "$database")
   fi
 
   if [[ ${query:-} ]]; then
-    cmd+=$(printf ' --command %q' "$query")
+    args+=(--command "$query")
   fi
 
-  cmd+=" ${*:4}"
+  args+=("${@:4}")
 
-  echo_eval "$cmd"
+  echo_eval "${args[@]}"
 }
 
 function db_table() {
