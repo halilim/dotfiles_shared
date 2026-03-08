@@ -33,4 +33,5 @@ UPDATE_BACKUP_CMDS+=(
   'iterm_tab . chrome_backup_notes'
   'brew update --quiet'
   'brew upgrade --quiet' # Removed --greedy because apps auto-download in the background anyway
+  'brew unlink node' # This gets installed as a dependency, but we're using Node from mise now
 )

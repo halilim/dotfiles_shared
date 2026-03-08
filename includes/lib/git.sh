@@ -154,6 +154,11 @@ function git_maintain_large_repos() {
   done < <(printf '%s:' "$GIT_LARGE_REPOS")
 }
 
+function git_pull_all() {
+  # shellcheck disable=SC2016
+  for_each_dir git checkout _safe_'"$(git_main_branch)" &&' git pull --prune --quiet
+}
+
 function git_search_branches() {
   echo_eval git branch -r "$(_git_contains_args_with_message "$1")"
 }

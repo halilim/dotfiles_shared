@@ -55,7 +55,7 @@ alias gmt='git mergetool'
 
 alias gpl='git pull'
 # shellcheck disable=SC2139
-alias {gla,gpla}="for_each_dir 'git checkout "'$(git_main_branch)'" && git pull --prune'" # Pull all
+alias {gla,gpla}=git_pull_alll
 # shellcheck disable=SC2016
 alias gplb='git pull origin $(git rev-parse --abbrev-ref HEAD)'
 # shellcheck disable=SC2139

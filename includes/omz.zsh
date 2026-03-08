@@ -79,8 +79,13 @@ function omz_install_custom() {
 
 function omz_update_custom() {
   (
-    cd "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}" 'Oh My Zsh custom directory' || return
+    cd "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}" || return
 
-    for_each_dir 'for_each_dir "git pull --prune --quiet"'
+    local dry_run_str=''
+    if [[ ${DRY_RUN:-} ]]; then
+      dry_run_str='DRY_RUN=1'
+    fi
+    DRY_RUN='' CMD_TO_SHOW="git_pull_all\n" \
+      for_each_dir $dry_run_str CMD_TO_SHOW='' git_pull_all
   )
 }

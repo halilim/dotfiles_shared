@@ -110,10 +110,30 @@
 		],
 	},
 
-	"dynamic variable name (Bash: !, Zsh: (P))": {
-		"prefix": "dv",
+	"dynamic variable": {
+		"prefix": ["dv", "dyn"],
 		"body": [
-			"\\${${1|!,(P)|}${0:name}:-}"
+			"local ${1:var}",
+			"# shellcheck disable=SC2296",
+			"if [ -n \"\\${ZSH_VERSION:-}\" ]; then",
+				"\t$1=\\${(P)${2:name}:-}",
+			"else",
+				"\t$1=\\${!$2:-}",
+			"fi\n"
+		],
+	},
+
+	"dynamic array": {
+		"prefix": ["dva", "dyna"], // cSpell:disable-line
+		"body": [
+			"local ${1:var}",
+			"# shellcheck disable=SC2296",
+			"if [ -n \"\\${ZSH_VERSION:-}\" ]; then",
+				"\t$1=(\"\\${(@P)${2:name}:-}\")",
+			"else",
+				"\t# shellcheck disable=SC2178",
+				"\tdeclare -n $1=$2",
+			"fi\n"
 		],
 	},
 
@@ -673,4 +693,105 @@
 	},
 
 	// END: macOS
+
+	// ShellSpec
+
+	"ShellSpec AfterAll": {
+		"prefix": "afa",
+		"body": [
+			"cleanup() {",
+				"\t$0",
+			"}",
+			"AfterAll 'cleanup'",
+		],
+	},
+
+	"ShellSpec AfterEach": {
+		"prefix": "af",
+		"body": [
+			"cleanup() {",
+				"\t$0",
+			"}",
+			"AfterEach 'cleanup'",
+		],
+	},
+
+	"ShellSpec BeforeAll": {
+		"prefix": "befa", // cSpell:disable-line
+		"body": [
+			"setup() {",
+				"\t$0",
+			"}",
+			"BeforeAll 'setup'",
+		],
+	},
+
+	"ShellSpec BeforeEach": {
+		"prefix": "bef",
+		"body": [
+			"setup() {",
+				"\t$0",
+			"}",
+			"BeforeEach 'setup'",
+		],
+	},
+
+	"ShellSpec Context": {
+		"prefix": "ctx",
+		"body": [
+			"Context '$1'",
+				"\t$0",
+			"End"
+		],
+	},
+
+	"ShellSpec Describe": {
+		"prefix": "desc",
+		"body": [
+			"Describe '$1'",
+				"\t$0",
+			"End"
+		],
+	},
+
+	"ShellSpec Example": {
+		"prefix": ["ex", "exp"],
+		"body": [
+			"Example '$1'",
+				"\t$0",
+			"End"
+		],
+	},
+
+	"ShellSpec It": {
+		"prefix": "it",
+		"body": [
+			"It '$1'",
+				"\t$0",
+			"End"
+		],
+	},
+
+	"ShellSpec Mock": {
+		"prefix": "mock",
+		"body": [
+			"Mock $1",
+				"\t$0",
+			"End"
+		],
+	},
+
+
+	"ShellSpec mock function": {
+		"prefix": ["mf", "mockf"], // cSpell:disable-line
+		"body": [
+			"$1_calls=''",
+			"function ${1:func}() {",
+				"\t$1_calls+=\"\\$* ¶ \"",
+				"\t%preserve $1_calls",
+			"}"
+		],
+	},
+
+	// END: ShellSpec
 }

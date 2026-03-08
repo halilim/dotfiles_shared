@@ -77,15 +77,41 @@ function cd_with_header() {
 
 # Usage: DRY_RUN=1 FAKE_ECHO=foo echo_eval cmd "$bar"
 function echo_eval() {
-  local dry_run=${DRY_RUN:-} silent=${SILENT:-} args=() args_to_show=() arg escaped_arg escaped_arg_to_show aliased
+  local dry_run=${DRY_RUN:-} silent=${SILENT:-} \
+    args=() args_to_show=() arg \
+    escaped_arg escaped_arg_to_show \
+    aliased
 
-  for arg in "$@"; do
-    if [[ $arg = '&'* || $arg = '|'* || $arg =~ ^[[:digit:]]?'>' || $arg = '#'* ]]; then
+  local filter_args=() should_filter=''
+  if [[ ${FILTER_ARGS:-} ]]; then
+    should_filter=1
+    local filter_arg
+    while read -d ',' -r filter_arg; do
+      filter_args+=("$filter_arg")
+    done < <(printf '%s,' "$FILTER_ARGS")
+  fi
+
+  local i arg_ct=${#@} no_escape
+  for ((i = 1; i <= arg_ct; i++)); do
+    arg="${*:$i:1}"
+
+    no_escape=''
+    if [[ $arg = '_safe_'* ]]; then
+      arg=${arg#'_safe_'}
+      no_escape=1
+    fi
+
+    if [[ $arg = '&'* || $arg = '|'* || $arg =~ ^[[:digit:]]?'>' || $arg = '#'* || $no_escape ]]; then
       escaped_arg=$arg
     else
       escaped_arg=$(printf %q "$arg")
     fi
-    escaped_arg_to_show=$escaped_arg
+
+    if [[ $should_filter ]] && in_array "$((i - 1))" "${filter_args[@]}" ; then
+      escaped_arg_to_show='[FILTERED]'
+    else
+      escaped_arg_to_show=$escaped_arg
+    fi
 
     if aliased=$(alias -- "$escaped_arg" 2> /dev/null) && [[ $aliased ]]; then
       escaped_arg="\\$escaped_arg"
@@ -137,8 +163,8 @@ function hosts_link() {
 }
 
 function for_each_dir() {
-  local dir
-  for dir in */; do
+  local in=${IN:-.}
+  for dir in "$in"/*/; do
     (
       cd_with_header "$dir"
       echo_eval "$@"

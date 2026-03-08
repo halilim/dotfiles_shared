@@ -24,10 +24,14 @@ zsh_specs+=("${both_specs[@]}")
 wanted_bash_specs=()
 wanted_zsh_specs=()
 for arg in "$@"; do
-  if in_array "$arg" "${bash_specs[@]}"; then
+  if [[ $arg =~ ^([^:]+):?([0-9]*)$ ]]; then
+    spec_path=${BASH_REMATCH[*]:1:1}
+  fi
+
+  if in_array "$spec_path" "${bash_specs[@]}"; then
     wanted_bash_specs+=("$arg")
   fi
-  if in_array "$arg" "${zsh_specs[@]}"; then
+  if in_array "$spec_path" "${zsh_specs[@]}"; then
     wanted_zsh_specs+=("$arg")
   fi
   shift

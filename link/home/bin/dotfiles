@@ -119,7 +119,7 @@ function d_update() {
     . "$DOTFILES_INCLUDES"/lib/termux.sh
     echo_eval termux_prepare_ssh
   fi
-  for_each_dir 'git pull --prune --quiet'
+  for_each_dir git pull --prune --quiet
   echo_eval d_sync
 }
 

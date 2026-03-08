@@ -6,23 +6,10 @@ Describe 'edit'
   OPEN_CMD=open_cmd_test
 
   # Mocks
+  open_calls=''
   function open_cmd_test() {
-    local arg_ct=$#
-    local expected_arg_ct=${#expected_open_args[@]}
-    if [[ $arg_ct != "$expected_arg_ct" ]]; then
-      echo >&2 "Unregistered open_cmd_test mock: $*"
-      exit 1
-    fi
-
-    local i actual_arg expected_arg
-    for ((i = 1; i <= arg_ct; i++)); do
-      actual_arg=${*:$i:1}
-      expected_arg=${expected_open_args[*]:$((i-1)):1}
-      if [[ $actual_arg != "$expected_arg" ]]; then
-        echo >&2 "Expected open_cmd_test arg #$i to be $expected_arg, but got $actual_arg"
-        exit 1
-      fi
-    done
+    open_calls+="$* ¶ "
+    %preserve open_calls
   }
 
   function realpath() {
@@ -49,11 +36,10 @@ Describe 'edit'
       echo "${git_output:-}"
     }
 
+    open_with_editor_calls=''
     function open_with_editor() {
-      if [[ $1 != "${expected_open_with_editor_arg?}" ]]; then
-        echo >&2 "Unregistered open_with_editor mock: $*"
-        exit 1
-      fi
+      open_with_editor_calls+="$* ¶ "
+      %preserve open_with_editor_calls
     }
 
     function window_names() {
@@ -61,32 +47,22 @@ Describe 'edit'
         if [[ ${code_is_open:-} ]]; then
           echo 'README.md — project_a (Workspace)'
         fi
-        return
-      fi
-
-      if [[ $1 == 'Visual Studio Code - Insiders.app' && $2 == 'Code - Insiders' ]]; then
+      elif [[ $1 == 'Visual Studio Code - Insiders.app' && $2 == 'Code - Insiders' ]]; then
         if [[ ${code_insiders_is_open:-} ]]; then
           echo 'README.md — project_a (Workspace)'
         fi
-        return
-      fi
-
-      if [[ $1 == 'RubyMine' ]]; then
+      elif [[ $1 == 'RubyMine' ]]; then
         if [[ ${rubymine_is_open:-} ]]; then
           echo 'project_a – README.md, project_b'
         fi
-        return
-      fi
-
-      if [[ $1 == *vim* ]]; then
+      elif [[ $1 == 'MacVim' ]]; then
         if [[ ${vim_is_open:-} ]]; then
           echo "$dir/project_a // README.md"
         fi
-        return
+      else
+        echo >&2 "Unexpected window_names call: $*"
+        exit 1
       fi
-
-      echo >&2 "Unexpected window_names call: $*"
-      exit 1
     }
     # End: Mocks
 
@@ -98,104 +74,91 @@ Describe 'edit'
       # End: Mocks
 
       It "calls $OPEN_CMD"
-        expected_open_args=("$file")
         When call edit "$file"
         The stdout should eq ''
         The stderr should eq "-> $OPEN_CMD /project_a/a_file"
         The status should eq 0
+        The variable open_calls should eq "$file ¶ "
       End
     End
 
     Context 'when text'
-      line=2
-      column=3
+      line=21
+      column=45
 
       # Mocks
+      vim_open_calls=''
       function vim_open() {
-        if [[ ${expect_vim:-} && $1 != "${expected_vim_arg?}" ]]; then
-          echo >&2 "Unregistered vim_open mock: $*"
-          exit 1
-        fi
+        vim_open_calls+="$* ¶ "
+        %preserve vim_open_calls
       }
       # End: Mocks
 
-      expected_vim_arg="$file:$line:$column"
-
       It 'calls vim'
-        expect_vim=1
         When call edit "$file" "$line" "$column"
         The stdout should eq ''
         The stderr should eq ''
         The status should eq 0
+        The variable vim_open_calls should eq "$file:$line:$column ¶ "
       End
 
       Context 'RubyMine'
         # Mocks
+        mine_calls=''
         function mine() {
-          local arg_ct=$#
-          local expected_arg_ct=${#expected_mine_args[@]}
-          if [[ $arg_ct != "$expected_arg_ct" ]]; then
-            echo >&2 "Unregistered mine mock: $*"
-            exit 1
-          fi
-
-          local i actual_arg expected_arg
-          for ((i = 1; i <= arg_ct; i++)); do
-            actual_arg=${*:$i:1}
-            expected_arg=${expected_mine_args[*]:$((i-1)):1}
-            if [[ $actual_arg != "$expected_arg" ]]; then
-              echo >&2 "Expected mine arg #$i to be $expected_arg, but got $actual_arg"
-              exit 1
-            fi
-          done
+          mine_calls+="$* ¶ "
+          %preserve mine_calls
         }
         # End: Mocks
 
-        Context 'without a git project'
-          It 'calls vim'
-            expect_vim=1
-            When call edit "$file" "$line" "$column"
-            The stdout should eq ''
-            The stderr should eq ''
-            The status should eq 0
-          End
+        Context 'when open'
+          rubymine_is_open=1
 
-          Context 'when open and with a Ruby file'
-            rubymine_is_open=1
-            file=a_file.rb
-
-            It 'calls it'
-              expected_mine_args=(--line "$line" --column "$((column - 1))" "$file")
+          Context 'without a git project'
+            It 'calls vim'
               When call edit "$file" "$line" "$column"
               The stdout should eq ''
               The stderr should eq ''
               The status should eq 0
+              The variable vim_open_calls should eq "$file:$line:$column ¶ "
+            End
+
+            Context 'with a Ruby file'
+              file=a_file.rb
+
+              It 'calls it'
+                When call edit "$file" "$line" "$column"
+                The stdout should eq ''
+                The stderr should eq ''
+                The status should eq 0
+                The variable mine_calls should eq "--line $line --column $((column - 1)) $file ¶ "
+              End
             End
           End
-        End
 
-        Context 'with a git project'
-          git_output=$dir
+          Context 'with a git project'
+            git_output=$dir
 
-          It 'calls it'
-            expected_mine_args=(--line "$line" --column "$((column - 1))" "$file")
-            When call edit "$file" "$line" "$column"
-            The stdout should eq ''
-            The stderr should eq ''
-            The status should eq 0
+            It 'calls it'
+              # shellcheck disable=SC2034
+              When call edit "$file" "$line" "$column"
+              The stdout should eq ''
+              The stderr should eq ''
+              The status should eq 0
+              The variable mine_calls should eq "--line $line --column $((column - 1)) $file ¶ "
+            End
           End
         End
       End
 
-      Context 'editor'
+      Context 'with editor'
         setup_editor() {
           export EDITOR="$test_editor"
-          expected_open_with_editor_arg="$file:$line:$column"
         }
         BeforeEach 'setup_editor'
 
         Context 'MacVim'
-          test_editor=vim
+          test_editor=mvim
           vim_is_open=1
 
           It 'calls it'
@@ -203,6 +166,7 @@ Describe 'edit'
             The stdout should eq ''
             The stderr should eq ''
             The status should eq 0
+            The variable open_with_editor_calls should eq "$file:$line:$column ¶ "
           End
         End
 
@@ -215,6 +179,7 @@ Describe 'edit'
             The stdout should eq ''
             The stderr should eq ''
             The status should eq 0
+            The variable open_with_editor_calls should eq "$file:$line:$column ¶ "
           End
         End
 
@@ -227,6 +192,7 @@ Describe 'edit'
             The stdout should eq ''
             The stderr should eq ''
             The status should eq 0
+            The variable open_with_editor_calls should eq "$file:$line:$column ¶ "
           End
         End
       End
@@ -235,23 +201,23 @@ Describe 'edit'
 End
 
 Describe 'open_with_editor'
-  Context 'when the editor is VS Code'
+  Context 'with VS Code'
     export EDITOR=code
 
+    # Mocks
+    code_calls=''
     function code() {
-      if [[ $1 != '-g' || $2 != 'foo' || $3 != 'bar baz' ]]; then
-        echo >&2 'Invalid code call'
-        return 1
-      fi
-
-      return 0
+      code_calls+="$* ¶ "
+      %preserve code_calls
     }
+    # End: Mocks
 
     It 'opens given paths with editor'
       When call open_with_editor foo 'bar baz'
       The stdout should eq ''
       The stderr should eq '-> code -g foo bar\ baz'
       The status should eq 0
+      The variable code_calls should eq '-g foo bar baz ¶ '
     End
   End
 
@@ -259,20 +225,20 @@ Describe 'open_with_editor'
     export EDITOR=/foo/bar/bin/vim
     export VIM_PATH=vim
 
+    # Mocks
+    vim_calls=''
     function vim() {
-      if [[ $1 != '--remote-silent' || $2 != 'foo' || $3 != 'bar baz' ]]; then
-        echo >&2 'Invalid vim call'
-        return 1
-      fi
-
-      return 0
+      vim_calls+="$* ¶ "
+      %preserve vim_calls
     }
+    # End: Mocks
 
     It 'opens given paths with editor'
       When call open_with_editor foo 'bar baz'
       The stdout should eq ''
       The stderr should eq '-> vim --remote-silent foo bar\ baz'
       The status should eq 0
+      The variable vim_calls should eq '--remote-silent foo bar baz ¶ '
     End
   End
 End

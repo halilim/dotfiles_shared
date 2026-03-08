@@ -50,6 +50,7 @@ Describe "$script"
     export HOME_DIR=$mock_home
     export ROOT_DIR=$mock_root
   }
+  BeforeAll 'setup'
 
   cleanup() {
     rm -rf "$tmp_dir"
@@ -62,8 +63,6 @@ Describe "$script"
       ROOT_DIR=$orig_root
     fi
   }
-
-  BeforeAll 'setup'
   AfterAll 'cleanup'
 
   Mock curl

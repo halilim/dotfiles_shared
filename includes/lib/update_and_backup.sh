@@ -8,7 +8,7 @@ function update_and_backup() {
 
     local cmd last_ret
     for cmd in "${UPDATE_BACKUP_CMDS[@]}"; do
-      echo_eval "$cmd"
+      echo_eval "_safe_$cmd"
       last_ret=$?
       printf '\n'
     done

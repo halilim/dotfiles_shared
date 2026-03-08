@@ -37,6 +37,25 @@ Describe 'echo_eval'
     The stderr should eq '-> echo foo\ \"\$bar'
   End
 
+  It 'does not escape args marked with _safe_'
+    # shellcheck disable=SC2016
+    When call echo_eval _safe_"echo yay" '&&' echo 'lorem ipsum "$bar'
+    The status should eq 0
+    # shellcheck disable=SC2016
+    The stdout should eq 'yay
+lorem ipsum "$bar'
+    # shellcheck disable=SC2016
+    The stderr should eq '-> echo yay && echo lorem\ ipsum\ \"\$bar'
+  End
+
+  It 'filters sensitive args'
+    export FILTER_ARGS=3,5
+    When call echo_eval echo foo -u username -p password baz
+    The status should eq 0
+    The stderr should eq '-> echo foo -u [FILTERED] -p [FILTERED] baz'
+    The stdout should eq 'foo -u username -p password baz'
+  End
+
   It 'outputs fake echo with dry run'
     # shellcheck disable=SC2016
     var='foo "$bar'
