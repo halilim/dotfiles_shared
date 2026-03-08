@@ -40,7 +40,7 @@ function update_open_tabs() {
 
 function update_bat_syntaxes() {
   (
-    cd "$DOTFILES_SHARED" || return
+    DRY_RUN='' echo_eval cd "$DOTFILES_SHARED" || return
 
     local submodules=(
       'link/home/.config/bat/syntaxes/st2-zonefile|master'
@@ -51,11 +51,11 @@ function update_bat_syntaxes() {
     for submodule in "${submodules[@]}"; do
       submodule_path=$(cut -d '|' -f 1 <<< "$submodule")
       branch=$(cut -d '|' -f 2 <<< "$submodule")
-      git submodule set-branch -b "$branch" "$submodule_path"
-      git -C "$submodule_path" checkout --quiet "$branch"
+      echo_eval git submodule set-branch -b "$branch" "$submodule_path"
+      echo_eval git -C "$submodule_path" checkout "$branch"
     done
 
-    git submodule foreach --recursive git pull --prune --quiet
+    echo_eval git submodule foreach --recursive git pull --prune
   )
 
   bat_rebuild_syntaxes
