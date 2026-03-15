@@ -3,44 +3,34 @@ Include includes/lib/colors.sh
 Include includes/lib/functions.sh
 
 Describe 'ruby_cd_pull_migrate'
-  export RAKE_CMD=rake
+  export RAKE_CMD=(rake)
 
-  bundle_call_count=0
+  bundle_calls=''
   function bundle() {
-    bundle_call_count=$((bundle_call_count + 1))
-    if [[ $1 != 'install' ]]; then
-      echo >&2 "Unregistered bundle mock: $*"
-      exit 1
-    fi
+    bundle_calls+="$* ¶ "
+    %preserve bundle_calls
   }
 
-  cd_checkout_pull_ret=0
+  cd_checkout_pull_calls=''
   function cd_checkout_pull() {
-    if [[ $1 != 'foo' || $2 != 'bar' ]]; then
-      echo >&2 "Unregistered cd_checkout_pull mock: $*"
-      exit 1
+    cd_checkout_pull_calls+="$* ¶ "
+    %preserve cd_checkout_pull_calls
+
+    if [[ ${cd_checkout_pull_ret:-} ]]; then
+      return $cd_checkout_pull_ret
+    else
+     return 0
     fi
-    return $cd_checkout_pull_ret
   }
 
   function kill_spring() { # Mock
     :
   }
 
-  rake_call_count=0 # To track the number and order of rake calls
+  rake_calls=''
   function rake() {
-    rake_call_count=$((rake_call_count + 1))
-
-    case "$rake_call_count" in
-      1) [[ $1 == 'db:migrate' ]] ;;
-      2) [[ $1 == 'log:clear' ]] ;;
-    esac
-    rake_status=$?
-
-    if [[ $rake_status != 0 ]]; then
-      echo >&2 "Unregistered rake mock for call #$rake_call_count: $*"
-      exit 1
-    fi
+    rake_calls+="$* ¶ "
+    %preserve rake_calls
   }
 
   dir=''
@@ -64,8 +54,8 @@ Describe 'ruby_cd_pull_migrate'
     The status should eq 0
     The stdout should eq ''
     The stderr should include '-> bundle install'
-    The variable bundle_call_count should eq 1
-    The variable rake_call_count should eq 2
+    The variable bundle_calls should eq 'install --quiet ¶ '
+    The variable rake_calls should eq 'db:migrate ¶ log:clear LOGS=all ¶ '
   End
 
   Context 'when cd_checkout_pull fails'
@@ -76,8 +66,9 @@ Describe 'ruby_cd_pull_migrate'
       The status should eq 7
       The stdout should eq ''
       The stderr should not include '-> bundle install'
-      The variable bundle_call_count should eq 0
-      The variable rake_call_count should eq 0
+      The variable cd_checkout_pull_calls should eq 'foo bar ¶ '
+      The variable bundle_calls should eq ''
+      The variable rake_calls should eq ''
     End
   End
 End

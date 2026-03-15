@@ -324,6 +324,20 @@ function prompt() {
   fi
 }
 
+function regen_if_stale() {
+  local file=$1 ago=${2:-'3 day'}
+  shift 2
+
+  if [[ ! -s $file ]] || last_mod_older_than "$file" "$ago"; then
+    local dir
+    dir=$(dirname "$file")
+    echo_eval mkdir -p "$dir"
+    printf >&2 "\n%s is older than %ss, regenerating...\n" "$file" "$ago"
+    echo_eval "$@" '>' "$file"
+  fi
+
+}
+
 function relative_to() {
   $GNU_REALPATH -s --relative-to="$1" "$2"
 }

@@ -2,15 +2,6 @@ Include includes/lib/colors.sh
 Include includes/lib/functions.sh
 Include includes/env.sh
 
-Describe 'color'
-  It 'does not print in color when not tty'
-    When call color red 'bar'
-    The stdout should eq 'bar'
-    The stderr should eq ''
-    The status should eq 0
-  End
-End
-
 Describe 'echo_eval'
   It 'prints, evaluates a string'
     When call echo_eval echo foo

@@ -1,14 +1,22 @@
 alias libr='$EDITOR "$DOTFILES_INCLUDES"/lib/ruby_rails.sh' # cSpell:ignore libr
 
 # bin/* ones sometimes raise "You have already activated ...", so using bundle exec for now
-# Use the Rails defaults - binstubs, Spring, etc. Change only when needed.
-# Alternative: Oh My Zsh bundler plugin (_run-with-bundler), but it uses an alias which breaks some flows.
-export RUBY_CMD_PREFIX=${RUBY_CMD_PREFIX-'bundle exec '} # `bin/` | `bundle exec `
+if [[ ! -v RUBY_CMD_PREFIX ]]; then
+  export RUBY_CMD_PREFIX=(bundle exec) # _run-with-bundler | bin/ | bundle exec
+fi
 
 # These are used with echo_eval, which escapes aliases, so bare `rails` and `rake` are really bare
 # The _*_command functions are from Oh My Zsh's Rails plugin
-export RAILS_CMD="${RUBY_CMD_PREFIX}_rails_command"
-export RAKE_CMD="${RUBY_CMD_PREFIX}_rake_command"
+
+if [[ ${#RUBY_CMD_PREFIX[@]} -eq 1 && ${RUBY_CMD_PREFIX[*]:0:1} == 'bin/' ]]; then
+  export RAILS_CMD=("${RUBY_CMD_PREFIX[*]}rails")
+  export RAKE_CMD=("${RUBY_CMD_PREFIX[*]}rake")
+  export RUBY_CMD_PREFIX_STR=${RUBY_CMD_PREFIX[*]:0:1}
+else
+  export RAILS_CMD=("${RUBY_CMD_PREFIX[@]}" rails)
+  export RAKE_CMD=("${RUBY_CMD_PREFIX[@]}" rake)
+  export RUBY_CMD_PREFIX_STR="${RUBY_CMD_PREFIX[*]} "
+fi
 
 export RAILS_ROUTE_CACHE=.routes_expanded.txt
 
@@ -105,7 +113,7 @@ function rails_reset_to_main() {
 
     version=$(echo "$file" | grep -Eoz '^\d+')
 
-    echo_eval "$RAKE_CMD" db:migrate:down VERSION="$version" "# $name"
+    echo_eval "${RAKE_CMD[@]}" db:migrate:down VERSION="$version" "# $name"
   done <<< "$new_migrations"
 
   # # Approach 2: Rollback by the number of new migrations
@@ -113,11 +121,11 @@ function rails_reset_to_main() {
   # local count
   # count=$(echo "$new_migrations" | wc -l)
   # count=${count//[[:blank:]]/}
-  # echo_eval "$RAKE_CMD" db:rollback STEP="$count"
+  # echo_eval "${RAKE_CMD[@]}" db:rollback STEP="$count"
 
   # # Approach 3: Figure out the latest version before $new_migrations
   # # Cons: Unreliable if the order of migrations is not chronological (e.g. after merging a branch)
-  # all_migrations=$($RAKE_CMD db:migrate:status)
+  # all_migrations=$("${RAKE_CMD[@]}" db:migrate:status)
   # all_migrations=$(echo "$all_migrations" | awk '{print $2}' | awk -F '_' '{print $1}' | sort -u | sort -r)
 
   echo_eval git checkout db/schema.rb
@@ -143,18 +151,18 @@ function rails_migration_bump_version() {
 
   local migration_status=${MIGRATION_STATUS:-}
   if [[ ! $migration_status ]]; then
-    migration_status=$(DRY_RUN='' echo_eval "$RAKE_CMD" db:migrate:status '2> /dev/null')
+    migration_status=$(DRY_RUN='' echo_eval "${RAKE_CMD[@]}" db:migrate:status '2> /dev/null')
   fi
   if echo "$migration_status" | rg -q "up\s+$current_version"; then
     echo >&2 "$current_version is up, roll it back before renaming it:"
-    echo >&2 "VERSION=$current_version $RAKE_CMD db:migrate:down"
+    echo >&2 "VERSION=$current_version ${RAKE_CMD[*]} db:migrate:down"
     return 1
   fi
 
   local new_version=${NEW_VERSION:-}
   if [[ ! $new_version ]]; then
     local dummy_output
-    dummy_output=$(DRY_RUN='' echo_eval "$RAILS_CMD" generate migration dummy --pretend '2> /dev/null')
+    dummy_output=$(DRY_RUN='' echo_eval "${RAILS_CMD[@]}" generate migration dummy --pretend '2> /dev/null')
     new_version=$(rails_migration_version "$dummy_output")
   fi
 
@@ -176,7 +184,7 @@ function rails_migration_bump_version() {
   CMD_TO_SHOW="mv $replaced_color" echo_eval mv "$replaced"
 
   if [[ ! ${NO_MIG:-} ]]; then
-    echo_eval "$RAKE_CMD" db:migrate '2> /dev/null'
+    echo_eval "${RAKE_CMD[@]}" db:migrate '2> /dev/null'
   fi
 }
 
@@ -216,13 +224,13 @@ function ruby_cd_pull_migrate() {
     if [[ ${MIGRATE_CMD:-} ]]; then
       migrate_cmd=("${MIGRATE_CMD[@]}")
     else
-      migrate_cmd=("$RAKE_CMD" db:migrate)
+      migrate_cmd=("${RAKE_CMD[@]}" db:migrate)
     fi
     echo_eval "${migrate_cmd[@]}"
   fi
 
   if [[ -d log ]]; then
-    echo_eval "$RAKE_CMD" log:clear LOGS=all
+    echo_eval "${RAKE_CMD[@]}" log:clear LOGS=all
   fi
 
   printf '\n'

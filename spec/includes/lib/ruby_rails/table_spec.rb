@@ -2,14 +2,14 @@
 
 require 'irb'
 
-ENV.delete('DOTFILES_CUSTOM')
-require_relative '../../../../includes/lib/ruby_rails/ruby_common'
+require_relative '../../../../includes/lib/ruby_rails/table'
 
 RSpec.describe '.table' do # rubocop:disable RSpec/DescribeClass
-  subject(:call_table) { table(items, *cols) }
+  subject(:call_table) { table(items, *cols, format:) }
 
   let(:items) { [] }
   let(:cols) { [] }
+  let(:format) { :ascii }
 
   def expect_output(expected)
     expect { call_table }.to output(expected).to_stdout
@@ -36,21 +36,49 @@ RSpec.describe '.table' do # rubocop:disable RSpec/DescribeClass
       )
     end
 
-    context 'when the terminal width is too small' do
+    context 'with markdown format' do
+      let(:format) { :markdown }
+
+      it 'outputs a table' do
+        expect_output(
+          <<~OUTPUT
+            | id | title       | long_title |
+            | -- | ----------- | ---------- |
+            | 1  | Bar baz qux | yay        |
+            | 2  | Baz         | nay        |
+            (2 rows in set)
+          OUTPUT
+        )
+      end
+    end
+
+    context 'when the width of the output exceeds the width of the terminal' do
       before do
         allow(Reline).to receive(:get_screen_size).and_return([0, 20])
       end
 
-      it 'truncates the rows' do
-        expect_output(
-          <<~OUTPUT
-            id│title      │…
-            ──┼───────────┼─
-            1 │Bar baz qux│…
-            2 │Baz        │…
+      it 'truncates' do
+        expect_output(<<~OUTPUT)
+          id│title      │…
+          ──┼───────────┼─
+          1 │Bar baz qux│…
+          2 │Baz        │…
+          (2 rows in set)
+        OUTPUT
+      end
+
+      context 'with markdown format' do
+        let(:format) { :markdown }
+
+        it 'truncates' do
+          expect_output(<<~OUTPUT)
+            | id | … |
+            | -- | - |
+            | 1  | … |
+            | 2  | … |
             (2 rows in set)
           OUTPUT
-        )
+        end
       end
     end
   end
@@ -83,30 +111,26 @@ RSpec.describe '.table' do # rubocop:disable RSpec/DescribeClass
     end
 
     it 'outputs a table, id first, timestamps last' do
-      expect_output(
-        <<~OUTPUT
-          id│title  │desc│created_at│updated_at
-          ──┼───────┼────┼──────────┼──────────
-          1 │Bar baz│yay │2021-01-01│2021-01-02
-          2 │Baz    │nay │2021-01-03│2021-01-04
-          (2 rows in set)
-        OUTPUT
-      )
+      expect_output(<<~OUTPUT)
+        id│title  │desc│created_at│updated_at
+        ──┼───────┼────┼──────────┼──────────
+        1 │Bar baz│yay │2021-01-01│2021-01-02
+        2 │Baz    │nay │2021-01-03│2021-01-04
+        (2 rows in set)
+      OUTPUT
     end
 
     context 'with limited and symbol cols' do
       let(:cols) { %i[title desc] }
 
       it 'outputs a table' do
-        expect_output(
-          <<~OUTPUT
-            title  │desc
-            ───────┼────
-            Bar baz│yay
-            Baz    │nay
-            (2 rows in set)
-          OUTPUT
-        )
+        expect_output(<<~OUTPUT)
+          title  │desc
+          ───────┼────
+          Bar baz│yay
+          Baz    │nay
+          (2 rows in set)
+        OUTPUT
       end
     end
   end
@@ -121,16 +145,14 @@ RSpec.describe '.table' do # rubocop:disable RSpec/DescribeClass
     end
 
     it 'outputs a table' do
-      expect_output(
-        <<~OUTPUT
-          0│1          │2
-          ─┼───────────┼───────────
-          1│Bar baz qux│yay
-          2│Baz        │nay
-          3│Foo qux    │lorem ipsum
-          (3 rows in set)
-        OUTPUT
-      )
+      expect_output(<<~OUTPUT)
+        0│1          │2
+        ─┼───────────┼───────────
+        1│Bar baz qux│yay
+        2│Baz        │nay
+        3│Foo qux    │lorem ipsum
+        (3 rows in set)
+      OUTPUT
     end
   end
 end

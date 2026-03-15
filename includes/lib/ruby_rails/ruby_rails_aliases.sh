@@ -1,5 +1,5 @@
 # shellcheck disable=SC2139
-# Intentionally disabled for the whole file, mostly for RUBY_CMD_PREFIX/RAILS_CMD/RAKE_CMD
+# Intentionally disabled for the whole file, mostly for RUBY_CMD_PREFIX_STR/RAILS_CMD/RAKE_CMD
 # TODO: Replace with block level disables if it gets implemented
 
 # cSpell:disable
@@ -43,75 +43,77 @@ alias rgrr="rg -g '*.rb' -g '!features/' -g '!spec/' -g '!test/'"
 alias rgrw='rgr -w'
 
 alias rp='ruby -rpry -ramazing_print'
-alias rv='ruby -v'
 
-alias raa="$RAILS_CMD about"
-alias rav="$RAILS_CMD -v"
-alias rc="$RAILS_CMD console"
-alias rce="EDITOR='code --wait' $RAILS_CMD credentials:edit"
+# `rv` makes VS Code Ruby LSP extension think that we have the rv version manager
+alias ruv='ruby -v'
+
+alias raa="${RAILS_CMD[*]} about"
+alias rav="${RAILS_CMD[*]} -v"
+alias rc="${RAILS_CMD[*]} console"
+alias rce="EDITOR='code --wait' ${RAILS_CMD[*]} credentials:edit"
 alias rcac="rm -rf tmp/cache/{assets,webpacker}/* # Rails clear asset cache"
-alias rgg="$RAILS_CMD generate"
-alias rgm="$RAILS_CMD generate migration"
-alias rgmp="$RAILS_CMD generate migration dummy --pretend"
-alias rgmo="$RAILS_CMD generate model"
-alias rgs="$RAILS_CMD generate scaffold"
-alias rkan="$RAKE_CMD annotate --models app/models/model.rb"
+alias rgg="${RAILS_CMD[*]} generate"
+alias rgm="${RAILS_CMD[*]} generate migration"
+alias rgmp="${RAILS_CMD[*]} generate migration dummy --pretend"
+alias rgmo="${RAILS_CMD[*]} generate model"
+alias rgs="${RAILS_CMD[*]} generate scaffold"
+alias rkan="${RAKE_CMD[*]} annotate --models app/models/model.rb"
 alias rnd="rails new dummy --minimal --skip-active-record --skip-test --skip-git --skip-gemfile"
 alias rnv='rails _7.1.0_ new'
-alias rr="$RAILS_CMD runner"
-alias {rrf,rrz}="$RAILS_CMD routes | fzf"
-alias rro="$RAILS_CMD routes"
+alias rr="${RAILS_CMD[*]} runner"
+alias {rrf,rrz}="${RAILS_CMD[*]} routes | fzf"
+alias rro="${RAILS_CMD[*]} routes"
 # sed removes trailing whitespace from `Prefix | `
-alias rrow="$RAILS_CMD routes | sed 's/[[:space:]]*$//' > .routes.txt"
-alias rrowe="$RAILS_CMD routes --expanded | sed 's/[[:space:]]*$//' > .routes_expanded.txt"
-alias rrp="$RAILS_CMD runner -e production"
-alias rrt="$RAILS_CMD runner -e test"
-alias rs="$RAILS_CMD server"
-alias rvv="ruby -v && $RAILS_CMD -v"
+alias rrow="${RAILS_CMD[*]} routes | sed 's/[[:space:]]*$//' > .routes.txt"
+alias rrowe="${RAILS_CMD[*]} routes --expanded | sed 's/[[:space:]]*$//' > .routes_expanded.txt"
+alias rrp="${RAILS_CMD[*]} runner -e production"
+alias rrt="${RAILS_CMD[*]} runner -e test"
+alias rs="${RAILS_CMD[*]} server"
+alias rvv="ruby -v && ${RAILS_CMD[*]} -v"
 
-alias rk="$RAKE_CMD"
-alias rkdc="$RAKE_CMD db:create"
-alias rkdcl="$RAKE_CMD db:create db:schema:load"
-alias rkdct="$RAKE_CMD db:create RAILS_ENV=test"
-alias rkdd="$RAKE_CMD db:drop"
-alias rkddt="$RAKE_CMD db:drop RAILS_ENV=test"
-alias rkdm="$RAKE_CMD db:migrate"
-alias rkdmuv="$RAKE_CMD db:migrate:up _DOC='Migrate SPECIFIED version' VERSION="
-alias rkdmdv="$RAKE_CMD db:migrate:down _DOC='Roll back SPECIFIED version' VERSION="
-alias rkdms="$RAKE_CMD db:migrate:status | sort -k 2 -r | less"
-alias rkdmst="$RAKE_CMD db:migrate:status RAILS_ENV=test | sort -k 2 -r | less"
-alias rkdmt="$RAKE_CMD db:migrate RAILS_ENV=test"
-alias rkdmv="$RAKE_CMD db:migrate _DOC='Migrate up/down to version (inclusive)' VERSION="
-alias rkdr="$RAKE_CMD db:rollback"
-alias rkdrt="$RAKE_CMD db:rollback RAILS_ENV=test"
-alias rkds="$RAKE_CMD db:seed"
-alias rkro="$RAKE_CMD routes"
-alias rkT="$RAKE_CMD -T"
-alias rrs="gco db/schema.rb && $RAKE_CMD db:drop db:create db:schema:load db:migrate"
+alias rk="${RAKE_CMD[*]}"
+alias rkdc="${RAKE_CMD[*]} db:create"
+alias rkdcl="${RAKE_CMD[*]} db:create db:schema:load"
+alias rkdct="${RAKE_CMD[*]} db:create RAILS_ENV=test"
+alias rkdd="${RAKE_CMD[*]} db:drop"
+alias rkddt="${RAKE_CMD[*]} db:drop RAILS_ENV=test"
+alias rkdm="${RAKE_CMD[*]} db:migrate"
+alias rkdmuv="${RAKE_CMD[*]} db:migrate:up _DOC='Migrate SPECIFIED version' VERSION="
+alias rkdmdv="${RAKE_CMD[*]} db:migrate:down _DOC='Roll back SPECIFIED version' VERSION="
+alias rkdms="${RAKE_CMD[*]} db:migrate:status | sort -k 2 -r | less"
+alias rkdmst="${RAKE_CMD[*]} db:migrate:status RAILS_ENV=test | sort -k 2 -r | less"
+alias rkdmt="${RAKE_CMD[*]} db:migrate RAILS_ENV=test"
+alias rkdmv="${RAKE_CMD[*]} db:migrate _DOC='Migrate up/down to version (inclusive)' VERSION="
+alias rkdr="${RAKE_CMD[*]} db:rollback"
+alias rkdrt="${RAKE_CMD[*]} db:rollback RAILS_ENV=test"
+alias rkds="${RAKE_CMD[*]} db:seed"
+alias rkro="${RAKE_CMD[*]} routes"
+alias rkT="${RAKE_CMD[*]} -T"
+alias rrs="gco db/schema.rb && ${RAKE_CMD[*]} db:drop db:create db:schema:load db:migrate"
 
 # https://github.com/rails/rails/blob/main/activerecord/lib/active_record/railties/databases.rake
 # All dev+test unless SKIP_TEST_DATABASE=true or DATABASE_URL is specified
-alias rkdpp="$RAKE_CMD db:prepare # DB exists ? migrate + schema:dump : create + schema:load + seed"
-alias rkdrs="$RAKE_CMD db:reset # drop + setup"
-alias rkdst="$RAKE_CMD db:setup # create + schema:load + seed"
+alias rkdpp="${RAKE_CMD[*]} db:prepare # DB exists ? migrate + schema:dump : create + schema:load + seed"
+alias rkdrs="${RAKE_CMD[*]} db:reset # drop + setup"
+alias rkdst="${RAKE_CMD[*]} db:setup # create + schema:load + seed"
 
 alias {rubo,beru}='bundle exec rubocop'
 alias {rubog,ruboc,beruc,berug,rubocop_changes}='bundle exec rubocop --force-exclusion $(git diff --name-only HEAD | xargs printf -- " %s")'
 alias {ruboa,berua}='bundle exec rubocop -a'
 
-rspec_cmd="${RUBY_CMD_PREFIX}rspec --format progress"
+rspec_cmd="${RUBY_CMD_PREFIX_STR}rspec --format progress"
 alias s="$rspec_cmd"
 alias ss="$rspec_cmd --seed"
 alias {rsb,rst,sb,st}="$rspec_cmd --backtrace" # Replaces `rails server --bind` from oh-my-zsh Rails plugin
-alias {rfd,sfd}="${RUBY_CMD_PREFIX}rspec --format documentation"
+alias {rfd,sfd}="${RUBY_CMD_PREFIX_STR}rspec --format documentation"
 unset rspec_cmd
 
 # Not using `spring stop/status` etc., because they miss zombie processes and are slow
 alias {nosp,spd}='DISABLE_SPRING=1'
 alias {ksp,spk,spst}='kill_spring'
 alias {spg,spp,spps,sps}='psg spring'
-alias spsr="${RUBY_CMD_PREFIX}spring server"
+alias spsr="${RUBY_CMD_PREFIX_STR}spring server"
 
-alias sq="${RUBY_CMD_PREFIX}sidekiq"
+alias sq="${RUBY_CMD_PREFIX_STR}sidekiq"
 
 alias testrb='$EDITOR ~/Desktop/test\ code/test.rb'

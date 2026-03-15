@@ -81,11 +81,10 @@ Describe "$script"
     :
   End
 
+  vim_calls=''
   Mock vim
-    if [[ $1 != +"$expected_vim_arg" ]]; then
-      echo >&2 "Unregistered vim mock: $*"
-      exit 1
-    fi
+    vim_calls+="$* ¶ "
+    %preserve vim_calls
   End
 
   Describe 'setup'
@@ -233,17 +232,16 @@ Describe "$script"
       vim_spell_dir=$mock_home/.vim/spell
       vim_spell_file_1=$vim_spell_dir/test1.en.utf-8.add
       vim_spell_file_2=$vim_spell_dir/test2.en.utf-8.add
-      expected_vim_arg="mkspell! $vim_spell_file_1 | mkspell! $vim_spell_file_2 | q"
 
       mkdir -p "$vim_spell_dir"
       touch "$vim_spell_file_1"
       touch "$vim_spell_file_2"
-      %preserve expected_vim_arg
 
       When run script "$copied_script" vim_setup
       The stdout should not include "error" # To satisfy shellspec expectation requirement
       The stderr should include 'vim +mkspell'
       The status should eq 0
+      The variable vim_calls should eq +"mkspell! $vim_spell_file_1 | mkspell! $vim_spell_file_2 | q ¶ "
     End
   End
 

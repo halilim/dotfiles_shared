@@ -16,17 +16,10 @@ function _heroku_apps() {
     local heroku_cache=~/.cache/heroku_apps \
       heroku_app_list
 
-    mkdir -p ~/.cache
+    regen_if_stale "$heroku_cache" '7 day' \
+      heroku apps --json '|' jq -r '.[].name'
 
-    if ! last_mod_older_than "$heroku_cache" '7 days'; then
-      heroku_app_list=$(cat "$heroku_cache")
-    fi
-
-    # The cache file may exist but be empty
-    if [[ ! $heroku_app_list ]]; then
-      heroku_app_list=$(heroku apps --json | jq -r '.[].name')
-      printf '%s' "$heroku_app_list" > "$heroku_cache"
-    fi
+    heroku_app_list=$(cat "$heroku_cache")
 
     # shellcheck disable=SC2296,SC2116
     HEROKU_APPS=("${(f)$(echo "$heroku_app_list")}")

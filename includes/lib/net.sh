@@ -8,28 +8,6 @@ function content_length() {
 # cSpell:ignore cuil
 alias cuil="content_length"
 
-function curl_time() {
-  if [[ ! $1 ]]; then
-    echo >&2 "Usage: $0 <url> [<interface>]"
-    return 1
-  fi
-
-  local params=()
-  [[ $2 ]] && params+=(--interface "$2")
-
-  # https://stackoverflow.com/a/22625150/372654
-  # cSpell:disable
-  curl "$1" "${params[@]}" -Isv -o /dev/null -w "     time_namelookup:  %{time_namelookup}s
-        time_connect:  %{time_connect}s
-     time_appconnect:  %{time_appconnect}s
-    time_pretransfer:  %{time_pretransfer}s
-       time_redirect:  %{time_redirect}s
-  time_starttransfer:  %{time_starttransfer}s
-                       ---------
-          time_total:  %{time_total}s\n"
-  # cSpell:enable
-}
-
 function encode_uri_component() {
   jq -rR @uri <<< "$1"
 }

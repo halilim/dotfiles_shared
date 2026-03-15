@@ -4,6 +4,7 @@
         "help": "https://httpie.org/doc#config"
     },
     "default_options": [
+        "--print=hbm",
         "--style=paraiso-dark"
     ]
 }

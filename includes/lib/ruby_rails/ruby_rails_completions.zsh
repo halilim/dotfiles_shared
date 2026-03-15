@@ -8,12 +8,8 @@ _rails_request() {
     method_and_uri)
       local file=$RAILS_ROUTE_CACHE pairs=()
 
-      if [[ ! -s $file ]] || last_mod_older_than "$file" '3 day'; then
-        printf >&2 "\nRegenerating %s ...\n" "$file"
-        echo_eval "$RAILS_CMD" routes --expanded "|" \
-          grep -vE '^(E,|I,|{\"|Active metric|---)' '>' \
-          "$file"
-      fi
+      regen_if_stale "$file" '3 day' \
+        "${RAILS_CMD[@]}" routes --expanded "|" grep -vE '^(E,|I,|{\"|Active metric|---)'
 
       # shellcheck disable=SC2034,SC2296,SC2116
       pairs=("${(f)$(rg --multiline --only-matching --replace '$1 $2' \
