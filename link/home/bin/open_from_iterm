@@ -26,4 +26,4 @@ if [[ -d $1 ]]; then
   return
 fi
 
-edit "$@"
+edit "$1:$2:$3"

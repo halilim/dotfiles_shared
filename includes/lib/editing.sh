@@ -1,6 +1,6 @@
 alias libe='$EDITOR "$DOTFILES_INCLUDES"/lib/editing.sh' # cSpell:ignore libe
 
-# For a given file:
+# For a given list of files:
 # 1. Git repo is open in RubyMine -> Open in RubyMine
 # 2. Git repo, folder, or parent folder is open in $EDITOR -> Open in $EDITOR
 # 3. Is *.rb, and RubyMine is open -> Open in RubyMine
@@ -9,67 +9,71 @@ alias libe='$EDITOR "$DOTFILES_INCLUDES"/lib/editing.sh' # cSpell:ignore libe
 #    - Otherwise -> Open in Vim
 # 5. Otherwise -> Open with $OPEN_CMD
 function edit() {
-  local abs_path=${1:?} line=${2:-} column=${3:-}
-
-  abs_path=$(realpath "$abs_path")
-
-  if [[ -d $abs_path ]]; then
-    open_with_editor "$abs_path"
-    return
+  if [[ $# -eq 0 ]]; then
+    echo >&2 'Usage: edit file1:line:column [file2:line2:column2 ...]'
+    return 1
   fi
+
+  local abs_path abs_path_line_col \
+    dir git_path git_dir \
+    rubymine_titles editor_titles
 
   if [ -n "${ZSH_VERSION:-}" ]; then
     setopt local_options BASH_REMATCH
   fi
 
-  if [[ $abs_path =~ ^([^:]+):?([0-9]*):?([0-9]*)$ ]]; then
-    abs_path=${BASH_REMATCH[*]:1:1}
-    line=${line:-${BASH_REMATCH[*]:2:1}}
-    column=${column:-${BASH_REMATCH[*]:3:1}}
-  fi
-
-  local abs_path_line_col=$abs_path
-  [[ $line ]] && abs_path_line_col="$abs_path_line_col:$line"
-  [[ $column ]] && abs_path_line_col="$abs_path_line_col:$column"
-
-  # declare -p abs_path line column abs_path_line_col 1>&2
-
-  local dir git_path git_dir
-  dir=$(dirname "$abs_path")
-  git_path=$(git -C "$dir" rev-parse --show-toplevel 2> /dev/null)
-  if [[ $git_path ]]; then
-    git_dir=$(basename "$git_path")
-  fi
-
-  local rubymine_titles
-  rubymine_titles=$(window_names RubyMine)
-
-  if is_in_rubymine_titles "$rubymine_titles" "$git_dir"; then
-    open_with_rubymine "$abs_path" "$line" "$column"
-    return
-  fi
-
-  local editor_titles
-  editor_titles=$(get_editor_titles)
-  if is_in_editor_titles "$git_dir" "$git_path" "$editor_titles"; then
-    open_with_editor "$abs_path_line_col"
-    return
-  fi
-
-  if [[ $rubymine_titles && ${abs_path##*.} == 'rb' ]]; then
-    open_with_rubymine "$abs_path" "$line" "$column"
-    return
-  fi
-
-  if [[ $line ]] || file --mime-type "$abs_path" | grep -qv binary; then
-    if [[ $editor_titles ]]; then
-      open_with_editor "$abs_path_line_col"
-    else
-      vim_open "$abs_path_line_col"
+  for abs_path in "$@"; do
+    if [[ -d $abs_path ]]; then
+      open_with_editor "$(realpath "$abs_path")"
+      continue
     fi
-  else
-    echo_eval "$OPEN_CMD" "$abs_path"
-  fi
+
+    if [[ $abs_path =~ ^([^:]+):?([0-9]*):?([0-9]*)$ ]]; then
+      abs_path=${BASH_REMATCH[*]:1:1}
+      line=${line:-${BASH_REMATCH[*]:2:1}}
+      column=${column:-${BASH_REMATCH[*]:3:1}}
+    fi
+
+    abs_path=$(realpath "$abs_path")
+
+    abs_path_line_col=$abs_path
+    [[ $line ]] && abs_path_line_col="$abs_path_line_col:$line"
+    [[ $column ]] && abs_path_line_col="$abs_path_line_col:$column"
+
+    dir=$(dirname "$abs_path")
+    git_path=$(git -C "$dir" rev-parse --show-toplevel 2> /dev/null)
+    if [[ $git_path ]]; then
+      git_dir=$(basename "$git_path")
+    fi
+
+    rubymine_titles=$(window_names RubyMine)
+
+    if is_in_rubymine_titles "$rubymine_titles" "$git_dir"; then
+      open_with_rubymine "$abs_path" "$line" "$column"
+      continue
+    fi
+
+    editor_titles=$(get_editor_titles)
+    if is_in_editor_titles "$git_dir" "$git_path" "$editor_titles"; then
+      open_with_editor "$abs_path_line_col"
+      continue
+    fi
+
+    if [[ $rubymine_titles && ${abs_path##*.} == 'rb' ]]; then
+      open_with_rubymine "$abs_path" "$line" "$column"
+      continue
+    fi
+
+    if [[ $line ]] || file --mime-type "$abs_path" | grep -qv binary; then
+      if [[ $editor_titles ]]; then
+        open_with_editor "$abs_path_line_col"
+      else
+        vim_open "$abs_path_line_col"
+      fi
+    else
+      echo_eval "$OPEN_CMD" "$abs_path"
+    fi
+  done
 }
 alias e='edit'
 

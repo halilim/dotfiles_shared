@@ -18,10 +18,10 @@ Describe 'edit'
   # End: Mocks
 
   Context 'without args'
-    It 'raises error'
+    It 'prints usage and returns 1'
       When run edit
       The stdout should eq ''
-      The stderr should include 'not set'
+      The stderr should include 'Usage'
       The status should eq 1
     End
   End
@@ -95,7 +95,7 @@ Describe 'edit'
       # End: Mocks
 
       It 'calls vim'
-        When call edit "$file" "$line" "$column"
+        When call edit "$file:$line:$column"
         The stdout should eq ''
         The stderr should eq ''
         The status should eq 0
@@ -116,7 +116,7 @@ Describe 'edit'
 
           Context 'without a git project'
             It 'calls vim'
-              When call edit "$file" "$line" "$column"
+              When call edit "$file:$line:$column"
               The stdout should eq ''
               The stderr should eq ''
               The status should eq 0
@@ -127,7 +127,7 @@ Describe 'edit'
               file=a_file.rb
 
               It 'calls it'
-                When call edit "$file" "$line" "$column"
+                When call edit "$file:$line:$column"
                 The stdout should eq ''
                 The stderr should eq ''
                 The status should eq 0
@@ -141,7 +141,7 @@ Describe 'edit'
 
             It 'calls it'
               # shellcheck disable=SC2034
-              When call edit "$file" "$line" "$column"
+              When call edit "$file:$line:$column"
               The stdout should eq ''
               The stderr should eq ''
               The status should eq 0
@@ -162,7 +162,7 @@ Describe 'edit'
           vim_is_open=1
 
           It 'calls it'
-            When call edit "$file" "$line" "$column"
+            When call edit "$file:$line:$column"
             The stdout should eq ''
             The stderr should eq ''
             The status should eq 0
@@ -175,7 +175,7 @@ Describe 'edit'
           code_is_open=1
 
           It 'calls it'
-            When call edit "$file" "$line" "$column"
+            When call edit "$file:$line:$column"
             The stdout should eq ''
             The stderr should eq ''
             The status should eq 0
@@ -188,7 +188,7 @@ Describe 'edit'
           code_insiders_is_open=1
 
           It 'calls it'
-            When call edit "$file" "$line" "$column"
+            When call edit "$file:$line:$column"
             The stdout should eq ''
             The stderr should eq ''
             The status should eq 0

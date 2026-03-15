@@ -11,4 +11,4 @@ IFS=$'\n\t'
 # shellcheck disable=SC1091
 . "$DOTFILES_INCLUDES"/lib/editing.sh
 
-open_with_editor "$@"
+edit "$@"

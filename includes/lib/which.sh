@@ -119,7 +119,7 @@ function which_detailed() {
           printf '\n'
 
           if [[ ${EDIT:-} && $file_no == 1 ]]; then
-            open_with_editor "$real_path"
+            edit "$real_path"
           fi
 
           file_no=$((file_no + 1))
@@ -189,7 +189,7 @@ function _edit_alias() {
 
   if [[ $location ]]; then
     location=$(echo "$location" | rg '^([^:]+(:\d+)+).*' --only-matching --replace '$1')
-    open_with_editor "$location"
+    edit "$location"
     return
   else
     echo >&2 "Couldn't locate the alias"
@@ -211,7 +211,7 @@ function which_function() {
 
   if [[ ${EDIT:-} ]]; then
     if [[ $location ]]; then
-      open_with_editor "$location"
+      edit "$location"
     else
       echo >&2 'Source file and line not found'
       return
