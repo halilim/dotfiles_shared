@@ -64,7 +64,7 @@ function d_edit() {
 
   # shellcheck disable=SC1091
   . "$DOTFILES_INCLUDES"/lib/editing.sh
-  edit "${target:-${DOTFILES:?}}"
+  open_with_editor "${target:-${DOTFILES:?}}"
 }
 
 function d_setup() {

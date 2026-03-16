@@ -1,7 +1,7 @@
 alias libr='$EDITOR "$DOTFILES_INCLUDES"/lib/ruby_rails.sh' # cSpell:ignore libr
 
 # bin/* ones sometimes raise "You have already activated ...", so using bundle exec for now
-if [[ ! -v RUBY_CMD_PREFIX ]]; then
+if [[ ! ${RUBY_CMD_PREFIX:-} ]]; then
   export RUBY_CMD_PREFIX=(bundle exec) # _run-with-bundler | bin/ | bundle exec
 fi
 

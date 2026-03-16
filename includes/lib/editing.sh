@@ -14,14 +14,16 @@ function edit() {
     return 1
   fi
 
-  local abs_path abs_path_line_col \
-    dir git_path git_dir \
-    rubymine_titles editor_titles
+  local rubymine_titles editor_titles
+  rubymine_titles=$(window_names RubyMine)
+  editor_titles=$(get_editor_titles)
 
   if [ -n "${ZSH_VERSION:-}" ]; then
     setopt local_options BASH_REMATCH
   fi
 
+  local abs_path line column abs_path_line_col \
+    dir git_path git_dir
   for abs_path in "$@"; do
     if [[ -d $abs_path ]]; then
       open_with_editor "$(realpath "$abs_path")"
@@ -46,14 +48,11 @@ function edit() {
       git_dir=$(basename "$git_path")
     fi
 
-    rubymine_titles=$(window_names RubyMine)
-
     if is_in_rubymine_titles "$rubymine_titles" "$git_dir"; then
       open_with_rubymine "$abs_path" "$line" "$column"
       continue
     fi
 
-    editor_titles=$(get_editor_titles)
     if is_in_editor_titles "$git_dir" "$git_path" "$editor_titles"; then
       open_with_editor "$abs_path_line_col"
       continue
