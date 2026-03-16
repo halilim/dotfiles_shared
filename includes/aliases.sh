@@ -99,11 +99,10 @@ alias mysql_restore='mysql -u root -p db_name < db_name.sql'
 
 alias ngf='nginx_fg'
 
-alias n='vim_open ~/Desktop/notes.md'
-alias ne='$EDITOR ~/Desktop/notes.md'
+alias n='$EDITOR ~/Desktop/notes.md'
 
 alias o='$OPEN_CMD'
-alias omzp='edit ~/.oh-my-zsh/plugins/'
+alias omzp='$EDITOR ~/.oh-my-zsh/plugins/'
 
 alias pg='ping google.com'
 alias p1='ping 1.1.1.1'
