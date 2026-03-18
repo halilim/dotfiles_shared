@@ -15,3 +15,4 @@ IFS=$'\n\t'
 
 # Somehow even if it's in the keychain, it doesn't show up in ssh-add -l
 grep -slR 'PRIVATE' ~/.ssh | xargs ssh-add --apple-use-keychain --apple-load-keychain
+return 0
