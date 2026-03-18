@@ -4,6 +4,10 @@ Share dotfiles across different machines.
 
 WARNING: Subject to breaking changes. This was open-sourced mostly as a means of personal sharing.
 
+## TODO
+
+- [ ] Try [yadm](https://yadm.io/) or [homeshick](https://github.com/andsens/homeshick)
+
 ## Setup
 
 ```sh
