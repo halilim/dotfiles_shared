@@ -669,6 +669,7 @@ rakefile
 rbenv
 rbql
 rbspy
+RDAP
 rdbg
 RDBMS
 rdkafka

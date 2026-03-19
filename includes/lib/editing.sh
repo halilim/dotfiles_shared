@@ -22,55 +22,65 @@ function edit() {
     setopt local_options BASH_REMATCH
   fi
 
-  local abs_path line column abs_path_line_col \
+  local arg arg_path line column \
+    real_abs_path real_abs_path_line_col \
     dir git_path git_dir
-  for abs_path in "$@"; do
-    if [[ -d $abs_path ]]; then
-      open_with_editor "$(realpath "$abs_path")"
+  for arg in "$@"; do
+    # Directory
+    if [[ -d $arg ]]; then
+      open_with_editor "$(realpath "$arg")"
       continue
     fi
 
-    if [[ $abs_path =~ ^([^:]+):?([0-9]*):?([0-9]*)$ ]]; then
-      abs_path=${BASH_REMATCH[*]:1:1}
+    if [[ $arg =~ ^([^:]+):?([0-9]*):?([0-9]*)$ ]]; then
+      arg_path=${BASH_REMATCH[*]:1:1}
       line=${line:-${BASH_REMATCH[*]:2:1}}
       column=${column:-${BASH_REMATCH[*]:3:1}}
+    else
+      arg_path=$arg
     fi
 
-    abs_path=$(realpath "$abs_path")
+    # New file
+    if [[ ! -e $arg_path ]]; then
+      open_with_editor "$arg_path"
+      continue
+    fi
 
-    abs_path_line_col=$abs_path
-    [[ $line ]] && abs_path_line_col="$abs_path_line_col:$line"
-    [[ $column ]] && abs_path_line_col="$abs_path_line_col:$column"
+    real_abs_path=$(realpath "$arg_path")
 
-    dir=$(dirname "$abs_path")
+    real_abs_path_line_col=$real_abs_path
+    [[ $line ]] && real_abs_path_line_col="$real_abs_path_line_col:$line"
+    [[ $column ]] && real_abs_path_line_col="$real_abs_path_line_col:$column"
+
+    dir=$(dirname "$real_abs_path")
     git_path=$(git -C "$dir" rev-parse --show-toplevel 2> /dev/null)
     if [[ $git_path ]]; then
       git_dir=$(basename "$git_path")
     fi
 
     if is_in_rubymine_titles "$rubymine_titles" "$git_dir"; then
-      open_with_rubymine "$abs_path" "$line" "$column"
+      open_with_rubymine "$real_abs_path" "$line" "$column"
       continue
     fi
 
     if is_in_editor_titles "$git_dir" "$git_path" "$editor_titles"; then
-      open_with_editor "$abs_path_line_col"
+      open_with_editor "$real_abs_path_line_col"
       continue
     fi
 
-    if [[ $rubymine_titles && ${abs_path##*.} == 'rb' ]]; then
-      open_with_rubymine "$abs_path" "$line" "$column"
+    if [[ $rubymine_titles && ${real_abs_path##*.} == 'rb' ]]; then
+      open_with_rubymine "$real_abs_path" "$line" "$column"
       continue
     fi
 
-    if [[ $line ]] || file --mime-type "$abs_path" | grep -qv binary; then
+    if [[ $line ]] || file --mime-type "$real_abs_path" | grep -qv binary; then
       if [[ $editor_titles ]]; then
-        open_with_editor "$abs_path_line_col"
+        open_with_editor "$real_abs_path_line_col"
       else
-        vim_open "$abs_path_line_col"
+        vim_open "$real_abs_path_line_col"
       fi
     else
-      echo_eval "$OPEN_CMD" "$abs_path"
+      echo_eval "$OPEN_CMD" "$real_abs_path"
     fi
   done
 }

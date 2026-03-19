@@ -27,9 +27,28 @@ Describe 'edit'
   End
 
   Context 'file'
+    tmp_dir=''
     file_name=a_file
-    dir=/project_a
-    file=$dir/$file_name
+    dir_name=project_a
+    file=$dir_name/$file_name
+    file_exists=1
+
+    setup() {
+      tmp_dir=$(mktemp -d)
+      cd "$tmp_dir" || return
+      mkdir -p "$dir_name"
+      if [[ $file_exists ]]; then
+        touch "$file"
+      fi
+    }
+    BeforeEach 'setup'
+
+    cleanup() {
+      if [[ $tmp_dir && -d $tmp_dir ]]; then
+        rm -rf "$tmp_dir"
+      fi
+    }
+    AfterEach 'cleanup'
 
     # Mocks
     function git() {
@@ -57,7 +76,7 @@ Describe 'edit'
         fi
       elif [[ $1 == 'MacVim' ]]; then
         if [[ ${vim_is_open:-} ]]; then
-          echo "$dir/project_a // README.md"
+          echo "$dir_name/project_a // README.md"
         fi
       else
         echo >&2 "Unexpected window_names call: $*"
@@ -65,6 +84,18 @@ Describe 'edit'
       fi
     }
     # End: Mocks
+
+    Context 'when the file does not exist'
+      file_exists=''
+
+      It 'calls open_with_editor'
+        When call edit "$file"
+        The stdout should eq ''
+        The stderr should eq ''
+        The status should eq 0
+        The variable open_with_editor_calls should eq "$file ¶ "
+      End
+    End
 
     Context 'when non-text'
       # Mocks
@@ -76,7 +107,7 @@ Describe 'edit'
       It "calls $OPEN_CMD"
         When call edit "$file"
         The stdout should eq ''
-        The stderr should eq "-> $OPEN_CMD /project_a/a_file"
+        The stderr should eq "-> $OPEN_CMD project_a/a_file"
         The status should eq 0
         The variable open_calls should eq "$file ¶ "
       End
@@ -137,7 +168,7 @@ Describe 'edit'
           End
 
           Context 'with a git project'
-            git_output=$dir
+            git_output=$dir_name
 
             It 'calls it'
               # shellcheck disable=SC2034
