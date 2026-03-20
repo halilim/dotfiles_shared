@@ -54,6 +54,16 @@ function git_current_commit() {
   git rev-parse --verify HEAD
 }
 
+function git_delete_refs() {
+  local ref_name=$1 refs ref
+  refs=$(git for-each-ref --ignore-case --format='%(refname)' "$ref_name")
+  while IFS= read -r ref; do
+    echo_eval git update-ref -d "$ref"
+  done < <(printf '%s\n' "$refs")
+}
+# shellcheck disable=SC2139
+alias {gdr,gurd}='git_delete_refs' # cSpell:disable-line
+
 function git_matching() {
   if [[ $# -lt 2 ]]; then
     echo >&2 'Usage: git_matching <git command> [<git args> ...] <search pattern>'

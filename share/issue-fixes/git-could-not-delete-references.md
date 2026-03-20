@@ -20,6 +20,5 @@ Both uppercase and lowercase versions of the same branch names exist in the repo
 ## Fix
 
 ```sh
-git update-ref -d refs/remotes/origin/foo
-git update-ref -d refs/remotes/origin/FOO
+git_delete_refs refs/remotes/origin/foo
 ```
