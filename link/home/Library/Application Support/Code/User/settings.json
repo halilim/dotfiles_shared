@@ -202,8 +202,6 @@
 
   "hadolint.cliOptions": ["--ignore", "DL3008"],
 
-  "html-css-class-completion.enableEmmetSupport": true,
-
   "html.format.extraLiners": "body",
 
   "jest.runMode": "on-demand",
