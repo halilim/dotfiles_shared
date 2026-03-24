@@ -3,6 +3,8 @@
   "bashIde.shfmt.simplifyCode": true,
   "bashIde.shfmt.spaceRedirects": true,
 
+  "claudeCode.preferredLocation": "panel",
+
   "codeium.enableCodeLens": false,
   "codeium.enableConfig": {
     "*": true,
@@ -559,7 +561,6 @@
   "workbench.editor.tabSizing": "shrink",
   "workbench.editor.wrapTabs": true,
   "workbench.editorAssociations": {
-    "*.csv": "gc-excelviewer-csv-editor",
     "*.ipynb": "jupyter-notebook",
     "*.plist": "default"
   },
