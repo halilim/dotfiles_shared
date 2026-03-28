@@ -8,7 +8,7 @@ jobs:
     name: Ruby
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -24,7 +24,7 @@ jobs:
     name: Shellcheck
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Run ShellCheck
         # cSpell:ignore ludeeus
         uses: ludeeus/action-shellcheck@master
@@ -39,7 +39,7 @@ jobs:
     name: ShellSpec
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Install ShellSpec
         run: curl -fsSL https://git.io/shellspec | sh -s latest.tar.gz --bin /usr/local/bin --yes
       - name: Install dependencies and Zsh
