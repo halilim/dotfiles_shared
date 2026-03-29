@@ -552,10 +552,6 @@
     }
   },
 
-  "workbench.colorTheme": "Default Dark+",
-  "workbench.preferredDarkColorTheme": "Default Dark+",
-  "workbench.preferredLightColorTheme": "Default Light+",
-
   "workbench.editor.decorations.colors": true,
   "workbench.editor.enablePreviewFromCodeNavigation": true,
   "workbench.editor.tabSizing": "shrink",
@@ -578,10 +574,6 @@
   "yard.tags.paramNameBeforeType": true,
 
   // cSpell:ignore esbenp
-
-  "[astro]": {
-    "editor.defaultFormatter": "astro-build.astro-vscode"
-  },
 
   "[css]": {
     "editor.defaultFormatter": "vscode.css-language-features"
@@ -625,10 +617,6 @@
 
   "[markdown]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-
-  "[mdx]": {
-    "editor.defaultFormatter": "unifiedjs.vscode-mdx"
   },
 
   "[python]": {

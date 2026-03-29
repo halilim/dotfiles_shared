@@ -189,21 +189,16 @@ def table(items, *columns, format: :ascii) # rubocop:disable Metrics/AbcSize, Me
     colorize(row, sep_color)
   end
 
-  output = [generate_row.call(color: header_color) { |column| column }]
-  output << [generate_header_separator.call]
+  rows = [generate_row.call(color: header_color) { |column| column }]
+  rows << [generate_header_separator.call]
 
   array_of_hashes.each do |row|
-    output << generate_row.call { |column| row[column] }
+    rows << generate_row.call { |column| row[column] }
   end
 
-  row_count = "(#{array_of_hashes.length} rows in set)\n"
-  row_count = colorize(row_count, :cyan)
-  output << row_count
+  count_row = "(#{array_of_hashes.length} rows in set)\n"
+  count_row = colorize(count_row, :cyan)
+  rows << count_row
 
-  output = output.join("\n")
-  if output?
-    puts output
-  else
-    output
-  end
+  puts rows.join("\n")
 end

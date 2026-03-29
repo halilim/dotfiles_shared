@@ -49,8 +49,6 @@ def pm(obj, pattern = nil) # rubocop:disable Metrics/AbcSize, Metrics/Cyclomatic
     [name.to_s, args, matches ? "#{matches[:class]}#{matches[:base]}" : inspection]
   end
 
-  return data unless output?
-
   max_name = data.collect { |item| item[0].size }.max
   max_args = data.collect { |item| item[1].size }.max
   data.each do |item|

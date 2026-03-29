@@ -1,0 +1,32 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'bundler/inline'
+
+gemfile do
+  source 'https://rubygems.org'
+  gem 'rack'
+end
+
+require 'rack/utils'
+sym_to_code = Rack::Utils::SYMBOL_TO_STATUS_CODE
+
+unless ARGV[0]
+  sym_to_code.each do |sym, code|
+    puts "\n" if code % 100 == 0
+    puts "#{code} #{sym}"
+  end
+  puts "\nFor snippets: #{__FILE__} [VScode|RubyMine]"
+  exit
+end
+
+case ARGV[0]
+when 'VScode'
+  separator = ','
+when 'RubyMine'
+  separator = '", "'
+else
+  raise "Unknown type: #{ARGV[0]}"
+end
+
+puts sym_to_code.flat_map { |sym, code| [code, ":#{sym}"] }.join(separator)

@@ -29,7 +29,11 @@ files.reject! do |file|
     'smerge'
   ) ||
     file.include?('osascript_') ||
-    file.include?('url_to_')
+    file.include?('url_to_') ||
+    (File.size?(file) && File.open(file, &:readline) =~ /^#!.*\Wruby/)
+rescue StandardError => e
+  warn "#{file}: #{e}"
+  false
 end
 
 unless ARGV.empty?

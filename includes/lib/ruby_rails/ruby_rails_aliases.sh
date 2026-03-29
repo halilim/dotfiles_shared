@@ -101,6 +101,7 @@ alias {rubo,beru}='bundle exec rubocop'
 alias {rubog,ruboc,beruc,berug,rubocop_changes}='bundle exec rubocop --force-exclusion $(git diff --name-only HEAD | xargs printf -- " %s")'
 alias {ruboa,berua}='bundle exec rubocop -a'
 
+# Why `progress`? Because some codebases default to `documentation`, which is overly verbose
 rspec_cmd="${RUBY_CMD_PREFIX_STR}rspec --format progress"
 alias s="$rspec_cmd"
 alias ss="$rspec_cmd --seed"

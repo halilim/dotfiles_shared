@@ -22,16 +22,10 @@ function edit() {
     setopt local_options BASH_REMATCH
   fi
 
-  local arg arg_path line column \
-    real_abs_path real_abs_path_line_col \
-    dir git_path git_dir
+  local arg arg_path path_exists line column \
+    parent_dir base_name real_abs_path real_abs_path_line_col \
+    real_abs_dir git_path git_dir
   for arg in "$@"; do
-    # Directory
-    if [[ -d $arg ]]; then
-      open_with_editor "$(realpath "$arg")"
-      continue
-    fi
-
     if [[ $arg =~ ^([^:]+):?([0-9]*):?([0-9]*)$ ]]; then
       arg_path=${BASH_REMATCH[*]:1:1}
       line=${line:-${BASH_REMATCH[*]:2:1}}
@@ -40,47 +34,56 @@ function edit() {
       arg_path=$arg
     fi
 
-    # New file
-    if [[ ! -e $arg_path ]]; then
-      open_with_editor "$arg_path"
-      continue
+    path_exists=''
+    if [[ -e $arg_path ]]; then
+      path_exists=1
     fi
 
-    real_abs_path=$(realpath "$arg_path")
+    if [[ $path_exists ]]; then
+      real_abs_path=$(realpath "$arg_path")
+
+      if [[ -d $real_abs_path ]]; then
+        open_with_editor "$real_abs_path"
+        continue
+      fi
+
+      real_abs_dir=$(dirname "$real_abs_path")
+    else
+      parent_dir=$(dirname "$arg_path")
+      if [[ ! -e $parent_dir ]]; then
+        echo_eval mkdir -p "$parent_dir"
+      fi
+      real_abs_dir=$(realpath "$parent_dir")
+      base_name=$(basename "$arg_path")
+      real_abs_path=$real_abs_dir/$base_name
+    fi
 
     real_abs_path_line_col=$real_abs_path
     [[ $line ]] && real_abs_path_line_col="$real_abs_path_line_col:$line"
     [[ $column ]] && real_abs_path_line_col="$real_abs_path_line_col:$column"
 
-    dir=$(dirname "$real_abs_path")
-    git_path=$(git -C "$dir" rev-parse --show-toplevel 2> /dev/null)
+    git_path=$(git -C "$real_abs_dir" rev-parse --show-toplevel 2> /dev/null)
+
     if [[ $git_path ]]; then
       git_dir=$(basename "$git_path")
-    fi
-
-    if is_in_rubymine_titles "$rubymine_titles" "$git_dir"; then
-      open_with_rubymine "$real_abs_path" "$line" "$column"
-      continue
-    fi
-
-    if is_in_editor_titles "$git_dir" "$git_path" "$editor_titles"; then
-      open_with_editor "$real_abs_path_line_col"
-      continue
-    fi
-
-    if [[ $rubymine_titles && ${real_abs_path##*.} == 'rb' ]]; then
-      open_with_rubymine "$real_abs_path" "$line" "$column"
-      continue
-    fi
-
-    if [[ $line ]] || file --mime-type "$real_abs_path" | grep -qv binary; then
-      if [[ $editor_titles ]]; then
+      if is_in_rubymine_titles "$rubymine_titles" "$git_dir"; then
+        open_with_rubymine "$real_abs_path" "$line" "$column"
+      elif is_in_editor_titles "$git_dir" "$git_path" "$editor_titles"; then
         open_with_editor "$real_abs_path_line_col"
-      else
-        vim_open "$real_abs_path_line_col"
       fi
+
     else
-      echo_eval "$OPEN_CMD" "$real_abs_path"
+      if [[ $rubymine_titles && ${real_abs_path##*.} == 'rb' ]]; then
+        open_with_rubymine "$real_abs_path" "$line" "$column"
+      elif [[ $path_exists ]] && ([[ $line ]] || file -E --brief --mime-type "$real_abs_path" | grep -qv binary); then
+        if [[ $editor_titles ]]; then
+          open_with_editor "$real_abs_path_line_col"
+        else
+          vim_open "$real_abs_path_line_col"
+        fi
+      else
+        echo_eval "$OPEN_CMD" "$real_abs_path"
+      fi
     fi
   done
 }
@@ -115,6 +118,10 @@ function get_project_path() {
 
 function is_in_editor_titles() {
   local git_dir=$1 git_path=$2 editor_titles=$3 parent_path parent_dir project_path project_dir
+  if [[ ! $editor_titles || (! $git_dir && ! $git_path) ]]; then
+    return 1
+  fi
+
   parent_path=$(dirname "$git_path")
   parent_dir=$(basename "$parent_path")
   project_path=$(get_project_path "$parent_path")
@@ -123,9 +130,9 @@ function is_in_editor_titles() {
   local editor_title
   while read -d ', ' -r editor_title; do
     if [[ $editor_title &&
-          ($git_dir && $editor_title == *" $git_dir "*)
-          || ($parent_dir && $editor_title == *" $parent_dir "*)
-          || ($project_dir && $editor_title == *" $project_dir "*) ]]; then
+          ($git_dir && $editor_title == *" $git_dir "*) ||
+             ($parent_dir && $editor_title == *" $parent_dir "*) ||
+             ($project_dir && $editor_title == *" $project_dir "*) ]]; then
       return 0
     fi
   done < <(printf '%s, ' "$editor_titles")
@@ -152,6 +159,14 @@ function is_in_rubymine_titles() {
 
 function open_with_rubymine() {
   local abs_path=$1 line=$2 column=$3 args=()
+
+  # RubyMine doesn't support opening existing folders in open projects. It treats them as
+  # new projects; i.e., it opens them in a new window and adds an .idea folder to them.
+  # https://youtrack.jetbrains.com/issue/RUBY-35459
+  if [[ -d $abs_path ]]; then
+    echo_eval "$OPEN_CMD" "$abs_path"
+    return
+  fi
 
   # https://www.jetbrains.com/help/ruby/opening-files-from-command-line.html#88f1a126
   # Note: column is only documented in the "Windows" tab. -1: it goes to the next character (bug?)

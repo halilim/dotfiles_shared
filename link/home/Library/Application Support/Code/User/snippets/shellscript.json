@@ -699,40 +699,40 @@
 	"ShellSpec AfterAll": {
 		"prefix": "afa",
 		"body": [
-			"cleanup() {",
+			"cleanupAll() {",
 				"\t$0",
 			"}",
-			"AfterAll 'cleanup'",
+			"AfterAll 'cleanupAll'",
 		],
 	},
 
 	"ShellSpec AfterEach": {
 		"prefix": "af",
 		"body": [
-			"cleanup() {",
+			"cleanupEach() {",
 				"\t$0",
 			"}",
-			"AfterEach 'cleanup'",
+			"AfterEach 'cleanupEach'",
 		],
 	},
 
 	"ShellSpec BeforeAll": {
 		"prefix": "befa", // cSpell:disable-line
 		"body": [
-			"setup() {",
+			"setupAll() {",
 				"\t$0",
 			"}",
-			"BeforeAll 'setup'",
+			"BeforeAll 'setupAll'",
 		],
 	},
 
 	"ShellSpec BeforeEach": {
 		"prefix": "bef",
 		"body": [
-			"setup() {",
+			"setupEach() {",
 				"\t$0",
 			"}",
-			"BeforeEach 'setup'",
+			"BeforeEach 'setupEach'",
 		],
 	},
 

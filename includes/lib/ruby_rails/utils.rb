@@ -8,8 +8,3 @@ def colorize(text, *colors)
     end
   )
 end
-
-# RubyMine debugger doesn't show the output, so we return it instead
-def output?
-  $stdout.is_a?(StringIO) || $stdout.echo?
-end
