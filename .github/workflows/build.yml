@@ -5,6 +5,9 @@ permissions:
 
 jobs:
   ruby:
+    strategy:
+      matrix:
+        ruby-version: ['4.0', '3.4', '3.3']
     name: Ruby
     runs-on: ubuntu-latest
     steps:
@@ -12,7 +15,7 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 4.0
+          ruby-version: ${{ matrix.ruby-version }}
           bundler-cache: true
       - name: Run Rubocop
         run: bundle exec rubocop
