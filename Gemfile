@@ -19,4 +19,7 @@ end
 
 group :test do
   gem 'rspec'
+
+  gem 'activerecord', require: false
+  gem 'sqlite3', require: false
 end

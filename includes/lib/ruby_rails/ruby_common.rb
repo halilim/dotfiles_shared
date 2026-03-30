@@ -14,13 +14,17 @@ end
 # (live templates are available in the interactive console)
 # load File.join(ENV['DOTFILES_INCLUDES'], 'lib', 'ruby_rails', 'ruby_common.rb')
 
-require_relative 'table'
+require_relative 'tabulator'
+def table(*)
+  puts Tabulator.t(*)
+end
 alias art table
 alias tbl table
-def markdown_table(items, *cols)
-  table(items, *cols, format: :markdown)
+def markdown_table(*)
+  table(*, format: :markdown)
 end
 alias mart markdown_table
+alias mdt markdown_table
 
 require_relative 'pm'
 
