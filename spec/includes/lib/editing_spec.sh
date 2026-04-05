@@ -32,12 +32,6 @@ Describe 'edit'
     fi
   }
 
-  iterm_tab_calls=''
-  function iterm_tab() {
-    iterm_tab_calls+="$* ¶ "
-    %preserve iterm_tab_calls
-  }
-
   mine_calls=''
   function mine() {
     mine_calls+="$* ¶ "
@@ -60,28 +54,10 @@ Describe 'edit'
     echo "$1"
   }
 
-  vim_open_calls=''
-  function vim_open() {
-    vim_open_calls+="$* ¶ "
-    %preserve vim_open_calls
-  }
-
   function window_names() {
-    if [[ $1 == 'Visual Studio Code.app' && $2 == 'Code' ]]; then
-      if [[ ${code_is_open:-} ]]; then
-        echo "README.md — $dir_name (Workspace)"
-      fi
-    elif [[ $1 == 'Visual Studio Code - Insiders.app' && $2 == 'Code - Insiders' ]]; then
-      if [[ ${code_insiders_is_open:-} ]]; then
-        echo "README.md — $dir_name (Workspace)"
-      fi
-    elif [[ $1 == 'RubyMine' ]]; then
+    if [[ $1 == 'RubyMine' ]]; then
       if [[ ${rubymine_is_open:-} ]]; then
         echo "$dir_name – README.md, project_b"
-      fi
-    elif [[ $1 == 'MacVim' ]]; then
-      if [[ ${vim_is_open:-} ]]; then
-        echo "foo/bar/$dir_name // NetrwTreeListing"
       fi
     else
       echo >&2 "Unexpected window_names call: $*"
@@ -119,25 +95,6 @@ Describe 'edit'
     }
     AfterAll 'cleanupAll'
 
-    setupEach() {
-      if [[ ${test_editor:-} ]]; then
-        export EDITOR="$test_editor"
-      fi
-    }
-    BeforeEach 'setupEach'
-
-    Context 'with a non-existent file'
-      file=$dir_name/non_existent
-
-      It "calls $OPEN_CMD"
-        When call edit "$file"
-        The stdout should eq ''
-        The stderr should eq "-> $OPEN_CMD $file"
-        The status should eq 0
-        The variable open_calls should eq "$file ¶ "
-      End
-    End
-
     Context 'with an existing directory'
       It 'calls open_with_editor'
         When call edit "$sub_dir"
@@ -148,8 +105,36 @@ Describe 'edit'
       End
     End
 
-    Context 'when the file is binary'
-      file=$dir_name/$binary_file_name
+    Context 'with a non-existent file'
+      file=$dir_name/non_existent
+
+      Context 'when RubyMine is open'
+        rubymine_is_open=1
+
+        Context 'when its directory is a git repo open in RubyMine'
+          dir_is_git=1
+
+          It 'opens it in RubyMine'
+            When call edit "$file"
+            The stdout should eq ''
+            The stderr should eq ''
+            The status should eq 0
+            The variable mine_calls should eq "$file ¶ "
+          End
+        End
+
+        Context 'when given path is a Ruby file'
+          file=$dir_name/non_existent.rb
+
+          It 'opens it in RubyMine'
+            When call edit "$file"
+            The stdout should eq ''
+            The stderr should eq ''
+            The status should eq 0
+            The variable mine_calls should eq "$file ¶ "
+          End
+        End
+      End
 
       It "calls $OPEN_CMD"
         When call edit "$file"
@@ -158,109 +143,75 @@ Describe 'edit'
         The status should eq 0
         The variable open_calls should eq "$file ¶ "
       End
-
-      Context "when VS Code is open, and the directory is the file's git repo"
-        dir_is_git=1
-        test_editor='code'
-        code_is_open=1
-
-        It 'calls it'
-          When call edit "$file"
-          The stdout should eq ''
-          The stderr should eq ''
-          The status should eq 0
-          The variable open_with_editor_calls should eq "$file ¶ "
-        End
-      End
     End
 
-    Context 'when the file is text'
-      line=21
-      column=45
+    Context 'with an existing file'
+      Context 'when the file is binary'
+        file=$dir_name/$binary_file_name
 
-      It 'calls vim'
-        When call edit "$file:$line:$column"
-        The stdout should eq ''
-        The stderr should eq ''
-        The status should eq 0
-        The variable vim_open_calls should eq "$file:$line:$column ¶ "
+        Context 'when RubyMine is open'
+          rubymine_is_open=1
+
+          Context 'when its directory is a git repo open in RubyMine'
+            dir_is_git=1
+
+            It 'opens it in RubyMine'
+              When call edit "$file"
+              The stdout should eq ''
+              The stderr should eq ''
+              The status should eq 0
+              The variable mine_calls should eq "$file ¶ "
+            End
+          End
+        End
+
+        It "calls $OPEN_CMD"
+          When call edit "$file"
+          The stdout should eq ''
+          The stderr should eq "-> $OPEN_CMD $file"
+          The status should eq 0
+          The variable open_calls should eq "$file ¶ "
+        End
       End
 
-      Context 'when RubyMine is open'
-        rubymine_is_open=1
+      Context 'when the file is text'
+        line=21
+        column=45
 
-        It 'calls vim'
+        Context 'when RubyMine is open'
+          rubymine_is_open=1
+
+          Context 'when its directory is a git repo open in RubyMine'
+            dir_is_git=1
+
+            It 'opens it in RubyMine'
+              When call edit "$file:$line:$column"
+              The stdout should eq ''
+              The stderr should eq ''
+              The status should eq 0
+              The variable mine_calls should eq "--line $line --column $((column - 1)) $file ¶ "
+            End
+          End
+
+          Context 'with a Ruby file'
+            file=$dir_name/a_file.rb
+
+            It 'opens it in RubyMine'
+              When call edit "$file:$line:$column"
+              The stdout should eq ''
+              The stderr should eq ''
+              The status should eq 0
+              The variable mine_calls should eq "--line $line --column $((column - 1)) $file ¶ "
+            End
+          End
+        End
+
+        It 'opens it with editor'
           When call edit "$file:$line:$column"
           The stdout should eq ''
           The stderr should eq ''
           The status should eq 0
-          The variable vim_open_calls should eq "$file:$line:$column ¶ "
-        End
-
-        Context 'with a Ruby file'
-          file=$dir_name/a_file.rb
-
-          It 'calls it'
-            When call edit "$file:$line:$column"
-            The stdout should eq ''
-            The stderr should eq ''
-            The status should eq 0
-            The variable mine_calls should eq "--line $line --column $((column - 1)) $file ¶ "
-          End
-        End
-
-        Context "when the directory is the file's git repo"
-          dir_is_git=1
-
-          It 'calls it'
-            # shellcheck disable=SC2034
-            When call edit "$file:$line:$column"
-            The stdout should eq ''
-            The stderr should eq ''
-            The status should eq 0
-            The variable mine_calls should eq "--line $line --column $((column - 1)) $file ¶ "
-          End
-        End
-      End
-
-      Context 'with editor'
-        Context 'MacVim'
-          test_editor=mvim
-          vim_is_open=1
-
-          It 'calls it'
-            When call edit "$file:$line:$column"
-            The stdout should eq ''
-            The stderr should eq ''
-            The status should eq 0
-            The variable open_with_editor_calls should eq "$file:$line:$column ¶ "
-          End
-        End
-
-        Context 'VS Code'
-          test_editor='code'
-          code_is_open=1
-
-          It 'calls it'
-            When call edit "$file:$line:$column"
-            The stdout should eq ''
-            The stderr should eq ''
-            The status should eq 0
-            The variable open_with_editor_calls should eq "$file:$line:$column ¶ "
-          End
-        End
-
-        Context 'VS Code Insiders'
-          test_editor='code-insiders'
-          code_insiders_is_open=1
-
-          It 'calls it'
-            When call edit "$file:$line:$column"
-            The stdout should eq ''
-            The stderr should eq ''
-            The status should eq 0
-            The variable open_with_editor_calls should eq "$file:$line:$column ¶ "
-          End
+          The variable open_with_editor_calls should eq "$file:$line:$column ¶ "
         End
       End
     End

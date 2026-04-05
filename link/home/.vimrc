@@ -56,7 +56,7 @@ fun! TitleStringCwd()
   if stridx(expand('%:p'), getcwd()) == 0 " within cwd
     let l:suffix = ' // '
   else
-    let l:suffix = '  •  '
+    let l:suffix = ' • '
   endif
 
   return fnamemodify(getcwd(), ":p:~:h") . l:suffix
@@ -91,10 +91,7 @@ let mapleader=","     " Leader is comma
 
 " Only disable the plugin, but not the whole netrw. It's needed for e.g. vim-fugitive's :Gbrowse
 " https://github.com/tpope/vim-fugitive/issues/1010
-" let g:loaded_netrw = 1 " Disable netrw
-
-" gx on an URL causes `Unknown function: netrw#BrowseX`
-" let g:loaded_netrwPlugin = 1 " Disable netrw plugin
+let g:loaded_netrw = 1 " Disable netrw
 
 let g:netrw_liststyle = 3
 let g:netrw_banner = 0
@@ -117,23 +114,27 @@ nnoremap <C-Tab> :b#<CR>
 
 nnoremap <leader>* :Rg <C-R><C-W><CR>
 
-" MacVim has its own settings mapped to Cmd+,
-" noremap <D-,>, :e $MYVIMRC<CR>
 
 nnoremap <D-.> :ALEFix<CR>
 
 " Doesn't work: nnoremap <leader>g gx<CR>
-nnoremap <leader>g :!open <cWORD><CR>
+nnoremap <leader>g :!$OPEN_CMD <cWORD><CR>
 " https://example.com/
 
 nnoremap <leader><leader>c :CocConfig<CR>
-nnoremap <leader><leader>g :e ~/.gvimrc<CR>
-nnoremap <leader><leader>v :e $MYVIMRC<CR>
+
+let real_abs_gvimrc = resolve(expand('~/.gvimrc')) " $MYGVIMRC is not defined at this point
+nnoremap <expr> <leader><leader>g ':e ' . real_abs_gvimrc . '<CR>'
+
+let real_abs_vimrc = resolve(expand($MYVIMRC))
+" MacVim has its own settings mapped to Cmd+,
+" noremap <expr> <D-,>, ':e ' . real_abs_gvimrc . '<CR>'
+nnoremap <expr> <leader><leader>v ':e ' . real_abs_vimrc . '<CR>'
+nnoremap <expr> <leader><leader>r ':source ' . real_abs_vimrc . '<CR>'
+
 nnoremap <leader><leader>vc :e $DOTFILES_CUSTOM/link/home/.vim/autoload/custom.vim<CR>
-nnoremap <leader><leader>r :source $MYVIMRC<CR>
-" nnoremap <leader><leader>ft :e ~/.vim/ftplugin/
+
 nnoremap <leader><leader>ft :exe 'e' '~/.vim/ftplugin/' . &ft . '.vim'<CR>
-" nnoremap <leader><leader>fd :e ~/.vim/ftdetect/
 nnoremap <leader><leader>fd :exe 'e' '~/.vim/ftdetect/' . &ft . '.vim'<CR>
 " nnoremap <leader><leader>se :e ~/.vim/UltiSnips/
 
@@ -946,7 +947,7 @@ augroup my_extra_whitespace
   autocmd InsertLeave * match ExtraWhitespace /\s\+$/
   autocmd BufWinLeave * call clearmatches()
 augroup end
-" command -bar SearchTrailingWs exe '/\s$' | exe '<CR>n'
+" command! -bar SearchTrailingWs exe '/\s$' | exe '<CR>n'
 nnoremap <leader>/ :/\s$<CR>n
 
 " https://stackoverflow.com/a/51195979/372654
@@ -993,7 +994,7 @@ fun! GitPath(real_paths = s:real_paths())
   endif
 endfun
 
-command SourceTreeStatus call SourceTreeFileStatus()
+command! SourceTreeStatus call SourceTreeFileStatus()
 
 " Note: Needs Accessibility and Automation > System Events permissions
 fun! SourceTreeFileStatus()
@@ -1041,10 +1042,10 @@ if v:version >= 700
 endif
 " End: Avoid_scrolling_when_switch_buffers
 
-command CopyAbsPath call CopyAndEcho(expand('%:~'))
-command CopyRelPath call CopyAndEcho(expand('%'))
-command CopyGitPath call CopyAndEcho(GitPath())
-command CopyGitPathLine call CopyAndEchoGitPathLine()
+command! CopyAbsPath call CopyAndEcho(expand('%:~'))
+command! CopyRelPath call CopyAndEcho(expand('%'))
+command! CopyGitPath call CopyAndEcho(GitPath())
+command! CopyGitPathLine call CopyAndEchoGitPathLine()
 
 fun! CopyAndEcho(val)
   let @+ = a:val
@@ -1059,9 +1060,9 @@ fun! CopyAndEchoGitPathLine()
   call CopyAndEcho(GitPathLine())
 endfun
 
-command SnipViewUltiSnips call Snip('UltiSnips', 'view')
-command SnipViewSnipMate call Snip('snippets', 'view')
-command SnipEditUltiSnips call Snip('UltiSnips', 'edit')
+command! SnipViewUltiSnips call Snip('UltiSnips', 'view')
+command! SnipViewSnipMate call Snip('snippets', 'view')
+command! SnipEditUltiSnips call Snip('UltiSnips', 'edit')
 
 fun! Snip(folder, cmd)
   if a:cmd == 'view'

@@ -14,9 +14,7 @@ function edit() {
     return 1
   fi
 
-  local rubymine_titles editor_titles
-  rubymine_titles=$(window_names RubyMine)
-  editor_titles=$(get_editor_titles)
+  local rubymine_titles rubymine_titles_loaded
 
   if [ -n "${ZSH_VERSION:-}" ]; then
     setopt local_options BASH_REMATCH
@@ -62,97 +60,47 @@ function edit() {
     [[ $line ]] && real_abs_path_line_col="$real_abs_path_line_col:$line"
     [[ $column ]] && real_abs_path_line_col="$real_abs_path_line_col:$column"
 
-    git_path=$(git -C "$real_abs_dir" rev-parse --show-toplevel 2> /dev/null)
+    # Lazy load
+    if [[ ! $rubymine_titles_loaded ]]; then
+      rubymine_titles=$(window_names RubyMine)
+      rubymine_titles_loaded=1
+    fi
 
-    if [[ $git_path ]]; then
-      git_dir=$(basename "$git_path")
-      if is_in_rubymine_titles "$rubymine_titles" "$git_dir"; then
-        open_with_rubymine "$real_abs_path" "$line" "$column"
-      elif is_in_editor_titles "$git_dir" "$git_path" "$editor_titles"; then
-        open_with_editor "$real_abs_path_line_col"
+    if [[ $rubymine_titles ]]; then
+      git_dir=''
+      git_path=$(git -C "$real_abs_dir" rev-parse --show-toplevel 2> /dev/null)
+      if [[ $git_path ]]; then
+        git_dir=$(basename "$git_path")
       fi
 
+      if ([[ $git_dir ]] && is_in_rubymine_titles "$rubymine_titles" "$git_dir") \
+         || [[ ${real_abs_path##*.} == 'rb' ]]; then
+        open_with_rubymine "$real_abs_path" "$line" "$column"
+      fi
+    elif [[ $path_exists ]] && ([[ $line ]] || file -E --brief --mime-type "$real_abs_path" | grep -qv binary); then
+      open_with_editor "$real_abs_path_line_col"
     else
-      if [[ $rubymine_titles && ${real_abs_path##*.} == 'rb' ]]; then
-        open_with_rubymine "$real_abs_path" "$line" "$column"
-      elif [[ $path_exists ]] && ([[ $line ]] || file -E --brief --mime-type "$real_abs_path" | grep -qv binary); then
-        if [[ $editor_titles ]]; then
-          open_with_editor "$real_abs_path_line_col"
-        else
-          vim_open "$real_abs_path_line_col"
-        fi
-      else
-        echo_eval "$OPEN_CMD" "$real_abs_path"
-      fi
+      echo_eval "$OPEN_CMD" "$real_abs_path"
     fi
   done
 }
 alias e='edit'
 
-function get_editor_titles() {
-  if [[ $EDITOR = mvim* ]]; then
-    window_names 'MacVim'
-  elif [[ $EDITOR == code || $EDITOR == */code ]]; then
-    window_names 'Visual Studio Code.app' 'Code'
-  elif [[ $EDITOR == code-insiders || $EDITOR == */code-insiders  ]]; then
-    window_names 'Visual Studio Code - Insiders.app' 'Code - Insiders'
-  elif [[ $EDITOR = */zed ]]; then
-    window_names 'Zed'
-  fi
-}
-
-function get_project_path() {
-  local dir=$1
-  dir=$(realpath "$dir")
-
-  while [[ $dir && ! -f "$dir/.project_root" ]]; do
-    # echo "dir=|$dir|"
-    if [[ $dir == '/' || $dir == '.' ]]; then
-      dir=''
-      break
-    fi
-    dir=$(dirname "$dir")
-  done
-  echo "$dir"
-}
-
-function is_in_editor_titles() {
-  local git_dir=$1 git_path=$2 editor_titles=$3 parent_path parent_dir project_path project_dir
-  if [[ ! $editor_titles || (! $git_dir && ! $git_path) ]]; then
-    return 1
-  fi
-
-  parent_path=$(dirname "$git_path")
-  parent_dir=$(basename "$parent_path")
-  project_path=$(get_project_path "$parent_path")
-  project_dir=$(basename "$project_path")
-
-  local editor_title
-  while read -d ', ' -r editor_title; do
-    if [[ $editor_title &&
-          ($git_dir && $editor_title == *" $git_dir "*) ||
-             ($parent_dir && $editor_title == *" $parent_dir "*) ||
-             ($project_dir && $editor_title == *" $project_dir "*) ]]; then
-      return 0
-    fi
-  done < <(printf '%s, ' "$editor_titles")
-
-  return 1
-}
-
 function is_in_rubymine_titles() {
   local rubymine_titles=$1 git_dir=$2
 
-  if [[ $git_dir ]]; then
-    local rubymine_title
-
-    while read -d ', ' -r rubymine_title; do
-      # Format: `<project>( – <file>)?` - not a regular dash
-      if [[ $rubymine_title == "$git_dir" || $rubymine_title == "$git_dir – "* ]]; then
-        return 0
-      fi
-    done < <(printf '%s, ' "$rubymine_titles")
+  if [[ ! $rubymine_titles || ! $git_dir ]]; then
+    return 1
   fi
+
+  local rubymine_title
+
+  while read -d ', ' -r rubymine_title; do
+    # Format: `<project>( – <file>)?` - not a regular dash
+    if [[ $rubymine_title == "$git_dir" || $rubymine_title == "$git_dir – "* ]]; then
+      return 0
+    fi
+  done < <(printf '%s, ' "$rubymine_titles")
 
   return 1
 }
@@ -196,8 +144,6 @@ function open_with_editor() {
     # https://code.visualstudio.com/docs/editor/command-line#_core-cli-options
     # https://github.com/microsoft/vscode/issues/176343 No multiple -g's :(
     cmd_args=("$EDITOR" -g)
-  elif [[ $EDITOR == */*zed ]]; then
-    cmd_args=("$EDITOR")
   else
     cmd_args=("$OPEN_CMD")
   fi
