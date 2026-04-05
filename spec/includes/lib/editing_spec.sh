@@ -3,23 +3,10 @@ Include includes/lib/colors.sh
 Include includes/lib/functions.sh
 
 Describe 'edit'
-  binary_file_name=binary_file
-  text_file_name=text_file
+  file_name=a_file
   dir_name=project_a
-  OPEN_CMD=open_cmd_test
 
   # Mocks
-  function file() {
-    if [[ $4 == */"$text_file_name" ]]; then
-      echo text
-    elif [[ $4 == */"$binary_file_name" ]]; then
-      echo binary
-    else
-      echo >&2 "Unexpected file call: $*"
-      return 1
-    fi
-  }
-
   function git() {
     local arg_str=$*
     if [[ $arg_str != "-C $dir_name rev-parse --show-toplevel" ]]; then
@@ -36,12 +23,6 @@ Describe 'edit'
   function mine() {
     mine_calls+="$* ¶ "
     %preserve mine_calls
-  }
-
-  open_calls=''
-  function open_cmd_test() {
-    open_calls+="$* ¶ "
-    %preserve open_calls
   }
 
   open_with_editor_calls=''
@@ -77,7 +58,7 @@ Describe 'edit'
 
   Context 'with args'
     tmp_dir=''
-    file=$dir_name/$text_file_name
+    file=$dir_name/$file_name
     sub_dir=$dir_name/sub_dir
 
     setupAll() {
@@ -96,7 +77,7 @@ Describe 'edit'
     AfterAll 'cleanupAll'
 
     Context 'with an existing directory'
-      It 'calls open_with_editor'
+      It 'opens it with editor'
         When call edit "$sub_dir"
         The stdout should eq ''
         The stderr should eq ''
@@ -105,7 +86,7 @@ Describe 'edit'
       End
     End
 
-    Context 'with a non-existent file'
+    Context 'with a non-existent path'
       file=$dir_name/non_existent
 
       Context 'when RubyMine is open'
@@ -136,44 +117,16 @@ Describe 'edit'
         End
       End
 
-      It "calls $OPEN_CMD"
-        When call edit "$file"
+      It 'opens it with editor'
+        When call edit "$sub_dir"
         The stdout should eq ''
-        The stderr should eq "-> $OPEN_CMD $file"
+        The stderr should eq ''
         The status should eq 0
-        The variable open_calls should eq "$file ¶ "
+        The variable open_with_editor_calls should eq "$sub_dir ¶ "
       End
     End
 
     Context 'with an existing file'
-      Context 'when the file is binary'
-        file=$dir_name/$binary_file_name
-
-        Context 'when RubyMine is open'
-          rubymine_is_open=1
-
-          Context 'when its directory is a git repo open in RubyMine'
-            dir_is_git=1
-
-            It 'opens it in RubyMine'
-              When call edit "$file"
-              The stdout should eq ''
-              The stderr should eq ''
-              The status should eq 0
-              The variable mine_calls should eq "$file ¶ "
-            End
-          End
-        End
-
-        It "calls $OPEN_CMD"
-          When call edit "$file"
-          The stdout should eq ''
-          The stderr should eq "-> $OPEN_CMD $file"
-          The status should eq 0
-          The variable open_calls should eq "$file ¶ "
-        End
-      End
-
       Context 'when the file is text'
         line=21
         column=45

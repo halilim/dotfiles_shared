@@ -1,13 +1,5 @@
 alias libe='$EDITOR "$DOTFILES_INCLUDES"/lib/editing.sh' # cSpell:ignore libe
 
-# For a given list of files:
-# 1. Git repo is open in RubyMine -> Open in RubyMine
-# 2. Git repo, folder, or parent folder is open in $EDITOR -> Open in $EDITOR
-# 3. Is *.rb, and RubyMine is open -> Open in RubyMine
-# 4. Likely a text file
-#    - $EDITOR is open -> Open in $EDITOR
-#    - Otherwise -> Open in Vim
-# 5. Otherwise -> Open with $OPEN_CMD
 function edit() {
   if [[ $# -eq 0 ]]; then
     echo >&2 'Usage: edit file1:line:column [file2:line2:column2 ...]'
@@ -20,7 +12,7 @@ function edit() {
     setopt local_options BASH_REMATCH
   fi
 
-  local arg arg_path path_exists line column \
+  local arg arg_path line column \
     parent_dir base_name real_abs_path real_abs_path_line_col \
     real_abs_dir git_path git_dir
   for arg in "$@"; do
@@ -32,12 +24,7 @@ function edit() {
       arg_path=$arg
     fi
 
-    path_exists=''
     if [[ -e $arg_path ]]; then
-      path_exists=1
-    fi
-
-    if [[ $path_exists ]]; then
       real_abs_path=$(realpath "$arg_path")
 
       if [[ -d $real_abs_path ]]; then
@@ -77,10 +64,8 @@ function edit() {
          || [[ ${real_abs_path##*.} == 'rb' ]]; then
         open_with_rubymine "$real_abs_path" "$line" "$column"
       fi
-    elif [[ $path_exists ]] && ([[ $line ]] || file -E --brief --mime-type "$real_abs_path" | grep -qv binary); then
-      open_with_editor "$real_abs_path_line_col"
     else
-      echo_eval "$OPEN_CMD" "$real_abs_path"
+      open_with_editor "$real_abs_path_line_col"
     fi
   done
 }
