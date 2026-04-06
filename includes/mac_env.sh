@@ -5,6 +5,7 @@ export SPEEDTEST_CMD='speedtest'
 export GNU_DATE=gdate
 export GNU_FIND=gfind
 export GNU_HEAD=ghead
+export GNU_MKTEMP=gmktemp
 export GNU_NUMFMT=gnumfmt
 export GNU_REALPATH=grealpath
 export GNU_SED=gsed

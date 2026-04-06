@@ -158,7 +158,7 @@ function git_maintain_large_repos() {
       # shellcheck disable=SC2106
       DRY_RUN='' echo_eval cd "$repo" '|| continue'
       echo_eval git gc --prune=now
-      echo_eval git remote prune origin
+      echo_eval git remote get-url origin '> /dev/null 2>&1 &&' git remote prune origin
       printf '\n'
     )
   done < <(printf '%s:' "$GIT_LARGE_REPOS")

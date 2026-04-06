@@ -1,6 +1,7 @@
 export GNU_DATE=date
 export GNU_FIND=find
 export GNU_HEAD=head
+export GNU_MKTEMP=mktemp
 export GNU_NUMFMT=numfmt
 export GNU_REALPATH=realpath
 export GNU_SED=sed

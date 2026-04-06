@@ -96,7 +96,21 @@
 	},
 
 	"color": {
-		"prefix": "color",
+		"prefix": ["c", "color"],
+		"body": [
+			"color ${1|black,red,green,yellow,blue,magenta,cyan,white,gray|}${2|-bold , |}$0"
+		],
+	},
+
+	"color >&2": {
+		"prefix": ["c2", "color2"],
+		"body": [
+			"color >&2 ${1|black,red,green,yellow,blue,magenta,cyan,white,gray|}${2|-bold , |}$0"
+		],
+	},
+
+	"manual color (printf)": {
+		"prefix": "cm",
 		"body": [
 			"# ${1|regular (0),bold (1)|} ${2|black (30),red (31),green (32),yellow (33),blue (34),magenta (35),cyan (36),white (37)|}",
 			"printf '\\e[${1/[^0-9]//gi};${2/[^0-9]//gi}m%s\\e[0m' \"$0\""
@@ -215,7 +229,7 @@
 	},
 
 	"echo_eval no dry-run": {
-		"prefix": "eend", // cSpell:ignore eend
+		"prefix": ["dree", "eend"], // cSpell:ignore eend
 		"body": [
 			"DRY_RUN='' echo_eval"
 		],

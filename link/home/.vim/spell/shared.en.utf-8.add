@@ -298,6 +298,7 @@ globalias
 globalid
 globbing
 Gmail
+gmktemp
 gnumfmt
 GOCACHE
 googleauth
@@ -306,6 +307,7 @@ gotmpl
 govcloud
 gpg
 gpgsign
+gpgtar
 grampsweb
 grayscale
 grealpath
@@ -498,6 +500,7 @@ missingok
 mkdir
 mkpath
 mkspell
+mktemp
 mktime
 mktmpdir
 monospace

@@ -138,7 +138,7 @@ function echo_eval() {
     fi
 
     if [[ ${FAKE_STATUS:-} ]]; then
-      return "${FAKE_STATUS:-0}"
+      return "$FAKE_STATUS"
     fi
   else
     eval "${args[*]}"
@@ -306,11 +306,11 @@ function read_prompt() {
 
   if [ -n "${ZSH_VERSION:-}" ]; then
     # shellcheck disable=SC2162
-    read "${params[@]}" "REPLY?$question"
+    read >&2 "${params[@]}" "REPLY?$question"
 
   elif [ -n "${BASH_VERSION:-}" ]; then
     # shellcheck disable=SC2229
-    read -r -p "$question" "${params[@]}"
+    read >&2 -r -p "$question" "${params[@]}"
   fi
 }
 
@@ -322,6 +322,13 @@ function prompt() {
   else
     return 1
   fi
+}
+
+function prompt_password() {
+  local msg="${1:-'Enter password'}"
+  read_prompt "$msg: " 1
+  printf >&2 '\n'
+  echo "$REPLY"
 }
 
 function regen_if_stale() {
