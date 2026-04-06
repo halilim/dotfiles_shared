@@ -1,0 +1,4 @@
+---
+reporters:
+- rubocop
+# - require_not_found

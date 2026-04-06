@@ -37,5 +37,6 @@ repos:
         exclude: |
           (?x)^(
               .+\.ged|
+              .+\.jira|
               .+/\.vim/UltiSnips/markdown\.snippets
           )$
