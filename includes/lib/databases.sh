@@ -100,7 +100,7 @@ alias pg_databases='postgres_databases'
 function postgres_tables() {
   local host=${1:?Which host? Hit tab} \
     db=${2:?Which db? Hit tab}
-  psql_exec "$host" "$db" '' -Atc '\\\dt public.*' | cut -d\| -f 2
+  psql_exec "$host" "$db" '' -Atc '\dt public.*' | cut -d\| -f 2
 }
 alias pg_tables='postgres_tables'
 
@@ -108,7 +108,7 @@ function postgres_table() {
   local host=${1:?Which host? Hit tab} \
     db=${2:?Which db? Hit tab} \
     table=${3:?Which table? Hit tab}
-  psql_exec "$host" "$db" "\\\d $table"
+  psql_exec "$host" "$db" "\d $table"
 }
 alias pgt='postgres_table'
 

@@ -157,6 +157,14 @@ Describe 'edit'
               The variable mine_calls should eq "--line $line --column $((column - 1)) $file ¶ "
             End
           End
+
+          It 'opens it with editor'
+            When call edit "$file:$line:$column"
+            The stdout should eq ''
+            The stderr should eq ''
+            The status should eq 0
+            The variable open_with_editor_calls should eq "$file:$line:$column ¶ "
+          End
         End
 
         It 'opens it with editor'

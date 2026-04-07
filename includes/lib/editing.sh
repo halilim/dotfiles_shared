@@ -63,10 +63,11 @@ function edit() {
       if ([[ $git_dir ]] && is_in_rubymine_titles "$rubymine_titles" "$git_dir") \
          || [[ ${real_abs_path##*.} == 'rb' ]]; then
         open_with_rubymine "$real_abs_path" "$line" "$column"
+        continue
       fi
-    else
-      open_with_editor "$real_abs_path_line_col"
     fi
+
+    open_with_editor "$real_abs_path_line_col"
   done
 }
 alias e='edit'
