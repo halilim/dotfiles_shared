@@ -1,3 +1,16 @@
+_gem_()  {
+  local state
+
+  _arguments '1: :->cmd' '2: :->gem'
+
+  # shellcheck disable=SC2046
+  case $state in
+    cmd) compadd 'cd' 'doc' 'src' ;;
+    gem) compadd $(bundle list --format json | jq -r '.gems.[] | .name + "/" + .version') ;;
+  esac
+}
+compdef _gem_ gem_
+
 _rails_request() {
   local state
 

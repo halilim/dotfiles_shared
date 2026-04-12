@@ -26,8 +26,9 @@ alias {gcn,gcne,gcno}='git commit --no-edit'
 alias {gcnev,gcnov,gcnn}='git commit --no-edit --no-verify'
 alias gcnv='git commit --no-verify'
 alias gcfg='git config get'
+alias gco~='git checkout HEAD~ -- files'
 # shellcheck disable=SC2139
-alias {gcof,git_checkout_file,git_recover_file}='git checkout abc123^ -- path/to/file # Find abc123 with glgn'
+alias {gcof,git_checkout_file,git_recover_file}='git checkout abc123^ -- files # Find abc123 with glgn'
 alias gcom='git checkout $(git_main_branch)'
 
 alias gdh='git diff HEAD'

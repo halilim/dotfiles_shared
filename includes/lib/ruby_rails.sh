@@ -20,6 +20,28 @@ fi
 
 export RAILS_ROUTE_CACHE=.routes_expanded.txt
 
+function bundle_info_field() {
+  local gem_name=${1?} field_name=${2?}
+  bundle info "$gem_name" | rg --max-count 1 --only-matching --replace '$1' "^\s*(?:$field_name):\s*(.+)"
+}
+
+function gem_() {
+  local cmd=${1?} selected=${2?} name
+  name=$(echo "$selected" | cut -d '/' -f 1) # foo/1.0 -> foo
+
+  case "$cmd" in
+    cd) echo_eval iterm_tab "$(bundle_info_field "$name" Path)" ;;
+    doc) echo_eval "$OPEN_CMD" "$(bundle_info_field "$name" 'Documentation|Homepage')" ;;
+    src) echo_eval "$OPEN_CMD" "$(bundle_info_field "$name" 'Source Code|Homepage')" ;;
+  esac
+}
+# shellcheck disable=SC2139
+alias {gem_cd,gemcd}='gem_ cd' # cSpell:disable-line
+# shellcheck disable=SC2139
+alias {gem_doc,gemdoc}='gem_ doc' # cSpell:disable-line
+# shellcheck disable=SC2139
+alias {gem_src,gemsrc}='gem_ src' # cSpell:disable-line
+
 function kill_spring() {
   pgrep 'spring (app|server)' | xargs kill -9
 }
