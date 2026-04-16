@@ -100,6 +100,7 @@ alias mysql_restore='mysql -u root -p db_name < db_name.sql'
 alias ngf='nginx_fg'
 
 alias n='$EDITOR ~/Desktop/notes.md'
+alias na='$EDITOR ~/Desktop/notes-archive.md'
 
 alias o='$OPEN_CMD'
 alias omzp='$EDITOR ~/.oh-my-zsh/plugins/'

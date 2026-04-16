@@ -6,7 +6,23 @@ _gem_()  {
   # shellcheck disable=SC2046
   case $state in
     cmd) compadd 'cd' 'doc' 'src' ;;
-    gem) compadd $(bundle list --format json | jq -r '.gems.[] | .name + "/" + .version') ;;
+    gem)
+      local output
+      if [[ -e Gemfile ]]; then
+        output=$(bundle list --format json | jq -r '.gems.[] | .name + "/" + .version')
+      else
+        output=$(gem list | rg -v 'default:' | rg '^(\S+)\s+\(([\d.]+)' --only-matching --replace '$1/$2')
+      fi
+
+      local gems=()
+      if command -v mapfile > /dev/null 2>&1; then
+        mapfile -t gems < <( echo "$output" )
+      elif [ -n "${ZSH_VERSION:-}" ]; then
+        # shellcheck disable=SC2034,SC2296,SC2116
+        gems=("${(f)$(echo "$output")}")
+      fi
+      compadd -a gems
+      ;;
   esac
 }
 compdef _gem_ gem_

@@ -31,6 +31,8 @@ alias fr="fd -E 'config/locales/' -E 'features/' -E 'spec/' -E 'test/' -E '__tes
 
 alias fs='foreman start'
 
+alias gin='gem info'
+
 alias hrr='heroku run rails'
 alias hrrc='heroku run rails console'
 alias hrrr='heroku run rails runner ""'

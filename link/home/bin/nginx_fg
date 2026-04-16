@@ -3,7 +3,6 @@ set -euo pipefail
 if [[ ${SET_X:-} ]]; then
   set -x
 fi
-IFS=$'\n\t'
 
 trap 'nginx -s quit' SIGTERM SIGINT
 

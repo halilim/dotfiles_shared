@@ -20,19 +20,13 @@ fi
 
 export RAILS_ROUTE_CACHE=.routes_expanded.txt
 
-function bundle_info_field() {
-  local gem_name=${1?} field_name=${2?}
-  bundle info "$gem_name" | rg --max-count 1 --only-matching --replace '$1' "^\s*(?:$field_name):\s*(.+)"
-}
-
 function gem_() {
   local cmd=${1?} selected=${2?} name
-  name=$(echo "$selected" | cut -d '/' -f 1) # foo/1.0 -> foo
 
   case "$cmd" in
-    cd) echo_eval iterm_tab "$(bundle_info_field "$name" Path)" ;;
-    doc) echo_eval "$OPEN_CMD" "$(bundle_info_field "$name" 'Documentation|Homepage')" ;;
-    src) echo_eval "$OPEN_CMD" "$(bundle_info_field "$name" 'Source Code|Homepage')" ;;
+    cd) echo_eval iterm_tab "$(gem_info_field "$selected" Path)" ;;
+    doc) echo_eval "$OPEN_CMD" "$(gem_info_field "$selected" Documentation)" ;;
+    src) echo_eval "$OPEN_CMD" "$(gem_info_field "$selected" 'Source Code')" ;;
   esac
 }
 # shellcheck disable=SC2139
@@ -41,6 +35,47 @@ alias {gem_cd,gemcd}='gem_ cd' # cSpell:disable-line
 alias {gem_doc,gemdoc}='gem_ doc' # cSpell:disable-line
 # shellcheck disable=SC2139
 alias {gem_src,gemsrc}='gem_ src' # cSpell:disable-line
+
+function gem_info_field() {
+  local selected=${1?} gem_name version field_name=${2?} cmd
+  gem_name=$(echo "$selected" | cut -d '/' -f 1) # foo/1.0 -> foo
+  version=$(echo "$selected" | cut -d '/' -f 2) # foo/1.0 -> 1.0
+
+  if [[ -e Gemfile ]]; then
+    cmd=bundle
+  elif [[ $field_name == 'Path' ]]; then
+    cmd=gem
+    field_name='Installed at'
+  fi
+
+  if [[ $cmd ]]; then
+    if [[ $field_name != 'Path' ]]; then
+      field_name+='|Homepage'
+    fi
+    # shellcheck disable=SC2016
+    FAKE_ECHO="https://example.com/$gem_name" echo_eval $cmd info "$gem_name" '|' \
+      rg --color never --max-count 1 --only-matching --replace '$1' "^\s*(?:$field_name):\s*(.+)"
+
+  else
+    local -r home_uri_field='homepage_uri'
+    local json uri_field
+    uri_field=$(echo "$field_name" | tr '[:upper:]' '[:lower:]')
+    uri_field=$(echo "$uri_field" | tr ' ' '_')
+    uri_field+='_uri'
+    json=$(FAKE_ECHO="{\"$uri_field\": \"https://example.com\", \"$home_uri_field\": \"\"}" echo_eval \
+      curl -Ls https://rubygems.org/api/v2/rubygems/"$gem_name"/versions/"$version".json)
+
+    local uri
+    uri=$(jq -r ".$uri_field // .$home_uri_field" <<< "$json")
+    if [[ $uri ]]; then
+      echo "$uri"
+    else
+      echo >&2 "No $uri_field or $home_uri_field"
+      echo >&2 "$json" | jq
+      return 1
+    fi
+  fi
+}
 
 function kill_spring() {
   pgrep 'spring (app|server)' | xargs kill -9
