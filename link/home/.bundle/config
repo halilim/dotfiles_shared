@@ -2,3 +2,5 @@
 BUNDLE_BUILD__NOKOGIRI: "--use-system-libraries"
 BUNDLE_DEFAULT_CLI_COMMAND: "install_or_cli_help"
 BUNDLE_GITHUB__HTTPS: "true"
+# TODO: Check again once implemented: https://github.com/ruby/rubygems/discussions/9113
+BUNDLE_COOLDOWN: "3"
