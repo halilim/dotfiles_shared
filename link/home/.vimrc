@@ -136,13 +136,10 @@ nnoremap <leader><leader>vc :e $DOTFILES_CUSTOM/link/home/.vim/autoload/custom.v
 
 nnoremap <leader><leader>ft :exe 'e' '~/.vim/ftplugin/' . &ft . '.vim'<CR>
 nnoremap <leader><leader>fd :exe 'e' '~/.vim/ftdetect/' . &ft . '.vim'<CR>
-" nnoremap <leader><leader>se :e ~/.vim/UltiSnips/
 
-" Plugin-native command, not working: https://github.com/SirVer/ultisnips/issues/1483
-" nnoremap <leader><leader>s :UltiSnipsEdit<CR>
-" Custom command
-" <leader><leader>s conflicts with VSCode Vim's EasyMotion
-nnoremap <leader><leader>u :SnipEditUltiSnips<CR>
+nnoremap <leader><leader>s :UltiSnipsEdit<CR>
+" snipMate snippets (read-only, since they are shipped with the plugin)
+nnoremap <leader><leader>sm :exe 'view' '~/.vim/plugged/vim-snippets/snippets/' . &filetype . '.snippets'<CR>
 
 nnoremap <leader><leader>p :e ~/.vim/pythonx/
 
@@ -1058,18 +1055,4 @@ endfun
 
 fun! CopyAndEchoGitPathLine()
   call CopyAndEcho(GitPathLine())
-endfun
-
-command! SnipViewUltiSnips call Snip('UltiSnips', 'view')
-command! SnipViewSnipMate call Snip('snippets', 'view')
-command! SnipEditUltiSnips call Snip('UltiSnips', 'edit')
-
-fun! Snip(folder, cmd)
-  if a:cmd == 'view'
-    let l:prefix = 'plugged/vim-snippets/'
-  else
-    let l:prefix = ''
-  endif
-
-  exe a:cmd '~/.vim/' . l:prefix . a:folder . '/' . &filetype . '.snippets'
 endfun
