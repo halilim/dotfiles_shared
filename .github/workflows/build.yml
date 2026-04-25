@@ -18,6 +18,7 @@ jobs:
           ruby-version: ${{ matrix.ruby-version }}
           bundler-cache: true
       - name: Run Rubocop
+        if: ${{ matrix.ruby-version == '4.0' }}
         run: bundle exec rubocop
       - name: Run RSpec
         run: bundle exec rspec
