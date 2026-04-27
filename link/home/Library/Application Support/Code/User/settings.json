@@ -155,7 +155,7 @@
   // cSpell:ignore apacheconf
   // logrotate.d/*.conf: There is no logrotate extension yet
   "files.associations": {
-    "{.config/git/ignore*,.jshintignore,**/*.ignore,**/.git*/**/info/exclude}": "ignore",
+    "{.jshintignore,**/.config/git/ignore*,**/.git*/**/info/exclude,**/*.ignore}": "ignore",
     "{.gvimrc,.ideavimrc}": "viml",
     "{.inputrc,.shellspec,*.ctags,**/.githooks/*,**/.husky/*,/etc/defaults/**/*.conf,/etc/periodic/**/*.conf}": "shellscript",
     "{.ruby-version,.tool-versions,**/.config/bat/config,default-gems}": "properties",
@@ -555,6 +555,7 @@
   "workbench.editor.decorations.colors": true,
   "workbench.editor.enablePreviewFromCodeNavigation": true,
   "workbench.editor.tabSizing": "shrink",
+  "workbench.editor.useModal": "off",
   "workbench.editor.wrapTabs": true,
   "workbench.editorAssociations": {
     "*.ipynb": "jupyter-notebook",

@@ -88,13 +88,13 @@
   {
     "name": "Jira search bugs",
     "shortcut": "jb",
-    "url": "https://example.atlassian.net/issues/?jql=text%20~%20%22%s%22%20AND%20type%20%3D%20Bug%20ORDER%20BY%20created%20DESC"
+    "url": "https://example.atlassian.net/issues/?jql=text%20~%20%22%s%22%20AND%20type%20%3D%20Bug%20AND%20resolution%20%3D%20Unresolved%20ORDER%20BY%20created%20DESC"
   },
 
   {
     "name": "Jira search bug titles",
     "shortcut": "jbt",
-    "url": "https://example.atlassian.net/issues/?jql=summary%20~%20%22%s%22%20AND%20type%20%3D%20Bug%20ORDER%20BY%20created%20DESC"
+    "url": "https://example.atlassian.net/issues/?jql=summary%20~%20%22%s%22%20AND%20type%20%3D%20Bug%20AND%20resolution%20%3D%20Unresolved%20ORDER%20BY%20created%20DESC"
   },
 
   {
@@ -112,7 +112,7 @@
   {
     "name": "Jira: TEAM bugs",
     "shortcut": "teamb", // cSpell:ignore teamb
-    "url": "https://example.atlassian.net/issues/?jql=project%20%3D%20TEAM%20AND%20text%20~%20%22%s%22%20AND%20type%20%3D%20Bug%20ORDER%20BY%20created%20DESC"
+    "url": "https://example.atlassian.net/issues/?jql=project%20%3D%20TEAM%20AND%20text%20~%20%22%s%22%20AND%20type%20%3D%20Bug%20AND%20resolution%20%3D%20Unresolved%20ORDER%20BY%20created%20DESC"
   },
 
   {

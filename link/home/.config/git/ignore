@@ -105,3 +105,5 @@ junit.xml
 .pnp.loader.mjs
 
 platform.gitconfig
+
+**/.claude/settings.local.json
