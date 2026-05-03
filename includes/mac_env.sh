@@ -31,10 +31,10 @@ OMZ_PLUGINS=(
 )
 
 UPDATE_BACKUP_CMDS+=(
-  update_open_tabs
+  update_open_dotfile_tabs
   "$OPEN_CMD /Applications # Manually update the non-App Store, infrequently-opened, etc. apps"
   'iterm_tab . chrome_backup_notes'
   'brew update --quiet'
   'brew upgrade --quiet' # Removed --greedy because apps auto-download in the background anyway
-  'brew unlink node' # This gets installed as a dependency, but we're using Node from mise now
+  "brew unlink node # This gets installed as a dependency, but we're using Node from mise now"
 )

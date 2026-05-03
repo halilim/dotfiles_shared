@@ -34,7 +34,7 @@ function update_mise() {
   mise up
 }
 
-function update_open_tabs() {
+function update_open_dotfile_tabs() {
   iterm_tab "$DOTFILES_SHARED" '# git add/commit/push'
   iterm_tab "$DOTFILES_CUSTOM" '# git add/commit/push'
 }

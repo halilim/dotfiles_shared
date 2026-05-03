@@ -146,6 +146,12 @@ function echo_eval() {
 }
 alias ee='echo_eval'
 
+# This is for removing the trailing slash for now.
+# It can be used for further normalization in the future.
+function get_tmp_dir() {
+  realpath "$TMPDIR"
+}
+
 function hosts_edit() {
   # sudo inside VSCode only accepts password and not Touch ID
   # mvim has it's own problems
