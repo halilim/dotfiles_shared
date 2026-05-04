@@ -12,19 +12,21 @@ function cd_checkout_pull() {
   fi
 
   if [[ $PRE_PULL_CMD ]]; then
-    echo_eval "$PRE_PULL_CMD"
+    echo_eval "$PRE_PULL_CMD" || return
   fi
 
   # Must be after cd since the git branch depends on the folder
   [[ -z $branch ]] && branch=$(git_main_branch)
 
-  echo_eval git checkout --quiet "$branch"
+  echo_eval git checkout --quiet "$branch" || return
 
   local git_pull_result
   git_pull_result=$(echo_eval git pull --prune --quiet)
-  [[ $git_pull_result ]] && echo "$git_pull_result"
-  if [[ $git_pull_result == *'up to date'* ]]; then
-    return "$GIT_ALREADY_UP_TO_DATE"
+  if [[ $git_pull_result ]]; then
+    echo "$git_pull_result"
+    if [[ $git_pull_result == *'up to date'* ]]; then
+      return "$GIT_ALREADY_UP_TO_DATE"
+    fi
   fi
 }
 

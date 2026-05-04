@@ -250,7 +250,7 @@ function ruby_cd_pull_migrate() {
 
   # PRE_PULL_CMD is in cd_checkout_pull
 
-  cd_checkout_pull "$dir" "$branch"
+  cd_checkout_pull "$dir" "$branch" || return
   local -r last_status=$?
   if [[ $last_status != 0 && ! $FORCE ]]; then
     printf '\n'
@@ -258,7 +258,7 @@ function ruby_cd_pull_migrate() {
   fi
 
   if [[ ${POST_PULL_CMD:-} ]]; then
-    echo_eval "$POST_PULL_CMD"
+    echo_eval "$POST_PULL_CMD" || return
   fi
 
   if [[ -e Gemfile.lock ]]; then
@@ -269,7 +269,7 @@ function ruby_cd_pull_migrate() {
       bundle_cmd=(bundle install --quiet)
     fi
 
-    echo_eval "${bundle_cmd[@]}"
+    echo_eval "${bundle_cmd[@]}" || return
   fi
 
   if [[ -e bin/spring ]]; then
