@@ -383,7 +383,7 @@
 	},
 
 	"if command not": {
-		"prefix": ["ifcn", "ifnc"], // cSpell:disable-line
+		"prefix": ["ifcn", "ifnc", "ifnco"], // cSpell:disable-line
 		"body": [
 			"if ! ${1:cmd}; then",
 				"\t$0",

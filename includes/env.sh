@@ -104,6 +104,7 @@ export OMZ_PLUGINS=(
 export UPDATE_BACKUP_CMDS=(
   update_bat_syntaxes
   update_mise
+  update_ruby_bundler_and_system
 )
 
 if [[ $OSTYPE == darwin* ]]; then

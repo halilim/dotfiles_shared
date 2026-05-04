@@ -34,11 +34,6 @@ function update_mise() {
   mise up
 }
 
-function update_open_dotfile_tabs() {
-  iterm_tab "$DOTFILES_SHARED" '# git add/commit/push'
-  iterm_tab "$DOTFILES_CUSTOM" '# git add/commit/push'
-}
-
 function update_bat_syntaxes() {
   (
     DRY_RUN='' echo_eval cd "$DOTFILES_SHARED" || return
@@ -60,6 +55,19 @@ function update_bat_syntaxes() {
   )
 
   bat_rebuild_syntaxes
+}
+
+function update_ruby_bundler_and_system() {
+  (
+    # When mise upgrades Ruby, this tries to update the system Ruby, and fails
+    # (mise activation is temporarily disabled?) Trying `cd "$HOME"`
+    cd "$HOME" || return
+
+    if command -v ruby > /dev/null 2>&1; then
+      echo_eval gem update bundler --quiet
+      echo_eval gem update --system --quiet
+    fi
+  )
 }
 
 function update_vim() {
