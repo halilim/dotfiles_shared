@@ -119,7 +119,7 @@ function open_with_rubymine() {
 }
 
 function open_with_editor() {
-  if [[ $EDITOR == */*vim ]]; then
+  if [[ $EDITOR == *vim ]]; then
     vim_open "$@"
     return
   fi

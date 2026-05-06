@@ -2,6 +2,7 @@ alias libw='$EDITOR "$DOTFILES_INCLUDES"/lib/which.sh' # cSpell:ignore libw
 
 # shellcheck disable=SC2139
 alias {edit_file,edit_function,ef,fe,edit_which,ew}='EDIT=1 wh'
+alias efv='EDIT=1 EDITOR=vim wh'
 alias ea='EDIT_ALIAS=1 wh'
 
 function locate_function() {

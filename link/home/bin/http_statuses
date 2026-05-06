@@ -9,24 +9,26 @@ gemfile do
 end
 
 require 'rack/utils'
-sym_to_code = Rack::Utils::SYMBOL_TO_STATUS_CODE
 
-unless ARGV[0]
-  sym_to_code.each do |sym, code|
+SEPARATORS = {
+  'VScode' => ',',
+  'RubyMine' => '", "'
+}.freeze
+
+SYM_TO_CODE = Rack::Utils::SYMBOL_TO_STATUS_CODE
+
+type = ARGV[0]
+
+unless type
+  SYM_TO_CODE.each do |sym, code|
     puts "\n" if code % 100 == 0
     puts "#{code} #{sym}"
   end
-  puts "\nFor snippets: #{__FILE__} [VScode|RubyMine]"
+  puts "\nFor snippets: #{File.basename(__FILE__)} [#{SEPARATORS.keys.join('|')}]"
   exit
 end
 
-case ARGV[0]
-when 'VScode'
-  separator = ','
-when 'RubyMine'
-  separator = '", "'
-else
-  raise "Unknown type: #{ARGV[0]}"
-end
+separator = SEPARATORS[type]
+raise "Unknown type: #{type}. Must be one of: #{SEPARATORS.keys.join(', ')}" unless separator
 
-puts sym_to_code.flat_map { |sym, code| [code, ":#{sym}"] }.join(separator)
+puts SYM_TO_CODE.flat_map { |sym, code| [code, ":#{sym}"] }.join(separator)
