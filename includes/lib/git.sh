@@ -21,7 +21,7 @@ function cd_checkout_pull() {
   echo_eval git checkout --quiet "$branch" || return
 
   local git_pull_result
-  git_pull_result=$(echo_eval git pull --prune --quiet)
+  git_pull_result=$(echo_eval git pull --prune --quiet) || return
   if [[ $git_pull_result ]]; then
     echo "$git_pull_result"
     if [[ $git_pull_result == *'up to date'* ]]; then
