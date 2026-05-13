@@ -549,6 +549,9 @@
     }
   },
 
+  "workbench.diffEditorAssociations": {
+    "*.md": "vscode.markdown.preview.editor"
+  },
   "workbench.editor.decorations.colors": true,
   "workbench.editor.enablePreviewFromCodeNavigation": true,
   "workbench.editor.tabSizing": "shrink",
