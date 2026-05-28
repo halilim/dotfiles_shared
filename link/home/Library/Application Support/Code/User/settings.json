@@ -387,6 +387,7 @@
       "foreground": "#ffa500"
     }
   },
+  "todo-tree.ripgrep.ripgrep": "/opt/homebrew/bin/rg",
   "todo-tree.tree.scanMode": "current file",
 
   // Implemented via regular keyboard shortcuts
