@@ -41,21 +41,6 @@ alias cosa='colima stop --profile act'
 alias coss='colima status'
 alias cost='colima stop'
 
-# https://github.com/docker/cli/issues/6231
-function docker_completion_use_self() {
-  echo_eval brew uninstall --ignore-dependencies docker-completion '2> /dev/null || true'
-
-  # docker completion zsh --help
-  local file
-  if [[ $OSTYPE == darwin* ]]; then
-    file="$HOMEBREW_PREFIX"/share/zsh/site-functions/_docker
-  else
-    # shellcheck disable=SC2154
-    file="${fpath[1]}/_docker"
-  fi
-  echo_eval docker completion zsh '>' "$file"
-}
-
 # Internal utils to pass Docker containers as hosts and vice versa
 function docker_host_to_container() {
   local host=$1

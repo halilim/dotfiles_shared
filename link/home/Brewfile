@@ -82,7 +82,6 @@ cask 'font-sauce-code-pro-nerd-font' # Also works for Powerlevel10k
 cask 'qlcolorcode' # Source code files with syntax highlighting
 cask 'qlstephen' # README, Makefile etc.
 cask 'qlvideo' # Finder thumbnails & Quick Look previews and thumbnails
-cask 'quicklook-json'
 
 cask 'sourcetree' # Easier to search history
 cask 'unnaturalscrollwheels' # Separate mouse and trackpad natural scroll # cSpell:disable-line

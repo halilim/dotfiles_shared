@@ -73,9 +73,3 @@ function update_ruby_bundler_and_system() {
 function update_vim() {
   $VIM_PATH +'PlugUpgrade | PlugUpdate | q'
 }
-
-function update_zsh_completions() {
-  if command -v docker > /dev/null 2>&1; then
-    docker_completion_use_self
-  fi
-}
