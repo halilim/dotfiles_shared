@@ -37,6 +37,9 @@ function colima_start() {
   echo_eval colima start "${args[@]}"
 }
 alias cos='colima_start'
+
+# shellcheck disable=SC2139
+alias {colima_restart,cor}='colima delete && colima_start'
 alias cosa='colima stop --profile act'
 alias coss='colima status'
 alias cost='colima stop'
