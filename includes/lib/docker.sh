@@ -38,11 +38,12 @@ function colima_start() {
 }
 alias cos='colima_start'
 
+alias cor='colima restart'
 # shellcheck disable=SC2139
-alias {colima_restart,cor}='colima delete && colima_start'
-alias cosa='colima stop --profile act'
+alias {colima_rebuild,corb}='colima delete && colima_start' # cSpell:disable-line
 alias coss='colima status'
 alias cost='colima stop'
+alias cosa='colima stop --profile act'
 
 # Internal utils to pass Docker containers as hosts and vice versa
 function docker_host_to_container() {
