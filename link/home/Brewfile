@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-tap 'beeftornado/rmtree'
-
 brew 'coreutils' # gdate, gnumfmt, realpath, ghead, gtail
 brew 'findutils' # gfind
 brew 'gnu-sed' # gsed

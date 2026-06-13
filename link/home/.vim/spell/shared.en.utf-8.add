@@ -157,6 +157,8 @@ datatracker
 datestamp
 datname
 DBeaver
+dbus
+dearmor
 Deel
 delaycompress
 deluid
@@ -365,6 +367,7 @@ httparty
 httpclient
 httpie
 HubSpot
+hugepages
 IBAN
 icalendar
 Iconify
@@ -421,6 +424,7 @@ keygen
 Keymap
 keymaps
 keyout
+keyrings
 keyserver
 kibibit
 kibibits
@@ -524,6 +528,7 @@ Neovim
 Nerdfont
 netfilter
 netrw
+networkd
 networksetup
 Neue
 newaliases
@@ -823,6 +828,7 @@ timecop
 Timecop
 tldr
 TMPDIR
+tmpfiles
 tmuxinator
 todo
 TODO
@@ -865,6 +871,7 @@ urlhaus
 usermod
 usr
 utf
+utmp
 vcard
 VDSL
 vendored
