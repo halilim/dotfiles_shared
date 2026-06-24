@@ -77,6 +77,7 @@ function gem_info_field() {
   fi
 }
 
+# Spring processes tend to become zombies, making `spring stop` not work
 function kill_spring() {
   pgrep 'spring (app|server)' | xargs kill -9
 }

@@ -141,6 +141,7 @@ coreutils
 CORS
 Covid
 CPUTYPE
+CQRS
 createuser
 creds
 CSRF
@@ -312,6 +313,7 @@ gpg
 gpgsign
 gpgtar
 grampsweb
+GraphQL
 grayscale
 grealpath
 grepdiff
@@ -810,6 +812,7 @@ Substack
 substr
 sumologic
 sunaku
+sunsetting
 Supabase
 systempreferences
 tablename
@@ -909,6 +912,7 @@ xscenario
 xsel
 xtype
 xxhash
+yadm
 YAML
 yamllint
 yarnrc

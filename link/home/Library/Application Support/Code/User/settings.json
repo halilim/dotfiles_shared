@@ -216,14 +216,15 @@
 
   "json.maxItemsComputed": 10000,
   "json.schemaDownload.trustedDomains": {
-    "https://schemastore.azurewebsites.net/": true,
-    "https://raw.githubusercontent.com/microsoft/vscode/": true,
-    "https://raw.githubusercontent.com/devcontainers/spec/": true,
-    "https://www.schemastore.org/": true,
-    "https://json.schemastore.org/": true,
-    "https://json-schema.org/": true,
     "https://developer.microsoft.com/json-schemas/": true,
-    "https://raw.githubusercontent.com/DavidAnson/markdownlint/v0.40.0/schema/markdownlint-config-schema.json": true
+    "https://json-schema.org/": true,
+    "https://json.schemastore.org/": true,
+    "https://raw.githubusercontent.com/DavidAnson/markdownlint-cli2/main/schema/": true,
+    "https://raw.githubusercontent.com/DavidAnson/markdownlint/v0.40.0/schema/markdownlint-config-schema.json": true,
+    "https://raw.githubusercontent.com/devcontainers/spec/": true,
+    "https://raw.githubusercontent.com/microsoft/vscode/": true,
+    "https://schemastore.azurewebsites.net/": true,
+    "https://www.schemastore.org/": true
   },
 
   "launch": {
@@ -285,7 +286,7 @@
   "markdown.validate.enabled": true,
 
   "markdownlint.config": {
-    "extends": "~/.markdownlint.jsonc"
+    "extends": "~/.markdownlint-cli2.jsonc"
   },
 
   "phpcs.lintOnOpen": false,
@@ -393,6 +394,8 @@
   },
   "todo-tree.ripgrep.ripgrep": "/opt/homebrew/bin/rg",
   "todo-tree.tree.scanMode": "current file",
+
+  "update.showReleaseNotes": false,
 
   // Implemented via regular keyboard shortcuts
   // "vim.handleKeys": {
@@ -614,6 +617,10 @@
   },
 
   "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
+  "[json5]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
 

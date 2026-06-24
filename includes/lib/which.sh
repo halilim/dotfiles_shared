@@ -77,6 +77,7 @@ function which_detailed() {
 
   local unique_type \
         line_no=1 \
+        any_failure=0 \
         file_no file real_path link_path
 
   while IFS=$'\n' read -r unique_type; do
@@ -87,12 +88,12 @@ function which_detailed() {
     case "$unique_type" in
       'alias')
         color_ 'yellow' 'alias '
-        _which_alias "$input"
+        _which_alias "$input" || any_failure=1
         ;;
 
       'global alias')
         color_ 'yellow' 'global alias '
-        _which_alias "$input" 1
+        _which_alias "$input" 1 || any_failure=1
         ;;
 
       'builtin')
@@ -130,7 +131,7 @@ function which_detailed() {
 
       'function')
         color_ 'yellow' 'function '
-        which_function "$input"
+        which_function "$input" || any_failure=1
         ;;
 
       'variable')
@@ -140,6 +141,10 @@ function which_detailed() {
 
     line_no=$((line_no + 1))
   done < <(printf '%s\n' "$types" | uniq)
+
+  if [[ $any_failure -eq 1 ]]; then
+    return 1
+  fi
 }
 alias wh="which_detailed"
 
@@ -158,7 +163,7 @@ function _which_alias() {
   color 'magenta' "$alias_output"
 
   if [[ ${EDIT_ALIAS:-} ]]; then
-    _edit_alias "$prefix $input="
+    _edit_alias "$prefix \{?(\w+,)*$input(,\w+)*\}?="
     return
   fi
 
@@ -200,7 +205,7 @@ function _edit_alias() {
 
 function _locate_alias() {
   local prefix=${1:?prefix is required, e.g. 'alias foo='} dir=${2:?directory is required}
-  rg -.Fn --column "$prefix" "$dir"
+  DRY_RUN='' echo_eval rg -.n --column "$prefix" "$dir"
 }
 
 function which_function() {

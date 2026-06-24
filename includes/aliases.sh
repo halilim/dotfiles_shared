@@ -85,10 +85,10 @@ alias mdiff='mine diff'
 alias mi='mediainfo'
 
 alias mii='mise install'
-alias mil='mise list'
+alias mila='mise list' # list all
 # shellcheck disable=SC2139
 # tv is from 'bat .tool-versions'
-alias {milc,tv}='mise list --current'
+alias {mil,tv}='mise list --current'
 alias mit='mise trust'
 alias miu='mise uninstall'
 

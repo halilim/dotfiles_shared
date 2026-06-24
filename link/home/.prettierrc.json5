@@ -1,0 +1,11 @@
+{
+  overrides: [
+    // https://github.com/prettier/prettier/issues/15956
+    {
+      files: ["**/*.jsonc"],
+      options: {
+        trailingComma: "none",
+      },
+    },
+  ],
+}

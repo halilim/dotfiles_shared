@@ -1,0 +1,17 @@
+{
+  // .config/markdownlint symlink is needed for Vim > coc-markdownlint
+
+  "$schema": "https://raw.githubusercontent.com/DavidAnson/markdownlint-cli2/main/schema/markdownlint-cli2-config-schema.json",
+
+  "config": {
+    "default": true,
+
+    "line-length": {
+      "line_length": 100
+    },
+
+    "no-duplicate-heading": {
+      "siblings_only": true
+    }
+  }
+}

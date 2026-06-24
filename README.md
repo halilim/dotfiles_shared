@@ -42,11 +42,6 @@ pkg install -y curl
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/halilim/dotfiles_shared/main/share/termux_setup.sh)"
 ```
 
-## Notes
-
-- `.markdownlint.json` (symlink to `link/home/.markdownlint.jsonc`): Required for Vim >
-  [coc-markdownlint](https://github.com/fannheyward/coc-markdownlint/blob/master/src/engine.ts#L24).
-
 ## FAQ
 
 - Q: Why not use other dotfile management tools? \
