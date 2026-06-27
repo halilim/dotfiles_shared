@@ -6,6 +6,7 @@ set ignorecase " case-insensitive search by default
 set incsearch " search as characters are entered
 set showcmd " show command in the last line
 set smartcase " except when an upper-case letter used in the search
+set VimEverywhere
 
 " Plugins
 set commentary

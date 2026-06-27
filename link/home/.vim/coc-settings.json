@@ -14,6 +14,14 @@
       "ignoredRootPaths": ["~"]
     }
   },
+  "markdownlint.config": {
+    "line-length": {
+      "line_length": 100
+    },
+    "no-duplicate-heading": {
+      "siblings_only": true
+    }
+  },
   "python.linting.enabled": true,
   "python.linting.pylintEnabled": true
 }
