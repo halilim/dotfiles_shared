@@ -23,7 +23,8 @@ function gpg_check_key() {
   remaining_days=$(( (expiry_seconds - now) / 86400 ))
 
   if [[ $remaining_days -lt 40 ]]; then
-    echo "WARNING! GPG key expires in $remaining_days days"
+    color >&2 red "WARNING! GPG key expires in $remaining_days days"
+    return 1
   fi
 }
 

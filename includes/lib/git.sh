@@ -168,7 +168,7 @@ function git_maintain_large_repos() {
 
 function git_pull_all() {
   # shellcheck disable=SC2016
-  for_each_dir git checkout _safe_'"$(git_main_branch)" &&' git pull --prune --quiet
+  for_each_dir git checkout --quiet _safe_'"$(git_main_branch)" &&' git pull --prune --quiet
 }
 
 function git_search_branches() {

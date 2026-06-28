@@ -76,6 +76,7 @@ at_exit { system '~/bin/switch_to_homebrew_zsh' }
 
 cask 'dbeaver-community'
 cask 'font-sauce-code-pro-nerd-font' # Also works for Powerlevel10k
+cask 'handbrake-app'
 
 cask 'qlcolorcode' # Source code files with syntax highlighting
 cask 'qlstephen' # README, Makefile etc.

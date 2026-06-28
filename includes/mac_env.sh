@@ -35,7 +35,13 @@ UPDATE_BACKUP_CMDS+=(
   "$OPEN_CMD /Applications # Manually update the non-App Store, infrequently-opened, etc. apps"
   'iterm_tab . chrome_backup_notes'
   'brew update --quiet'
-  'brew upgrade --quiet' # Removed --greedy because apps auto-download in the background anyway
+  'brew upgrade --no-ask --quiet' # Removed --greedy because apps auto-download in the background anyway
   "brew unlink node # This gets installed as a dependency, but we're using Node from mise now"
   'iterm_tab "$DOTFILES_CUSTOM" "# git add/commit/push"'
 )
+
+if ! ssh-add -l > /dev/null 2>&1; then
+  grep -slR 'PRIVATE' ~/.ssh \
+    | xargs ssh-add --apple-use-keychain --apple-load-keychain \
+      > /dev/null 2>&1
+fi
