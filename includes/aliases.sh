@@ -132,6 +132,7 @@ alias rgc='rg --case-sensitive'
 alias rgf='rg -F' # Treat the pattern as a literal string instead of a regular expression
 alias rgni='rg --no-ignore'
 alias rgnic='rg --no-ignore --case-sensitive'
+alias rgnl="rg -g '!locales/'"
 alias rgnt="rg -g '!features/' -g '!spec/' -g '!test/' -g '!__tests__/' -g '!*.test.*'"
 alias rgw='rg -w' # Word
 # shellcheck disable=SC2139
