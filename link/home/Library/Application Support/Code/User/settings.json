@@ -150,7 +150,13 @@
     "tsconfig.json": "tsconfig.*.json"
   },
 
+  "extensions.autoUpdateDelay": 72,
   "extensions.ignoreRecommendations": true,
+  // To improve performance
+  "extensions.experimental.affinity": {
+    "asvetliakov.vscode-neovim": 1, // cSpell:disable-line
+    "vscodevim.vim": 1
+  },
 
   // cSpell:ignore apacheconf
   // logrotate.d/*.conf: There is no logrotate extension yet
@@ -422,12 +428,6 @@
   "vim.useSystemClipboard": true,
   "vim.vimrc.enable": true,
   "vim.visualstar": true,
-
-  // To improve performance
-  "extensions.experimental.affinity": {
-    "asvetliakov.vscode-neovim": 1, // cSpell:disable-line
-    "vscodevim.vim": 1
-  },
 
   "vim.normalModeKeyBindings": [
     { "before": ["-"], "commands": ["editor.action.inPlaceReplace.down"] },
