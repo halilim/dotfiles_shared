@@ -36,14 +36,27 @@ Describe 'edit'
   }
 
   function window_names() {
-    if [[ $1 == 'RubyMine' ]]; then
-      if [[ ${rubymine_is_open:-} ]]; then
-        echo "$dir_name – README.md, project_b"
-      fi
-    else
-      echo >&2 "Unexpected window_names call: $*"
-      exit 1
-    fi
+    case "${1?}" in
+      RubyMine)
+        if [[ ${project_is_open_in_rubymine:-} ]]; then
+          echo "$dir_name – README.md, project_b"
+        elif [[ ${rubymine_is_open:-} ]]; then
+          echo 'project_b – something.txt'
+          :
+        fi
+        ;;
+
+      'Visual Studio Code.app')
+        if [[ ${project_is_open_in_vscode:-} ]]; then
+          echo "README.md — $dir_name (Workspace), something.txt — project_b"
+        fi
+        ;;
+
+      *)
+        echo >&2 "Unexpected window_names call: $*"
+        exit 1
+        ;;
+    esac
   }
   # End: Mocks
 
@@ -89,20 +102,21 @@ Describe 'edit'
     Context 'with a non-existent path'
       file=$dir_name/non_existent
 
+      Context 'when its directory is a git repo open in RubyMine'
+        project_is_open_in_rubymine=1
+        dir_is_git=1
+
+        It 'opens it in RubyMine'
+          When call edit "$file"
+          The stdout should eq ''
+          The stderr should eq ''
+          The status should eq 0
+          The variable mine_calls should eq "$file ¶ "
+        End
+      End
+
       Context 'when RubyMine is open'
         rubymine_is_open=1
-
-        Context 'when its directory is a git repo open in RubyMine'
-          dir_is_git=1
-
-          It 'opens it in RubyMine'
-            When call edit "$file"
-            The stdout should eq ''
-            The stderr should eq ''
-            The status should eq 0
-            The variable mine_calls should eq "$file ¶ "
-          End
-        End
 
         Context 'when given path is a Ruby file'
           file=$dir_name/non_existent.rb
@@ -113,6 +127,20 @@ Describe 'edit'
             The stderr should eq ''
             The status should eq 0
             The variable mine_calls should eq "$file ¶ "
+          End
+
+          Context 'when the project is open in the editor'
+            export EDITOR=code
+            dir_is_git=1
+            project_is_open_in_vscode=1
+
+            It 'opens it with editor'
+              When call edit "$file:$line:$column"
+              The stdout should eq ''
+              The stderr should eq ''
+              The status should eq 0
+              The variable open_with_editor_calls should eq "$file ¶ "
+            End
           End
         End
       End
@@ -131,20 +159,21 @@ Describe 'edit'
         line=21
         column=45
 
+        Context 'when its directory is a git repo open in RubyMine'
+          dir_is_git=1
+          project_is_open_in_rubymine=1
+
+          It 'opens it in RubyMine'
+            When call edit "$file:$line:$column"
+            The stdout should eq ''
+            The stderr should eq ''
+            The status should eq 0
+            The variable mine_calls should eq "--line $line --column $((column - 1)) $file ¶ "
+          End
+        End
+
         Context 'when RubyMine is open'
           rubymine_is_open=1
-
-          Context 'when its directory is a git repo open in RubyMine'
-            dir_is_git=1
-
-            It 'opens it in RubyMine'
-              When call edit "$file:$line:$column"
-              The stdout should eq ''
-              The stderr should eq ''
-              The status should eq 0
-              The variable mine_calls should eq "--line $line --column $((column - 1)) $file ¶ "
-            End
-          End
 
           Context 'with a Ruby file'
             file=$dir_name/a_file.rb
@@ -155,6 +184,20 @@ Describe 'edit'
               The stderr should eq ''
               The status should eq 0
               The variable mine_calls should eq "--line $line --column $((column - 1)) $file ¶ "
+            End
+
+            Context 'when the project is open in the editor'
+              export EDITOR=code
+              dir_is_git=1
+              project_is_open_in_vscode=1
+
+              It 'opens it with editor'
+                When call edit "$file:$line:$column"
+                The stdout should eq ''
+                The stderr should eq ''
+                The status should eq 0
+                The variable open_with_editor_calls should eq "$file:$line:$column ¶ "
+              End
             End
           End
 

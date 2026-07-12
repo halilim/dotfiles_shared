@@ -46,7 +46,7 @@ function open_from_iterm_debug() {
 function window_names() {
   local process_str=$1 app=${2:-$1}
 
-  if FAKE_STATUS=0 echo_eval pgrep -f "$process_str" '>/dev/null 2>&1'; then
-    echo_eval osascript -e "tell application \"System Events\" to get name of every window of (process \"$app\")"
+  if DRY_RUN='' echo_eval pgrep -f "$process_str" '>/dev/null 2>&1'; then
+    DRY_RUN='' echo_eval osascript -e "tell application \"System Events\" to get name of every window of (process \"$app\")"
   fi
 }

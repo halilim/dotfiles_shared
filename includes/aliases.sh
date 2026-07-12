@@ -157,6 +157,7 @@ alias spt='$SPEEDTEST_CMD'
 
 # shellcheck disable=SC2139
 alias {sshc,ssh_copy_key,copy_ssh_key}='cb < ~/.ssh/id_*.pub'
+# Why Vim? Because it has syntax highlighting
 alias sshconf='vim_open ~/.ssh/config'
 
 alias str='stree .'

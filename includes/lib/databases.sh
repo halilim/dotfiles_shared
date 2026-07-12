@@ -83,7 +83,7 @@ function mysql_exec() {
     args+=(-e "$QUERY")
   fi
 
-  # FIXME: Find another way, because this also silences real errors
+  # TODO: Find another way, because this also silences real errors
   # # `2>`: mysql: [Warning] Using a password on the command line interface can be insecure.
   # args+=('2> /dev/null')
 
