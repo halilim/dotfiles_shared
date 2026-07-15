@@ -81,11 +81,16 @@ alias {gro,git_reset_to_origin}='git fetch origin && prompt "Hard reset to origi
 alias gsm='git submodule'
 
 # Original gsta (omz/git.plugin.zsh) sounds like apply :)
-alias gsta='git stash apply'
-alias gstdiff='git stash show --patch'
-alias gstl='git stash list --date=iso'
-alias gstp='git stash push --include-untracked -m'
-alias gstpb='git stash push --include-untracked -m"$(git rev-parse --abbrev-ref HEAD)"'
+# shellcheck disable=SC2139
+alias {gsa,gsta}='git stash apply'
+# shellcheck disable=SC2139
+alias {gsd,gstdiff}='git stash show --patch'
+# shellcheck disable=SC2139
+alias {gsl,gstl}='git stash list --date=iso'
+# shellcheck disable=SC2139
+alias {gsp,gstp}='git stash push --include-untracked -m'
+# shellcheck disable=SC2139
+alias {gspb,gstpb}='git stash push --include-untracked -m"$(git rev-parse --abbrev-ref HEAD)"'
 
 alias gsv="GIT_SSH_COMMAND='ssh -vvv'"
 alias gt='export NEW_VERSION=1.2.3 && git tag -a v$NEW_VERSION -m "" && git push --tags origin v$NEW_VERSION'
