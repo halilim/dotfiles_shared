@@ -294,6 +294,13 @@ function last_mod_older_than() {
   [[ -f $file ]] && date_older_than "$last_mod" "$ago"
 }
 
+function mediainfo_() {
+  mediainfo "$@" | \
+    rg --pcre2 --multiline --multiline-dotall '(.*^Image #2$)' --color never --replace='$1'$'\n''...' | \
+    rg '^([^:]+?)\s+:' --passthru --colors=match:fg:yellow --colors=highlight:fg:cyan --replace '$1:'
+}
+alias mi='mediainfo_'
+
 # Utility for basic auto-update
 function needs_update_and_mark() {
   local last_updated_file=${1:-./.last_updated_at} days=${2:-7}

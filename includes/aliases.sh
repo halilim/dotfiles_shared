@@ -82,8 +82,6 @@ alias lzg='lazygit'
 alias m='mine .' # RubyMine
 alias mdiff='mine diff'
 
-alias mi='mediainfo'
-
 alias mii='mise install'
 alias mila='mise list' # list all
 # shellcheck disable=SC2139

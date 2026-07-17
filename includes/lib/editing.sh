@@ -19,8 +19,8 @@ function edit() {
   fi
 
   local arg arg_path line column \
-    real_abs_path base_name real_abs_dir_path dirs real_abs_path_line_col \
-    dir_candidates project_dir git_path
+    dir_path real_abs_path is_link base_name real_abs_dir_path real_abs_path_line_col \
+    dir_candidates project_dir real_project_dir git_path real_git_path
 
   local ct=0
   for arg in "$@"; do
@@ -40,6 +40,8 @@ function edit() {
       declare -p arg_path line column 1>&2
     fi
 
+    is_link=''
+    dir_path=$(dirname "$arg_path")
     if [[ -e $arg_path ]]; then
       real_abs_path=$(realpath "$arg_path")
 
@@ -48,14 +50,22 @@ function edit() {
         continue
       fi
 
+      if [[ $real_abs_path != "$arg_path" ]]; then
+        is_link=1
+      fi
+
       real_abs_dir_path=$(dirname "$real_abs_path")
     else
-      dirs=$(dirname "$arg_path")
       # Create a new file along with the directories
-      if [[ ! -e $dirs ]]; then
-        echo_eval mkdir -p "$dirs"
+      if [[ ! -e $dir_path ]]; then
+        echo_eval mkdir -p "$dir_path"
       fi
-      real_abs_dir_path=$(FAKE_ECHO="$dirs" SILENT=$silent echo_eval realpath "$dirs")
+
+      real_abs_dir_path=$(FAKE_ECHO="$dir_path" SILENT=$silent echo_eval realpath "$dir_path")
+      if [[ $real_abs_dir_path != "$dir_path" ]]; then
+        is_link=1
+      fi
+
       base_name=$(basename "$arg_path")
       real_abs_path=$real_abs_dir_path/$base_name
     fi
@@ -87,15 +97,27 @@ function edit() {
       dir_candidates=()
 
       if [[ -e $real_abs_dir_path ]]; then
-        project_dir=$(basename "$(get_project_path "$real_abs_dir_path")")
+        project_dir=$(basename "$(get_project_path "$dir_path")")
         if [[ $project_dir ]]; then
           dir_candidates+=("$project_dir")
         fi
+
+        if [[ $is_link ]]; then
+          real_project_dir=$(basename "$(get_project_path "$real_abs_dir_path")")
+          if [[ $real_project_dir ]]; then
+            dir_candidates+=("$real_project_dir")
+          fi
+        fi
       fi
 
-      git_path=$(git -C "$real_abs_dir_path" rev-parse --show-toplevel 2> /dev/null)
+      git_path=$(git -C "$dir_path" rev-parse --show-toplevel 2> /dev/null)
       if [[ $git_path ]]; then
         dir_candidates+=("$(basename "$git_path")")
+      fi
+
+      real_git_path=$(git -C "$real_abs_dir_path" rev-parse --show-toplevel 2> /dev/null)
+      if [[ $real_git_path ]]; then
+        dir_candidates+=("$(basename "$real_git_path")")
       fi
 
       if [[ $verbose ]]; then
