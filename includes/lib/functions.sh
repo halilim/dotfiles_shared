@@ -296,8 +296,8 @@ function last_mod_older_than() {
 
 function mediainfo_() {
   mediainfo "$@" | \
-    rg --pcre2 --multiline --multiline-dotall '(.*^Image #2$)' --color never --replace='$1'$'\n''...' | \
-    rg '^([^:]+?)\s+:' --passthru --colors=match:fg:yellow --colors=highlight:fg:cyan --replace '$1:'
+    rg --passthru --multiline --multiline-dotall --color=never '(.*^Image #2$).*' --replace='$1'$'\n''...' | \
+    rg --passthru --colors=match:fg:yellow --colors=highlight:fg:cyan '^([^:]+?)\s+:' --replace '$1:'
 }
 alias mi='mediainfo_'
 

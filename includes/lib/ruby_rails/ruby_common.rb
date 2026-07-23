@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-require 'irb/color'
-require 'io/console'
-require 'stringio'
+DOWNLOADS_PATH = Pathname.new(File.join(Dir.home, 'Downloads'))
 
 custom_dotfiles = ENV.fetch('DOTFILES_CUSTOM', nil)
 if custom_dotfiles
@@ -10,9 +8,9 @@ if custom_dotfiles
   load(custom_file) if File.exist?(custom_file)
 end
 
-# RubyMine debugger doesn't load .irbrc/.pryrc. Add live template `lrc`:
+# RubyMine debugger doesn't load .irbrc/.pryrc. Add a live template, e.g., `lrc`:
 # (live templates are available in the interactive console)
-# load File.join(ENV['DOTFILES_INCLUDES'], 'lib', 'ruby_rails', 'ruby_common.rb')
+# load File.join(ENV.fetch('DOTFILES_INCLUDES'), 'lib', 'ruby_rails', 'ruby_common.rb')
 
 require_relative 'tabulator'
 def table(*)
