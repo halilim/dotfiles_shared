@@ -124,6 +124,16 @@ function edit() {
         declare -p dir_candidates 1>&2
       fi
 
+      # Remove duplicates from dir_candidates
+      local dir_candidates_s
+      dir_candidates_s=$(printf '%s\n' "${dir_candidates[@]}" | uniq)
+      if command -v mapfile > /dev/null 2>&1; then
+        mapfile -t dir_candidates < <( echo "$dir_candidates_s" )
+      elif [ -n "${ZSH_VERSION:-}" ]; then
+        # shellcheck disable=SC2296,SC2116
+        dir_candidates=("${(f)$(echo "$dir_candidates_s")}")
+      fi
+
       if (DRY_RUN='' SILENT=$silent echo_eval is_in_rubymine_titles "$rubymine_titles" "${dir_candidates[@]}") \
         || (is_ruby_file "$real_abs_path" \
           && ! DRY_RUN='' SILENT=$silent echo_eval is_in_editor_titles "$editor_titles" "${dir_candidates[@]}"); then
@@ -270,13 +280,13 @@ function open_with_rubymine() {
   # https://www.jetbrains.com/help/ruby/opening-files-from-command-line.html#88f1a126
   # Note: column is only documented in the "Windows" tab. -1: it goes to the next character (bug?)
 
-  if [[ $line ]]; then
-    args+=(--line "$line")
-  fi
-
-  if [[ $column ]]; then
-    args+=(--column "$((column - 1))")
-  fi
+  # TODO: Re-enable after # https://youtrack.jetbrains.com/issue/RUBY-35914/Command-line-with-line-is-broken
+  # if [[ $line ]]; then
+  #   args+=(--line "$line")
+  # fi
+  # if [[ $column ]]; then
+  #   args+=(--column "$((column - 1))")
+  # fi
 
   args+=("$abs_path")
 
