@@ -1,3 +1,5 @@
+# Also means "desktop" (vs. "server") for now. I.e., Some stuff here is not really Mac-specific
+
 export CLIP='pbcopy'
 export OPEN_CMD='open'
 export SPEEDTEST_CMD='speedtest'
@@ -30,10 +32,15 @@ OMZ_PLUGINS=(
   macos
 )
 
+if [[ ! ${DISABLE_APP_UPDATES:-} ]]; then
+  UPDATE_BACKUP_CMDS+=(
+    "$OPEN_CMD /Applications # Manually update the non-App Store, infrequently-opened, etc. apps"
+  )
+fi
+
 # shellcheck disable=SC2016
 UPDATE_BACKUP_CMDS+=(
-  "$OPEN_CMD /Applications # Manually update the non-App Store, infrequently-opened, etc. apps"
-  'iterm_tab . chrome_backup_notes'
+  'chrome_backup_notes'
   'brew update --quiet'
   'brew upgrade --no-ask --quiet' # Removed --greedy because apps auto-download in the background anyway
   "brew unlink node # This gets installed as a dependency, but we're using Node from mise now"

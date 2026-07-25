@@ -41,6 +41,8 @@ function source_if_exists() {
   fi
 }
 
+export CHROME_BACKUP_DIR=$DOTFILES_CUSTOM/backup/chrome
+
 # eza (ls alternative)
 export EZA_ICONS_AUTO=true
 export EZA_ICON_SPACING=2

@@ -1,5 +1,6 @@
 alias envshc='$EDITOR "$DOTFILES_CUSTOM"/includes/env.sh' # cSpell:ignore envshc
 
+export DISABLE_APP_UPDATES=1 # /Applications updates are managed by MDM, etc.
 export DOCKER_PROVIDER='docker-desktop' # colima | docker-desktop
 export GIT_LARGE_REPOS="/code/foo:$HOME/bar/baz" # For periodic cleanup
 export GPG_KEY=123ABC # gpg --list-keys > The hex number below "pub"

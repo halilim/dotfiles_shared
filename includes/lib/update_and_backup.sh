@@ -17,7 +17,18 @@ function update_and_backup() {
 }
 
 function chrome_backup_notes() {
-  FORCE_COLOR=1 echo "Chrome backup directory: $(color yellow "$DOTFILES_CUSTOM"/backup/chrome)
+  # These are mostly manual, and can be backed up less frequently
+  local chrome_bookmarks_backup=$CHROME_BACKUP_DIR/bookmarks.html threshold='60 days'
+  if [[ -e $chrome_bookmarks_backup ]] && ! last_mod_older_than "$chrome_bookmarks_backup" "$threshold"; then
+    color >&2 gray 'Chrome backups are not older than '"$threshold"', skipping... '
+    return
+  fi
+  printf %s "$CHROME_BACKUP_DIR" | "${CLIP[*]}"
+  iterm_tab . chrome_backup_notes_msg
+}
+
+function chrome_backup_notes_msg() {
+  FORCE_COLOR=1 echo "Chrome backup directory: $(color yellow "$CHROME_BACKUP_DIR")
 $(color green '1. Bookmark Manager (⌥⌘B) > ⋮ > Export bookmarks > Go to dir (⇧⌘G) > ⌘V')
 $(color green '2. Dark Reader > More > All settings > Advanced > Export Settings')
 $(color green '3. uBlock Origin Lite > Settings > Back up')
