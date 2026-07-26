@@ -31,12 +31,8 @@ pip install pre-commit
 # https://wiki.termux.com/wiki/Termux-setup-storage
 termux-setup-storage
 
-read -r -p 'SSH key: create new (n) or use existing (e)? ' 'REPLY'
-if [[ $REPLY =~ ^[Ee]$ ]]; then
-  read -r -p 'Press any key to continue after saving the SSH key (public and private)...'
-elif [[ $REPLY =~ ^[Nn]$ ]]; then
-  ssh-keygen -t ed25519 -C 't.halil.im'
-fi
+vim -c 'exe "normal iPaste SSH public key here\<Esc>"' ~/.ssh/id_ed25519.pub
+vim -c 'exe "normal iPaste SSH private key here and replace spaces with newlines\<Esc>"' ~/.ssh/id_ed25519
 
 # shellcheck disable=SC1090
 set +e && . ~/../usr/libexec/source-ssh-agent.sh && set -e # termux_prepare_ssh

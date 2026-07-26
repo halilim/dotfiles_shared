@@ -55,11 +55,18 @@ function zvm_vi_yank() {
 	zvm_exit_visual_mode
 }
 
+# Why mkdir? Because this might need to run before OMZ installation itself:
+# 1. dotfiles, 2. OMZ, 3. this => OMZ complains for missing plugins and theme
+# 1. OMZ, 2. dotfiles, 3. this => OMZ complains for missing plugins and theme
+# 1. this => Impossible without installing dotfiles first
+# 1. dotfiles, 2. this, 3. OMZ => ✅
 function omz_install_custom() {
   (
     local zsh_custom=${ZSH_CUSTOM:-~/.oh-my-zsh/custom}
 
-    cd "$zsh_custom"/plugins 'Oh My Zsh custom plugins directory' || return
+    local zsh_custom_plugins="$zsh_custom"/plugins
+    mkdir -p "$zsh_custom_plugins" || return
+    cd "$zsh_custom_plugins" || return
 
     git clone https://github.com/Aloxaf/fzf-tab
     git clone https://github.com/jeffreytse/zsh-vi-mode
@@ -71,7 +78,9 @@ function omz_install_custom() {
     git clone https://github.com/zsh-users/zsh-syntax-highlighting
 
     if [[ ! -v TERMUX_VERSION ]]; then
-      cd "$zsh_custom"/themes 'Oh My Zsh custom themes directory' || return
+      local zsh_custom_themes="$zsh_custom"/themes
+      mkdir -p "$zsh_custom_themes" || return
+      cd "$zsh_custom_themes" || return
       git clone --depth=1 --quiet https://github.com/romkatv/powerlevel10k
     fi
   )
