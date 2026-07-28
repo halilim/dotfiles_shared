@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
+require 'English'
+
 DOWNLOADS_PATH = Pathname.new(File.join(Dir.home, 'Downloads'))
+TEST_DATA_PATH = DOWNLOADS_PATH.join('test_data')
+TEST_IMAGES_PATH = TEST_DATA_PATH.join('image')
 
 custom_dotfiles = ENV.fetch('DOTFILES_CUSTOM', nil)
 if custom_dotfiles
@@ -11,6 +15,13 @@ end
 # RubyMine debugger doesn't load .irbrc/.pryrc. Add a live template, e.g., `lrc`:
 # (live templates are available in the interactive console)
 # load File.join(ENV.fetch('DOTFILES_INCLUDES'), 'lib', 'ruby_rails', 'ruby_common.rb')
+
+# Usage: r, e = capture_error { ... }
+def capture_error
+  [yield, nil]
+rescue StandardError => e
+  [nil, e]
+end
 
 require_relative 'tabulator'
 def table(*)

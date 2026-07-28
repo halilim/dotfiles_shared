@@ -32,11 +32,14 @@ OMZ_PLUGINS=(
   macos
 )
 
-if [[ ! ${DISABLE_APP_UPDATES:-} ]]; then
-  UPDATE_BACKUP_CMDS+=(
-    "$OPEN_CMD /Applications # Manually update the non-App Store, infrequently-opened, etc. apps"
-  )
-fi
+# shellcheck disable=SC2016
+POST_INIT_HOOKS+=(
+  'if [[ ! ${DISABLE_APP_UPDATES:-} ]]; then
+    UPDATE_BACKUP_CMDS+=(
+      "$OPEN_CMD /Applications # Manually update the non-App Store, infrequently-opened, etc. apps"
+    )
+  fi'
+)
 
 # shellcheck disable=SC2016
 UPDATE_BACKUP_CMDS+=(
