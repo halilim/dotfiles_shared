@@ -218,9 +218,9 @@ function print_array() {
 
   local is_associative
   if echo "$declare_output" | grep -q '\-a' > /dev/null 2>&1; then
-    color white-bold 'Indexed array'
+    color blue-bold 'Indexed array'
   elif echo "$declare_output" | grep -q '\-A' > /dev/null 2>&1; then
-    color white-bold 'Associative array'
+    color blue-bold 'Associative array'
     is_associative=1
   else
     color >&2 red 'Not an array'

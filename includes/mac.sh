@@ -47,6 +47,8 @@ function window_names() {
   local process_str=$1 app=${2:-$1}
 
   if DRY_RUN='' echo_eval pgrep -f "$process_str" '>/dev/null 2>&1'; then
-    DRY_RUN='' echo_eval osascript -e "tell application \"System Events\" to get name of every window of (process \"$app\")"
+    DRY_RUN='' echo_eval osascript -e \
+      "tell application \"System Events\" to get name of every window of (process \"$app\")" \
+      2> /dev/null
   fi
 }
