@@ -140,7 +140,7 @@ function rails_request() {
   esac
 
   if [[ $file ]]; then
-    edit "$(realpath "$file"):$line"
+    edit "$file:$line"
   fi
 }
 # shellcheck disable=SC2139

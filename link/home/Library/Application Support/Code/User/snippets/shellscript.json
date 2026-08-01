@@ -14,6 +14,11 @@
 		"body": "> /dev/null 2>&1"
 	},
 
+	"1> /dev/null (ignore stdout)": {
+		"prefix": "1n",
+		"body": "1> /dev/null"
+	},
+
 	"2> /dev/null (ignore stderr)": {
 		"prefix": "2n",
 		"body": "2> /dev/null"
