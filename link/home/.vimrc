@@ -89,20 +89,12 @@ syntax on             " Enable syntax highlighting
 
 let mapleader=","     " Leader is comma
 
-" Only disable the plugin, but not the whole netrw. It's needed for e.g. vim-fugitive's :Gbrowse
-" https://github.com/tpope/vim-fugitive/issues/1010
-let g:loaded_netrw = 1 " Disable netrw
-
 let g:netrw_liststyle = 3
 let g:netrw_banner = 0
 let g:netrw_browse_split = 2
 let g:netrw_altv = 1
 let g:netrw_winsize = 20
 let g:netrw_list_hide = '.*\.DS_Store$'
-" augroup ProjectDrawer
-  " autocmd!
-  " autocmd VimEnter * :Vexplore
-" augroup END
 
 " https://stackoverflow.com/questions/3431184/highlight-all-occurrence-of-a-selected-word/7779339#7779339
 nnoremap <silent> <2-LeftMouse> :let @/='\V\<'.escape(expand('<cword>'), '\').'\>'<CR>:set hls<CR>
@@ -228,8 +220,6 @@ else
   nnoremap <C-n> :enew<CR>
 endif
 
-" netrw is disabled
-" nnoremap <leader>nr :exe 'Vexplore' getcwd()<CR>
 nnoremap <leader>nf :NERDTreeFind<CR>
 nnoremap <leader>nt :NERDTreeToggle<CR>
 nnoremap <D-E> :CocCommand explorer<CR>
