@@ -50,6 +50,18 @@
   "cSpell.dictionaryDefinitions": [
     { "name": "vim", "path": "~/.config/vs-code/dictionaries/vim.txt" }
   ],
+  "cSpell.ignorePaths": [
+    // Defaults https://streetsidesoftware.com/vscode-spell-checker/docs/configuration/files-folders-and-workspaces#cspellignorepaths
+    "package-lock.json",
+    "node_modules",
+    "vscode-extension",
+    ".git/{info,lfs,logs,refs,objects}/**",
+    ".git/{index,*refs,*HEAD}",
+    ".vscode",
+    ".vscode-insiders",
+    // Custom
+    "*.md" // Handled by Harper
+  ],
   "cSpell.ignoreRegExpList": [
     "/[^\\s]{40,}/",
     "/[CGD][0-9A-Z]{10}/" // Slack channel id
@@ -210,6 +222,15 @@
       "DL3008",
       "--no-color"
   ],
+
+  // Use Harper for non-code
+  // TODO: We really need a "include" setting
+  "harper.excludePatterns": [
+    "**/*[a-ce-z]",
+    "**/*[a-ln-z]d",
+    "**/*[!.]md",
+  ],
+  "harper.userDictPath": "~/.vim/spell/shared.en.utf-8.add",
 
   "html.format.extraLiners": "body",
 

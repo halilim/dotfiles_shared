@@ -29,6 +29,7 @@ brew 'pre-commit'
 
 brew 'hadolint' # Dockerfile linter, validates inline bash using ShellCheck
 
+brew 'harper' # harper-ls (grammar checker)
 brew 'htop'
 brew 'httpie'
 brew 'jq'
