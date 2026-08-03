@@ -43,11 +43,6 @@ function source_if_exists() {
 
 export CHROME_BACKUP_DIR=$DOTFILES_CUSTOM/backup/chrome
 
-# eza (ls alternative)
-export EZA_ICONS_AUTO=true
-export EZA_ICON_SPACING=2
-export TIME_STYLE=relative
-
 # Allow overriding stuff defined later anywhere
 export POST_INIT_HOOKS=()
 

@@ -64,11 +64,13 @@ alias ic='imgcat'
 alias k9='kill -9'
 
 # shellcheck disable=SC2139
-alias {l,la}='eza --all --group-directories-first --long --no-user'
-alias lb='eza --all --group-directories-first --long --no-user --bytes'
-alias lg='eza --all --group --group-directories-first --long'
-alias ll='TIME_STYLE=long-iso eza --all --group --group-directories-first --long'
-alias lt='TIME_STYLE=long-iso eza --all --group-directories-first --long --no-user'
+alias {l,la}='lsd --long'
+alias lb='lsd --long --size=bytes'
+# shellcheck disable=SC2139
+alias {lg,lu}='lsd --long --blocks=permission,user,group,size,date,name'
+alias ll='TIME_STYLE=long-iso lsd --long --blocks=permission,user,group,size,date,name'
+alias lr='lsd --long --dereference'
+alias lt='TIME_STYLE=long-iso lsd --long'
 
 alias le='less'
 

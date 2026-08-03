@@ -9,12 +9,12 @@ pkg install -y \
   bat \
   curl \
   dnsutils \
-  eza \
   fd \
   fzf \
-  git-delta \
   git \
+  git-delta \
   jq \
+  lsd \
   nodejs-lts \
   openssh \
   python \

@@ -25,7 +25,7 @@ fi
 # Handled by .functions#update_and_backup
 zstyle ':omz:update' mode disabled
 
-# With eza, ls is used as a scripting tool
+# Using `lsd` now. `ls` is occasionally used as a scripting tool.
 export DISABLE_LS_COLORS='true'
 
 # fzf-tab needs to be the last https://github.com/Aloxaf/fzf-tab#compatibility-with-other-plugins

@@ -1,0 +1,11 @@
+blocks:
+  - permission
+  - size
+  - date
+  - name
+date: relative
+display: almost-all
+layout: oneline
+size: short
+sorting:
+  dir-grouping: first
