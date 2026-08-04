@@ -29,7 +29,6 @@ brew 'pre-commit'
 
 brew 'hadolint' # Dockerfile linter, validates inline bash using ShellCheck
 
-brew 'harper' # harper-ls (grammar checker)
 brew 'htop'
 brew 'httpie'
 brew 'jq'
@@ -75,7 +74,6 @@ at_exit { system '~/bin/switch_to_homebrew_zsh' }
 
 # Start: Casks
 
-cask 'dbeaver-community'
 cask 'font-sauce-code-pro-nerd-font' # Also works for Powerlevel10k
 cask 'handbrake-app'
 
@@ -88,9 +86,9 @@ cask 'unnaturalscrollwheels' # Separate mouse and trackpad natural scroll # cSpe
 
 # Vim
 brew 'editorconfig' # Used by vim plugin
-brew 'lua-language-server'
 brew 'neovim'
 cask 'macvim-app'
+cask 'vimr'
 
 tap 'universal-ctags/universal-ctags'
 brew 'universal-ctags'

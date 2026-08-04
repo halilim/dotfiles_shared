@@ -1,4 +1,4 @@
-# dotfiles
+# Dotfiles
 
 Share dotfiles across different machines.
 

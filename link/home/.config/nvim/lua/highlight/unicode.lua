@@ -7,8 +7,8 @@ vim.api.nvim_set_hl(0, 'InvisibleUnicode', {
 })
 
 -- 2. Define the regex pattern for invisible/ambiguous Unicode ranges
--- Covers: Invisible, Ambiguous, Problematic/Security, Invalid/Non-Character (from the output of unicode_test_gen.py)
--- local invisible_pattern = [[\%u200b\|\%u200c\|\%u200d\|\%ufeff\|\%ua0\|\%uad]]
+-- Covers: Invisible, Ambiguous, Problematic/Security, Invalid/Non-Character
+-- Run unicode_test_gen.py and copy the output
 local invisible_pattern = [[
   \[\%u0000-\%u001f\]\|\[\%u007f-\%u009f\]\|\[\%ud800-\%udfff\]\|\[-󠁿\]\|\%u200b\|\%u200c\|\%u200d\|\%ufeff\|\%u00a0\|\%u00ad\|\%u202e\|\%u202a\|\%u202c\|\%uffff
 ]]

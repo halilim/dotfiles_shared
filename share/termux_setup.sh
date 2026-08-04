@@ -15,6 +15,7 @@ pkg install -y \
   git-delta \
   jq \
   lsd \
+  lua-language-server \
   nodejs-lts \
   openssh \
   python \

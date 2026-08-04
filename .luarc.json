@@ -1,0 +1,19 @@
+{
+  "$schema": "https://githubusercontent.com",
+  "runtime": {
+    "version": "LuaJIT"
+  },
+  "diagnostics": {
+    "globals": ["FzfLua", "vim"]
+  },
+ "format.defaultConfig": {
+    "quote_style": "single"
+  },
+  "workspace": {
+    "checkThirdParty": false,
+    "library": [
+      "$VIMRUNTIME/lua",
+      "${3rd}/luv/library"
+    ]
+  }
+}

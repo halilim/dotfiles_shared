@@ -1,4 +1,4 @@
--- iTerm2hex: (Keys | Profiles > Keys) > Key Bindings > + :
+-- iTerm2hex: Convert Cmd to Ctrl. (Keys | Profiles > Keys) > Key Bindings > + :
 --   Keyboard Shortcut: ?
 --   Action: Send Hex Code
 --   Value: 0x...
@@ -61,8 +61,9 @@ local function my_fzf()
 
   FzfLua.files({ cwd = cwd, query = query })
 end
-vim.keymap.set({ 'n', 'i', 'v' }, '<C-p>', my_fzf)       -- iTerm2hex: Cmd+P, 0x10
-vim.keymap.set({ 'n', 'i', 'v' }, '<D-p>', my_fzf)       -- iTerm2hex: Cmd+P, 0x10
+
+vim.keymap.set({ 'n', 'i', 'v' }, '<C-p>', my_fzf) -- iTerm2hex: Cmd+P, 0x10
+vim.keymap.set({ 'n', 'i', 'v' }, '<D-p>', my_fzf)
 
 vim.keymap.set({ 'n', 'i', 'v' }, '<C-s>', '<cmd>w<cr>') -- iTerm2hex: Cmd+S, 0x13
 

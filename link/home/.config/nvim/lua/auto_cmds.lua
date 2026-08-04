@@ -18,6 +18,7 @@ vim.api.nvim_create_autocmd('BufWritePre', {
       local row, col = err.lnum, err.col
       vim.api.nvim_win_set_cursor(0, { row, col })
       vim.notify(string.format('Error at %d:%d: %s', row, col, err.message), vim.log.levels.ERROR)
+      -- FIXME: This is not actually aborting
       error() -- Abort write
     end
   end,

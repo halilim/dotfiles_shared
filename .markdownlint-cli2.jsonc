@@ -1,0 +1,10 @@
+{
+  "config": {
+    "line-length": {
+      "line_length": 100
+    },
+    "no-duplicate-heading": {
+      "siblings_only": true
+    }
+  }
+}

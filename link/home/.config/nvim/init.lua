@@ -7,6 +7,7 @@ require('highlight/unicode')
 require('keymaps')
 require('auto_cmds')
 require('plugins')
+require('lsp')
 
 require('jump')
 require('utils')

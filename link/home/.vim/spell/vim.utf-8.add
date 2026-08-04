@@ -34,6 +34,7 @@ endif
 enew
 expandtab
 filetype
+filetypes
 fnamemod
 fnamemodify
 foldsettings
@@ -54,6 +55,7 @@ guifgs
 guisp
 gutentags
 habamax
+helpclose
 inoremap
 isdirectory
 koehler
@@ -78,6 +80,7 @@ nofile
 nofoldenable
 nohlsearch
 noremap
+NvimTree
 omnifunc
 overwin
 packadd
@@ -131,6 +134,7 @@ updatetime
 Vexplore
 vimenter
 viminfo
+vimls
 virtualtext
 vmap
 vnoremap
@@ -144,4 +148,3 @@ winsaveview
 winsize
 xmap
 zellner
-NvimTree

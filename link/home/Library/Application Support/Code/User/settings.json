@@ -60,7 +60,7 @@
     ".vscode",
     ".vscode-insiders",
     // Custom
-    "*.md" // Handled by Harper
+    "**/*.md" // Handled by Harper
   ],
   "cSpell.ignoreRegExpList": [
     "/[^\\s]{40,}/",
@@ -233,6 +233,9 @@
     "**/*[a-ln-z]d",
     "**/*[!.]md",
   ],
+  "harper.linters.ExpandConfiguration": false,
+  "harper.linters.ExpandMemoryShorthands": false,
+  "harper.linters.ToDoHyphen": false,
   "harper.userDictPath": "~/.vim/spell/shared.en.utf-8.add",
 
   "html.format.extraLiners": "body",
@@ -310,19 +313,8 @@
   "less.lint.zeroUnits": "warning",
 
   "markdown.preview.fontSize": 13,
-  // Need to be https or relative - no .. or ~
-  "markdown.styles": ["https://halilim.github.io/vscode-markdown-styles/markdown_styles.css"],
   "markdown.updateLinksOnFileMove.enabled": "always",
   "markdown.validate.enabled": true,
-
-  "markdownlint.config": {
-    "line-length": {
-      "line_length": 100
-    },
-    "no-duplicate-heading": {
-      "siblings_only": true
-    }
-  },
 
   "phpcs.lintOnOpen": false,
   "phpcs.lintOnSave": false,
@@ -552,6 +544,8 @@
     },
     "textMateRules": []
   },
+
+  // TODO: ["theme name"][...]-> `Property ... is not allowed.`: https://github.com/microsoft/vscode/issues/328165
 
   "workbench.colorCustomizations": {
     "[Default Light+]": {

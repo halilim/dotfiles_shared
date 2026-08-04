@@ -13,7 +13,6 @@ activestorage
 activesupport
 adduid
 adduser
-adminer
 Adminer
 alnum
 amazonaws
@@ -150,6 +149,7 @@ csvq
 CTA
 Ctags
 CTYPE
+CWD
 Cyclomatic
 dalli
 darcs
@@ -199,7 +199,6 @@ dport
 dports
 drawdown
 dropdowns
-dyno
 Dyno
 Dynos
 easylist
@@ -208,7 +207,6 @@ easyprivacy
 ecparam
 einhorn
 elasticlunr
-elasticsearch
 Elasticsearch
 emailoctopus
 endcapture
@@ -337,7 +335,6 @@ habamax
 hackathon
 hackmd
 hadolint
-halil
 Halil
 halilim
 halilozgur
@@ -351,7 +348,6 @@ hashdiff
 hashie
 headshot
 healthcheck
-heic
 HEIC
 heroku
 herokuapp
@@ -411,7 +407,6 @@ Itest
 javascripts
 jbuilder
 jdoe
-jetbrains
 JetBrains
 Jira
 jmespath
@@ -445,7 +440,6 @@ KUBECONFIG
 kwargs
 langmap
 laravel
-launchdarkly
 LaunchDarkly
 lazydev
 lazydocker
@@ -639,7 +633,6 @@ pkill
 platformless
 plists
 plowe
-plp
 PLP
 plutil
 POC
@@ -683,7 +676,6 @@ qlstephen
 qlvideo
 quicklook
 quora
-rabbitmq
 RabbitMQ
 railtie
 railties
@@ -723,10 +715,8 @@ ripgrep
 ripgreprc
 rmtree
 rnd
-roadmap
 RoadMap
 Rollbar
-rspec
 Rspec
 rstfilter
 Rubo
@@ -784,6 +774,8 @@ skilljar
 SKU
 SKUs
 Skynet
+SLO
+SLOs
 sluggable
 Smartcase
 smerge
@@ -838,13 +830,11 @@ Termux
 textconv
 textobjects
 thoughtbot
-timecop
 Timecop
 tldr
 TMPDIR
 tmpfiles
 tmuxinator
-todo
 TODO
 Toggl
 tohtml
@@ -893,7 +883,6 @@ vcard
 VDSL
 vendored
 viml
-vimr
 VimR
 vimrc
 VIMRUNTIME
