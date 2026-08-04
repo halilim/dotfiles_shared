@@ -17,8 +17,6 @@ Describe 'which_detailed'
       echo -n "$2"
     }
 
-    export GNU_SED=${GNU_SED:-sed}
-
     It 'prints alias and function details'
       baz() { echo 'qux'; }
       alias baz_alias='baz'

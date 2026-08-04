@@ -255,7 +255,7 @@ alias pa='print_array'
 
 function print_array_row() {
   local key=$1 value=$2
-  value=$(declare -p value | rg '^(declare|typeset)[^=]+=(.*)' --replace '$2' --only-matching)
+  value=$(declare -p value | sed -E -n 's/^(declare|typeset)[^=]+=(.*)/\2/p')
   # TODO: Bash: Fix: newlines in value is displayed literally, i.e. "\n"
   echo -e "$(color yellow "$key") : $(color green "$value")"
 }
@@ -403,8 +403,7 @@ function same_inode() {
 alias are_hardlinks='same_inode'
 
 function shorten_path() {
-  local given_path=$1
-  echo "$given_path" | rg "^$HOME(.*)" --only-matching --passthru --replace '~$1'
+  echo "${1/#$HOME/~}"
 }
 
 function yaml_lint() {

@@ -28,7 +28,7 @@ function locate_function() {
   fi
 
   if [[ $is_zsh ]]; then
-    line=$(grep -En "$function_name\s*\(" "$file")
+    line=$(grep --color=never -En "$function_name\s*\(" "$file")
     line=${line%%:*}
   else
     line=${output%% *}
@@ -42,6 +42,11 @@ function locate_function() {
 function which_detailed() {
   local input=${1?}
 
+  local silent=1
+  if [[ "${VERBOSE:-}" ]]; then
+    silent=''
+  fi
+
   local type_arg command_which_arg=''
   if [ -n "${ZSH_VERSION:-}" ]; then
     type_arg='w'
@@ -51,13 +56,13 @@ function which_detailed() {
   fi
 
   local types
-  types=$(type 2>&1 -a$type_arg "$input")
+  types=$(SILENT=$silent echo_eval type '2>&1' -a$type_arg "$input")
 
   if [ -n "${ZSH_VERSION:-}" ]; then
+    types=$(echo "$types" | cut -d' ' -f2-)
+
     # shellcheck disable=SC2001
-    types=$(echo "$types" | rg -F "$input: " --replace '$1')
-    # shellcheck disable=SC2001
-    types=$(echo "$types" | sed "s/none//")
+    types=$(echo "$types" | sed 's/^none$//')
   fi
 
   local var_output
@@ -168,13 +173,18 @@ function _which_alias() {
   fi
 
   local alias_value
-  alias_value=$(echo "$alias_output" | rg "^alias(?: -g)? $input='?(.+?)'?$" --only-matching --replace '$1')
+  alias_value=$(echo "$alias_output" | cut -d= -f2-)
+
+  # remove the single quotes around the alias value, if any
+  alias_value=${alias_value#\'}
+  alias_value=${alias_value%\'}
+
   # remove "| " prefix
   alias_value=${alias_value#*| }
 
   local alias_cmd
   # Remove prepended variables
-  alias_cmd=$(echo "$alias_value" | $GNU_SED -E 's/^(\w+=(["'\''][^"'\'']*["'\'']|\w+) )*//')
+  alias_cmd=$(echo "$alias_value" | sed -E 's/^(\w+=(["'\''][^"'\'']*["'\'']|\w+) )*//')
   # Remove arguments
   alias_cmd=${alias_cmd%% *}
 
@@ -194,7 +204,7 @@ function _edit_alias() {
   fi
 
   if [[ $location ]]; then
-    location=$(echo "$location" | rg '^([^:]+(:\d+)+).*' --only-matching --replace '$1')
+    location=$(echo "$location" | cut -d: -f1-2)
     edit "$location"
     return
   else
@@ -205,7 +215,7 @@ function _edit_alias() {
 
 function _locate_alias() {
   local prefix=${1:?prefix is required, e.g. 'alias foo='} dir=${2:?directory is required}
-  DRY_RUN='' echo_eval rg -.n --column "$prefix" "$dir"
+  DRY_RUN='' echo_eval grep --color=never -Enr --exclude-dir=.git --include='*.*sh' "$prefix" "$dir"
 }
 
 function which_function() {

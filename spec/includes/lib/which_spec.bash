@@ -15,8 +15,6 @@ Describe 'which_detailed'
     echo -n "$2"
   }
 
-  export GNU_SED=${GNU_SED:-sed}
-
   It 'prints command'
     When call which_detailed 'echo'
     The stdout should include 'builtin'

@@ -15,8 +15,6 @@ Describe 'which_detailed'
     echo -n "$2"
   }
 
-  export GNU_SED=${GNU_SED:-sed}
-
   It 'prints variable details and value'
     # shellcheck disable=SC2034
     foo=bar
