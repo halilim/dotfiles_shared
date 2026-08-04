@@ -5,6 +5,7 @@ export OPEN_CMD='open'
 export SPEEDTEST_CMD='speedtest'
 
 export GNU_DATE=gdate
+export GNU_DIRNAME=gdirname
 export GNU_FIND=gfind
 export GNU_HEAD=ghead
 export GNU_MKTEMP=gmktemp

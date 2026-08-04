@@ -2,6 +2,9 @@ Include includes/lib/editing.sh
 Include includes/lib/colors.sh
 Include includes/lib/functions.sh
 
+export GNU_DIRNAME=${GNU_DIRNAME:-dirname}
+export GNU_REALPATH=${GNU_REALPATH:-realpath}
+
 Describe 'edit'
   file_name=a_file
   dir_name=project_a

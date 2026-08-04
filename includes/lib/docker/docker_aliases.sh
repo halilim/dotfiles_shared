@@ -2,8 +2,6 @@
 
 alias libda='$EDITOR "$DOTFILES_INCLUDES"/lib/docker/docker_aliases.sh'
 
-alias acts='docker run --rm -it catthehacker/ubuntu:act-latest bash'
-
 # Apple container
 alias acoi='container image list -v'
 alias acol='container list'

@@ -112,9 +112,6 @@ alias p192='ping 192.168.1.1'
 
 alias pg_fg='postgres -D "$(brew --prefix)"/var/postgres'
 
-# Make high-resolution screenshots etc. more shareable
-alias png2jpg50="convert ./*.png -resize '50%' -set filename:base '%[basename]' '%[filename:base].jpg'"
-
 alias psf='ps aux | fzf'
 alias psg='ps aux | grep -v " grep " | grep -i'
 alias psgw='ps aux | grep -v " grep " | grep -iw'

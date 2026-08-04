@@ -44,7 +44,7 @@ brew 'ncdu'
 
 brew 'patchutils'
 brew 'ripgrep'
-brew 'rsync' # MacOS one is ancient
+brew 'rsync' # macOS one is ancient
 
 # Ruby
 brew 'libxml2' # Nokogiri

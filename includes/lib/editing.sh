@@ -19,7 +19,7 @@ function edit() {
   fi
 
   local arg arg_path line column \
-    dir_path real_abs_path is_link base_name real_abs_dir_path real_abs_path_line_col \
+    dir_name real_abs_path is_link base_name real_abs_dir_path real_abs_path_line_col \
     dir_candidates project_dir real_project_dir git_path real_git_path
 
   local ct=0
@@ -41,7 +41,8 @@ function edit() {
     fi
 
     is_link=''
-    dir_path=$(dirname "$arg_path")
+
+    dir_name=$($GNU_DIRNAME "$arg_path")
     if [[ -e $arg_path ]]; then
       real_abs_path=$(realpath "$arg_path")
 
@@ -50,24 +51,27 @@ function edit() {
         continue
       fi
 
-      if [[ $real_abs_path != "$arg_path" ]]; then
+      if [[ -L $arg_path ]]; then
         is_link=1
       fi
 
-      real_abs_dir_path=$(dirname "$real_abs_path")
+      real_abs_dir_path=$($GNU_DIRNAME "$real_abs_path")
     else
       # Create a new file along with the directories
-      if [[ ! -e $dir_path ]]; then
-        echo_eval mkdir -p "$dir_path"
+      if [[ ! -e $dir_name ]]; then
+        echo_eval mkdir -p "$dir_name"
       fi
 
-      real_abs_dir_path=$(FAKE_ECHO="$dir_path" SILENT=$silent echo_eval realpath "$dir_path")
-      if [[ $real_abs_dir_path != "$dir_path" ]]; then
+      if [[ -L $dir_name ]]; then
         is_link=1
       fi
 
       base_name=$(basename "$arg_path")
-      real_abs_path=$real_abs_dir_path/$base_name
+      real_abs_path=$base_name
+      real_abs_dir_path=$(FAKE_ECHO="$dir_name" SILENT=$silent echo_eval realpath "$dir_name")
+      if [[ $real_abs_dir_path ]]; then
+        real_abs_path=$real_abs_dir_path/$base_name
+      fi
     fi
 
     if [[ $verbose ]]; then
@@ -97,20 +101,20 @@ function edit() {
       dir_candidates=()
 
       if [[ -e $real_abs_dir_path ]]; then
-        project_dir=$(basename "$(get_project_path "$dir_path")")
+        project_dir=$(basename "$(get_project_root_path "$dir_name")")
         if [[ $project_dir ]]; then
           dir_candidates+=("$project_dir")
         fi
 
         if [[ $is_link ]]; then
-          real_project_dir=$(basename "$(get_project_path "$real_abs_dir_path")")
+          real_project_dir=$(basename "$(get_project_root_path "$real_abs_dir_path")")
           if [[ $real_project_dir ]]; then
             dir_candidates+=("$real_project_dir")
           fi
         fi
       fi
 
-      git_path=$(git -C "$dir_path" rev-parse --show-toplevel 2> /dev/null)
+      git_path=$(git -C "$dir_name" rev-parse --show-toplevel 2> /dev/null)
       if [[ $git_path ]]; then
         dir_candidates+=("$(basename "$git_path")")
       fi
@@ -159,19 +163,31 @@ function get_editor_titles() {
   fi
 }
 
-function get_project_path() {
-  local dir=$1
-  dir=$(realpath "$dir")
+function get_project_root_path() {
+  local dir=${1:-.} sentinel='.project_root' previous_dir
+  dir=$($GNU_REALPATH "$dir" -s)
 
-  while [[ $dir && ! -f "$dir/.project_root" ]]; do
-    # echo "dir=|$dir|"
-    if [[ $dir == '/' || $dir == '.' ]]; then
-      dir=''
-      break
+  while [[ $dir != '/' && $dir != '~' ]]; do
+    if [[ ${DEBUG:-} || ${VERBOSE:-} ]]; then
+      echo >&2 "dir=|$dir|"
     fi
-    dir=$(dirname "$dir")
+
+    if [[ -e "$dir/$sentinel" ]]; then
+      echo "$dir"
+      return
+    fi
+
+    previous_dir=$dir
+    dir=$($GNU_DIRNAME "$dir")
+    if [[ $dir == "$previous_dir" ]]; then
+      if [[ ${DEBUG:-} || ${VERBOSE:-} ]]; then
+        echo >&2 "Recursion detected while searching for $sentinel (dir=$dir, previous_dir=$previous_dir)"
+      fi
+      return 1
+    fi
   done
-  echo "$dir"
+
+  return 1
 }
 
 function is_editor_mvim() {
@@ -374,13 +390,13 @@ function vimr_open() {
     if [[ -d $1 ]]; then
       cwd=$1
     else
-      cwd=$(dirname "$1")
+      cwd=$($GNU_DIRNAME "$1")
     fi
   else
     cwd=.
   fi
 
-  cwd=$($GNU_REALPATH -s "$cwd")
+  cwd=$($GNU_REALPATH "$cwd" -s)
   args+=("--cwd $cwd")
 
   args+=("$@")

@@ -16,6 +16,10 @@ function act_t() {
 }
 alias actt='act_t' # cSpell:ignore actt
 
+# Interactive debugging
+alias acts='container run --rm -it -v ~/code:/tmp/code catthehacker/ubuntu:act-latest bash' # cSpell:ignore catthehacker
+# Then manually run commands in .github/workflows/build.yml
+
 function colima_start() {
   local common_args=(--profile "${COLIMA_PROFILE:-default}")
   if FAKE_STATUS=1 echo_eval colima "${common_args[@]}" status '> /dev/null 2>&1'; then

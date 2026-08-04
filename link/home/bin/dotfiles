@@ -162,6 +162,11 @@ function _d_process_paths() {
 function _d_import_path() {
   local dotfile_type=${1:?} item_path=${2:?}
 
+  if [[ -d $item_path ]]; then
+    _d_log_error 'Directories are not supported yet'
+    return 1
+  fi
+
   if [[ ! -e $item_path ]]; then
     _d_log_error 'Does not exist'
     return 1

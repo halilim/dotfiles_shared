@@ -1,4 +1,5 @@
 export GNU_DATE=date
+export GNU_DIRNAME=dirname
 export GNU_FIND=find
 export GNU_HEAD=head
 export GNU_MKTEMP=mktemp
