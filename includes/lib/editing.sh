@@ -336,3 +336,54 @@ function vim_open() {
 
   echo_eval "${args[@]}"
 }
+
+function nvim_open() {
+  local args=()
+
+  if [[ ${SUDO:-} ]]; then
+    args+=('sudo')
+  fi
+
+  args+=("$NVIM_PATH")
+
+  # https://stackoverflow.com/a/5945322/372654
+  if [[ "$#" -gt 0 ]]; then
+    if [[ -d $1 ]]; then
+      args+=(+':lcd %')
+    else
+      args+=('--remote-tab-silent')
+    fi
+  fi
+
+  args+=("$@")
+
+  echo_eval "${args[@]}"
+}
+
+function vimr_open() {
+  local args=()
+
+  if [[ ${SUDO:-} ]]; then
+    args+=('sudo')
+  fi
+
+  args+=(vimr)
+
+  if [[ "$#" -gt 0 ]]; then
+    local cwd
+    if [[ -d $1 ]]; then
+      cwd=$1
+    else
+      cwd=$(dirname "$1")
+    fi
+  else
+    cwd=.
+  fi
+
+  cwd=$($GNU_REALPATH -s "$cwd")
+  args+=("--cwd $cwd")
+
+  args+=("$@")
+
+  echo_eval "${args[@]}"
+}

@@ -12,7 +12,7 @@ alias bunu='bun update'
 alias bunv='bun --version'
 alias bunxb='bunx --bun'
 
-alias nv='node -v'
+alias nov='node -v'
 
 alias ni='npm install'
 alias nig='npm install -g' # global

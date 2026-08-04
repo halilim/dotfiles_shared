@@ -1,49 +1,12 @@
+" TODO: Process other files under ~/.vim
+
 let g:is_root_user = system("whoami") == 'root'
-
-set nocompatible        " We're running Vim, not Vi!
-set clipboard=unnamed   " Use system clipboard as default clipboard
-set cursorline          " highlight current line
-set number              " show line numbers
-
-set showcmd             " show command in the last line
-set showmatch           " highlight matching [{()}]
-set splitbelow
-set wildmenu            " visual autocomplete for command menu
-
-" set textwidth=100
-set colorcolumn=100     " See `highlight ColorColumn` below
-
-set hlsearch            " highlight matches
-set ignorecase          " case-insensitive search by default
-set smartcase           " except when an upper-case letter used in the search
-set incsearch           " search as characters are entered
-" set nofoldenable        " Disable folding by default
-
-set redrawtime=3000
-
-set selection=exclusive " don't include newline in selection
-
-set spell
-" NOTE: Vim requires these to end in .add
-set spellfile=~/.vim/spell/shared.en.utf-8.add,~/.vim/spell/custom.en.utf-8.add
 
 augroup SpellIgnore
   autocmd!
   " Ignore hashes, hex color codes, UUIDs, etc.
   autocmd BufEnter * :syn match HexWords +\<\p*[0-9A-F]\{4,}\p*\c\>+ contains=@NoSpell
 augroup end
-
-" cSpell:ignore neoclide
-" More under neoclide/coc.nvim settings
-
-" set list                " Show whitespace
-" set listchars=nbsp:·,tab:▸\ ,trail:~
-
-set tabstop=2 shiftwidth=2 expandtab
-" Based on :h 'tabstop' but shows tabs as 8 spaces
-" set tabstop=8 softtabstop=2 shiftwidth=2 noexpandtab
-
-packadd! editorconfig
 
 " Utils
 
@@ -118,14 +81,8 @@ nnoremap <leader><leader>c :CocConfig<CR>
 
 let real_abs_gvimrc = resolve(expand('~/.gvimrc')) " $MYGVIMRC is not defined at this point
 nnoremap <expr> <leader><leader>g ':e ' . real_abs_gvimrc . '<CR>'
-
-let real_abs_vimrc = resolve(expand($MYVIMRC))
 " MacVim has its own settings mapped to Cmd+,
 " noremap <expr> <D-,>, ':e ' . real_abs_gvimrc . '<CR>'
-nnoremap <expr> <leader><leader>v ':e ' . real_abs_vimrc . '<CR>'
-nnoremap <expr> <leader><leader>r ':source ' . real_abs_vimrc . '<CR>'
-
-nnoremap <leader><leader>vc :e $DOTFILES_CUSTOM/link/home/.vim/autoload/custom.vim<CR>
 
 nnoremap <leader><leader>ft :exe 'e' '~/.vim/ftplugin/' . &ft . '.vim'<CR>
 nnoremap <leader><leader>fd :exe 'e' '~/.vim/ftdetect/' . &ft . '.vim'<CR>
@@ -136,8 +93,6 @@ nnoremap <leader><leader>sm :exe 'view' '~/.vim/plugged/vim-snippets/snippets/' 
 
 nnoremap <leader><leader>p :e ~/.vim/pythonx/
 
-" nnoremap <leader><space> :set hlsearch! hlsearch?<CR>
-nnoremap <leader><space> :nohl<CR>
 nnoremap <leader>% :MtaJumpToOtherTag<CR>
 nnoremap <leader><Tab> :b#<CR>
 nnoremap <leader>a :A<CR>
@@ -158,41 +113,6 @@ nnoremap <leader>cpp :call CopyProblem()<CR>
 
 nnoremap <leader>cp :CopyGitPathLine<CR>
 nnoremap <leader>cps :call CopyAndEcho('s ' . GitPathLine())<CR>
-
-" Why did I need this (vs. plain bd)?
-" nnoremap <leader>dd :bp\|bd#<CR>
-nnoremap q :bd<CR>
-nnoremap <leader>d :bd<CR>
-nnoremap <leader>d! :bd!<CR>
-
-" Close/Delete All - See .gvimrc for <D-w> alias
-nnoremap <leader>da :%bd<CR>
-
-" Close/Delete Others/Except current - https://stackoverflow.com/a/42071865/372654
-nnoremap <leader>de :%bd\|e#<CR>
-nnoremap <leader>do :%bd\|e#<CR>
-
-fun! MyFZF(query = '')
-  let dir = getcwd()
-  if dir == $HOME
-    let dir = $DOTFILES
-  endif
-
-  if empty(a:query)
-    let l:fzf_options = []
-  else
-    let l:fzf_options = ['-q' . a:query]
-  endif
-  call fzf#vim#files(dir, fzf#vim#with_preview({'options': l:fzf_options}, 'right:50%:hidden', 'ctrl-space'))
-endfun
-
-if has("gui_macvim")
-  nnoremap <D-p> :call MyFZF()<CR>
-  vnoremap <D-p> :call MyFZF('<C-R><C-W>')<CR>
-else
-  nnoremap <C-p> :call MyFZF()<CR>
-  vnoremap <C-p> :call MyFZF('<C-R><C-W>')<CR>
-endif
 
 " Disabled in favor of coc-format-selected
 " nnoremap <leader>f :call MyFZF()<CR>
@@ -241,13 +161,6 @@ nnoremap <leader>tt :PreviewTag<CR>
 " nnoremap <leader>T :TagbarOpenAutoClose<CR>
 nnoremap <leader>vf :verbose function <C-R><C-W><CR>
 nnoremap <leader>vc :verbose command <C-R><C-W><CR>
-nnoremap <leader>q :qa<CR>
-nnoremap <leader>x :x<CR>
-
-nmap <silent> <C-k> <Plug>(ale_previous_wrap)
-nmap <silent> <C-j> <Plug>(ale_next_wrap)
-
-" nmap <leader>c <Plug>NERDCommenterToggle<CR>
 
 " https://stackoverflow.com/a/7078429/372654
 " Save with sudo when vim started without sudo
@@ -333,10 +246,6 @@ endif
 
 " cSpell:ignore junegunn airblade AndrewRadev chaoren chrisbra darfink inkarkat jiangmiao kshenoy luochen1990
 
-" https://github.com/junegunn/fzf.vim#using-vim-plug
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
-
 if !g:is_root_user
   Plug 'airblade/vim-gitgutter'
 endif
@@ -396,7 +305,6 @@ Plug 'mattn/vim-lsp-settings'
 Plug 'godlygeek/tabular' " Format tables etc., must come before vim-markdown
 Plug 'preservim/vim-markdown'
 
-Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeFind'] }
 
 if has('python3')
@@ -418,7 +326,6 @@ Plug 'tommcdo/vim-fubitive' " Bitbucket
 
 " Plug 'tpope/vim-projectionist'
 Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-surround'
 
 " " https://github.com/ycm-core/YouCompleteMe#explanation-for-the-quick-start-2
 " Disabled in favor of coc
@@ -658,10 +565,6 @@ let g:lsp_settings = {
 " ===== Plugin settings for preservim/vim-markdown =====
 let g:vim_markdown_folding_disabled = 1
 
-" ===== Plugin settings for scrooloose/nerdcommenter =====
-let g:NERDDefaultAlign = 'left'
-let g:NERDSpaceDelims = 1
-
 " ===== Plugin settings for scrooloose/nerdtree =====
 " https://github.com/scrooloose/nerdtree#faq
 let g:NERDTreeMouseMode = 2
@@ -893,12 +796,6 @@ fun! SetupLight()
   \ }
   " [({[({[]})]})]
 
-  " https://github.com/junegunn/fzf.vim#global-options
-  " let g:fzf_colors = {
-    " \ 'fg':      ['fg', 'Red'],
-    " \ 'bg':      ['bg', 'Normal'],
-  " \ }
-
   if g:colors_name == 'morning'
     " Originally Green, which is not very visible on Cyan matching braces
     hi Cursor guibg=white guifg=NONE
@@ -942,24 +839,6 @@ nnoremap <leader>/ :/\s$<CR>n
 highlight StrangeWhitespace ctermbg=Red guibg=Red
 " https://stackoverflow.com/a/37903645 - removed `\t`, `\n`, ` `, `\xa0`
 call matchadd('StrangeWhitespace', '[\x0b\x0c\r\x1c\x1d\x1e\x1f\x85\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u2028\u2029\u202f\u205f\u3000]')
-
-" https://stackoverflow.com/a/39360896/372654
-nnoremap <leader>rm :call DeleteFileAndCloseBuffer()<CR>
-
-fun! DeleteFileAndCloseBuffer()
-  let l:file = expand('%:p')
-
-  if isdirectory(l:file)
-    echo "DeleteFileAndCloseBuffer: " . l:file . " is not a file"
-  else
-    let l:choice = confirm("Delete " . l:file . " and close buffer?", "&Delete\n&Cancel", 1)
-    if l:choice == 1
-      " call delete(l:file)
-      Remove
-      bdelete
-    endif
-  endif
-endfun
 
 fun! s:real_paths()
   let l:real_file_path = resolve(expand('%:p'))
@@ -1046,16 +925,4 @@ endfun
 
 fun! CopyAndEchoGitPathLine()
   call CopyAndEcho(GitPathLine())
-endfun
-
-fun! VimSpell()
-  let l:current_spell = &spellfile
-  let l:custom_spell = '~/.vim/spell/vim.utf-8.add'
-
-  " If spellfile already has values, combine them; otherwise just set it
-  if l:current_spell != ''
-    execute 'setlocal spellfile=' . l:current_spell . ',' . l:custom_spell
-  else
-    execute 'setlocal spellfile=' . l:custom_spell
-  endif
 endfun

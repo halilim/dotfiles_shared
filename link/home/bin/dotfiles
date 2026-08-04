@@ -35,12 +35,14 @@ function d_bootstrap() {
 
   EDITOR=$editor_path
   BUNDLER_EDITOR=$editor_path
+  NVIM_PATH=$(command -v nvim)
   VIM_PATH=$vim_path
   VISUAL=$VIM_PATH # Needed for `crontab -e` (`code --wait` doesn't work)
 
   local vars=(
     EDITOR
     BUNDLER_EDITOR
+    NVIM_PATH
     VIM_PATH
     VISUAL
     DOTFILES
@@ -604,6 +606,7 @@ export VIM_SPELL=$HOME_DIR/.vim/spell
 
 export EDITOR
 export BUNDLER_EDITOR
+export NVIM_PATH
 export VIM_PATH
 export VISUAL
 

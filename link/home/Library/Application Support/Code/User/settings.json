@@ -48,7 +48,7 @@
     "custom": true
   },
   "cSpell.dictionaryDefinitions": [
-    { "name": "vim", "path": "~/.config/vs-code/dictionaries/vim.txt" }
+    { "name": "vim", "path": "~/.vim/spell/vim.utf-8.add" }
   ],
   "cSpell.ignorePaths": [
     // Defaults https://streetsidesoftware.com/vscode-spell-checker/docs/configuration/files-folders-and-workspaces#cspellignorepaths
@@ -67,7 +67,7 @@
     "/[CGD][0-9A-Z]{10}/" // Slack channel id
   ],
   "cSpell.language": "en,tr",
-  "cSpell.languageSettings": [{ "languageId": "viml", "dictionaries": ["vim"] }],
+  "cSpell.languageSettings": [{ "languageId": "lua,viml", "dictionaries": ["vim"] }],
   "cSpell.usePnP": true,
 
   "css.format.spaceAroundSelectorSeparator": true,
@@ -133,6 +133,7 @@
     "ü": true
   },
   "editor.unicodeHighlight.includeComments": true,
+  "editor.unicodeHighlight.nonBasicASCII": true,
 
   "editor.wordSeparators": "/\\()\"':,.;<>~!@#$%^&*|+=[]{}`?-",
   "editor.wordWrapColumn": 100,
@@ -652,6 +653,10 @@
 
   "[jsonc]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
+  "[lua]": {
+    "editor.defaultFormatter": "sumneko.lua" // cSpell:disable-line
   },
 
   "[markdown]": {

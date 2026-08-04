@@ -176,6 +176,9 @@ alias tru='truncate -s 0'
 alias v='vim_open'
 alias sv='SUDO=1 vim_open'
 alias vimrc='vim_open ~/.vimrc'
+# TODO: Eventually, replace vim_open with vim_open
+alias nv='nvim_open'
+alias vr='vimr_open'
 
 alias wu='who -u'
 
