@@ -8,6 +8,7 @@ autocommand
 autoread
 bdelete
 bufnr
+bufs
 buftype
 BufWritePre
 clearmatches
@@ -58,6 +59,8 @@ habamax
 helpclose
 inoremap
 isdirectory
+jobstart
+jumpoptions
 koehler
 listchars
 liststyle
@@ -98,6 +101,7 @@ rubyblock
 runtimepath
 scrolloff
 seagreen
+sessionoptions
 setf
 setlocal
 shellescape
@@ -108,11 +112,13 @@ showtabline
 signcolumn
 softtabstop
 spellfile
+spelllang
 splitbelow
 startify
 stridx
 tabedit
 tabline
+tabmove
 tabstop
 Tagbar
 tagfunc

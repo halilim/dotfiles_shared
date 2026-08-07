@@ -57,6 +57,19 @@
       "rev": "d2a2b2a2b5350b713ade3bb744df39eee7d4229b",
       "src": "https://github.com/nvim-mini/mini.completion"
     },
+    "mini.misc": {
+      "rev": "29e2b6838b3f1399d5062f6d735ebc79eb8765f4",
+      "src": "https://github.com/nvim-mini/mini.misc",
+      "version": "'stable'"
+    },
+    "noice": {
+      "rev": "7bfd942445fb63089b59f97ca487d605e715f155",
+      "src": "https://github.com/folke/noice.nvim"
+    },
+    "nui": {
+      "rev": "de740991c12411b663994b2860f1a4fd0937c130",
+      "src": "https://github.com/MunifTanjim/nui.nvim"
+    },
     "nvim-lspconfig": {
       "rev": "1c0d8f70dbc8827263eedc3cf7021ceba0f68689",
       "src": "https://github.com/neovim/nvim-lspconfig"
@@ -77,6 +90,10 @@
       "rev": "4a6883cb13fe097a20a046eb55f6dffd239276e3",
       "src": "https://github.com/stevearc/quicker.nvim"
     },
+    "snacks": {
+      "rev": "882c996cf28183f4d63640de0b4c02ec886d01f2",
+      "src": "https://github.com/folke/snacks.nvim"
+    },
     "surround": {
       "rev": "8b47db616ef658b8fc27e61db2896aa2f40134de",
       "src": "https://github.com/kylechui/nvim-surround"
@@ -88,6 +105,14 @@
     "telescope-fzf-native": {
       "rev": "b25b749b9db64d375d782094e2b9dce53ad53a40",
       "src": "https://github.com/nvim-telescope/telescope-fzf-native.nvim"
+    },
+    "treesitter": {
+      "rev": "3d3321b560a63ff92a8692401f303a5123336b86",
+      "src": "https://github.com/nvim-treesitter/nvim-treesitter"
+    },
+    "undoquit": {
+      "rev": "96935cae0c04ab9c7384afe1d2537ce883672e8c",
+      "src": "https://github.com/AndrewRadev/undoquit.vim"
     },
     "unicode-highlight": {
       "rev": "0e29929b76607fa6acafdf231cae14baf63435ec",

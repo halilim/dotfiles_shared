@@ -38,26 +38,3 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     vim.hl.on_yank()
   end,
 })
-
--- Create an autocommand group for Esc mappings
-local esc_close_group = vim.api.nvim_create_augroup('EscCloseBuffers', { clear = true })
-
-vim.api.nvim_create_autocmd('FileType', {
-  group = esc_close_group,
-  -- Add any other filetypes you want to include to this list
-  pattern = { 'terminal', 'help', 'qf' },
-  callback = function()
-    -- { buffer = true } ensures the mapping only applies to the matching filetype
-    vim.keymap.set('n', '<Esc>', function()
-      local bufnr = vim.api.nvim_get_current_buf()
-
-      -- If it's a help window, just close the window
-      if vim.bo[bufnr].filetype == 'help' then
-        vim.cmd('helpclose')
-      else
-        -- Switches to previous buffer, then deletes the target buffer safely
-        vim.cmd('bp | bd #')
-      end
-    end, { buffer = true, silent = true, desc = 'Close buffer keeping layout' })
-  end,
-})

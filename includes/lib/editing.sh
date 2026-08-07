@@ -306,6 +306,10 @@ function open_with_rubymine() {
 
   args+=("$abs_path")
 
+  # TODO: Remove after enabling line and column args above
+  [[ $line ]] && args+=("# :$line")
+  [[ $column ]] && args+=("# :$column")
+
   mine "${args[@]}"
 }
 

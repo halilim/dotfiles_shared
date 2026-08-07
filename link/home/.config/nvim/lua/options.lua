@@ -20,16 +20,17 @@ vim.api.nvim_create_autocmd('UIEnter', {
 vim.o.ignorecase = true
 vim.o.smartcase = true
 
-vim.o.cursorline = true       -- Highlight the line where the cursor is on.
-vim.o.scrolloff = 10          -- Keep this many screen lines above/below the cursor.
-vim.o.list = true             -- Show <tab> and trailing spaces.
+vim.o.cursorline = true -- Highlight the line where the cursor is on.
+vim.o.scrolloff = 10    -- Keep this many screen lines above/below the cursor.
+vim.o.list = true       -- Show <tab> and trailing spaces.
 
-vim.o.selection = 'exclusive' -- Don't include newline in selection
-vim.o.showmatch = true        -- Highlight matching parenthesis
+-- Don't include newline in selection
+vim.o.selection = 'exclusive'
 
-vim.opt.spell = true
--- NOTE: Vim requires these to end in .add
-vim.opt.spellfile = { '~/.vim/spell/shared.en.utf-8.add', '~/.vim/spell/custom.en.utf-8.add' }
+vim.o.sessionoptions = 'blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions'
+
+-- Highlight matching parenthesis
+vim.o.showmatch = true
 
 vim.o.splitbelow = true
 

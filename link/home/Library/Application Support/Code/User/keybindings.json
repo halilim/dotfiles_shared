@@ -230,5 +230,13 @@
         "key": "alt+a",
         "command": "search.action.replaceAll",
         "when": "replaceActive && searchViewletVisible && !findWidgetVisible"
+    },
+    {
+        "key": "alt+cmd+right",
+        "command": "workbench.action.moveEditorRightInGroup"
+    },
+    {
+        "key": "alt+cmd+left",
+        "command": "workbench.action.moveEditorLeftInGroup"
     }
 ]

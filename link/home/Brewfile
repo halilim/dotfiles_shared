@@ -35,6 +35,7 @@ brew 'jq'
 
 brew 'lazydocker'
 brew 'lazygit'
+
 brew 'lsd' # ls alternative in Rust
 
 brew 'media-info'
@@ -75,14 +76,14 @@ at_exit { system '~/bin/switch_to_homebrew_zsh' }
 # Start: Casks
 
 cask 'font-sauce-code-pro-nerd-font' # Also works for Powerlevel10k
-cask 'handbrake-app'
+cask 'handbrake-app' # Minify videos
 
+cask 'mac-mouse-fix' # Separate mouse and trackpad natural scroll, fix mouse 4/5 (back/forward)
+
+# Quick Look plugins
 cask 'qlcolorcode' # Source code files with syntax highlighting
 cask 'qlstephen' # README, Makefile etc.
 cask 'qlvideo' # Finder thumbnails & Quick Look previews and thumbnails
-
-cask 'sourcetree' # Easier to search history
-cask 'unnaturalscrollwheels' # Separate mouse and trackpad natural scroll # cSpell:disable-line
 
 # Vim
 brew 'editorconfig' # Used by vim plugin

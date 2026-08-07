@@ -161,9 +161,12 @@ nnoremap <leader>cps :call CopyAndEcho('s ' . GitPathLine())<CR>
 
 " Why did I need this (vs. plain bd)?
 " nnoremap <leader>dd :bp\|bd#<CR>
-nnoremap q :bd<CR>
+" nnoremap q :bd<CR>
 nnoremap <leader>d :bd<CR>
 nnoremap <leader>d! :bd!<CR>
+
+nnoremap <leader>q :qa<CR>
+nnoremap <leader>x :x<CR>
 
 " Close/Delete All - See .gvimrc for <D-w> alias
 nnoremap <leader>da :%bd<CR>
@@ -241,8 +244,6 @@ nnoremap <leader>tt :PreviewTag<CR>
 " nnoremap <leader>T :TagbarOpenAutoClose<CR>
 nnoremap <leader>vf :verbose function <C-R><C-W><CR>
 nnoremap <leader>vc :verbose command <C-R><C-W><CR>
-nnoremap <leader>q :qa<CR>
-nnoremap <leader>x :x<CR>
 
 nmap <silent> <C-k> <Plug>(ale_previous_wrap)
 nmap <silent> <C-j> <Plug>(ale_next_wrap)

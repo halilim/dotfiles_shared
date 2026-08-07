@@ -48,7 +48,8 @@
     "custom": true
   },
   "cSpell.dictionaryDefinitions": [
-    { "name": "vim", "path": "~/.vim/spell/vim.utf-8.add" }
+    { "name": "ruby", "path": "~/.vim/spell/ruby.utf-8.add" },
+    { "name": "vim", "path": "~/.vim/spell/vim.utf-8.add" },
   ],
   "cSpell.ignorePaths": [
     // Defaults https://streetsidesoftware.com/vscode-spell-checker/docs/configuration/files-folders-and-workspaces#cspellignorepaths
@@ -67,7 +68,10 @@
     "/[CGD][0-9A-Z]{10}/" // Slack channel id
   ],
   "cSpell.language": "en,tr",
-  "cSpell.languageSettings": [{ "languageId": "lua,viml", "dictionaries": ["vim"] }],
+  "cSpell.languageSettings": [
+    { "languageId": "ruby", "dictionaries": ["ruby"] },
+    { "languageId": "viml,lua", "dictionaries": ["vim"] },
+  ],
   "cSpell.usePnP": true,
 
   "css.format.spaceAroundSelectorSeparator": true,
@@ -252,6 +256,7 @@
     "https://developer.microsoft.com/json-schemas/": true,
     "https://json-schema.org/": true,
     "https://json.schemastore.org/": true,
+    "https://raw.githubusercontent.com/catppuccin/vscode/": true,
     "https://raw.githubusercontent.com/DavidAnson/markdownlint-cli2/main/schema/": true,
     "https://raw.githubusercontent.com/DavidAnson/markdownlint/v0.40.0/schema/markdownlint-config-schema.json": true,
     "https://raw.githubusercontent.com/devcontainers/spec/": true,
@@ -592,7 +597,9 @@
     "*.ipynb": "jupyter-notebook",
     "*.plist": "default"
   },
-  "workbench.iconTheme": "vscode-icons",
+  "workbench.iconTheme": "catppuccin-macchiato",
+  "workbench.preferredDarkColorTheme": "Catppuccin Macchiato",
+  "workbench.preferredLightColorTheme": "Catppuccin Latte",
   "workbench.secondarySideBar.defaultVisibility": "hidden",
   "workbench.startupEditor": "none",
 
@@ -710,5 +717,5 @@
 
   "[yaml]": {
     "editor.defaultFormatter": "redhat.vscode-yaml"
-  }
+  },
 }

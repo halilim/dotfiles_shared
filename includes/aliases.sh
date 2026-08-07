@@ -81,7 +81,7 @@ alias lps='echo "$PATH" | tr ":" "\n" | sort -f'
 alias lzd='lazydocker'
 alias lzg='lazygit'
 
-alias m='mine .' # RubyMine
+alias m='mine' # RubyMine
 alias mdiff='mine diff'
 
 alias mii='mise install'
@@ -131,6 +131,7 @@ alias rgni='rg --no-ignore'
 alias rgnic='rg --no-ignore --case-sensitive'
 alias rgnl="rg -g '!locales/'"
 alias rgnt="rg -g '!features/' -g '!spec/' -g '!test/' -g '!__tests__/' -g '!*.test.*'"
+alias rgntnc="rg -g '!features/' -g '!spec/' -g '!test/' -g '!__tests__/' -g '!*.test.*' -g '!locales/'"
 alias rgw='rg -w' # Word
 # shellcheck disable=SC2139
 alias {rgsw,rgwc,rgws}='rg -sw' # Word and case sensitive

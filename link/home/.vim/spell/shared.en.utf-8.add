@@ -452,6 +452,7 @@ letsencrypt
 libev
 libexec
 libexif
+libnotify
 libvips
 libxslt
 libyaml
@@ -470,6 +471,7 @@ lookback
 lspconfig
 lualine
 lucide
+macchiato
 mackup
 macvim
 magick
@@ -851,6 +853,7 @@ turboframe
 turbopack
 Turborepo
 typicode
+typst
 ublock
 ulid
 umami

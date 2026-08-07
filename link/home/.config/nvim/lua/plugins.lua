@@ -3,15 +3,17 @@ vim.cmd('packadd! nohlsearch')
 
 vim.pack.add({
   { name = 'auto-session',      src = 'https://github.com/rmagatti/auto-session' },
-  { name = 'blink.cmp',         src = 'https://github.com/saghen/blink.cmp',              version = vim.version.range('1.0') },
+  { name = 'blink.cmp',         src = 'https://github.com/saghen/blink.cmp',               version = vim.version.range('1.0') },
   { name = 'devicons',          src = 'https://github.com/nvim-tree/nvim-web-devicons' },
   { name = 'friendly-snippets', src = 'https://github.com/rafamadriz/friendly-snippets' },
   { name = 'fzf-lua',           src = 'https://github.com/ibhagwan/fzf-lua' },
   { name = 'gitsigns',          src = 'https://github.com/lewis6991/gitsigns.nvim' },
   { name = 'lazydev',           src = 'https://github.com/folke/lazydev.nvim' },
   { name = 'lualine',           src = 'https://github.com/nvim-lualine/lualine.nvim' },
+  { name = 'mini.misc',         src = 'https://github.com/nvim-mini/mini.misc',            version = 'stable' },
   { name = 'quicker',           src = 'https://github.com/stevearc/quicker.nvim' },
   { name = 'surround',          src = 'https://github.com/kylechui/nvim-surround' },
+  { name = 'treesitter',        src = 'https://github.com/nvim-treesitter/nvim-treesitter' },
 })
 
 require('auto-session').setup()
@@ -30,3 +32,9 @@ require('lazydev').setup()
 require('lualine').setup({})
 require('nvim-web-devicons').setup()
 require('quicker').setup()
+
+require('nvim-treesitter').install({
+  'bash',
+  'regex',
+  'ruby',
+})

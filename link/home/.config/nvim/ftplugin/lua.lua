@@ -1,1 +1,1 @@
-require('shared/vim_spell')
+Lang_specific_spell('vim')
