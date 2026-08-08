@@ -77,10 +77,6 @@
 [difftool "code"]
 	cmd = code --diff \"$LOCAL\" \"$REMOTE\"
 
-[difftool "sourcetree"]
-	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
-	path =
-
 [difftool "yml"]
 	cmd = yaml_diff \"$LOCAL\" \"$REMOTE\"
 
@@ -119,20 +115,12 @@
 [merge]
 	autoStash = true
 	conflictstyle = zdiff3
-	tool = gvimdiff ; Direct editing is simpler than 4 panes for conflicts
 
 [mergetool]
 	keepBackup = false
 
 [mergetool "code"]
 	cmd = code --wait --merge \"$REMOTE\" \"$LOCAL\" \"$BASE\" \"$MERGED\"
-
-[mergetool "gvim"]
-	cmd = gvim
-
-[mergetool "sourcetree"]
-	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
-	trustExitCode = true
 
 [pull]
 	ff = only

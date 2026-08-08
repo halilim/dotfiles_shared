@@ -80,7 +80,3 @@ function update_ruby_bundler_and_system() {
     fi
   )
 }
-
-function update_vim() {
-  $VIM_PATH +'PlugUpgrade | PlugUpdate | q'
-}

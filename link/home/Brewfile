@@ -7,7 +7,7 @@ brew 'gnu-sed' # gsed
 brew 'act' # Run GitHub Actions locally https://github.com/nektos/act
 brew 'bash' # macOS one is ancient
 brew 'bashdb' # Bash debugger
-brew 'bat' # cat alternative in Rust (regular use + vim fzf preview)
+brew 'bat' # cat alternative in Rust
 
 if ENV['DOCKER_PROVIDER'] == 'colima'
   brew 'colima' # Docker Desktop alternative
@@ -84,12 +84,6 @@ cask 'mac-mouse-fix' # Separate mouse and trackpad natural scroll, fix mouse 4/5
 cask 'qlcolorcode' # Source code files with syntax highlighting
 cask 'qlstephen' # README, Makefile etc.
 cask 'qlvideo' # Finder thumbnails & Quick Look previews and thumbnails
-
-# Vim
-brew 'editorconfig' # Used by vim plugin
-brew 'neovim'
-cask 'macvim-app'
-cask 'vimr'
 
 tap 'universal-ctags/universal-ctags'
 brew 'universal-ctags'

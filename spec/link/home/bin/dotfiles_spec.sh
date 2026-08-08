@@ -81,12 +81,6 @@ Describe "$script"
     :
   End
 
-  vim_calls=''
-  Mock vim
-    vim_calls+="$* ¶ "
-    %preserve vim_calls
-  End
-
   Describe 'setup'
     Example 'no args'
       When run script "$copied_script" setup
@@ -96,10 +90,8 @@ Describe "$script"
       bootstrap_file="$mock_home"/.dotfiles_bootstrap.sh
 
       # It seems command -v can't be mocked, so the EDITOR values will be different locally
-      The contents of file "$bootstrap_file" should include 'declare -x EDITOR="/'
-      The contents of file "$bootstrap_file" should include 'declare -x BUNDLER_EDITOR="/'
-      The contents of file "$bootstrap_file" should include 'declare -x VIM_PATH="/'
-      The contents of file "$bootstrap_file" should include 'declare -x VISUAL="/'
+      The contents of file "$bootstrap_file" should include 'declare -x EDITOR="'
+      The contents of file "$bootstrap_file" should include 'declare -x BUNDLER_EDITOR="'
 
       The contents of file "$bootstrap_file" should include "declare -x DOTFILES=\"$dotfiles_dir\""
       The contents of file "$bootstrap_file" should include "declare -x DOTFILES_SHARED=\"$shared_dir\""
@@ -118,8 +110,6 @@ Describe "$script"
       platform=''
       if [[ $OSTYPE == darwin* ]]; then
         platform='mac'
-      elif [[ -v TERMUX_VERSION ]]; then
-        platform='termux'
       elif [[ $OSTYPE == linux* ]]; then
         platform='linux'
       fi
@@ -224,24 +214,6 @@ Describe "$script"
       The status should eq 0
 
       rm -f "$orig_path"
-    End
-  End
-
-  Describe 'vim_setup'
-    Example 'calls mkspell! and quits'
-      vim_spell_dir=$mock_home/.vim/spell
-      vim_spell_file_1=$vim_spell_dir/test1.en.utf-8.add
-      vim_spell_file_2=$vim_spell_dir/test2.en.utf-8.add
-
-      mkdir -p "$vim_spell_dir"
-      touch "$vim_spell_file_1"
-      touch "$vim_spell_file_2"
-
-      When run script "$copied_script" vim_setup
-      The stdout should not include "error" # To satisfy shellspec expectation requirement
-      The stderr should include 'vim +mkspell'
-      The status should eq 0
-      The variable vim_calls should eq +"mkspell! $vim_spell_file_1 | mkspell! $vim_spell_file_2 | q ¶ "
     End
   End
 

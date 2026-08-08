@@ -154,9 +154,7 @@ function edit() {
 alias e='edit'
 
 function get_editor_titles() {
-  if is_editor_mvim; then
-    window_names 'MacVim'
-  elif is_editor_vscode; then
+  if is_editor_vscode; then
     window_names 'Visual Studio Code.app' 'Code'
   elif is_editor_vscode_insiders; then
     window_names 'Visual Studio Code - Insiders.app' 'Code - Insiders'
@@ -190,10 +188,6 @@ function get_project_root_path() {
   return 1
 }
 
-function is_editor_mvim() {
-  [[ $EDITOR == mvim* ]]
-}
-
 function is_editor_vscode() {
   [[ $EDITOR == code || $EDITOR == */code ]]
 }
@@ -213,27 +207,12 @@ function is_in_editor_titles() {
         if (is_editor_vscode || is_editor_vscode_insiders) \
           && is_in_vscode_titles "$editor_title" "$candidate_dir_name"; then
           return 0
-        elif is_editor_mvim \
-          && is_in_mvim_titles "$editor_title" "$candidate_dir_name"; then
-          return 0
         fi
       fi
     done < <(printf '%s, ' "$editor_titles")
   done
 
   return 1
-}
-
-# mvim_title examples:
-# ~ • [No Name]               (file: ❌, folder: ✅) (opens the home directory by default)
-# ~/code/dir_name • [No Name] (file: ❌, folder: ✅)
-# ~/code/dir_name // file.txt (file: ✅, folder: ✅)
-# / // /etc                   (file: ❌, folder: ✅) (special case: / is the root directory, /etc is a subdirectory of /)
-function is_in_mvim_titles() {
-  local mvim_title=${1?} dir_name=${2?}
-  [[ $mvim_title == *"$dir_name • "* ]] \
-    || [[ $mvim_title == *"$dir_name // "* ]] \
-    || [[ $mvim_title == "/ // /$dir_name" ]]
 }
 
 # vscode_title examples:
@@ -314,11 +293,6 @@ function open_with_rubymine() {
 }
 
 function open_with_editor() {
-  if [[ $EDITOR == *vim ]]; then
-    vim_open "$@"
-    return
-  fi
-
   local cmd_args=()
 
   if [[ $EDITOR == code || $EDITOR == */code || $EDITOR == code-insiders || $EDITOR == */code-insiders ]]; then
@@ -330,80 +304,4 @@ function open_with_editor() {
   fi
 
   echo_eval "${cmd_args[@]}" "$@"
-}
-
-function vim_open() {
-  local args=()
-
-  if [[ ${SUDO:-} ]]; then
-    args+=('sudo')
-  fi
-
-  args+=("$VIM_PATH")
-
-  # https://stackoverflow.com/a/5945322/372654
-  if [[ "$#" -gt 0 ]]; then
-    if [[ -d $1 ]]; then
-      args+=(+':lcd %')
-    else
-      if [[ $VIM_PATH != */vim ]]; then
-        args+=('--remote-silent')
-      fi
-    fi
-  fi
-
-  args+=("$@")
-
-  echo_eval "${args[@]}"
-}
-
-function nvim_open() {
-  local args=()
-
-  if [[ ${SUDO:-} ]]; then
-    args+=('sudo')
-  fi
-
-  args+=("$NVIM_PATH")
-
-  # https://stackoverflow.com/a/5945322/372654
-  if [[ "$#" -gt 0 ]]; then
-    if [[ -d $1 ]]; then
-      args+=(+':lcd %')
-    else
-      args+=('--remote-tab-silent')
-    fi
-  fi
-
-  args+=("$@")
-
-  echo_eval "${args[@]}"
-}
-
-function vimr_open() {
-  local args=()
-
-  if [[ ${SUDO:-} ]]; then
-    args+=('sudo')
-  fi
-
-  args+=(vimr)
-
-  if [[ "$#" -gt 0 ]]; then
-    local cwd
-    if [[ -d $1 ]]; then
-      cwd=$1
-    else
-      cwd=$($GNU_DIRNAME "$1")
-    fi
-  else
-    cwd=.
-  fi
-
-  cwd=$($GNU_REALPATH "$cwd" -s)
-  args+=("--cwd $cwd")
-
-  args+=("$@")
-
-  echo_eval "${args[@]}"
 }

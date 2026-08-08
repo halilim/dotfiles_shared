@@ -25,7 +25,7 @@ alias cui='curl -I'
 alias cuiv='curl -Iv'
 alias da='direnv allow'
 # shellcheck disable=SC2139
-alias {dicts,dict_list}='readlink ~/.vim/spell/*.add'
+alias {dicts,dict_list}='readlink ~/.config/dictionaries/*.txt'
 alias dp='declare -p'
 
 alias db='dotfiles bootstrap'
@@ -155,8 +155,7 @@ alias spt='$SPEEDTEST_CMD'
 
 # shellcheck disable=SC2139
 alias {sshc,ssh_copy_key,copy_ssh_key}='cb < ~/.ssh/id_*.pub'
-# Why Vim? Because it has syntax highlighting
-alias sshconf='vim_open ~/.ssh/config'
+alias sshconf='e ~/.ssh/config'
 
 alias str='stree .'
 alias taf='tail -f'
@@ -170,13 +169,6 @@ alias tr192='traceroute 192.168.1.1'
 alias trg='traceroute google.com'
 
 alias tru='truncate -s 0'
-
-alias v='vim_open'
-alias sv='SUDO=1 vim_open'
-alias vimrc='vim_open ~/.vimrc'
-# TODO: Eventually, replace vim_open with vim_open
-alias nv='nvim_open'
-alias vr='vimr_open'
 
 alias wu='who -u'
 

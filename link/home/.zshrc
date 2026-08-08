@@ -26,7 +26,6 @@ alias -g 21n='>/dev/null 2>&1'
 alias -g {2D,2n}='2>/dev/null'
 alias -g D='DEBUG=1'
 alias -g DR='DRY_RUN=1'
-alias -g EV='EDITOR=vim'
 alias -g F='| fzf'
 alias -g G='| rg -n' # Case insensitive by default due to ~/.ripgreprc
 alias -g G3='| rg -n -A 1 -B 1'

@@ -17,7 +17,7 @@ function act_t() {
 alias actt='act_t' # cSpell:ignore actt
 
 # Interactive debugging
-alias acts='container run --rm -it -v ~/code:/tmp/code catthehacker/ubuntu:act-latest bash' # cSpell:ignore catthehacker
+alias acts='container run --rm -it -v ~/code:/tmp/code --cwd /tmp/code/dotfiles/shared catthehacker/ubuntu:act-latest bash -c "curl -fsSL https://git.io/shellspec | sh -s latest.tar.gz --bin /usr/local/bin --yes && echo ShellSpec\ version:\ $(shellspec --version); exec bash"' # cSpell:ignore catthehacker
 # Then manually run commands in .github/workflows/build.yml
 
 function colima_start() {

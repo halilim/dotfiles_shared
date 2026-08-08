@@ -10,17 +10,11 @@ omz_path=~/.oh-my-zsh
 #   [ ] Replace with simple prompt + REPORTTIME=... instead?
 
 # https://github.com/ohmyzsh/ohmyzsh/wiki/themes
-export ZSH_THEME
-if [[ -v TERMUX_VERSION ]]; then
-  # powerlevel10k on Termux: gitstatus (gitstatusd) fails to initialize. It would be too heavy anyway
-  ZSH_THEME=sunaku
-else
-  # shellcheck source=/dev/null
-  # To customize prompt, run `p10k configure` or edit .p10k*.zsh.
-  . "$DOTFILES_INCLUDES"/.p10k.zsh
-  alias p10kc='$EDITOR "$DOTFILES_INCLUDES"/.p10k.zsh'
-  ZSH_THEME=powerlevel10k/powerlevel10k
-fi
+# To customize prompt, run `p10k configure` or edit .p10k*.zsh.
+# shellcheck disable=SC1091
+. "$DOTFILES_INCLUDES"/.p10k.zsh
+alias p10kc='$EDITOR "$DOTFILES_INCLUDES"/.p10k.zsh'
+export ZSH_THEME=powerlevel10k/powerlevel10k
 
 # Handled by .functions#update_and_backup
 zstyle ':omz:update' mode disabled
@@ -77,12 +71,10 @@ function omz_install_custom() {
     git clone https://github.com/zsh-users/zsh-completions
     git clone https://github.com/zsh-users/zsh-syntax-highlighting
 
-    if [[ ! -v TERMUX_VERSION ]]; then
-      local zsh_custom_themes="$zsh_custom"/themes
-      mkdir -p "$zsh_custom_themes" || return
-      cd "$zsh_custom_themes" || return
-      git clone --depth=1 --quiet https://github.com/romkatv/powerlevel10k
-    fi
+    local zsh_custom_themes="$zsh_custom"/themes
+    mkdir -p "$zsh_custom_themes" || return
+    cd "$zsh_custom_themes" || return
+    git clone --depth=1 --quiet https://github.com/romkatv/powerlevel10k
   )
 }
 

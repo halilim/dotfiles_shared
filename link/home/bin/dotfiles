@@ -8,43 +8,12 @@ fi
 # Doesn't handle deletions
 
 function d_bootstrap() {
-  local candidate candidate_path vim_path='' editor_path=''
-  for candidate in code mvim gvim vim; do
-    if ! candidate_path=$(command -v $candidate); then
-      continue
-    fi
-
-    if [[ ! $vim_path && $candidate == *'vim' ]]; then
-      vim_path=$candidate_path
-    fi
-
-    if [[ ! $editor_path ]]; then
-      editor_path=$candidate_path
-    fi
-  done
-
-  if [[ ! $editor_path ]]; then
-    echo >&2 'No editor found'
-    return 1
-  fi
-
-  if [[ ! $vim_path ]]; then
-    echo >&2 'No Vim found'
-    return 1
-  fi
-
-  EDITOR=$editor_path
-  BUNDLER_EDITOR=$editor_path
-  NVIM_PATH=$(command -v nvim)
-  VIM_PATH=$vim_path
-  VISUAL=$VIM_PATH # Needed for `crontab -e` (`code --wait` doesn't work)
+  EDITOR=code
+  BUNDLER_EDITOR=code
 
   local vars=(
     EDITOR
     BUNDLER_EDITOR
-    NVIM_PATH
-    VIM_PATH
-    VISUAL
     DOTFILES
     DOTFILES_SHARED
     DOTFILES_INCLUDES
@@ -70,15 +39,7 @@ function d_edit() {
 }
 
 function d_setup() {
-  local plug="$HOME_DIR/.vim/autoload/plug.vim" \
-    vim_plug_installed=true
-  if [[ ! -f $plug ]]; then
-    echo_eval curl -fLo "$plug" --create-dirs \
-      https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-    vim_plug_installed=false
-  fi
-
-  d_sync all $vim_plug_installed
+  d_sync all
 
   d_setup_omz_custom
   js_install_globals
@@ -101,7 +62,7 @@ function d_setup_omz_custom() {
 
 # TODO: Add archive feature: unarchive when the app is installed again
 function d_sync() {
-  local type=${1:-all} vim_plug_installed=${2:-true}
+  local type=${1:-all}
 
   if [[ $type == all || $type == shared ]]; then
     _d_setup_shared_links
@@ -110,17 +71,10 @@ function d_sync() {
   if [[ $type == all || $type == custom ]]; then
     _d_setup_custom_links
   fi
-
-  d_vim_setup false "$vim_plug_installed"
 }
 
 function d_update() {
   DRY_RUN='' echo_eval cd "$DOTFILES" '|| return'
-  if [[ -v TERMUX_VERSION ]]; then
-    # shellcheck disable=SC1091
-    . "$DOTFILES_INCLUDES"/lib/termux.sh
-    echo_eval termux_prepare_ssh
-  fi
   for_each_dir git pull --prune --quiet
   echo_eval d_sync
 }
@@ -232,8 +186,6 @@ function _d_link_platform() {
 function _d_platform_suffix() {
   if [[ $OSTYPE == darwin* ]]; then
     echo 'mac'
-  elif [[ -v TERMUX_VERSION ]]; then
-    echo 'termux'
   elif [[ $OSTYPE == linux* ]]; then
     echo 'linux'
   fi
@@ -460,9 +412,6 @@ function _d_link_file() {
 
   local hard_link=false
   if _d_should_hard_link "$source"; then
-    if [[ -v TERMUX_VERSION ]]; then
-      return
-    fi
     hard_link=true
   fi
 
@@ -562,34 +511,6 @@ function _d_echo_eval_with_sudo() {
   IFS=' ' echo_eval "${cmd[@]}"
 }
 
-function d_vim_setup() {
-  if [[ ! ${VIM_PATH:-} || ${NO_VIM:-} || ! ${VIM_SPELL:-} || ! -d $VIM_SPELL ]]; then
-    return 0
-  fi
-
-  local force=${1:-false} vim_plug_installed=${2:-true} vim_cmds=()
-
-  if [[ $vim_plug_installed == false ]]; then
-    vim_cmds+=(PlugInstall)
-  fi
-
-  local file
-  for file in "$VIM_SPELL"/*.add; do
-    if [[ $force == true || ! $(find "$VIM_SPELL" -name "$(basename "$file")*.spl" -print -quit) ]]; then
-      vim_cmds+=("mkspell! $file")
-    fi
-  done
-
-  if [[ ${#vim_cmds[@]} -eq 0 ]]; then
-    return 0
-  fi
-
-  vim_cmds+=(q)
-  local vim_cmd
-  vim_cmd=$(join_array ' | ' "${vim_cmds[@]}")
-  echo_eval vim +"$vim_cmd"
-}
-
 function _d_log_error {
   local msg=$1 no_color=${2:-''}
   if [[ $no_color ]]; then
@@ -607,13 +528,8 @@ PLATFORM_PREFIX='platform_'
 export DOTFILES_CMD
 DOTFILES_CMD=$(basename "$0")
 
-export VIM_SPELL=$HOME_DIR/.vim/spell
-
 export EDITOR
 export BUNDLER_EDITOR
-export NVIM_PATH
-export VIM_PATH
-export VISUAL
 
 export DOTFILES
 DOTFILES="$(dirname "$(dirname "$(dirname "$(dirname "$(dirname "$(realpath "$0")")")")")")"
@@ -639,9 +555,8 @@ case "${1:-''}" in
   import) d_import "${@:2}" ;;
   revert_import) d_revert_import "${@:2}" ;;
   revert_import_and_remove) d_revert_import_and_remove "${@:2}" ;;
-  vim_setup) d_bootstrap && d_vim_setup true ;;
   *)
-    _d_log_error "$USAGE_BASE <bootstrap|setup|sync|update|import|revert_import|revert_import_and_remove|vim_setup> ..." 1
+    _d_log_error "$USAGE_BASE <bootstrap|setup|sync|update|import|revert_import|revert_import_and_remove> ..." 1
     exit 1
     ;;
 esac

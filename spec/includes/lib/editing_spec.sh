@@ -249,25 +249,4 @@ Describe 'open_with_editor'
       The variable code_calls should eq '-g foo bar baz ¶ '
     End
   End
-
-  Context 'when the editor is Vim'
-    export EDITOR=/foo/bar/bin/vim
-    export VIM_PATH=vim
-
-    # Mocks
-    vim_calls=''
-    function vim() {
-      vim_calls+="$* ¶ "
-      %preserve vim_calls
-    }
-    # End: Mocks
-
-    It 'opens given paths with editor'
-      When call open_with_editor foo 'bar baz'
-      The stdout should eq ''
-      The stderr should eq '-> vim --remote-silent foo bar\ baz'
-      The status should eq 0
-      The variable vim_calls should eq '--remote-silent foo bar baz ¶ '
-    End
-  End
 End

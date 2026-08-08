@@ -41,27 +41,15 @@
 
   "cSpell.checkVSCodeSystemFiles": true,
   "cSpell.customDictionaries": {
-    "shared_en": { "path": "~/.vim/spell/shared.en.utf-8.add" },
-    "custom_en": { "path": "~/.vim/spell/custom.en.utf-8.add" },
-    "shared_tr": { "path": "~/.vim/spell/shared.tr.utf-8.add" },
-    "custom_tr": { "path": "~/.vim/spell/custom.tr.utf-8.add" },
+    "shared_en": { "path": "~/.config/dictionaries/shared.en.txt" },
+    "custom_en": { "path": "~/.config/dictionaries/custom.en.txt" },
+    "shared_tr": { "path": "~/.config/dictionaries/shared.tr.txt" },
+    "custom_tr": { "path": "~/.config/dictionaries/custom.tr.txt" },
     "custom": true
   },
   "cSpell.dictionaryDefinitions": [
-    { "name": "ruby", "path": "~/.vim/spell/ruby.utf-8.add" },
-    { "name": "vim", "path": "~/.vim/spell/vim.utf-8.add" },
-  ],
-  "cSpell.ignorePaths": [
-    // Defaults https://streetsidesoftware.com/vscode-spell-checker/docs/configuration/files-folders-and-workspaces#cspellignorepaths
-    "package-lock.json",
-    "node_modules",
-    "vscode-extension",
-    ".git/{info,lfs,logs,refs,objects}/**",
-    ".git/{index,*refs,*HEAD}",
-    ".vscode",
-    ".vscode-insiders",
-    // Custom
-    "**/*.md" // Handled by Harper
+    { "name": "ruby", "path": "~/.config/dictionaries/ruby.txt" },
+    { "name": "vim", "path": "~/.config/dictionaries/vim.txt" },
   ],
   "cSpell.ignoreRegExpList": [
     "/[^\\s]{40,}/",
@@ -229,18 +217,6 @@
       "DL3008",
       "--no-color"
   ],
-
-  // Use Harper for non-code
-  // TODO: We really need a "include" setting
-  "harper.excludePatterns": [
-    "**/*[a-ce-z]",
-    "**/*[a-ln-z]d",
-    "**/*[!.]md",
-  ],
-  "harper.linters.ExpandConfiguration": false,
-  "harper.linters.ExpandMemoryShorthands": false,
-  "harper.linters.ToDoHyphen": false,
-  "harper.userDictPath": "~/.vim/spell/shared.en.utf-8.add",
 
   "html.format.extraLiners": "body",
 
@@ -447,7 +423,6 @@
   "vim.sneakReplacesF": true,
   "vim.sneakUseIgnorecaseAndSmartcase": true,
   "vim.useSystemClipboard": true,
-  "vim.vimrc.enable": true,
   "vim.visualstar": true,
 
   "vim.normalModeKeyBindings": [
@@ -459,6 +434,7 @@
     { "before": ["C-r"], "commands": ["redo"] },
     { "before": ["g", "]"], "commands": ["editor.action.peekDefinition"] },
     { "before": ["K"], "commands": ["editor.action.showDefinitionPreviewHover"] },
+    { "before": ["leader", "space"], "commands": [":nohl"] },
     { "before": ["leader", "%"], "commands": ["editor.emmet.action.matchTag"] },
 
     { "before": ["leader", "1"], "commands": ["workbench.action.openEditorAtIndex1"] },
@@ -563,7 +539,6 @@
       "editorCursor.foreground": "#fcc"
     },
 
-    // editorBracketHighlight.foreground*: Sync with .vimrc > rainbow_conf
     // [({[({[]})]})]
 
     "[* Dark][Spinel]": {
@@ -656,10 +631,6 @@
 
   "[jsonc]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-
-  "[lua]": {
-    "editor.defaultFormatter": "sumneko.lua" // cSpell:disable-line
   },
 
   "[markdown]": {

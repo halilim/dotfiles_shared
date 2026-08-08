@@ -32,16 +32,6 @@ somewhere/dotfiles
 └── shared
 ```
 
-### Termux
-
-```sh
-pkg install -y curl
-```
-
-```sh
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/halilim/dotfiles_shared/main/share/termux_setup.sh)"
-```
-
 ## FAQ
 
 - Q: Why not use other dotfile management tools? \

@@ -154,8 +154,7 @@ function get_tmp_dir() {
 
 function hosts_edit() {
   # sudo inside VSCode only accepts password and not Touch ID
-  # mvim has it's own problems
-  # Doesn't work: edit "$custom_hosts" ($DOTFILES_CUSTOM/hosts)
+  # Editing the hard link ($DOTFILES_CUSTOM/hosts) doesn't work
   echo_eval sudo vim /etc/hosts
 }
 # shellcheck disable=SC2139
