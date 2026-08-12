@@ -21,3 +21,9 @@ UPDATE_BACKUP_CMDS+=(
 
 # shellcheck disable=SC1091
 . "$DOTFILES_SHARED"/includes.sh
+
+# Make Homebrew & mise tools available to open_from_iterm
+if [[ $- != *i* ]]; then
+  brew_activate
+  mise_activate
+fi

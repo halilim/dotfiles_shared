@@ -1,0 +1,19 @@
+#!/usr/bin/osascript
+
+-- https://ghostty.org/docs/features/applescript
+
+on run argv
+  tell application "Ghostty"
+    set cfg to new surface configuration
+    if count of argv > 0 then
+      set initial working directory of cfg to POSIX path of (first item of argv)
+    end if
+    set newTab to new tab with configuration cfg in front window
+    set newTerm to focused terminal of newTab
+
+    repeat with i from 2 to length of argv
+      input text item i of argv to newTerm
+      send key "enter" to newTerm
+    end repeat
+  end tell
+end run

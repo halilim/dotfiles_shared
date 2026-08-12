@@ -7,23 +7,29 @@
 # 2. RubyMine > Cmd+Shift+P > Create Command-line Launcher
 # 3. VS Code > Cmd+Shift+P > Shell Command: Install 'code' command in PATH
 
-# To debug: call open_from_iterm_debug
+# To debug: `$0 --debug` in a new tab
 
-:
-# TODO: Remove after https://github.com/koalaman/shellcheck/issues/1877 here and everywhere else
-#       Without it, it disables for the whole file
+readonly OPEN_FROM_ITERM_DEBUG=${TMPDIR}open_from_iterm_debug
+readonly OPEN_FROM_ITERM_DEBUG_LOG=$HOME/Library/Logs/open_from_iterm_debug.log
 
-# shellcheck disable=SC1091
-. "$HOME"/.zprofile
+if [[ $1 == '--debug' ]]; then
+  touch "$OPEN_FROM_ITERM_DEBUG" "$OPEN_FROM_ITERM_DEBUG_LOG"
+  truncate -s 0 "$OPEN_FROM_ITERM_DEBUG_LOG"
+  trap '\rm "$OPEN_FROM_ITERM_DEBUG"' SIGTERM SIGINT
+  tail -f "$OPEN_FROM_ITERM_DEBUG_LOG"
+else
+  if [[ -f $OPEN_FROM_ITERM_DEBUG ]]; then
+    export VERBOSE=1
+    exec &>> "$OPEN_FROM_ITERM_DEBUG_LOG"
+  fi
 
-if [[ -f $OPEN_FROM_ITERM_DEBUG ]]; then
-  export VERBOSE=1
-  exec &>> "$OPEN_FROM_ITERM_DEBUG_LOG"
+  # shellcheck disable=SC1091
+  . "$HOME"/.zprofile
+
+  if [[ -d $1 ]]; then
+    echo_eval "$OPEN_CMD" "$1"
+    return
+  fi
+
+  edit "$1:$2:$3"
 fi
-
-if [[ -d $1 ]]; then
-  echo_eval "$OPEN_CMD" "$1"
-  return
-fi
-
-edit "$1:$2:$3"

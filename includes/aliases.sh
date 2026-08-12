@@ -47,11 +47,14 @@ alias dup='dotfiles update'
 
 alias dr='DRY_RUN=1'
 
-alias ek='echo'
+# shellcheck disable=SC2139
+alias {ec,ek}='echo'
 
 alias f='fd -t f'
 alias fh='fd -t f --hidden'
 alias ft="fd --no-ignore -t f '^tags$'"
+
+alias ghostty_logs='log stream --level debug --predicate '\''subsystem=="com.mitchellh.ghostty"'\'''
 
 alias h='http'
 alias hh='http --headers'
@@ -131,7 +134,7 @@ alias rgni='rg --no-ignore'
 alias rgnic='rg --no-ignore --case-sensitive'
 alias rgnl="rg -g '!locales/'"
 alias rgnt="rg -g '!features/' -g '!spec/' -g '!test/' -g '!__tests__/' -g '!*.test.*'"
-alias rgntnc="rg -g '!features/' -g '!spec/' -g '!test/' -g '!__tests__/' -g '!*.test.*' -g '!locales/'"
+alias rgntnl="rg -g '!features/' -g '!spec/' -g '!test/' -g '!__tests__/' -g '!*.test.*' -g '!locales/'"
 alias rgw='rg -w' # Word
 # shellcheck disable=SC2139
 alias {rgsw,rgwc,rgws}='rg -sw' # Word and case sensitive

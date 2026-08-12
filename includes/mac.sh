@@ -6,6 +6,7 @@ export LC_ALL='en_US.UTF-8'
 
 alias fdns='sudo killall -HUP mDNSResponder' # cSpell:ignore fdns
 alias lc="launchctl"
+alias open_from_iterm_debug='open_from_iterm --debug'
 
 # https://iterm2.com/documentation-scripting-fundamentals.html#setting-user-defined-variables
 function iterm2_print_user_vars() {
@@ -34,13 +35,6 @@ function quick_look() {
   qlmanage -p "$1" > /dev/null 2>&1
 }
 alias ql="quick_look"
-
-function open_from_iterm_debug() {
-  touch "$OPEN_FROM_ITERM_DEBUG" "$OPEN_FROM_ITERM_DEBUG_LOG"
-  truncate -s 0 "$OPEN_FROM_ITERM_DEBUG_LOG"
-  trap '\rm "$OPEN_FROM_ITERM_DEBUG"' SIGINT
-  tail -f "$OPEN_FROM_ITERM_DEBUG_LOG"
-}
 
 # Returns: `foo, bar`
 function window_names() {

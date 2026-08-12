@@ -116,7 +116,9 @@
 
   "editor.unicodeHighlight.allowedCharacters": {
     "ç": true,
+    "Ç": true,
     "ğ": true,
+    "Ğ": true,
     "ı": true,
     "İ": true,
     "ö": true,
@@ -426,13 +428,23 @@
   "vim.visualstar": true,
 
   "vim.normalModeKeyBindings": [
-    { "before": ["-"], "commands": ["editor.action.inPlaceReplace.down"] },
+    { "before": ["="], "commands": ["extension.toggle"] },
+
     { "before": ["[", "m"], "commands": ["gotoNextPreviousMember.nextMember"] },
     { "before": ["]", "m"], "commands": ["gotoNextPreviousMember.previousMember"] },
+
     { "before": ["C-j"], "commands": ["editor.action.marker.next"] },
     { "before": ["C-k"], "commands": ["editor.action.marker.prev"] },
+
     { "before": ["C-r"], "commands": ["redo"] },
     { "before": ["g", "]"], "commands": ["editor.action.peekDefinition"] },
+    { "before": ["g", "f"], "commands": ["seito-openfile.openFileFromText"] }, // cSpell:disable-line
+
+    { "before": ["m", "m"], "commands": ["bookmarks.toggleLabeled"] },
+    { "before": ["m", "d"], "commands": ["bookmarks.toggle"] },
+    { "before": ["m", "d", "a"], "commands": ["bookmarks.clearFromAllFiles"] },
+    { "before": ["m", "l"], "commands": ["bookmarks.listFromAllFiles"] },
+
     { "before": ["K"], "commands": ["editor.action.showDefinitionPreviewHover"] },
     { "before": ["leader", "space"], "commands": [":nohl"] },
     { "before": ["leader", "%"], "commands": ["editor.emmet.action.matchTag"] },
@@ -449,7 +461,7 @@
 
     { "before": ["leader", "a"], "commands": ["alternate.alternateFile"] },
     {
-      "before": ["leader", "c", "p" /*, "l"*/],
+      "before": ["leader", "c", "p"],
       "commands": ["copy-relative-path-and-line-numbers.both"]
     },
     { "before": ["leader", "c", "space"], "commands": ["editor.action.commentLine"] },

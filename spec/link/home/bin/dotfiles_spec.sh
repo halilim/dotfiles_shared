@@ -90,8 +90,8 @@ Describe "$script"
       bootstrap_file="$mock_home"/.dotfiles_bootstrap.sh
 
       # It seems command -v can't be mocked, so the EDITOR values will be different locally
-      The contents of file "$bootstrap_file" should include 'declare -x EDITOR="'
-      The contents of file "$bootstrap_file" should include 'declare -x BUNDLER_EDITOR="'
+      The contents of file "$bootstrap_file" should include 'declare -x EDITOR'
+      The contents of file "$bootstrap_file" should include 'declare -x BUNDLER_EDITOR'
 
       The contents of file "$bootstrap_file" should include "declare -x DOTFILES=\"$dotfiles_dir\""
       The contents of file "$bootstrap_file" should include "declare -x DOTFILES_SHARED=\"$shared_dir\""

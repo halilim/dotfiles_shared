@@ -1,0 +1,67 @@
+[
+  {
+    "keyword": ";arc",
+    "name": "ActiveRecord connection",
+    "text": "conn = ActiveRecord::Base.connection"
+  },
+  {
+    "keyword": ";mdt",
+    "name": "Markdown table",
+    "text": "|       |       |\n|  ---  |  ---  |\n|       |       |\n|       |       |"
+  },
+  {
+    "keyword": ";psg",
+    "name": "ps grep",
+    "text": "ps aux | grep -v \" grep \" | grep -i "
+  },
+  {
+    "keyword": ";rabc",
+    "name": "Rails backtrace cleaner",
+    "text": "Rails.backtrace_cleaner.clean caller # or e.backtrace"
+  },
+  {
+    "keyword": ";rae",
+    "name": "Rails error messages",
+    "text": ".errors.messages"
+  },
+  {
+    "keyword": ";rag",
+    "name": "Rails group by",
+    "text": ".group(:{argument name=\"column\"}).count"
+  },
+  {
+    "keyword": ";rauh",
+    "name": "Rails URL helpers",
+    "text": "Rails.application.routes.url_helpers"
+  },
+  {
+    "keyword": ";rc",
+    "name": "Rails console",
+    "text": "bundle exec rails console"
+  },
+  {
+    "keyword": ";rhk",
+    "name": "Ruby hash find keys matching pattern",
+    "text": "h.keys.select { |k| k.to_s =~ /{argument name=\"pattern\"}/i }"
+  },
+  {
+    "keyword": ";rhv",
+    "name": "Ruby hash find values matching pattern",
+    "text": "h.values.select { |v| v.to_s =~ /{argument name=\"pattern\"}/i }"
+  },
+  {
+    "keyword": ";rhvkv",
+    "name": "Ruby hash find key-values where value matches pattern",
+    "text": "h.select { |k, v| v.to_s =~ /{argument name=\"pattern\"}/i }"
+  },
+  {
+    "keyword": ";rkdms",
+    "name": "db:migrate:status",
+    "text": "bundle exec rake db:migrate:status"
+  },
+  {
+    "keyword": ";rme",
+    "name": "Ruby methods",
+    "text": ".methods.select { |m| m.to_s =~ /{argument name=\"pattern\"}/i }"
+  }
+]

@@ -8,8 +8,14 @@ fi
 # Doesn't handle deletions
 
 function d_bootstrap() {
-  EDITOR=code
-  BUNDLER_EDITOR=code
+  local code_path
+  code_path=$(command -v code)
+  if [[ $code_path ]]; then
+    EDITOR=$code_path
+    BUNDLER_EDITOR=$code_path
+  else
+    _d_log_error 'VS Code not found'
+  fi
 
   local vars=(
     EDITOR
@@ -28,14 +34,17 @@ function d_bootstrap() {
 }
 
 function d_edit() {
-  local target
-  if [[ $EDITOR == */code ]]; then
-    target=$(find "$DOTFILES" -name '*.code-workspace' -maxdepth 1 -print -quit)
-  fi
-
   # shellcheck disable=SC1091
   . "$DOTFILES_INCLUDES"/lib/editing.sh
-  open_with_editor "${target:-${DOTFILES:?}}"
+
+  local target code_workspace
+  if is_editor_vscode && code_workspace=$(find "$DOTFILES" -name '*.code-workspace' -maxdepth 1 -print -quit); then
+    target=$code_workspace
+  else
+    target=$DOTFILES
+  fi
+
+  open_with_editor "$target"
 }
 
 function d_setup() {

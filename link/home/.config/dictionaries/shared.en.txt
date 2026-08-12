@@ -420,6 +420,7 @@ kbar
 kcov
 kdiff
 kdiff3
+keybind
 Keychain
 Keychains
 keygen
@@ -457,6 +458,7 @@ libvips
 libxslt
 libyaml
 lifecycle
+linearmouse
 linebreak
 linkita
 linuxbrew
@@ -527,6 +529,7 @@ mysqldump
 nanorc
 NBSP
 ncdu
+Neobones
 neoconf
 neodev
 Neovim
@@ -715,6 +718,7 @@ REXML
 rindex
 ripgrep
 ripgreprc
+rkdms
 rmtree
 rnd
 RoadMap
@@ -828,6 +832,7 @@ tebibit
 tebibits
 tebibyte
 tebibytes
+terminfo
 Termux
 textconv
 textobjects

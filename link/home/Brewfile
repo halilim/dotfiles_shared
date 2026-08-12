@@ -78,7 +78,10 @@ at_exit { system '~/bin/switch_to_homebrew_zsh' }
 cask 'font-sauce-code-pro-nerd-font' # Also works for Powerlevel10k
 cask 'handbrake-app' # Minify videos
 
-cask 'mac-mouse-fix' # Separate mouse and trackpad natural scroll, fix mouse 4/5 (back/forward)
+# Separate mouse and trackpad natural scroll, fix mouse 4/5 (back/forward), etc.
+# mac-mouse-fix: back/forward is not universal (doesn't work in VSCode), also: paid
+# mos: back/forward is not universal (doesn't work in VSCode)
+cask 'linearmouse'
 
 # Quick Look plugins
 cask 'qlcolorcode' # Source code files with syntax highlighting

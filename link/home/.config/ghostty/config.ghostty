@@ -1,0 +1,26 @@
+# https://ghostty.org/docs/config/reference
+
+# iTerm2 -> Ghostty migration: Postponed until "cmd-click file/folder" (iTerm2: Semantic History) is implemented
+# https://github.com/ghostty-org/ghostty/discussions/9546
+
+font-family = SauceCodePro Nerd Font
+font-size = 13
+
+# --- https://ghostty.org/docs/config/keybind
+# https://ghostty.org/docs/config/keybind/reference
+
+# https://prokopov.me/posts/ghostty-remap-keys/#the-fix
+# Messes up with copy-paste
+# keybind = cmd+c=text:\x03
+keybind = cmd+d=text:\x04
+keybind = cmd+r=text:\x12
+
+keybind = super+alt+arrow_left=move_tab:-1
+keybind = super+alt+arrow_right=move_tab:1
+
+# End: key binds ---
+
+shell-integration-features = path,sudo,ssh-env,ssh-terminfo
+
+theme = light:Vaughn,dark:Sunset Drive
+window-theme = auto

@@ -25,6 +25,7 @@ files.reject! do |file|
     '.applescript',
     '.p10k.zsh',
     '.rb',
+    'ghostty_tab',
     'iterm_tab',
     'smerge'
   ) ||

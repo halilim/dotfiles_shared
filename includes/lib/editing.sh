@@ -20,7 +20,7 @@ function edit() {
 
   local arg arg_path line column \
     dir_name real_abs_path is_link base_name real_abs_dir_path real_abs_path_line_col \
-    dir_candidates project_dir real_project_dir git_path real_git_path
+    dir_candidates=() project_dir real_project_dir git_path real_git_path
 
   local ct=0
   for arg in "$@"; do
@@ -42,7 +42,7 @@ function edit() {
 
     is_link=''
 
-    dir_name=$($GNU_DIRNAME "$arg_path")
+    dir_name=$(dirname "$arg_path")
     if [[ -e $arg_path ]]; then
       real_abs_path=$(realpath "$arg_path")
 
@@ -55,7 +55,7 @@ function edit() {
         is_link=1
       fi
 
-      real_abs_dir_path=$($GNU_DIRNAME "$real_abs_path")
+      real_abs_dir_path=$(dirname "$real_abs_path")
     else
       # Create a new file along with the directories
       if [[ ! -e $dir_name ]]; then
@@ -98,8 +98,6 @@ function edit() {
     fi
 
     if [[ $rubymine_titles ]]; then
-      dir_candidates=()
-
       if [[ -e $real_abs_dir_path ]]; then
         project_dir=$(basename "$(get_project_root_path "$dir_name")")
         if [[ $project_dir ]]; then
@@ -176,7 +174,7 @@ function get_project_root_path() {
     fi
 
     previous_dir=$dir
-    dir=$($GNU_DIRNAME "$dir")
+    dir=$(dirname "$dir")
     if [[ $dir == "$previous_dir" ]]; then
       if [[ ${DEBUG:-} || ${VERBOSE:-} ]]; then
         echo >&2 "Recursion detected while searching for $sentinel (dir=$dir, previous_dir=$previous_dir)"
