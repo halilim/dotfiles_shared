@@ -273,19 +273,14 @@ function open_with_rubymine() {
   # https://www.jetbrains.com/help/ruby/opening-files-from-command-line.html#88f1a126
   # Note: column is only documented in the "Windows" tab. -1: it goes to the next character (bug?)
 
-  # TODO: Re-enable after # https://youtrack.jetbrains.com/issue/RUBY-35914/Command-line-with-line-is-broken
-  # if [[ $line ]]; then
-  #   args+=(--line "$line")
-  # fi
-  # if [[ $column ]]; then
-  #   args+=(--column "$((column - 1))")
-  # fi
+  if [[ $line ]]; then
+    args+=(--line "$line")
+  fi
+  if [[ $column ]]; then
+    args+=(--column "$((column - 1))")
+  fi
 
   args+=("$abs_path")
-
-  # TODO: Remove after enabling line and column args above
-  [[ $line ]] && args+=("# :$line")
-  [[ $column ]] && args+=("# :$column")
 
   mine "${args[@]}"
 }

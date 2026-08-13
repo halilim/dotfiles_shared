@@ -494,7 +494,6 @@
     { "before": ["leader", "c", "space"], "commands": ["editor.action.commentLine"] }
   ],
 
-  "vsicons.dontShowNewVersionMessage": true, // cSpell:disable-line
 
   "vscode-yaml-sort.emptyLinesUntilLevel": 1,
   "vscode-yaml-sort.useLeadingDashes": false,
@@ -700,5 +699,5 @@
 
   "[yaml]": {
     "editor.defaultFormatter": "redhat.vscode-yaml"
-  },
+  }
 }

@@ -171,9 +171,7 @@ Describe 'edit'
             The stdout should eq ''
             The stderr should eq ''
             The status should eq 0
-            # Revert after open_with_rubymine > TODO is fixed
-            # The variable mine_calls should eq "--line $line --column $((column - 1)) $file ¶ "
-            The variable mine_calls should eq "$file # :21 # :45 ¶ "
+            The variable mine_calls should eq "--line $line --column $((column - 1)) $file ¶ "
           End
         End
 
@@ -188,9 +186,7 @@ Describe 'edit'
               The stdout should eq ''
               The stderr should eq ''
               The status should eq 0
-              # Revert after open_with_rubymine > TODO is fixed
-              # The variable mine_calls should eq "--line $line --column $((column - 1)) $file ¶ "
-              The variable mine_calls should eq "$file # :21 # :45 ¶ "
+              The variable mine_calls should eq "--line $line --column $((column - 1)) $file ¶ "
             End
 
             Context 'when the project is open in the editor'
