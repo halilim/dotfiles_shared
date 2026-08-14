@@ -40,7 +40,7 @@ alias gdnc='git diff --no-color'
 alias gdtc='git difftool --tool=code'
 
 # shellcheck disable=SC2139
-alias {gih,install_git_hooks}='git config core.hooksPath .githooks'
+alias {gih,git_install_hooks,install_git_hooks}='git config core.hooksPath .githooks'
 
 alias gg="git log -G '\Wchange_regex\W' -- old_or_current_path"
 # shellcheck disable=SC2139

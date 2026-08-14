@@ -81,6 +81,15 @@
 		],
 	},
 
+	"table": {
+		"prefix": "tbl",
+		"body": [
+			"| ${1:header1} | ${2:header2} |",
+			"| --- | --- |",
+			"| $0 |  |",
+		],
+	},
+
 	"todo list item": {
 		"prefix": "tdi",
 		"body": "- [ ] ",
