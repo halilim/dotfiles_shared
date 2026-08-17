@@ -21,17 +21,21 @@ files = Dir.glob(
 ).sort # rubocop:disable Lint/RedundantDirGlobSort
 
 files.reject! do |file|
-  file.end_with?(
+  next true if file.end_with?(
     '.applescript',
     '.p10k.zsh',
     '.rb',
     'ghostty_tab',
     'iterm_tab',
     'smerge'
-  ) ||
-    file.include?('osascript_') ||
-    file.include?('url_to_') ||
-    (File.size?(file) && File.open(file, &:readline) =~ /^#!.*\Wruby/)
+  )
+  next true if file.include?('osascript_')
+  next true if file.include?('url_to_')
+
+  if File.size?(file)
+    first_line = File.open(file, &:readline)
+    next true if first_line.start_with?('#!') && !first_line.include?('ruby')
+  end
 rescue StandardError => e
   warn "#{file}: #{e}"
   false

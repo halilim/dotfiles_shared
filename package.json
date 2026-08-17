@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@jxa/global-type": "^1.4.0"
+  }
+}

@@ -61,7 +61,7 @@ function d_setup_omz_custom() {
 
   local cmd='omz_install_custom' args=()
   if [[ $OSTYPE == 'darwin'* ]]; then
-    args=(iterm_tab "$cmd" "$PWD")
+    args=(iterm_tab "$PWD" "$cmd")
   else
     args=("$cmd")
   fi

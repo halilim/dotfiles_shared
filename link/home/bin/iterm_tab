@@ -1,19 +1,26 @@
-#!/usr/bin/osascript
+#!/usr/bin/env osascript -l JavaScript
 
-on run argv
-  tell application "iTerm"
-    tell current window
-      tell current session of (create tab with default profile)
-        delay 1
-        if count of argv > 0 then
-          write text "cd " & quoted form of first item of argv & "; clear; pwd"
+// @ts-ignore
+const { quote } = Library("jxa_shell.js");
 
-          repeat with i from 2 to length of argv
-            set theCurrentArg to item i of argv
-            write text theCurrentArg
-          end repeat
-        end if
-      end tell
-    end tell
-  end tell
-end run
+/**
+ * @param {string[]} argv
+ */
+function run(argv) {
+  const iTerm = Application("iTerm");
+  iTerm.includeStandardAdditions = true;
+  const currentWindow = iTerm.currentWindow();
+  const newTab = currentWindow.createTabWithDefaultProfile();
+  const newSession = newTab.currentSession();
+  if (argv.length > 0) {
+    const dir = argv[0];
+    if (dir != ".") {
+      newSession.write({ text: `cd ${quote(dir)}` });
+    }
+    const argvRest = argv.slice(1);
+    const isComment = /^\s*#/.test(argvRest[0]);
+    newSession.write({
+      text: isComment ? argvRest.join(" ") : quote(argvRest),
+    });
+  }
+}

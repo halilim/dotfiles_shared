@@ -139,10 +139,6 @@
     },
     {
         "key": "cmd+r",
-        "command": "extension.runPrevJest"
-    },
-    {
-        "key": "shift+cmd+r",
         "command": "code-runner.run"
     },
     {

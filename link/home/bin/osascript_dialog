@@ -1,8 +1,21 @@
-#!/usr/bin/osascript
+#!/usr/bin/env osascript -l JavaScript
 
-on run argv
-  if count of argv > 0 then
-    set theText to the first item of argv
-    display dialog theText buttons {"OK"} default button "OK"
-  end if
-end run
+ObjC.import("stdlib"); // $.exit
+
+/**
+ * @param {string[]} argv
+ */
+function run(argv) {
+  if (argv.length < 1) {
+    console.log("Usage: osascript_dialog <message>");
+    $.exit(1);
+    return;
+  }
+
+  const app = Application.currentApplication();
+  app.includeStandardAdditions = true;
+
+  const defaultButton = "OK";
+  const options = { buttons: [defaultButton], defaultButton };
+  app.displayDialog(argv[0], options);
+}

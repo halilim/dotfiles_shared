@@ -1,8 +1,9 @@
+AccessorMethodName
+binwrite
+boolean
 ClassAndModuleChildren
+datetime
 DirectLocationUsage
+MemoizedInstanceVariableName
 MethodLength
 PredicatePrefix
-AccessorMethodName
-MemoizedInstanceVariableName
-datetime
-boolean

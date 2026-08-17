@@ -115,21 +115,9 @@
   "editor.tabSize": 2,
 
   "editor.unicodeHighlight.allowedCharacters": {
-    "ç": true,
-    "Ç": true,
-    "ğ": true,
-    "Ğ": true,
     "ı": true,
-    "İ": true,
-    "ö": true,
-    "Ö": true,
-    "Ş": true,
-    "ş": true,
-    "ü": true,
-    "Ü": true,
   },
   "editor.unicodeHighlight.includeComments": true,
-  "editor.unicodeHighlight.nonBasicASCII": true,
 
   "editor.wordSeparators": "/\\()\"':,.;<>~!@#$%^&*|+=[]{}`?-",
   "editor.wordWrapColumn": 100,
@@ -174,7 +162,7 @@
     "{.inputrc,.shellspec,*.ctags,**/.githooks/*,**/.husky/*,/etc/defaults/**/*.conf,/etc/periodic/**/*.conf}": "shellscript",
     "{.jshintignore,**/.config/git/ignore*,**/.git*/**/info/exclude,**/*.ignore}": "ignore",
     "{.ruby-version,.tool-versions,**/.config/bat/config,default-gems}": "properties",
-    "{*.gitconfig*,**/.aws/credentials,**/*ghostty/config,**/btop.conf,**/php*/**/*.conf,pybritive.config}": "ini",
+    "{*.gitconfig*,**/.aws/credentials,**/*ghostty/config,**/btop.conf,pybritive.config}": "ini",
     "{*.jbuilder,aprc,Brewfile*}": "ruby",
     "{*.sublime-settings,*.tgn,**/*.it2snippets,**/chrome/exts/uBlock.txt}": "json",
     "{*.yml.*,**/*.sublime-syntax,**/.bundle/config}": "yaml",
@@ -184,7 +172,6 @@
     "*.erb.deface": "erb",
     "*.haml.deface": "haml",
     "*.mdx": "markdown",
-    "*.tpl.php": "smarty",
     "*.zone.txt": "zonefile",
     "**/.ssh/config*": "ssh_config",
     "**/logrotate.d/*.conf": "plaintext",
@@ -299,12 +286,6 @@
   "markdown.updateLinksOnFileMove.enabled": "always",
   "markdown.validate.enabled": true,
 
-  "phpcs.lintOnOpen": false,
-  "phpcs.lintOnSave": false,
-
-  "php.suggest.basic": false,
-  "php.validate.enable": false,
-
   "prettier.printWidth": 100,
   "prettier.singleQuote": true,
 
@@ -355,6 +336,14 @@
   "scss.lint.unknownVendorSpecificProperties": "warning",
 
   "security.workspace.trust.untrustedFiles": "open",
+
+  "shebang.associations": [
+    {
+      "pattern": "osascript -l JavaScript",
+      "language": "javascript"
+    }
+  ],
+
   "shellcheck.enable": false, // Provided by the Bash IDE extension now, duplicates warnings
   "shellcheck.enableQuickFix": true,
   "shellcheck.ignorePatterns": {
@@ -377,8 +366,6 @@
   "shellformat.flag": "--case-indent --indent 2 --keep-padding --space-redirects",
   "shellformat.path": "/opt/homebrew/bin/shfmt",
   // "shellformat.useEditorConfig": true, // This only recognizes files ending in .sh
-
-  "solargraph.formatting": true,
 
   "svg.preview.mode": "svg",
 
@@ -511,8 +498,6 @@
   "vscode-yaml-sort.emptyLinesUntilLevel": 1,
   "vscode-yaml-sort.useLeadingDashes": false,
 
-  "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
-
   "window.autoDetectColorScheme": true,
   "window.newWindowDimensions": "maximized",
 
@@ -550,40 +535,6 @@
     "textMateRules": []
   },
 
-  // TODO: ["theme name"][...]-> `Property ... is not allowed.`: https://github.com/microsoft/vscode/issues/328165
-
-  "workbench.colorCustomizations": {
-    "[Default Light+]": {
-      "editorCursor.foreground": "#999"
-    },
-    "[Solarized Dark]": {
-      "editorCursor.foreground": "#cba"
-    },
-    "[Solarized Light]": {
-      "editorCursor.foreground": "#fcc"
-    },
-
-    // [({[({[]})]})]
-
-    "[* Dark][Spinel]": {
-      "editorBracketHighlight.foreground1": "#ffd700",
-      "editorBracketHighlight.foreground2": "#da70d6",
-      "editorBracketHighlight.foreground3": "#87cefa",
-      "editorBracketHighlight.foreground4": "#ffa500",
-      "editorBracketHighlight.foreground5": "#33b0ff",
-      "editorBracketHighlight.foreground6": "#af00ff"
-    },
-
-    "[* Light]": {
-      "editorBracketHighlight.foreground1": "#87af87",
-      "editorBracketHighlight.foreground2": "#af00d7",
-      "editorBracketHighlight.foreground3": "#0000ff",
-      "editorBracketHighlight.foreground4": "#ff8700",
-      "editorBracketHighlight.foreground5": "#33b0ff",
-      "editorBracketHighlight.foreground6": "#800080"
-    }
-  },
-
   "workbench.diffEditorAssociations": {
     "*.md": "vscode.markdown.preview.editor"
   },
@@ -596,7 +547,7 @@
     "*.ipynb": "jupyter-notebook",
     "*.plist": "default"
   },
-  "workbench.iconTheme": "catppuccin-macchiato",
+  "workbench.iconTheme": "catppuccin-latte",
   "workbench.preferredDarkColorTheme": "Catppuccin Macchiato",
   "workbench.preferredLightColorTheme": "Catppuccin Latte",
   "workbench.secondarySideBar.defaultVisibility": "hidden",

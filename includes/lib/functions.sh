@@ -405,6 +405,21 @@ function shorten_path() {
   echo "${1/#$HOME/~}"
 }
 
+# Returns newline-separated window names
+function window_names() {
+  local process_str=$1 app=${2:-$1}
+
+  if DRY_RUN='' echo_eval pgrep -f "$process_str" '>/dev/null 2>&1'; then
+    if [[ $OSTYPE == darwin* ]]; then
+      window_names_mac "$app"
+    elif [[ $OSTYPE == linux* ]]; then
+      echo >&2 'Not implemented'
+      return 1
+      # window_names_linux "$app"
+    fi
+  fi
+}
+
 function yaml_lint() {
   # https://mikefarah.gitbook.io/yq/upgrading-from-v3#validate-documents
   # https://mikefarah.gitbook.io/yq/usage/tips-and-tricks#validating-yaml-files

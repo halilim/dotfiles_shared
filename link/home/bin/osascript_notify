@@ -1,14 +1,23 @@
-#!/usr/bin/osascript
+#!/usr/bin/env osascript -l JavaScript
 
-on run argv
-  if count of argv > 0 then
-    set theText to the first item of argv
+ObjC.import("stdlib"); // $.exit
 
-    set theTitle to ""
-    if count of argv > 1 then
-      set theTitle to the second item of argv
-    end if
+/**
+ * @param {string[]} argv
+ */
+function run(argv) {
+  if (argv.length < 1) {
+    console.log("Usage: osascript_notify <message> [title]");
+    $.exit(1);
+    return;
+  }
 
-    display notification theText with title theTitle
-  end if
-end run
+  const app = Application.currentApplication();
+  app.includeStandardAdditions = true;
+
+  let options = {};
+  if (argv.length > 1) {
+    options.withTitle = argv[1];
+  }
+  app.displayNotification(argv[0], options);
+}

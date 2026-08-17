@@ -1,0 +1,25 @@
+#!/usr/bin/env osascript -l JavaScript
+
+/// <reference path="../../../node_modules/@jxa/global-type/src/index.d.ts" />
+
+ObjC.import("stdlib"); // $.exit
+
+/**
+ * @param {string[]} argv
+ */
+function run(argv) {
+  if (argv.length < 1) {
+    console.log("Usage: window_names_mac <app name>");
+    $.exit(1);
+    return;
+  }
+
+  const systemEvents = Application("System Events");
+  const process = systemEvents.processes.byName(argv[0]);
+  const windows = process.windows;
+  let names = [];
+  for (let i = 0, len = windows.length; i < len; i++) {
+    names.push(windows[i].name());
+  }
+  return names.join("\n");
+}

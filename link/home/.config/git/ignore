@@ -100,6 +100,8 @@ cscope.po.out
 # jest-junit
 junit.xml
 
+node_modules
+
 # Yarn
 .pnp.cjs
 .pnp.loader.mjs

@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -euo pipefail
+if [[ ${SET_X:-} ]]; then
+  set -x
+fi
+IFS=$'\n\t'
+
+curl -fsSL https://git.io/shellspec | sh -s latest.tar.gz --bin /usr/local/bin --yes
+echo "ShellSpec version: $(shellspec --version)"
+exec bash

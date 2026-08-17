@@ -5,6 +5,7 @@ export LANG='en_US.UTF-8'
 export LC_ALL='en_US.UTF-8'
 
 alias fdns='sudo killall -HUP mDNSResponder' # cSpell:ignore fdns
+alias jxa='osascript -il JavaScript' # REPL
 alias lc="launchctl"
 alias open_from_iterm_debug='open_from_iterm --debug'
 
@@ -35,14 +36,3 @@ function quick_look() {
   qlmanage -p "$1" > /dev/null 2>&1
 }
 alias ql="quick_look"
-
-# Returns: `foo, bar`
-function window_names() {
-  local process_str=$1 app=${2:-$1}
-
-  if DRY_RUN='' echo_eval pgrep -f "$process_str" '>/dev/null 2>&1'; then
-    DRY_RUN='' echo_eval osascript -e \
-      "tell application \"System Events\" to get name of every window of (process \"$app\")" \
-      2> /dev/null
-  fi
-}
