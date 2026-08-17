@@ -104,6 +104,9 @@ export UPDATE_BACKUP_CMDS=(
   update_ruby_bundler_and_system
 )
 
+# Needs to be before platform-specific envs below, since they depend on some declarations in it
+source_custom env.sh
+
 if [[ $OSTYPE == darwin* ]]; then
   source_with_custom mac_env.sh
 elif [[ $OSTYPE == linux* ]]; then
@@ -125,8 +128,6 @@ append_path "$HOME"/bin
 export RI="--format ansi"
 
 export RIPGREP_CONFIG_PATH="$DOTFILES_SHARED/.ripgreprc"
-
-source_custom env.sh
 
 # Put the manual/external steps at the end
 UPDATE_BACKUP_CMDS+=(
