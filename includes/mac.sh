@@ -28,8 +28,12 @@ function mac_set_screenshot_format() {
 
 # https://www.jetbrains.com/help/ruby/working-with-the-ide-features-from-command-line.html#standalone
 function mine() {
-  # Without n (new), it doesn't navigate to the file
-  echo_eval open -na RubyMine --args nosplash "$@"
+  local args=("$@")
+  if [[ ${#args} -eq 0 ]]; then
+    args=(.)
+  fi
+  # Without -n (new), it doesn't navigate to the file
+  echo_eval open -na RubyMine --args nosplash "${args[@]}"
 }
 
 function quick_look() {

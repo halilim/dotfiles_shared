@@ -494,46 +494,11 @@
     { "before": ["leader", "c", "space"], "commands": ["editor.action.commentLine"] }
   ],
 
-
   "vscode-yaml-sort.emptyLinesUntilLevel": 1,
   "vscode-yaml-sort.useLeadingDashes": false,
 
   "window.autoDetectColorScheme": true,
   "window.newWindowDimensions": "maximized",
-
-  // cSpell:ignore matchtext
-  "editor.tokenColorCustomizations": {
-    "[*Light*]": {
-      "textMateRules": [
-        {
-          "scope": "ref.matchtext",
-          "settings": {
-            "foreground": "#000"
-          }
-        }
-      ]
-    },
-    "[*Dark*]": {
-      "textMateRules": [
-        {
-          "scope": "ref.matchtext",
-          "settings": {
-            "foreground": "#fff"
-          }
-        }
-      ]
-    },
-    "[Quiet Light]": {
-      "comments": "#777"
-    },
-    "[Solarized Dark]": {
-      "comments": "#899Ea5"
-    },
-    "[Solarized Light]": {
-      "comments": "#435151"
-    },
-    "textMateRules": []
-  },
 
   "workbench.diffEditorAssociations": {
     "*.md": "vscode.markdown.preview.editor"

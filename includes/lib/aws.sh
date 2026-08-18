@@ -1,4 +1,7 @@
-# s3_explore S3Mock pro-core.com-staging
+# s3_explore S3Mock bucket-name
+# Rails console alternative:
+#   s3 = Aws::S3::Client.new
+#   resp = s3.list_objects_v2(bucket: 'bucket-name')
 function s3_explore() {
   local profile=${1?} bucket=${2?} ls_key_col=5
 

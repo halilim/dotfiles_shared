@@ -5,15 +5,6 @@ Include includes/lib/functions.sh
 export GNU_DIRNAME=${GNU_DIRNAME:-dirname}
 export GNU_REALPATH=${GNU_REALPATH:-realpath}
 
-Describe 'edit without args'
-  It 'prints usage and returns 1'
-    When run edit
-    The stdout should eq ''
-    The stderr should include 'Usage'
-    The status should eq 1
-  End
-End
-
 Describe 'edit'
   # NOTE: Prefix variable names with `test_` to avoid collisions with code under test
 
@@ -98,6 +89,17 @@ Describe 'edit'
     esac
   }
   # End: Mocks
+
+  Context 'without args'
+    It 'opens .'
+      When run edit
+      The stdout should eq ''
+      The stderr should eq ''
+      The status should eq 0
+      The variable test_open_with_editor_calls should eq '. ¶ '
+      The variable test_mine_calls should eq ''
+    End
+  End
 
   Context 'with an existing directory'
     It 'opens it with editor'

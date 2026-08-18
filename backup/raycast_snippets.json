@@ -63,5 +63,10 @@
     "keyword": ";rme",
     "name": "Ruby methods",
     "text": ".methods.select { |m| m.to_s =~ /{argument name=\"pattern\"}/i }"
+  },
+  {
+    "keyword": ";tdi",
+    "name": "Markdown TODO item",
+    "text": "- [ ] "
   }
 ]

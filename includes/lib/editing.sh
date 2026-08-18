@@ -1,9 +1,9 @@
 alias libe='$EDITOR "$DOTFILES_INCLUDES"/lib/editing.sh' # cSpell:ignore libe
 
 function edit() {
-  if [[ $# -eq 0 ]]; then
-    echo >&2 'Usage: edit file1:line:column [file2:line2:column2 ...]'
-    return 1
+  local args=("$@")
+  if [[ ${#args} -eq 0 ]]; then
+    args=(.)
   fi
 
   local silent=1 verbose=''
@@ -21,7 +21,7 @@ function edit() {
   local ct=0 arg arg_path line column \
     dir_name is_new real_abs_path is_link base_name real_abs_dir_path real_abs_path_line_col
 
-  for arg in "$@"; do
+  for arg in "${args[@]}"; do
     if [[ $verbose && $ct -gt 0 ]]; then
       echo >&2 '-------'
     fi
