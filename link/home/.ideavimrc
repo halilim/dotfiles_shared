@@ -50,6 +50,7 @@ map g] <Action>(QuickImplementations)
 
 " https://plugins.jetbrains.com/plugin/16166-toggler
 map - <Action>(ToggleAction)
+map = <Action>(ToggleAction)
 map + <Action>(ToggleActionReverse)
 
 function! CopyGitPath()

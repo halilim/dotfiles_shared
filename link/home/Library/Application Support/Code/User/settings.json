@@ -415,6 +415,9 @@
   "vim.visualstar": true,
 
   "vim.normalModeKeyBindings": [
+    { "before": ["/"], "commands": ["actions.find"] },
+
+    { "before": ["-"], "commands": ["extension.toggle"] },
     { "before": ["="], "commands": ["extension.toggle"] },
 
     { "before": ["[", "m"], "commands": ["gotoNextPreviousMember.nextMember"] },
@@ -469,6 +472,8 @@
       "before": ["leader", "leader", "k"],
       "commands": ["workbench.action.openGlobalKeybindingsFile"]
     },
+    { "before": ["leader", "leader", "s"], "commands": ["workbench.action.openSnippets"] },
+
     { "before": ["leader", "r"], "commands": ["editor.action.rename"] },
     { "before": ["leader", "t"], "commands": ["workbench.action.gotoSymbol"] },
     { "before": ["leader", "T"], "commands": ["workbench.action.showAllSymbols"] },
@@ -477,11 +482,7 @@
     // Toggle TODO checkbox [ ] <-> [x]
     {
       "before": ["leader", "x"],
-      "commands": [{
-        "command": "extension.filterTextInplace",
-        "args": { "cmd": "gsed -E 's/\\[ \\]/[x]/g; t; s/\\[x\\]/[ ]/g'" },
-        "when": "editorLangId == markdown"
-      }]
+      "after": ["r", "x"]
     },
 
     // Workaround for https://github.com/VSCodeVim/Vim/issues/1490
@@ -491,7 +492,17 @@
   ],
 
   "vim.visualModeKeyBindings": [
-    { "before": ["leader", "c", "space"], "commands": ["editor.action.commentLine"] }
+    { "before": ["leader", "c", "space"], "commands": ["editor.action.commentLine"] },
+
+    // Toggle TODO checkbox [ ] <-> [x]
+    {
+      "before": ["leader", "x"],
+      "commands": [{
+        "command": "extension.filterTextInplace",
+        "args": { "cmd": "gsed -E 's/^([-*]\\s+)\\[ \\]/\\1[x]/; t; s/^([-*]\\s+)\\[x\\]/\\1[ ]/'" },
+        "when": "editorLangId == markdown"
+      }]
+    },
   ],
 
   "vscode-yaml-sort.emptyLinesUntilLevel": 1,

@@ -24,16 +24,28 @@ RSpec.describe Tabulator do
       end
       let(:cols) { %i[id title long_title] }
 
-      it 'outputs a table' do
-        expect(the_call).to eq(
-          <<~OUTPUT
-            id│title      │long_title
-            ──┼───────────┼──────────
-            1 │Bar baz qux│yay
-            2 │Baz        │nay
-            (2 rows in set)
-          OUTPUT
-        )
+      shared_examples 'output table' do
+        it 'outputs a table' do
+          expect(the_call).to eq(
+            <<~OUTPUT
+              id│title      │long_title
+              ──┼───────────┼──────────
+              1 │Bar baz qux│yay
+              2 │Baz        │nay
+              (2 rows in set)
+            OUTPUT
+          )
+        end
+      end
+
+      include_examples 'output table'
+
+      context 'without IRB' do
+        before do
+          allow(Kernel).to receive(:require).with('irb').and_raise(LoadError)
+        end
+
+        include_examples 'output table'
       end
 
       context 'with markdown format' do

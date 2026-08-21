@@ -36,7 +36,7 @@ alias dcds='cd $DOTFILES_SHARED'
 alias di='dotfiles import'
 alias dic='dotfiles import custom'
 alias dis='dotfiles import shared'
-alias dot='dotfiles edit'
+alias dot='open_with_editor "$DOTFILES"'
 alias dri='dotfiles revert_import'
 alias drir='dotfiles revert_import_and_remove'
 alias ds='dotfiles sync'
@@ -54,6 +54,8 @@ alias f='fd -t f'
 alias fh='fd -t f --hidden'
 alias ft="fd --no-ignore -t f '^tags$'"
 
+alias ghb='gh browse'
+
 alias ghostty_logs='log stream --level debug --predicate '\''subsystem=="com.mitchellh.ghostty"'\'''
 
 alias h='http'
@@ -62,6 +64,9 @@ alias hhnv='http --headers --verify=no'
 alias hnv='http --verify=no'
 
 alias hd='bat --line-range=0:10'
+
+# shellcheck disable=SC2139
+alias {hostconf,hosts,edit_hosts}='$EDITOR "$DOTFILES_CUSTOM"/hosts' # cSpell:disable-line
 
 alias ic='imgcat'
 alias k9='kill -9'
@@ -141,18 +146,29 @@ alias {rgsw,rgwc,rgws}='rg -sw' # Word and case sensitive
 
 alias shc='shellcheck'
 
-shellspec_cmd="shellspec --pattern '*_spec.*sh'"
+function shellspec_() {
+  if [[ -e bin/run_shellspec ]]; then
+    bin/run_shellspec "$@"
+  else
+    local args=(--pattern '*_spec.*sh')
+    if [[ ${BASH_ONLY:=} ]]; then
+      args+=(-s bash)
+    elif [[ ${ZSH_ONLY:=} ]]; then
+      args+=(-s zsh)
+    fi
+    echo_eval shellspec "${args[@]}" "$@"
+  fi
+}
 # shellcheck disable=SC2139
-alias shs="$shellspec_cmd"
+alias shs="shellspec_"
 # shellcheck disable=SC2139
-alias {shsd,shsfd}="$shellspec_cmd -f d"
+alias {shsd,shsfd}="shellspec_ -f d"
 # shellcheck disable=SC2139
-alias shss="$shellspec_cmd -s sh"
+alias shss="BASH_ONLY=1 shellspec_"
 # shellcheck disable=SC2139
-alias shsz="$shellspec_cmd -s zsh"
+alias shsz="ZSH_ONLY=1 shellspec_"
 # shellcheck disable=SC2139
-alias shsdz="$shellspec_cmd -f d -s zsh"
-unset shellspec_cmd
+alias shsdz="ZSH_ONLY=1 shellspec_ -f d"
 
 alias spt='$SPEEDTEST_CMD'
 

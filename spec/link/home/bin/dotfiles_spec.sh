@@ -98,6 +98,8 @@ Describe "$script"
       The contents of file "$bootstrap_file" should include "declare -x DOTFILES_INCLUDES=\"$shared_dir/includes\""
       The contents of file "$bootstrap_file" should include "declare -x DOTFILES_CUSTOM=\"$custom_dir\""
 
+      The path "$dotfiles_dir/${PROJECT_ROOT?}" should be exist
+
       The status should eq 0
     End
   End

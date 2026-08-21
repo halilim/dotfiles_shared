@@ -1,6 +1,19 @@
 # frozen_string_literal: true
 
-require 'irb'
+begin
+  # Not a default gem as of Ruby 4
+  require 'irb'
+rescue LoadError
+  module ::IRB
+    class Color
+      def self.colorize(text, _colors)
+        text
+      end
+    end
+  end
+end
+
+# reline is not a default gem either, but Both IRB and Pry require it
 require 'reline'
 
 # Displays a DB style table for a list of ActiveRecord objects, hashes, or arrays. Limits the

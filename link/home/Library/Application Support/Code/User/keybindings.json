@@ -142,6 +142,11 @@
         "command": "code-runner.run"
     },
     {
+        "key": "cmd+r",
+        "command": "extension.runOnLastSpec",
+        "when": "resourceFilename =~ /_spec\\.rb$/"
+    },
+    {
         "key": "ctrl+alt+n",
         "command": "-code-runner.run"
     },

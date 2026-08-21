@@ -148,8 +148,18 @@ alias {rar,rbr}='rails_request'
 
 function rails_request_find() {
   local method=${1?} uri_and_format=${2?} regex_suffix=${3?}
-  rg "Verb\s*\|\s*$method\nURI\s*\|\s*$(ruby_escape_regex "$uri_and_format")\nController#Action$regex_suffix" \
-    --multiline --no-line-number --only-matching --replace '$1' $RAILS_ROUTE_CACHE
+  local controller_action
+  controller_action=$(
+    rg "Verb\s*\|\s*$method\nURI\s*\|\s*$(ruby_escape_regex "$uri_and_format")\nController#Action$regex_suffix" \
+      --multiline --no-line-number --only-matching --replace '$1' $RAILS_ROUTE_CACHE
+  )
+
+  if [[ $(echo "$controller_action" | wc -l) -gt 1 ]]; then
+    warn 'Found multiple controller-action pairs, using the first one'
+    controller_action=$(echo "$controller_action" | head -n 1)
+  fi
+
+  echo "$controller_action"
 }
 
 # Roll back branch-specific migrations before switching to main

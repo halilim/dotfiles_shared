@@ -1,11 +1,5 @@
-COLOR_PREFIX='\033['
-COLOR_RESET="${COLOR_PREFIX}0m"
-if [ -n "${ZSH_VERSION:-}" ]; then
-  declare -rx COLOR_PREFIX COLOR_RESET
-else
-  readonly COLOR_PREFIX COLOR_RESET
-  export COLOR_PREFIX COLOR_RESET
-fi
+export COLOR_PREFIX='\033['
+export COLOR_RESET="${COLOR_PREFIX}0m"
 
 function color() {
   if [[ $# -lt 2 ]]; then

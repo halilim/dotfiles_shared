@@ -1,5 +1,7 @@
 alias libe='$EDITOR "$DOTFILES_INCLUDES"/lib/editing.sh' # cSpell:ignore libe
 
+export PROJECT_ROOT='.project_root'
+
 function edit() {
   local args=("$@")
   if [[ ${#args} -eq 0 ]]; then
@@ -119,7 +121,11 @@ function edit() {
     ct=$((ct + 1))
   done
 }
-alias e='edit'
+# alias e='edit'
+# When manually using e in the command line, `pgrep -f RubyMine` takes some time if it's not running.
+# I can directly call mine (m) or code (c) since I already know my intention.
+# open_from_iterm will continue using the full-fledged `edit`, since Cmd+click doesn't carry an intent.
+alias e='open_with_editor'
 
 function _should_edit_in_rubymine() {
   local editor_titles=$1 \
@@ -213,7 +219,7 @@ function get_editor_titles() {
 }
 
 function get_project_root_path() {
-  local dir=${1:-.} sentinel='.project_root' previous_dir
+  local dir=${1:-.} previous_dir
   dir=$($GNU_REALPATH "$dir" -s)
 
   while [[ $dir != '/' && $dir != '~' ]]; do
@@ -221,7 +227,7 @@ function get_project_root_path() {
       echo >&2 "dir=|$dir|"
     fi
 
-    if [[ -e "$dir/$sentinel" ]]; then
+    if [[ -e "$dir/$PROJECT_ROOT" ]]; then
       echo "$dir"
       return
     fi
@@ -230,7 +236,7 @@ function get_project_root_path() {
     dir=$(dirname "$dir")
     if [[ $dir == "$previous_dir" ]]; then
       if [[ ${DEBUG:-} || ${VERBOSE:-} ]]; then
-        echo >&2 "Recursion detected while searching for $sentinel (dir=$dir, previous_dir=$previous_dir)"
+        echo >&2 "Recursion detected while searching for $PROJECT_ROOT (dir=$dir, previous_dir=$previous_dir)"
       fi
       return 1
     fi
@@ -348,9 +354,20 @@ function open_with_rubymine() {
 }
 
 function open_with_editor() {
-  local cmd_args=()
+  local args=("$@") cmd_args=()
 
-  if [[ $EDITOR == code || $EDITOR == */code || $EDITOR == code-insiders || $EDITOR == */code-insiders ]]; then
+  if [[ ${#args} -eq 0 ]]; then
+    args=(.)
+  fi
+
+  if is_editor_vscode || is_editor_vscode_insiders; then
+    # shellcheck disable=SC2124
+    local first_arg="${args[@]:0:1}" code_workspace
+    if [[ $first_arg && -d $first_arg ]] && code_workspace=$(find "$first_arg" -name '*.code-workspace' -maxdepth 1 -print -quit | grep -q .); then
+      # shellcheck disable=SC2124
+      args[ARRAY_START+0]=$code_workspace
+    fi
+
     # https://code.visualstudio.com/docs/editor/command-line#_core-cli-options
     # https://github.com/microsoft/vscode/issues/176343 No multiple -g's :(
     cmd_args=("$EDITOR" -g)
@@ -358,5 +375,5 @@ function open_with_editor() {
     cmd_args=("$OPEN_CMD")
   fi
 
-  echo_eval "${cmd_args[@]}" "$@"
+  echo_eval "${cmd_args[@]}" "${args[@]}"
 }

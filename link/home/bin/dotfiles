@@ -33,21 +33,9 @@ function d_bootstrap() {
   echo_eval printf %s "$bootstrap" '>' "$HOME_DIR"/.dotfiles_bootstrap.sh
 }
 
-function d_edit() {
-  # shellcheck disable=SC1091
-  . "$DOTFILES_INCLUDES"/lib/editing.sh
-
-  local target code_workspace
-  if is_editor_vscode && code_workspace=$(find "$DOTFILES" -name '*.code-workspace' -maxdepth 1 -print -quit); then
-    target=$code_workspace
-  else
-    target=$DOTFILES
-  fi
-
-  open_with_editor "$target"
-}
-
 function d_setup() {
+  touch "${DOTFILES?}"/"${PROJECT_ROOT?}"
+
   d_sync all
 
   d_setup_omz_custom
@@ -255,13 +243,16 @@ function _d_revert_path() {
     return 1
   fi
 
-  local cmd
+  local cmd files=("$dotfile_path" "$orig_path")
   if [[ ${REMOVE:-''} ]]; then
     cmd='rm'
+    if ! COLOR=yellow prompt "Delete?\n- $(join_array "\n- " "${files[@]}")\n"; then
+      return
+    fi
   else
     cmd='mv'
   fi
-  _d_echo_eval_with_sudo $cmd "$dotfile_path" "$orig_path"
+  _d_echo_eval_with_sudo $cmd "${files[@]}"
 
   # Remove empty directories in the dotfiles folder recursively until the link root
   local dotfile_dir
@@ -557,7 +548,6 @@ USAGE_BASE="Usage: $(color 'green' "$DOTFILES_CMD")"
 
 case "${1:-''}" in
   bootstrap) d_bootstrap ;;
-  edit) d_edit ;;
   setup) d_bootstrap && d_setup ;;
   sync) d_sync "${2:-}" ;;
   update) d_update ;;

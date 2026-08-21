@@ -23,6 +23,9 @@ Metrics/ModuleLength:
 RSpec/ExampleLength:
   CountAsOne: ["array", "hash", "heredoc", "method_call"]
 
+RSpec/IncludeExamples:
+  Enabled: false
+
 RSpec/NestedGroups:
   Max: 5
 

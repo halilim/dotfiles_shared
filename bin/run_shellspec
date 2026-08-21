@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 set -euo pipefail
-IFS=$'\n\t'
 
 # shellcheck disable=SC1091
 . includes/lib/colors.sh
@@ -49,24 +48,14 @@ else
   zsh_specs_to_run=("${zsh_specs[@]}")
 fi
 
-if [[ ${DRY_RUN:-} ]]; then
-  if [[ ! ${ZSH_ONLY:-} ]]; then
-    echo 'Bash specs:'
-    printf '%s\n' "${bash_specs_to_run[@]}" "$@" | sort
-  fi
+cmd=(shellspec --pattern '*_spec.*sh' -s)
 
-  if [[ ! ${BASH_ONLY:-} ]]; then
-    printf '\nZsh specs:\n'
-    printf '%s\n' "${zsh_specs_to_run[@]}" "$@" | sort
-  fi
-else
-  pattern='*_spec.*sh'
+if [[ ! ${ZSH_ONLY:-} ]]; then
+  echo_eval "${cmd[@]}" bash "$@" _safe_"$(join_array ' \
+  ' "${bash_specs_to_run[@]}")"
+fi
 
-  if [[ ! ${ZSH_ONLY:-} ]]; then
-    shellspec --shell bash --pattern "$pattern" "${bash_specs_to_run[@]}" "$@"
-  fi
-
-  if [[ ! ${BASH_ONLY:-} ]]; then
-    shellspec --shell zsh --pattern "$pattern" "${zsh_specs_to_run[@]}" "$@"
-  fi
+if [[ ! ${BASH_ONLY:-} ]]; then
+  echo_eval "${cmd[@]}" zsh "$@" _safe_"$(join_array ' \
+  ' "${zsh_specs_to_run[@]}")"
 fi

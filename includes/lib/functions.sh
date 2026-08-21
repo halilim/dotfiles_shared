@@ -152,14 +152,6 @@ function get_tmp_dir() {
   realpath "$TMPDIR"
 }
 
-function hosts_edit() {
-  # sudo inside VSCode only accepts password and not Touch ID
-  # Editing the hard link ($DOTFILES_CUSTOM/hosts) doesn't work
-  echo_eval sudo vim /etc/hosts
-}
-# shellcheck disable=SC2139
-alias {hostconf,hosts,edit_hosts}='hosts_edit' # cSpell:disable-line
-
 function hosts_link() {
   local custom_hosts="$DOTFILES_CUSTOM/hosts" system_hosts='/etc/hosts'
   if [[ ! -e "$custom_hosts" ]]; then
@@ -316,13 +308,14 @@ function read_prompt() {
   local question="${1:?}" is_secure="${2:-}" params=()
   [[ $is_secure ]] && params+=(-s)
 
+  color_ "${COLOR:-}" "$question"
+
   if [ -n "${ZSH_VERSION:-}" ]; then
     # shellcheck disable=SC2162
-    read >&2 "${params[@]}" "REPLY?$question"
+    read >&2 "${params[@]}" 'REPLY'
 
   elif [ -n "${BASH_VERSION:-}" ]; then
-    # shellcheck disable=SC2229
-    read >&2 -r -p "$question" "${params[@]}"
+    read >&2 -r "${params[@]}"
   fi
 }
 
@@ -403,6 +396,10 @@ alias are_hardlinks='same_inode'
 
 function shorten_path() {
   echo "${1/#$HOME/~}"
+}
+
+function warn() {
+  color >&2 yellow "$1"
 }
 
 # Returns newline-separated window names
