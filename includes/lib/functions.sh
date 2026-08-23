@@ -308,7 +308,7 @@ function read_prompt() {
   local question="${1:?}" is_secure="${2:-}" params=()
   [[ $is_secure ]] && params+=(-s)
 
-  color_ "${COLOR:-}" "$question"
+  color_ >&2 "${COLOR:-}" "$question"
 
   if [ -n "${ZSH_VERSION:-}" ]; then
     # shellcheck disable=SC2162

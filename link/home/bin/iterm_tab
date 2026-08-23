@@ -3,6 +3,9 @@
 // @ts-ignore
 const { quote } = Library("jxa_shell.js");
 
+// @ts-ignore
+const { getEnv } = Library("jxa_utils.js");
+
 /**
  * @param {string[]} argv
  */
@@ -18,9 +21,9 @@ function run(argv) {
       newSession.write({ text: `cd ${quote(dir)}` });
     }
     const argvRest = argv.slice(1);
-    const isComment = /^\s*#/.test(argvRest[0]);
     newSession.write({
-      text: isComment ? argvRest.join(" ") : quote(argvRest),
+      text: argvRest.join(" "),
+      newline: getEnv("NEWLINE") || "YES",
     });
   }
 }

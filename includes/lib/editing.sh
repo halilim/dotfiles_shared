@@ -362,10 +362,13 @@ function open_with_editor() {
 
   if is_editor_vscode || is_editor_vscode_insiders; then
     # shellcheck disable=SC2124
-    local first_arg="${args[@]:0:1}" code_workspace
-    if [[ $first_arg && -d $first_arg ]] && code_workspace=$(find "$first_arg" -name '*.code-workspace' -maxdepth 1 -print -quit | grep -q .); then
-      # shellcheck disable=SC2124
-      args[ARRAY_START+0]=$code_workspace
+    local first_arg="${args[@]:0:1}"
+    if [[ $first_arg && -d $first_arg ]]; then
+      local code_workspace
+      code_workspace=$(find "$first_arg" -name '*.code-workspace' -maxdepth 1 -print -quit)
+      if [[ $code_workspace ]]; then
+        args[ARRAY_START+0]=$code_workspace
+      fi
     fi
 
     # https://code.visualstudio.com/docs/editor/command-line#_core-cli-options

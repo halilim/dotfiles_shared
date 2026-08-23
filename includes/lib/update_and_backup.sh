@@ -59,10 +59,10 @@ function update_bat_syntaxes() {
       submodule_path=$(cut -d '|' -f 1 <<< "$submodule")
       branch=$(cut -d '|' -f 2 <<< "$submodule")
       echo_eval git submodule set-branch -b "$branch" "$submodule_path"
-      echo_eval git -C "$submodule_path" checkout "$branch"
+      echo_eval git -C "$submodule_path" checkout -q "$branch"
     done
 
-    echo_eval git submodule foreach --recursive git pull --prune
+    echo_eval git submodule foreach -q --recursive git pull -q --prune
   )
 
   bat_rebuild_syntaxes

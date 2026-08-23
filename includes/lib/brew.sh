@@ -1,5 +1,7 @@
 # See also: OMZ/brew plugin
-:
+
+: # https://github.com/koalaman/shellcheck/issues/1877
+
 export HOMEBREW_NO_AUTO_UPDATE=1 # Covered by update_and_backup ($UPDATE_BACKUP_CMDS)
 export HOMEBREW_NO_ENV_HINTS=1
 

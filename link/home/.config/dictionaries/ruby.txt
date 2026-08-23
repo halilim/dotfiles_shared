@@ -1,6 +1,7 @@
 AccessorMethodName
 binwrite
 boolean
+bytesize
 ClassAndModuleChildren
 datetime
 DirectLocationUsage
@@ -8,3 +9,4 @@ MemoizedInstanceVariableName
 MethodLength
 PredicatePrefix
 unshift
+webrick

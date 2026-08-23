@@ -30,7 +30,7 @@ function http_header_value() {
 }
 
 function my_external_ip() {
-  # Doesn't recognize proxy (Caches the result?)
+  # Doesn't recognize proxies (Caches the result?)
   # dig -4 TXT +short o-o.myaddr.l.google.com @ns1.google.com | tr -d '"'
   curl -fLs ifconfig.me
 }
@@ -42,17 +42,6 @@ function myip_whois() {
   echo_eval whois "$ip"
 }
 alias whois_myip='myip_whois'
-
-function nc_http_dump() {
-  local port=${1:-8088} url
-  url="http://localhost:$port"
-  printf '%s' "$url" | $CLIP
-  echo "Listening on $url (copied to clipboard)"
-  printf 'Hit Ctrl-C to stop'
-  while printf '\n---\n'; do
-    echo -e 'HTTP/1.1 204 No Content\r\n' | nc -l "$port"
-  done
-}
 
 function port_check() {
   local ports=$1 \

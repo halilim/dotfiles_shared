@@ -523,7 +523,7 @@
     "*.ipynb": "jupyter-notebook",
     "*.plist": "default"
   },
-  "workbench.iconTheme": "catppuccin-latte",
+  "workbench.iconTheme": "catppuccin-macchiato",
   "workbench.preferredDarkColorTheme": "Catppuccin Macchiato",
   "workbench.preferredLightColorTheme": "Catppuccin Latte",
   "workbench.secondarySideBar.defaultVisibility": "hidden",
@@ -589,6 +589,7 @@
   },
 
   "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff", // cSpell:disable-line
     "editor.formatOnType": true
   },
 

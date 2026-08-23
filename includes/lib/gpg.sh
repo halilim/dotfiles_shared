@@ -1,4 +1,3 @@
-
 # See also: omz.zsh > gpg-agent
 if [[ $- == *i* && ${TTY:-} ]]; then
   export GPG_TTY=$TTY
