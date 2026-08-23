@@ -67,6 +67,13 @@
 		],
 	},
 
+	"markdownlint disable": {
+		"prefix": "mld",
+		"body": [
+			"<!-- markdownlint-disable-next-line MD$0 -->"
+		],
+	},
+
 	"story/task/ticket description": {
 		"prefix": ["story", "task", "ticket", "jcd"],
 		"body": [

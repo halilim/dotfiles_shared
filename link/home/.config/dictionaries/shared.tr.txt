@@ -20,15 +20,18 @@ Hepiyi
 İNGİLİZ
 İnteraktif
 İsim
+İşlem
 İşlemleri
 İstisna
 İSTİSNA
 İSVİÇRE
+karşılastırma
 KOSGEB
 LEVASI
 LEYİ
 Limak
 MANATI
+Oyak
 PAKİSTAN
 RİYALİ
 RUBLESİ
@@ -37,6 +40,7 @@ Saltuklu
 STERLİNİ
 SUUDİ
 TCKN
+TCMB
 TEDAŞ
 Turkcell
 UEDAŞ

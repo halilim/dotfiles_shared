@@ -57,7 +57,7 @@
 
   {
     "name": "Google define word",
-    "shortcut": "def",
+    "shortcut": "d",
     "url": "{google:baseURL}search?q=define %s&{google:RLZ}{google:originalQueryForSuggestion}{google:assistedQueryStats}{google:searchFieldtrialParameter}{google:iOSSearchLanguage}{google:searchClient}{google:sourceId}{google:contextualSearchVersion}ie={inputEncoding}"
   },
 

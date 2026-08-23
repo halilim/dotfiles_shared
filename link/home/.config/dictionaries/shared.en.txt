@@ -1,3 +1,4 @@
+ACATS
 accessor
 acked
 actioncable
@@ -53,6 +54,8 @@ backfiller
 backfills
 backref
 backrefs
+backtest
+backtests
 badware
 bashdb
 bashrc
@@ -87,6 +90,7 @@ buildx
 bunx
 byebug
 caddyserver
+CAGR
 callout
 canonicalize
 canva
@@ -99,6 +103,7 @@ cellspacing
 certdir
 chacha
 charlock
+checkmark
 checkwinsize
 chezmoi
 chsh
@@ -120,6 +125,7 @@ codeium
 codeowners
 coderay
 Codeship
+Colab
 colima
 colorsaurus
 commissionable
@@ -198,6 +204,7 @@ dpkg
 dport
 dports
 drawdown
+drawdowns
 dropdowns
 Dyno
 Dynos
@@ -600,6 +607,7 @@ osxfuse
 osxkeychain
 OTel
 OTLP
+outperformance
 Ozgur
 Özgür
 packagecloud
@@ -790,6 +798,7 @@ snakeoil
 socat
 Solargraph
 Sonoma
+Sortino
 sparsebundle
 sparseimage
 specfile
@@ -891,6 +900,7 @@ UUIDs
 vcard
 VDSL
 vendored
+VFINX
 viml
 VimR
 vimrc
