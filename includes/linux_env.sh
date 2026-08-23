@@ -26,8 +26,8 @@ if [[ -r /etc/lsb-release ]]; then
     OMZ_PLUGINS+=(ubuntu)
 
     UPDATE_BACKUP_CMDS+=(
-      'sudo apt update'
-      'sudo apt upgrade -y'
+      'sudo apt update -qq'
+      'sudo apt upgrade -qq'
     )
 
     POST_INIT_HOOKS+=(
