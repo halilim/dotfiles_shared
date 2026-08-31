@@ -6,7 +6,7 @@ permissions:
 jobs:
   ruby:
     name: Ruby
-    runs-on: ubuntu-slim
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         ruby-version: ['4.0', '3.4']

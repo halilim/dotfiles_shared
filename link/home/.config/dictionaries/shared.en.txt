@@ -885,6 +885,7 @@ unpair
 unscope
 unsetenv
 unstaged
+updateable
 uplevel
 upsert
 upserted

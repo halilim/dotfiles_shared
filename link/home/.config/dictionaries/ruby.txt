@@ -5,6 +5,7 @@ bytesize
 ClassAndModuleChildren
 datetime
 DirectLocationUsage
+gettime
 MemoizedInstanceVariableName
 MethodLength
 PredicatePrefix
