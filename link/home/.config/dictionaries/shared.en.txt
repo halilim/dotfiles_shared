@@ -309,6 +309,7 @@ Glassdoor
 globalias
 globalid
 globbing
+globoff
 Gmail
 gmktemp
 gnumfmt

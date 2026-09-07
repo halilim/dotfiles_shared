@@ -31,6 +31,8 @@ alias gco~='git checkout HEAD~ -- files'
 alias {gcof,git_checkout_file,git_recover_file}='git checkout abc123^ -- files # Find abc123 with glgn'
 alias gcom='git checkout $(git_main_branch)'
 
+# shellcheck disable=SC2139
+alias {gdc,gssc}='git diff --name-only --diff-filter=U' # conflicts-only diff/status
 alias gdh='git diff HEAD'
 alias gdh~='git diff HEAD~'
 alias gdhh='git diff HEAD~ HEAD'
