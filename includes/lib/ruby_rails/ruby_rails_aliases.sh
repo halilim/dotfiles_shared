@@ -49,7 +49,7 @@ alias rp='ruby -rpry -ramazing_print'
 # `rv` makes VS Code Ruby LSP extension think that we have the rv version manager
 alias ruv='ruby -v'
 
-alias raa="${RAILS_CMD[*]} about"
+alias {raa,rab}="${RAILS_CMD[*]} about"
 alias rav="${RAILS_CMD[*]} -v"
 alias rc="${RAILS_CMD[*]} console"
 alias rce="EDITOR='code --wait' ${RAILS_CMD[*]} credentials:edit"

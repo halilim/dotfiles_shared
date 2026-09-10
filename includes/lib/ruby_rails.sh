@@ -277,7 +277,10 @@ function ruby_cd_pull_migrate() {
     if [[ ${BUNDLE_CMD:-} ]]; then
       bundle_cmd=("${BUNDLE_CMD[@]}")
     else
-      bundle_cmd=(bundle install --quiet)
+      bundle_cmd=(bundle install)
+      if [[ ! ${VERBOSE:-} ]]; then
+        bundle_cmd+=(--quiet)
+      fi
     fi
 
     echo_eval "${bundle_cmd[@]}" || return

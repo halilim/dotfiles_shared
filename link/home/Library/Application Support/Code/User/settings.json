@@ -3,6 +3,8 @@
   "bashIde.shfmt.simplifyCode": true,
   "bashIde.shfmt.spaceRedirects": true,
 
+  "chat.mcp.gallery.enabled": true,
+
   "claudeCode.preferredLocation": "panel",
 
   "codeium.enableCodeLens": false,

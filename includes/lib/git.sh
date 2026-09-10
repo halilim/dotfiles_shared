@@ -18,10 +18,15 @@ function cd_checkout_pull() {
   # Must be after cd since the git branch depends on the folder
   [[ -z $branch ]] && branch=$(git_main_branch)
 
-  echo_eval git checkout --quiet "$branch" || return
+  local git_checkout_cmd=(git checkout) git_pull_cmd=(git pull --prune)
+  if [[ ! ${VERBOSE:-} ]]; then
+    git_checkout_cmd+=(--quiet)
+    git_pull_cmd+=(--quiet)
+  fi
+  echo_eval "${git_checkout_cmd[@]}" "$branch" || return
 
   local git_pull_result
-  git_pull_result=$(echo_eval git pull --prune --quiet) || return
+  git_pull_result=$(echo_eval "${git_pull_cmd[@]}") || return
   if [[ $git_pull_result ]]; then
     echo "$git_pull_result"
     if [[ $git_pull_result == *'up to date'* ]]; then
@@ -167,8 +172,13 @@ function git_maintain_large_repos() {
 }
 
 function git_pull_all() {
+  local git_checkout_cmd=(git checkout) git_pull_cmd=(git pull --prune)
+  if [[ ! ${VERBOSE:-} ]]; then
+    git_checkout_cmd+=(--quiet)
+    git_pull_cmd+=(--quiet)
+  fi
   # shellcheck disable=SC2016
-  for_each_dir git checkout --quiet _safe_'"$(git_main_branch)" &&' git pull --prune --quiet
+  for_each_dir "${git_checkout_cmd[@]}" _safe_'"$(git_main_branch)" &&' "${git_pull_cmd[@]}"
 }
 
 function git_search_branches() {
