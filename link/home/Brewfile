@@ -47,13 +47,7 @@ brew 'ripgrep'
 brew 'rsync' # macOS one is ancient
 
 # Ruby
-brew 'libxml2' # Nokogiri
-brew 'libxslt' # Nokogiri
-brew 'openssl'
-brew 'pkg-config'
 brew 'rbspy' # Profiler, for RubyMine
-brew 'readline'
-brew 'shared-mime-info' # mimemagic gem
 
 brew 'shellcheck'
 tap 'shellspec/shellspec'
