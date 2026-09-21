@@ -57,6 +57,7 @@ brew 'shfmt' # VS Code extension shell-format
 tap 'teamookla/speedtest'
 brew 'speedtest'
 
+brew 'starship'
 brew 'terminal-notifier'
 brew 'tldr'
 brew 'tree'
@@ -69,8 +70,11 @@ at_exit { system '~/bin/switch_to_homebrew_zsh' }
 
 # Start: Casks
 
-cask 'font-sauce-code-pro-nerd-font' # Also works for Powerlevel10k
-cask 'handbrake-app' # Minify videos
+# Nerd font for terminals, shell prompts, etc.
+cask 'font-sauce-code-pro-nerd-font'
+
+# Minify videos
+cask 'handbrake-app'
 
 # Separate mouse and trackpad natural scroll, fix mouse 4/5 (back/forward), etc.
 # mac-mouse-fix: back/forward is not universal (doesn't work in VSCode), also: paid

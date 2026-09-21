@@ -63,7 +63,7 @@ function quote(xs) {
         throw new TypeError("unrecognized object token shape");
       }
       if (/["\s\\]/.test(s) && !/'/.test(s)) {
-        return "'" + s.replace(/(['])/g, "\\$1") + "'";
+        return "'" + s.replace(/([\\'])/g, "\\$1") + "'";
       }
       if (/["'\s]/.test(s)) {
         return '"' + s.replace(/(["\\$`!])/g, "\\$1") + '"';

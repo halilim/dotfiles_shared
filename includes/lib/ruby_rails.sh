@@ -261,9 +261,9 @@ function ruby_cd_pull_migrate() {
 
   # PRE_PULL_CMD is in cd_checkout_pull
 
-  cd_checkout_pull "$dir" "$branch" || return
+  cd_checkout_pull "$dir" "$branch"
   local -r last_status=$?
-  if [[ $last_status != 0 && ! $FORCE ]]; then
+  if [[ $last_status != 0 && ! ${FORCE:-} ]]; then
     printf '\n'
     return $last_status
   fi

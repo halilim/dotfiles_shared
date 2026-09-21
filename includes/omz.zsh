@@ -2,20 +2,6 @@ alias omzrc='$EDITOR "$DOTFILES_INCLUDES"/omz.zsh' # cSpell:ignore omzrc
 
 omz_path=~/.oh-my-zsh
 
-# TODO: Tab completions still eat lines...
-#   [x] Remove heroku plugin
-#   [x] Remove git* plugins
-#   [+] Remove fzf-tab
-#   [+] Remove p10k (hm... fzf-tab is probably more important than p10k)
-#   [ ] Replace with simple prompt + REPORTTIME=... instead?
-
-# https://github.com/ohmyzsh/ohmyzsh/wiki/themes
-# To customize prompt, run `p10k configure` or edit .p10k*.zsh.
-# shellcheck disable=SC1091
-. "$DOTFILES_INCLUDES"/.p10k.zsh
-alias p10kc='$EDITOR "$DOTFILES_INCLUDES"/.p10k.zsh'
-export ZSH_THEME=powerlevel10k/powerlevel10k
-
 # Handled by .functions#update_and_backup
 zstyle ':omz:update' mode disabled
 
@@ -31,6 +17,9 @@ plugins=("${OMZ_PLUGINS[@]}")
 # $ZSH_CUSTOM doesn't work here, since it's not defined yet
 fpath+=("$omz_path"/custom/plugins/zsh-completions/src)
 
+# https://github.com/jeffreytse/zsh-vi-mode?tab=readme-ov-file#system-clipboard
+export ZVM_SYSTEM_CLIPBOARD_ENABLED=true
+
 # shellcheck disable=SC1091
 source "$omz_path"/oh-my-zsh.sh
 
@@ -39,15 +28,6 @@ unset omz_path
 # `cd -1` from .oh-my-zsh/lib/directories.zsh
 # Messes up with typing, e.g., VAR=1 :)
 unalias 1
-
-# Yank to the system clipboard
-# https://github.com/jeffreytse/zsh-vi-mode/issues/19#issuecomment-1009256071
-# cSpell:ignore CUTBUFFER
-function zvm_vi_yank() {
-	zvm_yank
-	printf '%s' "$CUTBUFFER" | pbcopy
-	zvm_exit_visual_mode
-}
 
 # Why mkdir? Because this might need to run before OMZ installation itself:
 # 1. dotfiles, 2. OMZ, 3. this => OMZ complains for missing plugins and theme
@@ -70,11 +50,6 @@ function omz_install_custom() {
     git clone https://github.com/zsh-users/zsh-autosuggestions
     git clone https://github.com/zsh-users/zsh-completions
     git clone https://github.com/zsh-users/zsh-syntax-highlighting
-
-    local zsh_custom_themes="$zsh_custom"/themes
-    mkdir -p "$zsh_custom_themes" || return
-    cd "$zsh_custom_themes" || return
-    git clone --depth=1 --quiet https://github.com/romkatv/powerlevel10k
   )
 }
 

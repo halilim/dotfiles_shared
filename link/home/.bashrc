@@ -46,3 +46,4 @@ source_custom .bashrc
 . "$DOTFILES_SHARED"/post_init_hooks.sh
 
 eval "$(zoxide init bash)"
+eval "$(starship init bash)"

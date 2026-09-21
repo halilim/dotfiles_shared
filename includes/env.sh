@@ -63,7 +63,6 @@ export DOTFILES_INCLUDE_LIBS=(
 export FORGIT_NO_ALIASES=1
 
 # Disabled:
-#   * direnv: Breaks Powerlevel10k instant prompt, added to .zshrc manually
 #   * docker & docker-compose: Has legacy completion logic, not needed (docker itself has completions)
 #   * fzf-tab-completion: Broken. Outputs pygmentize (pygments) help. Without pygmentize, emits 3
 #     lines of "_normal:6: command not found: pygmentize"

@@ -35,8 +35,6 @@ jobs:
         env:
           # See also: the notes in .shellcheckrc
           SHELLCHECK_OPTS: -s bash
-        with:
-          ignore_paths: "**/.p10k*.zsh"
 
   # https://github.com/shellspec/shellspec
 

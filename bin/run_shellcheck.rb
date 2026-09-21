@@ -23,11 +23,10 @@ files = Dir.glob(
 files.reject! do |file|
   next true if file.end_with?(
     '.applescript',
-    '.p10k.zsh',
     '.rb',
     'ghostty_tab',
-    'iterm_tab',
-    'smerge'
+    'http_statuses',
+    'iterm_tab'
   )
   next true if file.include?('osascript_')
   next true if file.include?('url_to_')

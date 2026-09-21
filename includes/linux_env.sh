@@ -27,7 +27,7 @@ if [[ -r /etc/lsb-release ]]; then
 
     UPDATE_BACKUP_CMDS+=(
       'sudo apt update -qq'
-      'sudo apt upgrade -qq'
+      'sudo apt upgrade -qq -y'
     )
 
     POST_INIT_HOOKS+=(
