@@ -118,6 +118,7 @@
 
   "editor.unicodeHighlight.allowedCharacters": {
     "ı": true,
+    "ü": true,
   },
   "editor.unicodeHighlight.includeComments": true,
 

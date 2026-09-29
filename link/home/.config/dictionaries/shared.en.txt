@@ -498,6 +498,7 @@ markdownlintrc
 matchit
 matchparen
 maxdepth
+Mbps
 mebibit
 mebibits
 mebibyte

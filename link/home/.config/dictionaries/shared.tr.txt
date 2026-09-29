@@ -15,8 +15,10 @@ Firması
 FRANGI
 HAKKI
 Halil
+Hasanağa
 Hepiyi
 İkame
+İlçe
 İndirimi
 İNGİLİZ
 İnteraktif
@@ -32,6 +34,7 @@ LEVASI
 LEYİ
 Limak
 MANATI
+Mevkii
 Oyak
 PAKİSTAN
 RİYALİ
