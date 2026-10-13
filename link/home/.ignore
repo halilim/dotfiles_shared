@@ -5,6 +5,7 @@
 .gradle
 .idea
 .npm
+.yarn
 coverage
 node_modules
 tags

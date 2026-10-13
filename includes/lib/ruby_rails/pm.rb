@@ -7,6 +7,7 @@ require_relative 'utils'
 #
 # @param obj [Object] an instance or class
 # @param pattern [Regexp, String] Filter methods by a regular expression
+# @param own [Boolean] Exclude methods from Object, Kernel, and BasicObject
 #
 # @return [Integer] Number of methods printed
 # @return [Array] Method data
@@ -14,8 +15,13 @@ require_relative 'utils'
 # @example
 #   pm Foo
 #   pm bar, /baz/
-def pm(obj, pattern = nil) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
+#   pm bar, own: false
+#   pm bar, /baz/, own: false
+def pm(obj, pattern = nil, own: true) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
   methods = obj.methods
+  if own
+    methods -= obj.is_a?(Module) ? Object.methods : Object.instance_methods
+  end
   methods = methods.grep(Regexp.new(pattern.to_s, 'i')) if pattern
 
   data = methods.sort.collect do |name|

@@ -23,7 +23,7 @@ function run(argv) {
     const argvRest = argv.slice(1);
     newSession.write({
       text: argvRest.join(" "),
-      newline: getEnv("NEWLINE") || "NO",
+      newline: getEnv("NEWLINE") || "YES",
     });
   }
 }

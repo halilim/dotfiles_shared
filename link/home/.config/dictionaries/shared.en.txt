@@ -935,6 +935,7 @@ xbarapp
 xclip
 xcontext
 Xdebug
+xmark
 xmlrpc
 xonshrc
 xpack

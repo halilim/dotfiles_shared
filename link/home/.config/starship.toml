@@ -1,4 +1,5 @@
 # https://starship.rs/config/
+# https://www.nerdfonts.com/cheat-sheet
 
 "$schema" = 'https://starship.rs/config-schema.json'
 
@@ -15,10 +16,42 @@ $git_state\
 $git_metrics\
 $git_status\
 $jobs\
+$status\
 $character"""
 
 [directory]
   fish_style_pwd_dir_length = 1
+  read_only                 = ' 󰌾'
+
+[git_branch]
+  symbol = ' '
+
+[git_commit]
+  tag_symbol = '  '
 
 [git_metrics]
   disabled = false
+
+# Modified https://starship.rs/config/#example-30 to use Nerd Font symbols
+[git_status]
+  conflicted = ' '                     # nf-fa-exclamation
+  ahead      = ' '                     # nf-fa-arrow_up
+  behind     = ' '                     # nf-fa-arrow_down
+  diverged   = '󱡷 '                     # nf-md-diversify
+  up_to_date = ' '                     # nf-fa-check
+  untracked  = ' '                     # nf-fa-question
+  stashed    = ' '                     # nf-fa-box_archive
+  modified   = ' '                     # nf-fa-circle_dot
+  staged     = '[++\($count\)](green) '
+  renamed    = ' '                     # nf-fa-arrow_right
+  deleted    = ' '                     # nf-fa-trash
+
+[hostname]
+  ssh_symbol = ' '
+
+[shlvl]
+  symbol = '󰹍 '
+
+[status]
+  disabled = false
+  symbol   = ' '  # nf-fa-xmark

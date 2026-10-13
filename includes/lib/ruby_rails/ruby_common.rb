@@ -36,6 +36,10 @@ alias mart markdown_table
 alias mdt markdown_table
 
 require_relative 'pm'
+def pm_all(*)
+  pm(*, own: false)
+end
+alias pma pm_all
 
 # Print hash key-value pairs whose keys match a regular expression
 #

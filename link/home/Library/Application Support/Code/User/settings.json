@@ -523,7 +523,9 @@
   "workbench.editor.useModal": "off",
   "workbench.editor.wrapTabs": true,
   "workbench.editorAssociations": {
+    "*.copilotmd": "vscode.markdown.preview.editor",
     "*.ipynb": "jupyter-notebook",
+    "*.md": "vscode.markdown.editor",
     "*.plist": "default"
   },
   "workbench.iconTheme": "catppuccin-macchiato",
