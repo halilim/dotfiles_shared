@@ -905,6 +905,7 @@ vcard
 VDSL
 vendored
 VFINX
+vicmd
 viml
 VimR
 vimrc

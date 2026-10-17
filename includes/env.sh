@@ -64,15 +64,11 @@ export FORGIT_NO_ALIASES=1
 
 # Disabled:
 #   * docker & docker-compose: Has legacy completion logic, not needed (docker itself has completions)
-#   * fzf-tab-completion: Broken. Outputs pygmentize (pygments) help. Without pygmentize, emits 3
-#     lines of "_normal:6: command not found: pygmentize"
 #   * gpg-agent: GPG_TTY is set in env_interactive.sh, no need to slow down
 #   * heroku: Eats lines, even with COMPLETION_WAITING_DOTS=false - there is autocomplete anyway
 #   * rake: Aliases rake to `noglob rake` which doesn't take bundler into account
 #   * zsh-nvm: Slow (1.5-2 s) to change folders, replaced with nodenv.
 #     If re-enabled: uncomment nvm lines below
-# Notes:
-#   * fzf-tab: Breaks _expand_alias
 export OMZ_PLUGINS=(
   aliases
   bgnotify

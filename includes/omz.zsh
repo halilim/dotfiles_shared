@@ -37,15 +37,12 @@ unalias 1
 function omz_install_custom() {
   (
     local zsh_custom=${ZSH_CUSTOM:-~/.oh-my-zsh/custom}
-
     local zsh_custom_plugins="$zsh_custom"/plugins
     mkdir -p "$zsh_custom_plugins" || return
     cd "$zsh_custom_plugins" || return
 
     git clone https://github.com/Aloxaf/fzf-tab
     git clone https://github.com/jeffreytse/zsh-vi-mode
-    git clone https://github.com/lincheney/fzf-tab-completion
-    git clone https://github.com/lukechilds/zsh-nvm
     git clone https://github.com/wfxr/forgit.git
     git clone https://github.com/zsh-users/zsh-autosuggestions
     git clone https://github.com/zsh-users/zsh-completions
