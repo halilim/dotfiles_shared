@@ -636,6 +636,7 @@ PGPASSWORD
 pgrep
 pgsql
 phan
+phantomjs
 phpcs
 phpls
 pids
@@ -734,6 +735,7 @@ rmtree
 rnd
 RoadMap
 Rollbar
+rollup
 Rspec
 rstfilter
 Rubo
@@ -936,6 +938,7 @@ xbarapp
 xclip
 xcontext
 Xdebug
+xlarge
 xmark
 xmlrpc
 xonshrc
