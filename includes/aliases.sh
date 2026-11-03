@@ -64,6 +64,7 @@ alias hhnv='http --headers --verify=no'
 alias hnv='http --verify=no'
 
 alias hd='bat --line-range=0:10'
+alias tl='bat --line-range=-10:'
 
 # shellcheck disable=SC2139
 alias {hostconf,hosts,edit_hosts}='$EDITOR "$DOTFILES_CUSTOM"/hosts' # cSpell:disable-line

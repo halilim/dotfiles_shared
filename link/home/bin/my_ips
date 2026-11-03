@@ -48,7 +48,7 @@ function print_header() {
     ROUTED_DEVICE_FOUND=1
     header_color='green-bold'
   else
-    header_color='white-bold'
+    header_color='black-bold'
   fi
 
   local name_device="$name"
@@ -61,7 +61,7 @@ function print_header() {
 
 function print_icon() {
   local icon=$1
-  color white-bold "$icon"
+  color black-bold "$icon"
 }
 
 function print_ip() {
