@@ -142,6 +142,7 @@ convertkit
 convo
 cookiemonster
 cooldown
+copilotmd
 coreutils
 CORS
 Covid

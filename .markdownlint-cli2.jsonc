@@ -1,7 +1,8 @@
 {
   "config": {
     "line-length": {
-      "line_length": 100
+      "line_length": 100,
+      "code_blocks": false
     },
     "no-duplicate-heading": {
       "siblings_only": true

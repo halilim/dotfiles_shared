@@ -112,6 +112,7 @@
   "editor.scrollBeyondLastLine": false,
   "editor.snippetSuggestions": "top",
   "editor.suggest.showStatusBar": true,
+  "editor.suggest.snippetsPreventQuickSuggestions": true,
   "editor.suggestSelection": "first",
   "editor.tabCompletion": "on",
   "editor.tabSize": 2,
@@ -285,7 +286,10 @@
   "less.lint.unknownVendorSpecificProperties": "warning",
   "less.lint.zeroUnits": "warning",
 
+  "markdown.editor.quickSuggestions": true,
+  "markdown.preview.doubleClickToSwitchToEditor": true,
   "markdown.preview.fontSize": 13,
+  "markdown.preview.markEditorSelection": true,
   "markdown.updateLinksOnFileMove.enabled": "always",
   "markdown.validate.enabled": true,
 
