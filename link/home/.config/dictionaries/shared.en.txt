@@ -192,6 +192,7 @@ divmod
 DMARC
 dnsutils
 dockerd
+Dockerfiles
 dockerhub
 dockerignore
 Dokku

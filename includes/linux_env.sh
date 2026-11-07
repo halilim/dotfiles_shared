@@ -30,6 +30,12 @@ if [[ -r /etc/lsb-release ]]; then
       'sudo apt upgrade -qq -y'
     )
 
+    if command -v snap > /dev/null 2>&1; then
+      UPDATE_BACKUP_CMDS+=(
+        'sudo snap refresh'
+      )
+    fi
+
     POST_INIT_HOOKS+=(
       "UPDATE_BACKUP_CMDS+=('[[ -e /var/run/reboot-required ]] && sudo reboot')"
     )

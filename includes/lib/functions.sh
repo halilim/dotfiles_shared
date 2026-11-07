@@ -304,6 +304,16 @@ function needs_update_and_mark() {
   fi
 }
 
+function open_() {
+  local args=("$@")
+  if [[ ${#args} -eq 0 ]]; then
+    args=(.)
+  fi
+
+  $OPEN_CMD "${args[@]}"
+}
+alias o='open_'
+
 function read_prompt() {
   local question="${1:?}" is_secure="${2:-}" params=()
   [[ $is_secure ]] && params+=(-s)

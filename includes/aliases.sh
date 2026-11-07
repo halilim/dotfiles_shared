@@ -112,7 +112,6 @@ alias ngf='nginx_fg'
 alias n='$EDITOR ~/Desktop/notes.md'
 alias na='$EDITOR ~/Desktop/notes-archive.md'
 
-alias o='$OPEN_CMD'
 alias omzp='$EDITOR ~/.oh-my-zsh/plugins/'
 
 alias pg='ping google.com'
